@@ -7,14 +7,22 @@ import { projectsCta } from '../data/projects'
 /* ============================================================
    PROJECTS — THE COLLECTION
 
-   One dark world, top to bottom, read as a sequence of rooms
-   rather than browsed as a set of thumbnails.
+   One dark world, top to bottom, built on a single contrast:
+   one project at full size, everything else at card size.
 
    HERO       one photograph, one word.
-   INDEX      the filter, then six chapters, each given a full
-              screen of photograph before a single fact about
-              it. A margin folio tracks where you are.
+   INDEX      the filter, then the lead project — a full screen
+              of photograph, a sticky running head and three
+              screens of scroll — and under it the rest of the
+              work as photograph-led cards in a dropped two-
+              column stagger.
    CLOSE      the consultation.
+
+   The fixed `01 / 06` margin folio that used to ride this page
+   is gone with the six equal chapters it was reporting on.
+   There is one chapter now, and a grid underneath it has no
+   single "where am I" to report — two cards sit side by side.
+   The count in the filter row carries what is left of that job.
 
    NO DIVIDERS BETWEEN SECTIONS. Sections on this site hand over
    by being covered — the next stage scrolls over the last one

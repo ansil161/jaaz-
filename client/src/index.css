@@ -4,30 +4,24 @@
    CUSTOM VARIANTS
 
    `kit-tall` gates the one layout on this site that needs vertical
-   room as well as horizontal: the horizontal-scroll pin in
-   <Collections>. Pinning a section to the viewport only works if
-   the section FITS the viewport, and that section has to hold a
-   header, a portrait plate, a title, a paragraph and a progress
-   rule in a single screen. On a 1440x600 window it does not, and
-   the card captions end up clipped below the fold.
+   room as well as horizontal. It was written for the horizontal
+   rail in <Collections>; that section has been removed from the
+   homepage, and <Tonight> is now its only consumer.
 
-   Height is therefore part of the condition, not just width. Below
-   the threshold the section falls back to the same native snapping
-   rail that touch gets, which has no such constraint.
+   Tonight uses it to lock itself to `--app-h` — one screen, no
+   scrolling within the section — because its composition only
+   works when the stage, the copy column and the rail are all
+   visible at once. Anything shorter than the threshold keeps the
+   same desktop composition but lets the section run its natural
+   height, which is the honest fallback: a section forced into a
+   viewport it does not fit just hides its own overflow.
 
-   It also requires `prefers-reduced-motion: no-preference`. The CSS
-   here and the JS pin in Collections.jsx have to agree on when the
-   pin is active, because the CSS is what removes the rail's native
-   overflow-x scrolling — it hides the scrollbar and locks the axis
-   on the assumption that GSAP is about to drive it by hand. But
-   Collections.jsx skips creating that pin under reduced motion, so
-   without this clause a reduced-motion visitor on a tall desktop
-   window would land on a rail with no native scroll AND no JS
-   translating it — cards 2 through 6 permanently unreachable. Tying
-   both to the same media condition is what keeps that impossible.
-
-   The matching media query is repeated in Collections.jsx's
-   gsap.matchMedia — keep the two in sync.
+   THE REDUCED-MOTION CLAUSE IS DELIBERATELY KEPT. It is no longer
+   protecting a GSAP pin, so it now simply means a reduced-motion
+   visitor gets the natural-height layout. That is a safe place to
+   land, and removing the clause would silently change what those
+   visitors see — so it stays until someone decides otherwise on
+   purpose.
    ------------------------------------------------------------ */
 @custom-variant kit-tall (@media (min-width: 1024px) and (min-height: 760px) and (prefers-reduced-motion: no-preference));
 

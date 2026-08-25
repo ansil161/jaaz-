@@ -1,25 +1,42 @@
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { projects, projectFilters, projectsIntro } from '../../data/projects'
 import ProjectChapter from './ProjectChapter'
+import ProjectCards from './ProjectCards'
 import ProjectFilter from './ProjectFilter'
-import ProjectProgress from './ProjectProgress'
 import { Lines } from '../ui/Motion'
 import { gsap, ScrollTrigger, prefersReducedMotion } from '../../lib/useGsap'
 
 /* ============================================================
-   THE COLLECTION
+   THE COLLECTION — one project leads, the rest are cards.
 
-   Owns three things and nothing else: which filter is on, the
-   changeover when it moves, and the margin folio that reports
-   where you are. Every project renders through the same
-   <ProjectChapter>.
+   ONE SIZE FOR THE LEAD, ONE SIZE FOR EVERYTHING ELSE.
+   The page's whole argument is the difference between those two
+   sizes. Six full chapters gave every room the same weight,
+   which is the same failure as a six-up grid one scale down —
+   the visitor is handed six equal things and has to decide for
+   themselves which one is worth their attention.
+
+   Here the first project gets a full screen of photograph, a
+   sticky running head and three screens of scroll; the rest get
+   a photograph, a name and a line. Nothing is labelled
+   "featured", because the composition already said it — a badge
+   would only be repeating in words what the layout does better.
+
+   WHICH PROJECT LEADS IS THE DATA'S ORDER, NOT A FLAG.
+   `shown[0]` — the first project in the current view. With no
+   filter on that is the first entry in data/projects.js, so
+   reordering that array is how you change what leads. Under a
+   filter it is the first MATCH, which is the only behaviour that
+   cannot produce an empty stage: a `featured: true` flag would
+   have to answer "what leads when the flagged project is
+   filtered out", and every answer to that is this one anyway.
 
    THE FILTER CHANGEOVER IS A CUT, NOT A REPLACEMENT.
    Swapping the list under the visitor is technically instant and
-   experientially awful on a page like this: chapters are close
-   to a full screen each, so a filter applied three projects down
-   leaves you looking at the middle of a project that no longer
-   exists, at a scroll position that now means something else.
+   experientially awful: the lead chapter is close to three
+   screens, so a filter applied inside it leaves you looking at
+   the middle of a project that no longer exists, at a scroll
+   position that now means something else.
 
    So the change is staged, in the order a cut is:
      1. the collection fades down and settles a little,
@@ -29,11 +46,11 @@ import { gsap, ScrollTrigger, prefersReducedMotion } from '../../lib/useGsap'
         just changed height by several screens,
      5. the new set is revealed.
 
-   Step 4 is the one that is invisible until it is missing. Six
-   chapters of ScrollTriggers were measured against a document
-   that no longer exists; without a refresh, every reveal below
-   the fold fires at the wrong scroll position, which reads as
-   photographs that are already open before you reach them.
+   Step 4 is the one that is invisible until it is missing. The
+   card entrances were measured against a document that no longer
+   exists; without a refresh they fire at the wrong scroll
+   positions, which reads as cards that are already arrived
+   before you reach them.
    ============================================================ */
 
 const OUT = 0.42
@@ -65,6 +82,9 @@ export default function ProjectIndex() {
     [active],
   )
 
+  const lead = shown[0]
+  const rest = shown.slice(1)
+
   const select = useCallback(
     (id) => {
       if (id === active || busy.current) return
@@ -89,9 +109,9 @@ export default function ProjectIndex() {
   )
 
   /* Steps 3–5. A layout effect rather than a timeline callback: it is
-     guaranteed to run after React has committed the new chapters AND
-     after their own layout effects have created their triggers, which
-     is the only moment at which a refresh measures the real page. */
+     guaranteed to run after React has committed the new content AND
+     after its own layout effects have created their triggers, which is
+     the only moment at which a refresh measures the real page. */
   useLayoutEffect(() => {
     if (handled.current === active) return
     handled.current = active
@@ -150,7 +170,7 @@ export default function ProjectIndex() {
       </div>
 
       <div ref={list} className="mt-[8vh]">
-        {shown.length === 0 ? (
+        {!lead ? (
           /* Cannot happen with the current six — every filter in the
              list is derived from a tag some project carries. It is here
              because the list is data, the data will grow, and a
@@ -167,18 +187,12 @@ export default function ProjectIndex() {
             </button>
           </div>
         ) : (
-          shown.map((project, i) => (
-            <ProjectChapter
-              key={project.slug}
-              project={project}
-              index={i}
-              total={shown.length}
-            />
-          ))
+          <>
+            <ProjectChapter key={lead.slug} project={lead} index={0} total={shown.length} />
+            <ProjectCards items={rest} startIndex={1} resetKey={active} />
+          </>
         )}
       </div>
-
-      <ProjectProgress scopeRef={list} total={shown.length} resetKey={active} />
     </section>
   )
 }

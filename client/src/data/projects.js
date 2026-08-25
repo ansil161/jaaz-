@@ -58,9 +58,21 @@ export const plate = (slot, ratio = '3:2') => {
   }
 }
 
-/* Filters. Derived from the SERVICE tags each project genuinely
-   carries rather than from a taxonomy invented above the work — which
-   is why there is no empty category in the list. */
+/* Filters, and the rule that makes them worth having.
+
+   `tags` names what a room IS ABOUT, not every discipline that
+   touched it. Tagged by services-present, every one of these six
+   carried `audio` and `smart` — JAZ does not build a room without
+   engineered sound or without control — so two of the seven filters
+   returned the entire catalogue. A filter that changes nothing is
+   worse than a missing one: it reads as broken, and it teaches the
+   visitor that the others probably do not work either.
+
+   So a project carries a tag only where that discipline is the
+   POINT of the room. The Long Room is a reference cinema, so it is
+   `theatre` and `audio`; it also has lighting control, and that is
+   not what anyone is looking for it under. Every filter now returns
+   a genuine subset, and none returns nothing. */
 export const projectFilters = [
   { id: 'all', label: 'All' },
   { id: 'theatre', label: 'Home Theatre' },
@@ -107,7 +119,7 @@ export const projects = [
     category: 'Private Theatre',
     year: '2024',
     meta: 'Private theatre · 11 seats',
-    tags: ['theatre', 'audio', 'smart'],
+    tags: ['theatre', 'audio'],
     summary:
       'A basement nobody else would quote on. Three tiers, a decoupled floor and a 2.39:1 masked screen.',
     overview: [
@@ -192,7 +204,7 @@ export const projects = [
     category: 'Gaming Room',
     year: '2025',
     meta: 'Gaming room · 4 stations',
-    tags: ['gaming', 'audio', 'smart'],
+    tags: ['gaming'],
     summary: 'Positional audio and a 120 Hz projector, with lighting scenes cued off the console.',
     overview: [
       'Four players, one room, and a brief that put response time above everything else. A gaming room that adds a frame of lag to look good has failed at the only thing it was built for.',
@@ -261,7 +273,7 @@ export const projects = [
     category: 'Screening Room',
     year: '2025',
     meta: 'Corporate screening · 16 seats',
-    tags: ['corporate', 'theatre', 'audio', 'smart'],
+    tags: ['corporate', 'theatre'],
     summary: 'A conference room by day that closes down into a reference cinema by six.',
     overview: [
       'Two rooms sharing one volume. Between nine and six it is a board table under even, neutral light with speech intelligibility as the specification. After six it closes down and becomes a reference screening room.',
@@ -330,7 +342,7 @@ export const projects = [
     category: 'Living Room System',
     year: '2026',
     meta: 'Living room system',
-    tags: ['theatre', 'audio', 'smart'],
+    tags: ['theatre', 'smart'],
     summary:
       'Every speaker concealed, every cable buried. The room reads as a living room until it does not.',
     overview: [
@@ -463,7 +475,7 @@ export const projects = [
     category: 'Terrace Cinema',
     year: '2026',
     meta: 'Terrace cinema',
-    tags: ['outdoor', 'theatre', 'audio', 'smart'],
+    tags: ['outdoor', 'theatre'],
     summary: 'Weather-rated throughout, calibrated twice — once for still air and once for the monsoon.',
     overview: [
       'Outside there are no walls to reflect from and no ceiling to hold the sound down. Everything a room does for you for free has to be replaced by placement and power.',

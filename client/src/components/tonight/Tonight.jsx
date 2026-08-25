@@ -140,8 +140,12 @@ export default function Tonight() {
          composition but lets the section run its natural height.
          The alternative — forcing one screen on a short window —
          overflows into the rail, and `overflow-hidden` then hides
-         that it happened rather than fixing it. Same gate the
-         `<Collections>` rail uses, for the same reason. */
+         that it happened rather than fixing it.
+
+         This is now the ONLY consumer of `kit-tall` — the
+         `<Collections>` rail it was originally written for has
+         been removed from the homepage. The gate is pure CSS
+         here; there is no matching matchMedia in this file. */
       className="relative overflow-hidden bg-ink py-20 sm:py-24 lg:pt-28 lg:pb-10 kit-tall:flex kit-tall:h-[var(--app-h)] kit-tall:flex-col kit-tall:py-0"
     >
       <div className="flex w-full flex-col kit-tall:h-full kit-tall:min-h-0">

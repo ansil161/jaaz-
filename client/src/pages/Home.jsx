@@ -4,12 +4,10 @@ import Brand from '../components/sections/Brand'
 import Projects from '../components/sections/Projects'
 import LightsDown from '../components/sections/LightsDown'
 import EverySeat from '../components/sections/EverySeat'
-import Comfort from '../components/sections/Comfort'
 import Spaces from '../components/sections/Spaces'
 import Tonight from '../components/tonight/Tonight'
 import Craft from '../components/sections/Craft'
 import Transform from '../components/sections/Transform'
-import Collections from '../components/sections/Collections'
 import Process from '../components/sections/Process'
 import Testimonials from '../components/sections/Testimonials'
 import Footer from '../components/sections/Footer'
@@ -25,11 +23,9 @@ import Footer from '../components/sections/Footer'
      WHO       Brand + the three verified numbers
      PROOF     Projects, before any further claims are made
      — breath —
-     WHY       Comfort, the one section JAZ is actually built on
-     WHAT      Spaces
+     WHAT      Spaces, then Tonight — the rooms, then the nights
      — breath —
      HOW       Craft, Transform
-     WITH      Collections
      TRUST     Process, Testimonials
 
    Two structural rules the order encodes:
@@ -65,9 +61,6 @@ export default function Home() {
       {/* — breath — */}
       <LightsDown />
 
-      {/* WHY JAZ */}
-      <Comfort />
-
       {/* WHAT WE BUILD */}
       <Spaces />
 
@@ -86,9 +79,6 @@ export default function Home() {
       {/* HOW IT IS BUILT */}
       <Craft />
       <Transform />
-
-      {/* WHAT IT IS BUILT FROM */}
-      <Collections />
 
       {/* TRUST */}
       <Process />
