@@ -1,0 +1,9 @@
+{
+  "theatre/walkthrough": {
+    "base": "/media/frames/theatre/walkthrough",
+    "count": 56,
+    "ext": "webp",
+    "pad": 4,
+    "placeholder": true
+  }
+}

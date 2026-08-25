@@ -1,0 +1,62 @@
+{
+  "bar/base": {
+    "kind": "still",
+    "base": "/media/jaz-home/bar/base",
+    "widths": [
+      640,
+      960,
+      1376
+    ],
+    "ratio": 1.7917
+  },
+  "gaming/base": {
+    "kind": "still",
+    "base": "/media/jaz-home/gaming/base",
+    "widths": [
+      640,
+      960,
+      1376
+    ],
+    "ratio": 1.7917
+  },
+  "living/base": {
+    "kind": "still",
+    "base": "/media/jaz-home/living/base",
+    "widths": [
+      640,
+      960,
+      1376
+    ],
+    "ratio": 1.7917
+  },
+  "master/exterior": {
+    "kind": "still",
+    "base": "/media/jaz-home/master/exterior",
+    "widths": [
+      640,
+      960,
+      1376
+    ],
+    "ratio": 1.7917
+  },
+  "outdoor/base": {
+    "kind": "still",
+    "base": "/media/jaz-home/outdoor/base",
+    "widths": [
+      640,
+      960,
+      1376
+    ],
+    "ratio": 1.7917
+  },
+  "theatre/base": {
+    "kind": "still",
+    "base": "/media/jaz-home/theatre/base",
+    "widths": [
+      640,
+      960,
+      1376
+    ],
+    "ratio": 1.7917
+  }
+}

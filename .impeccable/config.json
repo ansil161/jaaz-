@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "codex-grid-background",
+        "value": "grid-blueprint",
+        "files": [
+          "client/src/index.css"
+        ],
+        "createdAt": "2026-08-24T08:08:11.319Z",
+        "reason": "user supplied reference site finan-portfolio.vercel.app and asked to match its 'How we work' section exact/everything exact; that section's live grid background is bg-[linear-gradient(...)] bg-[size:80px_80px], reproduced here scoped to the single Process/blueprint-themed section only, recolored ink-based to respect this file's own warm-neutral color rule; user confirmed the design is okay after seeing it live"
+      }
+    ]
+  }
+}
