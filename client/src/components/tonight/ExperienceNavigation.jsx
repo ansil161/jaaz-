@@ -4,12 +4,11 @@ import NightMark from './icons'
 /* ============================================================
    EXPERIENCE NAVIGATION — the instrument rail
 
-   Six cells on a hairline grid, each carrying a number, a mark
-   and a name, with the active one drawn in a box. It reads as a
-   row of channels on a piece of equipment rather than as a
-   carousel's dots, which is the whole difference between "there
-   are more slides" and "there are six of these, and you are on
-   the first".
+   Six rounded cells, each carrying a number, a mark and a name,
+   with the active one lit. It reads as a row of channels on a
+   piece of equipment rather than as a carousel's dots, which is
+   the whole difference between "there are more slides" and "there
+   are six of these, and you are on the first".
 
    THIS IS AN ARIA TABLIST, WHICH IS NOT A DETAIL
    Six controls that swap one panel without navigating IS the tabs
@@ -25,13 +24,20 @@ import NightMark from './icons'
    move within, Tab leaves. That is why `tabIndex` below is
    computed rather than omitted.
 
-   THE ACTIVE BOX IS A SEPARATE ELEMENT
-   Not a border on the cell. The cells are divided by a single
-   hairline each (`border-l`), and switching that same border to
-   the active colour would thicken one divider and leave the
-   opposite edge of the cell open. An inset box drawn on top owns
-   all four sides, cannot disturb the grid, and can fade rather
-   than snap.
+   THE CELLS ARE SEPARATE PILLS, NOT A DIVIDED STRIP
+   They used to share one hairline each (`border-l`) with an inset
+   box drawn on top to mark the active one — a shared edge cannot
+   be recoloured for one side without thickening the divider and
+   leaving the neighbouring cell open. Rounding them removes that
+   problem at the source: each cell now owns all four of its own
+   edges and its own fill, so selection is a change of surface —
+   background and border together, fading rather than snapping —
+   instead of an extra element drawn over the top.
+
+   THE RADIUS IS THE ONE ON THE PAGE, NOT A NEW ONE
+   `rounded-2xl` against a cell about 7rem tall reads as a softened
+   rectangle rather than a pill, which is what keeps the row
+   instrument-like instead of app-like.
 
    PREV / NEXT ARE NOT TABS
    They sit in the leading cell, outside the tablist, deliberately.
@@ -110,9 +116,9 @@ export default function ExperienceNavigation({
   return (
     /* `rail-x` so a phone scrolls the cells rather than crushing six
        of them into illegibility. */
-    <div className="rail-x flex overflow-x-auto border-t border-white/12">
+    <div className="rail-x flex items-stretch gap-2 overflow-x-auto border-t border-white/12 pt-3 sm:gap-2.5">
       {/* ---- The leading cell: what these are, and how to step ---- */}
-      <div className="flex shrink-0 flex-col justify-between gap-6 py-7 pr-8 pl-0 sm:pr-10">
+      <div className="flex shrink-0 flex-col justify-between gap-6 py-5 pr-7 pl-0 sm:pr-9">
         <div>
           <span className="t-label text-ash">{labels.group}</span>
           <div className="mt-3 h-px w-9 bg-white/20" aria-hidden="true" />
@@ -133,7 +139,7 @@ export default function ExperienceNavigation({
         role="tablist"
         aria-label="Choose an evening"
         onKeyDown={onKeyDown}
-        className="flex flex-1"
+        className="flex flex-1 gap-2 sm:gap-2.5"
       >
         {nights.map((night, i) => {
           const active = i === index
@@ -147,16 +153,12 @@ export default function ExperienceNavigation({
               aria-controls={panelId}
               tabIndex={active ? 0 : -1}
               onClick={() => onSelect(i)}
-              className="focus-ring group relative flex w-[9.5rem] shrink-0 flex-col justify-between gap-5 border-l border-white/10 py-7 pr-4 pl-6 text-left sm:w-auto sm:flex-1"
+              className={`focus-ring group relative flex w-[9.5rem] shrink-0 flex-col justify-between gap-5 rounded-2xl border px-5 py-6 text-left transition-colors duration-500 sm:w-auto sm:flex-1 ${
+                active
+                  ? 'border-white/25 bg-white/[0.07]'
+                  : 'border-white/[0.07] bg-white/[0.025] hover:border-white/15 hover:bg-white/[0.05]'
+              }`}
             >
-              {/* The box. Drawn over the cell, never as its border. */}
-              <span
-                aria-hidden="true"
-                className={`pointer-events-none absolute inset-1.5 border transition-colors duration-500 ${
-                  active ? 'border-white/25' : 'border-transparent'
-                }`}
-              />
-
               <span
                 className={`t-num relative text-xs tabular-nums transition-colors duration-500 ${
                   active ? 'text-pure' : 'text-ash group-hover:text-mist'

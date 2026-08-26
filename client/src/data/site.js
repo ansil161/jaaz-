@@ -54,6 +54,17 @@ const PLATES = {
   terraceAlt: 'photo-1621275471769-e6aa344546d5', // rooftop lounge at night
   tech: 'photo-1635788798247-92a15f830a3b', // AV rack and tower speakers
 
+  /* The About cover. A near-black steel-and-glass interior with one
+     perforated screen glowing amber behind it — architecture and
+     restraint rather than a room full of equipment, which is what
+     that page's headline is actually arguing. Deliberately NOT a
+     cinema: the About hero used to reuse `theatre`, the same frame
+     the homepage hero dissolves into, so arriving here read as a
+     second homepage. Verified against the CDN at the size the hero
+     requests; several better-ranked frames for the same search are
+     Unsplash+ and 404 without a signature. */
+  atrium: 'photo-1515703944563-dbcfbf121b3d', // dark architectural interior, amber screen
+
   // People. Placeholder studio portraits, standing in for real founder
   // photography until JAZ supplies it — see team.note in about.js.
   founderPortrait: 'photo-1584940120505-117038d90b05', // dark studio, formal

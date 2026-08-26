@@ -20,14 +20,26 @@ export const TO_CONFIRM = '— JAZ to confirm'
 /* --- 01. Hero -------------------------------------------------- */
 export const aboutHero = {
   label: 'About JAZ',
+  /* The masthead line, right of the label. Discipline names, not a
+     tagline — it tells you what kind of company this is in the two
+     seconds before the headline finishes assembling. */
+  disciplines: 'Design · Acoustics · Joinery · Calibration',
   headline: ['We don’t just build', 'entertainment spaces.', 'We design how they feel.'],
   sub: 'Every room we finish is judged by one thing: how long you want to stay in it.',
-  /* NOT `screenWall`, despite the name — that slot resolves to a
-     community-hall interior with a wall-mounted TV and a brass mask.
-     `theatre` is the flagship private cinema and is what this
-     headline is actually about. */
-  image: img('theatre', 2400, '16:9'),
-  imageAlt: 'A JAZ private cinema with the house lights down',
+  /* The proof strip under the headline. These are the SAME three
+     figures JAZ supplied for `record` below and are read from it, not
+     retyped — so the hero can never drift out of agreement with the
+     section that cites them, and no number enters the page here that
+     did not come from JAZ. */
+  scrollHint: 'Scroll',
+  /* Was `theatre` — the same frame the homepage hero dissolves into,
+     which made arriving on About read as landing on a second
+     homepage. `atrium` is architectural rather than a finished room:
+     it argues the headline (how a space FEELS) instead of showing a
+     product shot of one. */
+  image: img('atrium', 2400, '16:9'),
+  imageAlt:
+    'A dark architectural interior, lit only by an amber screen behind a perforated steel wall',
 }
 
 /* --- 02. The JAZ Difference ------------------------------------ */

@@ -20,10 +20,12 @@ import ExperienceNavigation from './ExperienceNavigation'
    Type column left, media right, instrument rail across the
    foot. Three things carry it and none of them are decoration:
 
-   1. THE MEDIA BLEEDS OFF THE RIGHT EDGE. It is not a card in a
-      column — it runs out of the page, which is what makes the
-      left column read as a caption to something larger than the
-      screen rather than as one half of a 50/50 split.
+   1. THE MEDIA BLEEDS OFF THE RIGHT EDGE, AND IT TAKES 70%. The
+      grid is ten columns, not twelve, so the frame can hold seven
+      of them exactly — and it still runs out of the page on top of
+      that. A 50/50 split reads as two panels of equal rank; at
+      70/30 the left column reads as a caption to something larger
+      than the screen, which is the relationship we want.
    2. THE NUMERAL IS HOLLOW AND ENORMOUS. It is the loudest thing
       in the column, louder than the name it labels, because the
       section is a set of six and the count is the subject.
@@ -148,10 +150,10 @@ export default function Tonight() {
          here; there is no matching matchMedia in this file. */
       className="relative overflow-hidden bg-ink py-20 sm:py-24 lg:pt-28 lg:pb-10 kit-tall:flex kit-tall:h-[var(--app-h)] kit-tall:flex-col kit-tall:py-0"
     >
-      <div className="flex w-full flex-col kit-tall:h-full kit-tall:min-h-0">
+      <div className="relative flex w-full flex-col kit-tall:h-full kit-tall:min-h-0">
         {/* ---- Stage: type left, media running off the right ---- */}
-        <div className="shell-wide grid grid-cols-1 gap-y-7 lg:grid-cols-12 lg:grid-rows-[auto_1fr_auto] lg:items-start lg:gap-x-10 lg:pb-8 lg:pr-0 kit-tall:min-h-0 kit-tall:flex-1 kit-tall:pt-24">
-          <div className="order-2 lg:order-none lg:col-span-6 lg:col-start-1 lg:row-start-1">
+        <div className="shell-wide grid grid-cols-1 gap-y-7 lg:grid-cols-10 lg:grid-rows-[auto_1fr_auto] lg:items-start lg:gap-x-8 lg:pb-8 lg:pr-0 kit-tall:min-h-0 kit-tall:flex-1 kit-tall:pt-24">
+          <div className="order-2 lg:order-none lg:col-span-3 lg:col-start-1 lg:row-start-1">
             {/* The scale lives on the WRAPPER, not on <Lines>. `Lines`
                 ships its element with `visibility: hidden` so the split
                 has somewhere to come from, and any `style` handed to it
@@ -160,7 +162,7 @@ export default function Tonight() {
                 inherits down to the split lines either way. */}
             <div
               style={{
-                fontSize: 'clamp(2.4rem, min(5.4vw, 8.4vh), 5.6rem)',
+                fontSize: 'clamp(2.2rem, min(3.9vw, 7.6vh), 4.4rem)',
                 lineHeight: 0.94,
                 letterSpacing: '-0.03em',
               }}
@@ -180,8 +182,15 @@ export default function Tonight() {
               </Lines>
             </div>
 
-            {/* The short rule, then the one line that never changes. */}
-            <div className="mt-7 h-px w-10 bg-white/25" aria-hidden="true" />
+            {/* The short rule, then the one line that never changes.
+                It keeps its 2px weight and its cove warmth now that the
+                field behind it is gone: with flat ink underneath, the
+                rule is the only warm mark holding the column's foot to
+                the accent in the heading above it. */}
+            <div
+              className="mt-7 h-[2px] w-16 bg-gradient-to-r from-cove/80 via-cove/35 to-transparent"
+              aria-hidden="true"
+            />
             <p className="t-label mt-6 text-ash">{tonight.label}</p>
           </div>
 
@@ -192,14 +201,14 @@ export default function Tonight() {
             onShown={setCaptioned}
           />
 
-          {/* Runs off the right edge of the page. `-mr-[var(--gutter)]`
-              cancels the shell's own gutter and the extra 2vw pushes it
-              past the viewport, so the frame is cropped by the screen
-              rather than sitting inside a margin. */}
+          {/* Seven of ten columns, then off the right edge on top of
+              that: `-mr-[var(--gutter)]` cancels the shell's own gutter
+              and the extra 2vw pushes it past the viewport, so the frame
+              is cropped by the screen rather than sitting in a margin. */}
           <div
             onTouchStart={onTouchStart}
             onTouchEnd={onTouchEnd}
-            className="relative order-4 aspect-[16/10] w-full lg:order-none lg:col-span-6 lg:col-start-7 lg:row-span-3 lg:row-start-1 lg:mr-[calc(-1*var(--gutter)-2vw)] lg:aspect-auto lg:h-full lg:min-h-0 lg:self-stretch lg:min-h-[26rem]"
+            className="relative order-4 aspect-[16/10] w-full lg:order-none lg:col-span-7 lg:col-start-4 lg:row-span-3 lg:row-start-1 lg:mr-[calc(-1*var(--gutter)-2vw)] lg:aspect-auto lg:h-full lg:min-h-0 lg:self-stretch lg:min-h-[26rem]"
           >
             <ExperienceVideo
               nights={nights}

@@ -98,7 +98,7 @@ export default function ExperienceContent({ night, total, scopeRef, onShown }) {
 
   return (
     <>
-      <div className="order-3 lg:order-none lg:col-span-6 lg:col-start-1 lg:row-start-2 lg:self-end">
+      <div className="order-3 lg:order-none lg:col-span-3 lg:col-start-1 lg:row-start-2 lg:self-end">
         {/* The hollow numeral, and the denominator it is measured
             against. Baseline-aligned so the small "/ 06" sits on the
             numeral's foot rather than floating beside its middle. */}
@@ -125,7 +125,7 @@ export default function ExperienceContent({ night, total, scopeRef, onShown }) {
 
       {/* The line. Under the video on a phone, under the name on a
           desktop — see the note above on why this is not nested. */}
-      <p className="order-5 t-body mt-1 max-w-[34ch] text-mist lg:order-none lg:col-span-5 lg:col-start-1 lg:row-start-3 lg:mt-0 lg:self-start">
+      <p className="order-5 t-body mt-1 max-w-[34ch] text-mist lg:order-none lg:col-span-3 lg:col-start-1 lg:row-start-3 lg:mt-0 lg:self-start">
         <span className="mask-line">
           <span data-swap className="block">
             {shown.copy}

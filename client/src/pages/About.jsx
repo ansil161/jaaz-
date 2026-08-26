@@ -99,9 +99,13 @@ export default function About() {
         <Partners />
       </Seam>
 
-      <Seam from="ink-2" to="ink-4">
-        <Footer />
-      </Seam>
+      {/* No seam on the last join. The footer already draws its own
+          fading hairline where the page hands over to it, so a seam
+          here marked the same boundary twice — its band left ninety-odd
+          pixels of empty ground stranded between the two lines, on top
+          of the footer's own top padding. The footer is the end of the
+          page, not another chapter of it. */}
+      <Footer />
     </>
   )
 }

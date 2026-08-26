@@ -11,19 +11,26 @@ import { Link } from '../chrome/PageTransition'
    list itself is marked for confirmation rather than presented
    as settled fact.
 
-   The wall is set as scroll-coupled rails instead of a static
-   grid of tiles. Two reasons: it stops nine or sixteen names
-   from reading as a ranked league table, and the rails only
-   surge while you are moving, so the section stays quiet the
-   moment you stop to read it — which is the right hierarchy for
-   a page where the technology is explicitly not the hero.
+   The wall is one scroll-coupled rail instead of a static grid
+   of tiles. Two reasons: it stops sixteen names from reading as
+   a ranked league table, and the rail only surges while you are
+   moving, so the section stays quiet the moment you stop to read
+   it — which is the right hierarchy for a page where the
+   technology is explicitly not the hero.
+
+   Names only. What JAZ specifies — projectors, screens, speakers
+   — is the homepage technology chapter's job, and the link at the
+   foot of this section is how you get there.
    ============================================================ */
 
 export default function Partners() {
   return (
     <section
       id="partners"
-      className="relative bg-ink-2 py-28 sm:py-36"
+      /* Closes tighter than it opens. The footer draws its own
+         hairline and carries its own top padding, so a full py-36
+         here only widens a gap that is already generous. */
+      className="relative bg-ink-2 pt-28 pb-20 sm:pt-36 sm:pb-24"
     >
       <div className="shell-wide">
         <SectionLabel>{partners.label}</SectionLabel>
@@ -47,22 +54,12 @@ export default function Partners() {
         </div>
       </div>
 
-      {/* --- Categories. What we specify, before who makes it. --- */}
-      <Rise className="mt-16" y={18}>
-        <Marquee duration={54} className="py-2">
-          {technology.categories.map((c) => (
-            <span
-              key={c}
-              className="font-display px-8 text-[clamp(1.6rem,3vw,2.6rem)] leading-none text-bone/70 sm:px-12"
-            >
-              {c}
-            </span>
-          ))}
-        </Marquee>
-      </Rise>
-
-      {/* --- The names, running the other way. --- */}
-      <Rise className="mt-6 border-y border-white/10 py-7" y={18}>
+      {/* --- The names, and only the names. The product categories
+              this used to open with (projectors, screens, speakers)
+              belong to the homepage technology chapter, which the
+              link below goes to; repeating them here made the
+              section answer a question it had not been asked. --- */}
+      <Rise className="mt-16 border-y border-white/10 py-7" y={18}>
         <Marquee duration={64} reverse>
           {technology.brands.map((b) => (
             <span key={b} className="t-label px-7 text-ash sm:px-10">
