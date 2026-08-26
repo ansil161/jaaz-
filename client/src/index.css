@@ -640,7 +640,18 @@ html.lenis body {
     font-family: var(--font-display);
     font-style: italic;
     font-weight: 400;
-    font-size: clamp(11rem, 46vw, 42rem);
+    /* Sized so the WHOLE word fits the block. The 46vw this used to
+       carry was set when the mark read JAZ; the fourth letter pushed
+       it ~690px past the footer's own width at desktop and the name
+       came out as "jaa". The mark is meant to be cropped by the
+       bottom edge, never by the sides — a wordmark missing a letter
+       reads as a bug, not as texture.
+
+       The ratio behind the number: four glyphs plus three visible
+       gaps of 0.42em is ~2.84x the font-size once the trailing
+       letter-space is cancelled by the negative margin below, so
+       32vw lands the mark at roughly 91% of the block's width. */
+    font-size: clamp(7rem, 32vw, 30rem);
     line-height: 0.85;
     letter-spacing: 0.42em;
     margin-inline-end: -0.42em;
@@ -1331,6 +1342,48 @@ html.lenis body {
     .numeral-hollow {
       color: transparent;
       -webkit-text-stroke: 1.15px var(--color-cove);
+    }
+  }
+}
+
+/* ============================================================
+   PROJECTS — the outlined index
+
+   The 001–006 sitting above each row's tag on /projects.
+   MONOSPACE rather than the display face `.numeral-hollow` uses,
+   and the difference is not decoration: these are an INDEX — a
+   position in a list — and tabular mono is what an index is set
+   in. It is also the only way six figures read as one column of
+   equal widths rather than six differently-shaped words.
+
+   It is a QUIET element. The stroke is thin and mixed well down
+   toward the ground, because this number labels the row; it does
+   not announce it. The title does that.
+
+   Same `@supports` guard, and the same reasoning, as
+   `.numeral-hollow` above: the hollow contour is the enhanced
+   state, and an engine that cannot draw a text-stroke gets a
+   solid dimmed numeral rather than an invisible one. Bare
+   fallback FIRST, stroke second, so the cascade does the work —
+   `color: transparent` failing open would delete the number.
+   ============================================================ */
+@layer components {
+  .numeral-index {
+    font-family: var(--font-mono);
+    font-size: clamp(3rem, 6vw, 5rem);
+    font-weight: 400;
+    line-height: 0.82;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    user-select: none;
+    /* The readable fallback. */
+    color: color-mix(in srgb, var(--color-cove) 28%, transparent);
+  }
+
+  @supports (-webkit-text-stroke: 1px black) {
+    .numeral-index {
+      color: transparent;
+      -webkit-text-stroke: 1px color-mix(in srgb, var(--color-cove) 55%, transparent);
     }
   }
 }

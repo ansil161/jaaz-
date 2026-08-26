@@ -204,7 +204,7 @@ export default function Footer({ cta = footer.cta }) {
         y={5}
         aria-hidden="true"
       >
-        <span className="block translate-y-[16%]">
+        <span className="block translate-y-[7%]">
           <Wordmark />
         </span>
       </Drift>

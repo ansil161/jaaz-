@@ -1,42 +1,42 @@
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { projects, projectFilters, projectsIntro } from '../../data/projects'
-import ProjectChapter from './ProjectChapter'
 import ProjectCards from './ProjectCards'
 import ProjectFilter from './ProjectFilter'
-import { Lines } from '../ui/Motion'
+import { ScrubText } from '../ui/Motion'
 import { gsap, ScrollTrigger, prefersReducedMotion } from '../../lib/useGsap'
 
 /* ============================================================
-   THE COLLECTION — one project leads, the rest are cards.
+   THE COLLECTION — the statement, the filter, then the rows.
 
-   ONE SIZE FOR THE LEAD, ONE SIZE FOR EVERYTHING ELSE.
-   The page's whole argument is the difference between those two
-   sizes. Six full chapters gave every room the same weight,
-   which is the same failure as a six-up grid one scale down —
-   the visitor is handed six equal things and has to decide for
-   themselves which one is worth their attention.
+   EVERY PROJECT IS THE SAME SIZE, and the ORDER carries what an
+   earlier lead/rest split used to. This page once gave the first
+   project a full screen of photograph and three screens of
+   scroll, and handed every other project a card one scale down.
+   That contrast worked, but it spent most of the page on one
+   room and asked the visitor to take the other five on a
+   photograph and a line.
 
-   Here the first project gets a full screen of photograph, a
-   sticky running head and three screens of scroll; the rest get
-   a photograph, a name and a line. Nothing is labelled
-   "featured", because the composition already said it — a badge
-   would only be repeating in words what the layout does better.
+   <ProjectCards> now lays every project out as one full-width
+   row, alternating text and photograph side to side down the
+   page, hairline-separated. It briefly ran as a sticky stack
+   where each panel was covered by the next; that is gone
+   deliberately. Nothing pins and nothing overlaps — every row
+   stays in normal flow and stays findable, which is worth more
+   on a page whose job is letting someone go back and compare two
+   rooms than any amount of scroll choreography.
 
-   WHICH PROJECT LEADS IS THE DATA'S ORDER, NOT A FLAG.
-   `shown[0]` — the first project in the current view. With no
-   filter on that is the first entry in data/projects.js, so
-   reordering that array is how you change what leads. Under a
-   filter it is the first MATCH, which is the only behaviour that
-   cannot produce an empty stage: a `featured: true` flag would
-   have to answer "what leads when the flagged project is
-   filtered out", and every answer to that is this one anyway.
+   `<ProjectChapter>` is what ran the old lead. It is no longer
+   imported here and nothing else uses it; it is left on disk
+   rather than deleted because it is the only implementation of
+   the full-screen chapter composition, and that is a content
+   decision to reverse, not a cleanup.
 
    THE FILTER CHANGEOVER IS A CUT, NOT A REPLACEMENT.
    Swapping the list under the visitor is technically instant and
-   experientially awful: the lead chapter is close to three
-   screens, so a filter applied inside it leaves you looking at
-   the middle of a project that no longer exists, at a scroll
-   position that now means something else.
+   experientially awful: the collection is several screens deep,
+   so a filter applied part-way down it leaves you looking at the
+   middle of a project that no longer exists, at a scroll position
+   that now means something else.
 
    So the change is staged, in the order a cut is:
      1. the collection fades down and settles a little,
@@ -46,11 +46,12 @@ import { gsap, ScrollTrigger, prefersReducedMotion } from '../../lib/useGsap'
         just changed height by several screens,
      5. the new set is revealed.
 
-   Step 4 is the one that is invisible until it is missing. The
-   card entrances were measured against a document that no longer
-   exists; without a refresh they fire at the wrong scroll
-   positions, which reads as cards that are already arrived
-   before you reach them.
+   Step 4 is still required even though the row entrances no
+   longer depend on it — those run on an IntersectionObserver now
+   and re-arm themselves. It is the SCRUBBED statement above the
+   filter that needs it: its trigger was measured against a
+   document that has just changed height by several screens, and
+   an unrefreshed scrub resolves at the wrong scroll positions.
    ============================================================ */
 
 const OUT = 0.42
@@ -82,8 +83,11 @@ export default function ProjectIndex() {
     [active],
   )
 
-  const lead = shown[0]
-  const rest = shown.slice(1)
+  /* Every match is laid out, at one size, in data order. There is no
+     lead/rest split and no featured flag — the row order is the whole
+     hierarchy, so reordering data/projects.js is how you re-rank the
+     collection. */
+  const any = shown.length > 0
 
   const select = useCallback(
     (id) => {
@@ -152,11 +156,38 @@ export default function ProjectIndex() {
   }, [active])
 
   return (
-    <section ref={section} className="relative bg-ink pt-[12vh] pb-[6vh]" aria-label="Selected work">
-      <div className="shell-wide">
-        <Lines as="p" className="t-sub max-w-[46ch] text-fog">
+    <section ref={section} className="relative bg-ink pt-[17vh] pb-[6vh]" aria-label="Selected work">
+      {/* The dot field. The rows sit directly on the page's black with
+          nothing drawn around them, and this is the only thing giving
+          that ground a surface to be — without it the hairlines between
+          rows are the sole texture on several screens of scroll. Masked
+          to a soft centre so it never reaches an edge and reveals itself
+          as a rectangle of pattern. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          backgroundImage: 'radial-gradient(var(--color-cove) 0.8px, transparent 0.8px)',
+          backgroundSize: '26px 26px',
+          opacity: 0.05,
+          maskImage: 'radial-gradient(120% 70% at 50% 22%, #000 20%, transparent 78%)',
+          WebkitMaskImage: 'radial-gradient(120% 70% at 50% 22%, #000 20%, transparent 78%)',
+        }}
+      />
+
+      <div className="shell-wide relative">
+        {/* The one statement the page is built around, so it earns the
+            scrub — it resolves word by word as you come down onto it and
+            un-resolves if you go back up. */}
+        <ScrubText
+          as="p"
+          className="t-cinema max-w-[22ch] text-bone"
+          dim={0.14}
+          start="top 85%"
+          end="top 38%"
+        >
           {projectsIntro.standfirst}
-        </Lines>
+        </ScrubText>
       </div>
 
       <div className="mt-[9vh]">
@@ -169,8 +200,8 @@ export default function ProjectIndex() {
         />
       </div>
 
-      <div ref={list} className="mt-[8vh]">
-        {!lead ? (
+      <div ref={list} className="relative mt-[8vh] pb-[12vh]">
+        {!any ? (
           /* Cannot happen with the current six — every filter in the
              list is derived from a tag some project carries. It is here
              because the list is data, the data will grow, and a
@@ -187,10 +218,7 @@ export default function ProjectIndex() {
             </button>
           </div>
         ) : (
-          <>
-            <ProjectChapter key={lead.slug} project={lead} index={0} total={shown.length} />
-            <ProjectCards items={rest} startIndex={1} resetKey={active} />
-          </>
+          <ProjectCards items={shown} resetKey={active} />
         )}
       </div>
     </section>
