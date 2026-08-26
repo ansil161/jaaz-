@@ -8,7 +8,7 @@ import { SectionLabel, ConfirmNote } from '../ui/Editorial'
    Rebuilt to a brief: two portraits as a stacked pair of coins,
    centred under a headline, on black — the reference was a
    three-up version of this exact arrangement for a generic
-   agency site. Ours is two, because JAZ is a two-founder studio
+   agency site. Ours is two, because JAAZ is a two-founder studio
    and a third empty ring would be a lie the layout tells before
    any copy does.
 

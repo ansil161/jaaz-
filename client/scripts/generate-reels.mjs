@@ -56,7 +56,7 @@ const MODEL = 'veo-3.1-generate-preview'
 /* ------------------------------------------------------------
    THE HOUSE LOOK — stamped onto all six.
 
-   `prompts.mjs` has a `BIBLE` describing the JAZ show house and a
+   `prompts.mjs` has a `BIBLE` describing the JAAZ show house and a
    `DISCIPLINE` that begins "No people." These six clips are the
    one deliberate exception on the whole site: every other render
    is architecture, and this section is specifically about the

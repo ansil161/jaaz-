@@ -5,7 +5,7 @@ import { SectionLabel, ConfirmNote } from '../ui/Editorial'
 /* ============================================================
    ABOUT 09 — TRACK RECORD
 
-   Three figures, because three is what JAZ supplied.
+   Three figures, because three is what JAAZ supplied.
 
    A fourth was not invented to balance the row, and the grid is
    built for three rather than padded out — which is why the

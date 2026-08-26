@@ -1,25 +1,25 @@
 import { img } from './site'
 
 /* ============================================================
-   JAZ — ABOUT PAGE CONTENT
+   JAAZ — ABOUT PAGE CONTENT
 
    PLACEHOLDER POLICY
    Nothing on this page invents credibility. Founder history,
    team names, awards, partner relationships and any figure that
-   did not come from JAZ are marked `confirm: true` and render
+   did not come from JAAZ are marked `confirm: true` and render
    as a visible "to confirm" note rather than as fact.
 
-   The three figures in `record` are the ones supplied by JAZ in
+   The three figures in `record` are the ones supplied by JAAZ in
    the project brief. Every other number has been removed rather
    than estimated.
    ============================================================ */
 
-/** Marks a value JAZ still has to confirm before this page ships. */
-export const TO_CONFIRM = '— JAZ to confirm'
+/** Marks a value JAAZ still has to confirm before this page ships. */
+export const TO_CONFIRM = '— JAAZ to confirm'
 
 /* --- 01. Hero -------------------------------------------------- */
 export const aboutHero = {
-  label: 'About JAZ',
+  label: 'About JAAZ',
   /* The masthead line, right of the label. Discipline names, not a
      tagline — it tells you what kind of company this is in the two
      seconds before the headline finishes assembling. */
@@ -27,10 +27,10 @@ export const aboutHero = {
   headline: ['We don’t just build', 'entertainment spaces.', 'We design how they feel.'],
   sub: 'Every room we finish is judged by one thing: how long you want to stay in it.',
   /* The proof strip under the headline. These are the SAME three
-     figures JAZ supplied for `record` below and are read from it, not
+     figures JAAZ supplied for `record` below and are read from it, not
      retyped — so the hero can never drift out of agreement with the
      section that cites them, and no number enters the page here that
-     did not come from JAZ. */
+     did not come from JAAZ. */
   scrollHint: 'Scroll',
   /* Was `theatre` — the same frame the homepage hero dissolves into,
      which made arriving on About read as landing on a second
@@ -42,9 +42,9 @@ export const aboutHero = {
     'A dark architectural interior, lit only by an amber screen behind a perforated steel wall',
 }
 
-/* --- 02. The JAZ Difference ------------------------------------ */
+/* --- 02. The JAAZ Difference ------------------------------------ */
 /* The signature section. Four one-word swaps, because the argument
-   is not that JAZ does more — it is that JAZ is measuring something
+   is not that JAAZ does more — it is that JAAZ is measuring something
    different from the start. */
 export const difference = {
   label: 'The Difference',
@@ -78,13 +78,13 @@ export const difference = {
 /* --- 03. Our Story --------------------------------------------- */
 /* No invented founding date, no invented founder biography. The copy
    below is about the discipline, which is verifiable; the specifics
-   are left for JAZ to supply. */
+   are left for JAAZ to supply. */
 export const story = {
   label: 'Our Story',
-  heading: ['Why JAZ', 'exists.'],
+  heading: ['Why JAAZ', 'exists.'],
   body: [
     'Most home cinemas fail quietly. The picture is bright, the speakers are expensive, the room photographs beautifully — and nobody watches a whole film in it twice. The failure is never in the equipment list. It is in the hour and fifty minutes the body spends in the chair.',
-    'JAZ was formed around that gap. Picture, sound and seating are not three purchases that happen to share a room; they are one system, and they have to be designed by one team that answers for the result.',
+    'JAAZ was formed around that gap. Picture, sound and seating are not three purchases that happen to share a room; they are one system, and they have to be designed by one team that answers for the result.',
     'So we kept design, acoustics, joinery, electronics and calibration under a single roof. Not because it is efficient — it is not — but because it is the only way the person responsible for how the room sounds is also the person who decided where the wall goes.',
   ],
   founding: {
@@ -135,7 +135,7 @@ export const people = {
          cinema recliners, which is literally what this column is
          about. (The same mismapped slot is still used by the homepage
          Craft section for "Luxury Recliners" — worth replacing when
-         JAZ's own photography lands.) */
+         JAAZ's own photography lands.) */
       image: img('comfortRoom', 1400, '4:3'),
       imageAlt: 'A tiered row of motorised cinema recliners in low light',
     },
@@ -148,7 +148,7 @@ export const everySpace = {
   heading: ['One brand.', 'Every entertainment space.'],
   intro:
     'The dedicated cinema is the most demanding room we build. It is not the only one worth engineering.',
-  note: `Room photography is licensed stock, standing in for JAZ project work ${TO_CONFIRM}. Several frames repeat images used elsewhere on this page because the stock set has no on-brand frame for that room.`,
+  note: `Room photography is licensed stock, standing in for JAAZ project work ${TO_CONFIRM}. Several frames repeat images used elsewhere on this page because the stock set has no on-brand frame for that room.`,
   confirm: true,
   items: [
     {
@@ -194,11 +194,11 @@ export const everySpace = {
   ],
 }
 
-/* --- 06. The JAZ Method ---------------------------------------- */
+/* --- 06. The JAAZ Method ---------------------------------------- */
 /* Philosophy, not the delivery schedule. The homepage Process section
    is the six-step sequence; this is the five habits underneath it. */
 export const method = {
-  label: 'The JAZ Method',
+  label: 'The JAAZ Method',
   heading: ['Five habits.', 'Every room.'],
   intro:
     'Our delivery process has six steps. These are the five things that have to be true inside every one of them.',
@@ -292,7 +292,7 @@ export const obsessions = {
 
    Photography is the same story: two Unsplash studio portraits
    (`founderPortrait` / `cofounderPortrait` in site.js), not real
-   photographs of JAZ's founders. They exist to prove out the arched
+   photographs of JAAZ's founders. They exist to prove out the arched
    niche, the grading and the hover reveal against real image weight
    rather than a grey box — replace the two `img()` calls and nothing
    else in this file changes. */
@@ -325,7 +325,7 @@ export const team = {
       ],
     },
   ],
-  note: `Names, titles, biographies and photography above are placeholders and do not depict real people at JAZ ${TO_CONFIRM}. Replace the principals list in about.js with the real two before this page ships.`,
+  note: `Names, titles, biographies and photography above are placeholders and do not depict real people at JAAZ ${TO_CONFIRM}. Replace the principals list in about.js with the real two before this page ships.`,
   confirm: true,
   disciplines: [
     { title: 'Design', body: 'Spatial design, 3D resolution and sightline geometry.' },
@@ -338,7 +338,7 @@ export const team = {
 }
 
 /* --- 09. Track Record ------------------------------------------ */
-/* The only three figures JAZ has supplied. Nothing has been added to
+/* The only three figures JAAZ has supplied. Nothing has been added to
    round the row out to four. */
 export const record = {
   label: 'Track Record',
@@ -348,7 +348,7 @@ export const record = {
     { value: 200, suffix: '+', label: 'Projects' },
     { value: 200, suffix: '+', label: 'Customers' },
   ],
-  note: `Figures supplied by JAZ. Any award, certification or accreditation claim ${TO_CONFIRM}.`,
+  note: `Figures supplied by JAAZ. Any award, certification or accreditation claim ${TO_CONFIRM}.`,
   confirm: true,
 }
 
@@ -360,7 +360,7 @@ export const partners = {
   label: 'Technology',
   heading: ['Specified for the room.', 'Never for the brochure.'],
   intro:
-    'JAZ is brand-agnostic. Equipment is chosen once the room is understood — never before, and never because of a badge.',
+    'JAAZ is brand-agnostic. Equipment is chosen once the room is understood — never before, and never because of a badge.',
   note: `The list below ${TO_CONFIRM}. Only brands with a confirmed commercial relationship should be presented as partners.`,
   confirm: true,
   cta: 'Explore Technology',

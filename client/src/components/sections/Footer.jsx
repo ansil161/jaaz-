@@ -176,7 +176,7 @@ export default function Footer({ cta = footer.cta }) {
           All three layers are inert — no pointer events, no text
           selection, hidden from assistive tech — because the mark is
           the brand rendered as texture, and a screen reader announcing
-          a decorative "JAZ" between the address and the copyright
+          a decorative "JAAZ" between the address and the copyright
           would be reading out the wallpaper. */}
       <div className="footer-glow pointer-events-none absolute inset-0 -z-10" aria-hidden="true" />
 
@@ -378,7 +378,7 @@ export default function Footer({ cta = footer.cta }) {
             breath. */}
         <div className="mt-16 flex flex-wrap items-center gap-x-10 gap-y-3 border-t border-white/10 pt-7 pb-12 sm:pb-14">
           <span className="t-label text-[0.6rem] text-ash">
-            &copy; {new Date().getFullYear()} JAZ
+            &copy; {new Date().getFullYear()} JAAZ
           </span>
           <span className="t-label text-[0.6rem] text-ash">{footer.credential}</span>
           <nav aria-label="Legal" className="ms-auto flex gap-8">

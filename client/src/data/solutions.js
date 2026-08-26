@@ -1,7 +1,7 @@
 import { img } from './site'
 
 /* ============================================================
-   JAZ — SOLUTIONS
+   JAAZ — SOLUTIONS
    Nine sellable systems, lifted straight out of the brochure.
 
    WHY THIS FILE EXISTS SEPARATELY FROM site.js
@@ -32,7 +32,7 @@ import { img } from './site'
    use, and the CDN blocks hotlinking, so they break in
    production AND expose the client). Slots are deliberately
    REUSED across solutions rather than invented: an unverified
-   photo id is a broken image on a live page. Add JAZ's own
+   photo id is a broken image on a live page. Add JAAZ's own
    shoot to `PLATES` in site.js and every reference here picks
    it up.
    ============================================================ */
@@ -45,7 +45,7 @@ export const solutionsIndex = {
     'Some of these cost more than a car. One of them is an afternoon of work and a better pair of speakers. All nine are built by the same team, to the same measurement standard, and handed over on one button.',
   meta: 'Kochi · India & the Gulf',
   image: img('theatre', 2400, '16:9'),
-  imageAlt: 'A finished JAZ private cinema with the house lights down',
+  imageAlt: 'A finished JAAZ private cinema with the house lights down',
 
   /* The index reads the nine as CHAPTERS, in catalogue order, each
      given a full screen of its own. `tint` is the only per-solution
@@ -110,7 +110,7 @@ export const solutions = [
     range: 'On survey',
     signature: 'aperture',
     hero: img('theatre', 2600, '16:9'),
-    heroAlt: 'A JAZ private cinema, tiered recliners, house lights down',
+    heroAlt: 'A JAAZ private cinema, tiered recliners, house lights down',
     statement: 'Everything else in the house disappears.',
     intro: [
       'A dedicated theatre is the only build where nothing has to be compromised for another use. The walls can be the shape acoustics wants. The floor can be tiered for sightlines instead of level for furniture. The lights can go to zero.',
@@ -169,7 +169,7 @@ export const solutions = [
       items: [
         { src: img('projection', 1800, '4:5'), alt: 'A projector beam cutting through the haze of a dark cinema', caption: 'Projection · through-air, before the screen goes in' },
         { src: img('fluted', 1800, '4:5'), alt: 'A fluted acoustic wall in a private cinema', caption: 'Acoustics · fluted absorption, first reflection points' },
-        { src: img('comfortRoom', 1800, '4:5'), alt: 'A JAZ private cinema, calibrated', caption: 'Seating · three tiers, sightlines set from the chair' },
+        { src: img('comfortRoom', 1800, '4:5'), alt: 'A JAAZ private cinema, calibrated', caption: 'Seating · three tiers, sightlines set from the chair' },
         { src: img('screenWall', 1800, '4:5'), alt: 'A large cinema screen washing a room in warm light', caption: 'Lighting · cove wash, cued off the picture' },
       ],
     },

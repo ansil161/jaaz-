@@ -9,7 +9,7 @@ import { SectionLabel } from '../ui/Editorial'
    the top, then four numbered clauses in two columns.
 
    This is the plainest section on the page and that is deliberate.
-   It is where JAZ commits to things that are inconvenient — a
+   It is where JAAZ commits to things that are inconvenient — a
    measurement you did not want, engineering you will never see,
    one number to call, support after the money has cleared. Copy
    like that is undermined by choreography, so all it gets is a

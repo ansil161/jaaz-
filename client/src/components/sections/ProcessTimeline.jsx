@@ -6,7 +6,7 @@ import { useGsapScope, gsap, ScrollTrigger, prefersReducedMotion } from '../../l
    PROCESS TIMELINE — the shared mechanism
 
    Two sections run on this: the homepage's OUR PROCESS (the six
-   delivery stages) and About's THE JAZ METHOD (the five habits
+   delivery stages) and About's THE JAAZ METHOD (the five habits
    that have to hold inside every one of them). They are one
    component rather than two because the thing that makes this
    section work is not its copy — it is the measured curve, the

@@ -15,7 +15,7 @@ import { img } from './site'
    one site. Everything ADDED for this page — `year`, `overview`,
    `services`, `spec`, `technology` and the image captions — is
    written from what those entries already claim and nothing
-   further. It is placeholder-grade in exactly one respect: JAZ
+   further. It is placeholder-grade in exactly one respect: JAAZ
    has to confirm the YEARS and hand over its own photography.
    No price, no client name and no capability the site does not
    already claim appears below.
@@ -62,7 +62,7 @@ export const plate = (slot, ratio = '3:2') => {
 
    `tags` names what a room IS ABOUT, not every discipline that
    touched it. Tagged by services-present, every one of these six
-   carried `audio` and `smart` — JAZ does not build a room without
+   carried `audio` and `smart` — JAAZ does not build a room without
    engineered sound or without control — so two of the seven filters
    returned the entire catalogue. A filter that changes nothing is
    worse than a missing one: it reads as broken, and it teaches the

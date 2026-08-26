@@ -9,7 +9,7 @@ import { useGsapScope, gsap, SplitText, prefersReducedMotion } from '../../lib/u
 
    THE ONE IDEA
    The room comes up one seat at a time. The section opens on a
-   JAZ cinema with the house lights down, and as it scrolls a
+   JAAZ cinema with the house lights down, and as it scrolls a
    pass of light travels through the room; each chair it reaches
    lights, and the arrival error measured at that chair prints.
    At the end every error resolves to zero together.

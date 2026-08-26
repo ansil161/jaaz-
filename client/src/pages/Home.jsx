@@ -8,7 +8,6 @@ import Spaces from '../components/sections/Spaces'
 import Tonight from '../components/tonight/Tonight'
 import Craft from '../components/sections/Craft'
 import Transform from '../components/sections/Transform'
-import Process from '../components/sections/Process'
 import Testimonials from '../components/sections/Testimonials'
 import Footer from '../components/sections/Footer'
 
@@ -17,7 +16,7 @@ import Footer from '../components/sections/Footer'
 
    The running order follows the reference build's spine — the
    sequence that makes that page feel like a film rather than a
-   brochure — carrying JAZ's own argument through it:
+   brochure — carrying JAAZ's own argument through it:
 
      FEEL      Hero, Promise
      WHO       Brand + the three verified numbers
@@ -26,7 +25,7 @@ import Footer from '../components/sections/Footer'
      WHAT      Spaces, then Tonight — the rooms, then the nights
      — breath —
      HOW       Craft, Transform
-     TRUST     Process, Testimonials
+     TRUST     Testimonials
 
    Two structural rules the order encodes:
 
@@ -81,7 +80,6 @@ export default function Home() {
       <Transform />
 
       {/* TRUST */}
-      <Process />
       <Testimonials />
 
       <Footer />

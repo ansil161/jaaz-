@@ -1,5 +1,5 @@
 /* ============================================================
-   JAZ EXPERIENCE — MEDIA PIPELINE
+   JAAZ EXPERIENCE — MEDIA PIPELINE
 
    Turns the raw generated renders in `media-src/` into the
    responsive AVIF + WebP derivatives the app actually ships from

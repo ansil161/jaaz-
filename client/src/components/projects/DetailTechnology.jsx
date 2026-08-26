@@ -2,7 +2,7 @@ import ProjectFrame from './ProjectFrame'
 import { Lines, Rule } from '../ui/Motion'
 
 /* ============================================================
-   TECHNOLOGY — what JAZ actually delivered, in four lines.
+   TECHNOLOGY — what JAAZ actually delivered, in four lines.
 
    DELIBERATELY NOT FOUR CARDS.
    Four boxes each holding a thumbnail, a heading and a sentence

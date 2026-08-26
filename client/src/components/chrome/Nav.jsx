@@ -92,9 +92,9 @@ export default function Nav() {
           <Link
             to="/"
             className="focus-ring font-display justify-self-start text-2xl leading-none tracking-tight text-pure sm:text-[1.7rem]"
-            aria-label="JAZ — home"
+            aria-label="JAAZ — home"
           >
-            JAZ
+            JAAZ
           </Link>
 
           <nav className="nav-capsule hidden lg:flex" aria-label="Primary">
@@ -193,7 +193,7 @@ export default function Nav() {
                 &#8594;
               </span>
             </Link>
-            <p className="t-label mt-8 text-ash">JAZ — Private Cinema</p>
+            <p className="t-label mt-8 text-ash">JAAZ — Private Cinema</p>
           </div>
         </div>
       </div>

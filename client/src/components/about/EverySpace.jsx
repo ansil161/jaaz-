@@ -70,7 +70,7 @@ export default function EverySpace() {
                 <article className="group relative">
                   <Figure
                     src={item.image}
-                    alt={`${item.title} — a JAZ entertainment space`}
+                    alt={`${item.title} — a JAAZ entertainment space`}
                     parallax={9}
                     className="plate-soft aspect-[3/4] w-full"
                     imgClassName="transition-[filter] duration-700 group-hover:[--plate-brightness:1.08]"

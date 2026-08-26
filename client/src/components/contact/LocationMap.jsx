@@ -15,7 +15,7 @@ export default function LocationMap() {
     <section className="relative border-t border-white/10 bg-ink">
       <div className="relative aspect-[16/9] w-full sm:aspect-[21/9]">
         <iframe
-          title="JAZ Experience Centre — Marine Drive, Kochi"
+          title="JAAZ Experience Centre — Marine Drive, Kochi"
           src={mapPanel.embedSrc}
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"

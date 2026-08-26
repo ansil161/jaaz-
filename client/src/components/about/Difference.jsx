@@ -4,14 +4,14 @@ import { SectionLabel } from '../ui/Editorial'
 import { useGsapScope, gsap, prefersReducedMotion } from '../../lib/useGsap'
 
 /* ============================================================
-   ABOUT 02 — THE JAZ DIFFERENCE
+   ABOUT 02 — THE JAAZ DIFFERENCE
 
    The signature section of the page, and the only one that makes
    an argument by SUBTRACTION.
 
    Each row holds two versions of the same job. The conventional
    word is set in outline — present, legible, but hollow — and a
-   rule strikes through it as it arrives. The JAZ word is solid,
+   rule strikes through it as it arrives. The JAAZ word is solid,
    and wipes up out of the mask underneath.
 
    The whole point is that it is not a comparison table. Nothing

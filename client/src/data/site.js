@@ -1,5 +1,5 @@
 /* ============================================================
-   JAZ — CONTENT SOURCE OF TRUTH
+   JAAZ — CONTENT SOURCE OF TRUTH
    Every string and every image on the homepage comes from here.
 
    PHOTOGRAPHY
@@ -15,7 +15,7 @@
    (`&w=` / `&q=`), which is why every slot can request exactly
    the size it renders at.
 
-   To ship JAZ's own photography, drop files into
+   To ship JAAZ's own photography, drop files into
    `client/public/media/` and change ONE function — `img()`.
    Nothing else in the codebase knows where pictures come from.
    ============================================================ */
@@ -66,7 +66,7 @@ const PLATES = {
   atrium: 'photo-1515703944563-dbcfbf121b3d', // dark architectural interior, amber screen
 
   // People. Placeholder studio portraits, standing in for real founder
-  // photography until JAZ supplies it — see team.note in about.js.
+  // photography until JAAZ supplies it — see team.note in about.js.
   founderPortrait: 'photo-1584940120505-117038d90b05', // dark studio, formal
   cofounderPortrait: 'photo-1600896997793-b8ed3459a17f', // warm studio, informal
 }
@@ -126,7 +126,7 @@ export const navIdlePlate = 'comfortRoom'
 /* --- 1. Hero -------------------------------------------------- */
 export const hero = {
   headline: ['Entertainment without', 'comfort is just', 'noise.'],
-  sub: 'JAZ builds private cinemas where picture, sound and seating are engineered as one experience.',
+  sub: 'JAAZ builds private cinemas where picture, sound and seating are engineered as one experience.',
   cta: 'Book a Consultation',
   scrollHint: 'Scroll to bring the room to life',
 }
@@ -135,7 +135,7 @@ export const hero = {
    hero sequence — the vector cinema becoming a real one. */
 export const heroPlate = {
   src: img('theatre', 2600, '16:9'),
-  alt: 'A finished JAZ private cinema with the house lights down',
+  alt: 'A finished JAAZ private cinema with the house lights down',
 }
 
 /* OPTIONAL scroll-scrubbed footage for the hero.
@@ -187,7 +187,7 @@ export const heroStages = [
 export const promise = {
   label: 'The Promise',
   statement: ['Luxury without', 'comfort is', 'not luxury.'],
-  body: 'A great picture you have to squint at is not a great picture. Sound that fatigues you is not great sound. A room you leave early was never worth building. JAZ starts where most cinemas stop — with the body in the chair.',
+  body: 'A great picture you have to squint at is not a great picture. Sound that fatigues you is not great sound. A room you leave early was never worth building. JAAZ starts where most cinemas stop — with the body in the chair.',
   watermark: 'LUXURY',
 }
 
@@ -195,7 +195,7 @@ export const promise = {
 export const transform = {
   label: 'Before / After',
   heading: ['A room is what', 'you make of it.'],
-  body: 'Every JAZ project starts as a bare, civil-finished shell. Drag to see what it becomes.',
+  body: 'Every JAAZ project starts as a bare, civil-finished shell. Drag to see what it becomes.',
   hint: 'Drag to reveal',
   before: {
     src: img('shell', 2000, '16:9'),
@@ -205,12 +205,12 @@ export const transform = {
   },
   after: {
     src: img('theatre', 1500, '16:9'),
-    alt: 'The same brief, delivered as a calibrated JAZ private cinema',
+    alt: 'The same brief, delivered as a calibrated JAAZ private cinema',
     caption: 'Calibrated and signed off',
     tag: 'After',
   },
   /* Shown under the frame so the comparison is never overstated. */
-  note: 'Reference images. Paired photography of a single JAZ project drops straight into this component.',
+  note: 'Reference images. Paired photography of a single JAAZ project drops straight into this component.',
 }
 
 /* --- 4. Bring the Big Screen Home ----------------------------- */
@@ -218,10 +218,10 @@ export const brand = {
   label: 'Who We Are',
   heading: ['Bring the', 'big screen', 'home.'],
   body: [
-    'JAZ designs and builds private entertainment spaces — from dedicated cinema rooms to living rooms that quietly outperform them.',
+    'JAAZ designs and builds private entertainment spaces — from dedicated cinema rooms to living rooms that quietly outperform them.',
     'We work as a single team across design, acoustics, joinery, electronics and calibration, so responsibility for the finished room never gets divided.',
   ],
-  /* The only figures JAZ has supplied. The four that were here before
+  /* The only figures JAAZ has supplied. The four that were here before
      — rooms delivered, years building, cities served, technology
      partners — were invented to fill a four-up row, which is exactly
      the kind of manufactured credibility the brief rules out. Three
@@ -233,7 +233,7 @@ export const brand = {
   ],
   cta: 'Discover More',
   image: img('grand', 1500, '3:4'),
-  imageAlt: 'A JAZ private cinema, lights raised',
+  imageAlt: 'A JAAZ private cinema, lights raised',
 }
 
 /* --- 4b. Projects --------------------------------------------- */
@@ -454,7 +454,7 @@ export const spaces = {
 
 /* --- Chapter 03: Every Seat ----------------------------------- */
 /* The engineering chapter. It is staged on a REAL PHOTOGRAPH of a
-   JAZ room rather than on a diagram of one — the argument is about
+   JAAZ room rather than on a diagram of one — the argument is about
    chairs people sit in, and a plan view of chairs is a drawing of
    the argument rather than the argument.
 
@@ -469,7 +469,7 @@ export const spaces = {
    `mark` is a PERCENTAGE POSITION IN THE PHOTOGRAPH, so the light
    that lands on each seat lands on the chair that seat actually is.
    The two are independent on purpose — the plate can be re-cropped,
-   or replaced with JAZ's own photography, by editing `mark` alone
+   or replaced with JAAZ's own photography, by editing `mark` alone
    and leaving the acoustics untouched.
 
    Seven seats, front row of three and a rear row of four, because
@@ -515,14 +515,14 @@ export const everySeat = {
      by hand rather than letting object-fit decide where the chairs
      ended up. */
   plate: img('theatre', 2200, '16:9'),
-  plateAlt: 'A JAZ private cinema with the house lights down',
+  plateAlt: 'A JAAZ private cinema with the house lights down',
 }
 
 /* --- 6. From Setup to Showtime -------------------------------- */
 export const craft = {
   label: 'The Craft',
   heading: ['From setup', 'to showtime'],
-  intro: 'Everything below the surface of a JAZ room — resolved before a single speaker is mounted.',
+  intro: 'Everything below the surface of a JAAZ room — resolved before a single speaker is mounted.',
   items: [
     {
       n: '01',
@@ -561,7 +561,7 @@ export const craft = {
 export const technology = {
   label: 'Technology',
   heading: ['Specified for the room.', 'Not for the brochure.'],
-  intro: 'JAZ is brand-agnostic. Equipment is chosen after the room is understood — never before.',
+  intro: 'JAAZ is brand-agnostic. Equipment is chosen after the room is understood — never before.',
   categories: [
     'Projectors',
     'Screens',
@@ -593,63 +593,6 @@ export const technology = {
   ],
 }
 
-/* --- 8. Our Process ------------------------------------------- */
-export const process = {
-  label: 'Our Process',
-  /* Opens the same way the reference site's process heading does —
-     "Let us show you how we..." — with the back half swapped for
-     what JAZ actually does. The reference's own back half ("...drive
-     your brand to new heights") is agency/branding language; kept
-     verbatim it would be a false claim about a company that builds
-     physical rooms, not brands. Single entry, not the site's usual
-     two-line array: the sentence is long enough to want a natural
-     wrap rather than a forced break. */
-  heading: ['Let us show you how we bring your room to life.'],
-  intro: 'We follow a measured, hands-on process from the first sketch to the final calibration — nothing about the room is left to guesswork.',
-  steps: [
-    {
-      n: '01',
-      title: 'Consultation',
-      body: 'We start with how you actually watch, listen and host — then set a budget band that matches it honestly.',
-    },
-    {
-      n: '02',
-      title: 'Site Study',
-      body: 'Measurements, structure, power, light ingress and noise paths. Every constraint is found now, not during installation.',
-    },
-    {
-      n: '03',
-      title: 'Design',
-      body: '3D layouts, acoustic modelling, material selection and a fixed equipment schedule you sign off before anything is ordered.',
-    },
-    {
-      n: '04',
-      title: 'Installation',
-      body: 'Our own team on site, sequenced with your builders and joiners, with cabling and containment done to a documented standard.',
-    },
-    {
-      n: '05',
-      title: 'Calibration',
-      body: 'Measured, not eyeballed. Colour, geometry, room correction and per-seat time alignment brought to reference and documented.',
-    },
-    {
-      n: '06',
-      title: 'Handover',
-      body: 'A room you can operate on one button, a walkthrough with everyone who will use it, and support that answers the phone afterwards.',
-    },
-  ],
-  /* Where the curve stops. The six above are stages the room is still
-     passing through; this is the one state it ends in. Lifted out of
-     the component when About's Method started sharing the same
-     timeline — the mechanism is shared, the words are not. */
-  finale: {
-    badge: 'Handover complete',
-    lead: 'Ready to be',
-    em: 'delivered',
-    body: 'Lights down, one button, every measurement on file. From here it stops being a project and starts being the room you sit in.',
-  },
-}
-
 /* --- 9. Testimonials ------------------------------------------ */
 export const testimonials = {
   label: 'Testimonials',
@@ -657,14 +600,14 @@ export const testimonials = {
   items: [
     {
       quote:
-        'We had been told our basement was the wrong shape for a cinema. JAZ treated that as the starting point rather than a reason to compromise. Four years on, we still use it every week.',
+        'We had been told our basement was the wrong shape for a cinema. JAAZ treated that as the starting point rather than a reason to compromise. Four years on, we still use it every week.',
       name: 'Rohan Mehta',
       context: 'Private Theatre · 9 seats · Bengaluru',
       image: img('livingAlt', 1100, '4:5'),
     },
     {
       quote:
-        'What convinced me was the calibration report. Nobody else measured anything. JAZ handed over a document showing exactly what the room does at every seat.',
+        'What convinced me was the calibration report. Nobody else measured anything. JAAZ handed over a document showing exactly what the room does at every seat.',
       name: 'Aisha Rahman',
       context: 'Living Room System · Kochi',
       image: img('screenWall', 1100, '4:5'),
@@ -723,7 +666,7 @@ export const footer = {
      texture (see `.footer-wordmark` in index.css). ONE string, so
      the two can never drift apart — change the spelling here and
      both change together. */
-  wordmark: 'JAZ',
+  wordmark: 'JAAZ',
   /* The masthead line under the wordmark. Set in italic display, the
      same way the reference footer sets its positioning line — one
      short claim, not a sentence. */
@@ -743,7 +686,7 @@ export const footer = {
   contact: {
     title: 'Reach us',
     links: [
-      { label: 'hello@jaz.com', href: 'mailto:hello@jaz.com' },
+      { label: 'hello@jaaz.com', href: 'mailto:hello@jaaz.com' },
       { label: '+91 98470 00000', href: 'tel:+919847000000' },
       { label: 'Enquire on WhatsApp', href: 'https://wa.me/919847000000' },
     ],
@@ -756,7 +699,6 @@ export const footer = {
       { label: 'Work', href: '/#projects' },
       { label: 'About', href: '/about' },
       { label: 'The Craft', href: '/#craft' },
-      { label: 'Process', href: '/#process' },
       { label: 'Contact', href: '/contact' },
     ],
   },
@@ -764,7 +706,7 @@ export const footer = {
   office: {
     title: 'Visit',
     lines: [
-      'JAZ Experience Centre,',
+      'JAAZ Experience Centre,',
       '2nd Floor, Marine Drive,',
       'Ernakulam,',
       'Kochi, Kerala',

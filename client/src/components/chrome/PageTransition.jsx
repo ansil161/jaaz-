@@ -247,7 +247,7 @@ export function RouteProvider({ children }) {
             className="font-display text-3xl leading-none tracking-tight text-bone/70"
             style={{ visibility: 'hidden' }}
           >
-            JAZ
+            JAAZ
           </span>
         </div>
       </div>

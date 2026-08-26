@@ -78,7 +78,7 @@ export default function Preloader() {
       aria-hidden="true"
     >
       <div data-preload-copy className="shell flex items-start justify-between pt-6 sm:pt-8">
-        <span className="font-display text-2xl leading-none text-pure sm:text-[1.7rem]">JAZ</span>
+        <span className="font-display text-2xl leading-none text-pure sm:text-[1.7rem]">JAAZ</span>
         <span className="t-label text-ash">Private Cinema</span>
       </div>
 

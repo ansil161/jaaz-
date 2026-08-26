@@ -8,7 +8,7 @@ import ExperienceNavigation from './ExperienceNavigation'
 /* ============================================================
    WHAT'S TONIGHT? — the interactive stage
 
-   The homepage spends twelve sections proving JAZ can build the
+   The homepage spends eleven sections proving JAAZ can build the
    room. This is the one that says what the room is FOR: six
    evenings in the same house, swapped in place, never a page
    change. It is the only section on the site the visitor drives

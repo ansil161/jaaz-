@@ -15,7 +15,7 @@ import { SectionLabel, ConfirmNote } from '../ui/Editorial'
    company history from reading as an About-page obligation.
 
    There is no founding date and no founder biography here,
-   because JAZ has not supplied one. The gap is marked rather
+   because JAAZ has not supplied one. The gap is marked rather
    than filled.
    ============================================================ */
 

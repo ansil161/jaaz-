@@ -1,7 +1,7 @@
 import { hasStill } from '../lib/media'
 
 /* ============================================================
-   THE JAZ EXPERIENCE CENTRE — CONTENT SOURCE OF TRUTH
+   THE JAAZ EXPERIENCE CENTRE — CONTENT SOURCE OF TRUTH
 
    One house, explored room by room. Every string, every asset
    slot and every coordinate the experience renders comes from
@@ -1036,7 +1036,7 @@ export const products = [
     finishes: ['Paintable white', 'Charcoal fabric', 'Walnut trim'],
     technology: 'Sealed enclosure so the stud cavity cannot colour the midrange.',
     installation: 'New-build brackets or retrofit dog-ears. Plastered flush, no reveal.',
-    compatible: 'Any JAZ cinema or whole-house system.',
+    compatible: 'Any JAAZ cinema or whole-house system.',
   },
   {
     id: 'in-ceiling-speaker',
@@ -1146,7 +1146,7 @@ export const products = [
     finishes: ['Blackened steel', 'Brushed brass', 'Matt white'],
     technology: 'Wired rather than wireless, so a scene never waits for a network.',
     installation: 'One at each entrance to a room, at handle height.',
-    compatible: 'Every JAZ control system.',
+    compatible: 'Every JAAZ control system.',
   },
 ]
 

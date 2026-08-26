@@ -23,7 +23,7 @@ import GradedPlate from './GradedPlate'
    bezel with a home indicator. That is a costume: it dates
    instantly, it competes with the room for attention, and it
    makes the control look like a photograph of software rather
-   than like part of the house. What JAZ actually installs is a
+   than like part of the house. What JAAZ actually installs is a
    flush metal keypad, so the panel is drawn in THAT language —
    engraved legends, hairline rules, no visible fixings — and it
    belongs to the architecture instead of to a product shot.

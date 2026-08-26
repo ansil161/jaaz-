@@ -2,7 +2,7 @@ import { method } from '../../data/about'
 import ProcessTimeline from '../sections/ProcessTimeline'
 
 /* ============================================================
-   ABOUT 06 — THE JAZ METHOD
+   ABOUT 06 — THE JAAZ METHOD
 
    The five habits, on the same timeline the homepage's Process
    section runs — same measured curve, same scrubbed progress

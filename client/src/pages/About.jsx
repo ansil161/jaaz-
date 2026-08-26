@@ -14,7 +14,7 @@ import Seam from '../components/ui/Seam'
 /* ============================================================
    ABOUT
 
-   The homepage argues that JAZ builds better rooms. This page
+   The homepage argues that JAAZ builds better rooms. This page
    has one job the homepage cannot do: explain why the people
    who build them are worth trusting with yours.
 

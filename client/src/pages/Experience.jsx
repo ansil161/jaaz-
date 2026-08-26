@@ -34,7 +34,7 @@ import Lifestyle from '../components/experience/Lifestyle'
 import Footer from '../components/sections/Footer'
 
 /* ============================================================
-   THE JAZ EXPERIENCE CENTRE
+   THE JAAZ EXPERIENCE CENTRE
 
    ENTER → EXPLORE → EXPERIENCE → CONFIGURE → COMPARE → TOUCH →
    DISCOVER → DESIGN, laid out as one continuous walk through a

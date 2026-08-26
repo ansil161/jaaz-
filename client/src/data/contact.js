@@ -1,12 +1,12 @@
 import { img } from './site'
 
 /* ============================================================
-   JAZ — CONTACT PAGE CONTENT
+   JAAZ — CONTACT PAGE CONTENT
 
    Rebuilt to the shape of glazewindowsystems.com/contact — the
    same reference ClosingCta.jsx already matches at the foot of
    every page. The page this content drives is that structure,
-   in JAZ's own voice and the site's own black/paper/cove system
+   in JAAZ's own voice and the site's own black/paper/cove system
    rather than Glaze's own palette:
 
      HERO + WIZARD   headline, a photo, a five-step enquiry panel
@@ -30,7 +30,7 @@ export const consultation = {
   sub: 'Send the space, the budget band and how you actually want to use it. We respond within one working day.',
   photo: {
     src: img('theatre', 1400, '4:5'),
-    alt: 'A finished JAZ private cinema with the house lights down',
+    alt: 'A finished JAAZ private cinema with the house lights down',
     badge: 'Your space',
   },
   panelLabel: 'Request a consultation',
@@ -148,8 +148,8 @@ export const wizard = {
     again: 'Start another',
   },
   error: 'Add a name and an email we can reply to.',
-  to: 'hello@jaz.com',
-  subject: 'New project enquiry — JAZ',
+  to: 'hello@jaaz.com',
+  subject: 'New project enquiry — JAAZ',
 }
 
 /* --- 03. Info strip ----------------------------------------------- */
@@ -171,8 +171,8 @@ export const infoStrip = [
     key: 'email',
     icon: 'mail',
     title: 'Write to Us',
-    lines: ['hello@jaz.com', 'We reply within one working day.'],
-    href: 'mailto:hello@jaz.com',
+    lines: ['hello@jaaz.com', 'We reply within one working day.'],
+    href: 'mailto:hello@jaaz.com',
   },
   {
     key: 'follow',
@@ -189,11 +189,11 @@ export const infoStrip = [
 
 /* --- 04. Experience invite ------------------------------------- */
 export const experience = {
-  heading: ['Experience JAZ', 'in person.'],
+  heading: ['Experience JAAZ', 'in person.'],
   body: 'Step into our experience centre — see, feel and hear the difference.',
-  cta: { label: 'Book a visit', href: 'mailto:hello@jaz.com?subject=Book%20a%20visit%20%E2%80%94%20JAZ' },
+  cta: { label: 'Book a visit', href: 'mailto:hello@jaaz.com?subject=Book%20a%20visit%20%E2%80%94%20JAAZ' },
   photos: [
-    { src: img('comfortRoom', 1200, '4:5'), alt: 'A JAZ private cinema, calibrated' },
+    { src: img('comfortRoom', 1200, '4:5'), alt: 'A JAAZ private cinema, calibrated' },
     { src: img('tech', 1000, '3:4'), alt: 'An equipment rack and tower speakers' },
   ],
 }
@@ -233,7 +233,7 @@ export const faq = {
 
 /* --- 06. Map ----------------------------------------------------- */
 export const mapPanel = {
-  address: 'JAZ Experience Centre, 2nd Floor, Marine Drive, Kochi, Kerala 682031',
+  address: 'JAAZ Experience Centre, 2nd Floor, Marine Drive, Kochi, Kerala 682031',
   hours: 'Mon – Sat · 10:00 – 19:00',
   mapsHref: 'https://www.google.com/maps/search/?api=1&query=Marine+Drive+Kochi+Kerala',
   embedSrc: 'https://www.google.com/maps?q=Marine+Drive,+Kochi,+Kerala&output=embed',

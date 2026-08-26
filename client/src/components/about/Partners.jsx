@@ -18,7 +18,7 @@ import { Link } from '../chrome/PageTransition'
    it — which is the right hierarchy for a page where the
    technology is explicitly not the hero.
 
-   Names only. What JAZ specifies — projectors, screens, speakers
+   Names only. What JAAZ specifies — projectors, screens, speakers
    — is the homepage technology chapter's job, and the link at the
    foot of this section is how you get there.
    ============================================================ */

@@ -25,7 +25,7 @@ export function SectionLabel({ children, tone = 'dark', className = '' }) {
  * <ConfirmNote> — an unfinished fact, shown as unfinished.
  *
  * The brief is explicit that this site must not manufacture
- * credibility, so anything JAZ has not supplied is rendered as a
+ * credibility, so anything JAAZ has not supplied is rendered as a
  * visible, deliberately un-designed note rather than filled with a
  * plausible number, a stock portrait or an invented partner. It reads
  * as a production marker on purpose: it should be uncomfortable

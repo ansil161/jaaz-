@@ -47,28 +47,28 @@ const GRAIN =
 const ROUTES = {
   '/': {
     component: Home,
-    title: 'JAZ — Private Home Entertainment',
+    title: 'JAAZ — Private Home Entertainment',
     description:
-      'JAZ designs private cinemas and luxury home entertainment spaces where picture, sound and seating are engineered around one idea: comfort.',
+      'JAAZ designs private cinemas and luxury home entertainment spaces where picture, sound and seating are engineered around one idea: comfort.',
   },
   '/about': {
     component: About,
-    title: 'About — JAZ',
+    title: 'About — JAAZ',
     description:
-      'JAZ designs how entertainment spaces feel. One accountable team across design, acoustics, joinery, electronics and calibration.',
+      'JAAZ designs how entertainment spaces feel. One accountable team across design, acoustics, joinery, electronics and calibration.',
   },
   '/contact': {
     component: Contact,
-    title: 'Contact — JAZ',
+    title: 'Contact — JAAZ',
     description:
-      'Send JAZ the room, the budget band and how you want to use it. One reply within a working day, from the person who would run the project.',
+      'Send JAAZ the room, the budget band and how you want to use it. One reply within a working day, from the person who would run the project.',
   },
   /* The Experience Centre IS the walkthrough. One continuous
      scroll from the approach, through the house, out to the
      terrace and back — not a page containing rooms. */
   '/experience': {
     component: House,
-    title: 'The JAZ Experience — Walk Through the House',
+    title: 'The JAAZ Experience — Walk Through the House',
     description:
       'Scroll to walk through a luxury residence. The scroll is the camera: cinematic sequences of the living space, private cinema, terrace, gaming suite and listening room.',
   },
@@ -78,16 +78,16 @@ const ROUTES = {
      in the main navigation. */
   '/rooms': {
     component: Rooms,
-    title: 'Rooms & Specifications — JAZ',
+    title: 'Rooms & Specifications — JAAZ',
     description:
-      'Room-by-room detail for the JAZ Experience Centre: configurations, products, materials and specifications.',
+      'Room-by-room detail for the JAAZ Experience Centre: configurations, products, materials and specifications.',
   },
   /* Kept as an alias. Both prototypes were shared under this URL
      and a link handed to someone should not start 404-ing because
      the work moved past it. */
   '/theatre': {
     component: House,
-    title: 'The JAZ Experience — Walk Through the House',
+    title: 'The JAAZ Experience — Walk Through the House',
     description:
       'Scroll to walk through a luxury residence. The scroll is the camera.',
   },
@@ -96,20 +96,20 @@ const ROUTES = {
      absent from the navigation. */
   '/walkthrough-3d': {
     component: House,
-    title: 'Walkthrough (3D) — JAZ',
+    title: 'Walkthrough (3D) — JAAZ',
     description: 'The earlier real-time 3D walkthrough of the residence, kept for comparison.',
   },
   '/solutions': {
     component: Solutions,
-    title: 'Solutions — JAZ',
+    title: 'Solutions — JAAZ',
     description:
       'Nine ways to build the room you want, from a full dedicated cinema to a living room upgrade — quoted, engineered and signed off on its own.',
   },
   '/projects': {
     component: Projects,
-    title: 'Projects — JAZ',
+    title: 'Projects — JAAZ',
     description:
-      'Rooms JAZ has finished and handed over: private theatres, gaming rooms, bars, living-room systems and terrace cinemas, photographed as built.',
+      'Rooms JAAZ has finished and handed over: private theatres, gaming rooms, bars, living-room systems and terrace cinemas, photographed as built.',
   },
 }
 
@@ -118,7 +118,7 @@ const ROUTES = {
    description are built from the project's own data for the same
    reason the static table has them at all: a client-side route change
    does not update the tab or the meta description on its own, and six
-   pages all reading "Projects — JAZ" is the version of this that
+   pages all reading "Projects — JAAZ" is the version of this that
    looks fine in the browser and wrong in a search result. */
 function resolveProject(path) {
   const [, section, slug, ...rest] = path.split('/')
@@ -129,7 +129,7 @@ function resolveProject(path) {
 
   return {
     component: ProjectDetail,
-    title: `${project.flatTitle} — ${project.category}, ${project.location} — JAZ`,
+    title: `${project.flatTitle} — ${project.category}, ${project.location} — JAAZ`,
     description: project.summary,
   }
 }

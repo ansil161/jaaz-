@@ -3,7 +3,7 @@ import { img } from './site'
 /* ============================================================
    WHAT'S TONIGHT? — six nights in one house
 
-   The homepage's argument is that JAZ engineers rooms. This
+   The homepage's argument is that JAAZ engineers rooms. This
    section is the other half of it: what those rooms are FOR. Six
    scenarios, one interactive stage, no page change — the visitor
    is meant to picture their own Friday, not read a capability

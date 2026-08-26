@@ -89,7 +89,7 @@ export default function ArchitecturalGrid({ className = '', dense = false }) {
           className="t-num absolute top-10 left-10 text-[0.65rem] tracking-[0.2em] text-mist/50"
           style={{ writingMode: 'vertical-rl' }}
         >
-          JAZ / SPEC.01
+          JAAZ / SPEC.01
         </span>
         <span className="t-num absolute right-10 bottom-10 text-[0.65rem] tracking-[0.2em] text-mist/50">
           SCALE — N.T.S.
