@@ -1,0 +1,123 @@
+@import 'tailwindcss';
+
+/* ============================================================
+   JAAZ CONSOLE — shared by the account app and the admin app.
+
+   A deliberate subset of the marketing site's design system:
+   the same monochrome ramp and the same three typefaces, so the
+   two halves of the product read as one company — but none of
+   the site's machinery. No Lenis, no film grain, no reveal
+   choreography. A tool should respond immediately and scroll
+   the way the operating system says it scrolls.
+   ============================================================ */
+
+@theme {
+  /* --- Monochrome ramp. Warm-neutral, never blue-grey. ---
+     Copied rather than imported: index.css also carries the
+     site's scroll and reveal system, and the console must not
+     depend on any of it. */
+  --color-ink: #000000;
+  --color-ink-2: #050505;
+  --color-ink-3: #0b0b0c;
+  --color-ink-4: #141416;
+  --color-smoke: #2a2a2d;
+  --color-ash: #55555b;
+  --color-mist: #8a8a91;
+  --color-fog: #b8b8bd;
+  --color-bone: #e6e4e0;
+  --color-paper: #f4f2ee;
+  --color-pure: #ffffff;
+
+  /* The site reserves `signal` for one "you are here" state. The
+     console reuses it for the same job it does everywhere else in
+     an interface: something has gone wrong and needs reading. */
+  --color-signal: #c11f2c;
+  --color-cove: #c9ad7c;
+
+  --font-display: 'Instrument Serif', 'Times New Roman', serif;
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:root {
+  color-scheme: dark;
+  --rule: rgba(255, 255, 255, 0.12);
+  --rule-strong: rgba(255, 255, 255, 0.2);
+}
+
+* {
+  min-width: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-ink);
+  color: var(--color-bone);
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-synthesis-weight: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--color-bone);
+  color: var(--color-ink);
+}
+
+/* One focus treatment for the whole console. A tool gets operated
+   from the keyboard, and the default outline disappears against
+   black. `:focus-visible` rather than `:focus` so it appears for
+   keyboard users without ringing every mouse click. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-cove);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Honour the system setting rather than animating regardless. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* The one animation in the console: the pending indicator. */
+@keyframes console-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.console-spinner {
+  animation: console-spin 0.7s linear infinite;
+}
+
+/* Reduced motion turns the spinner's rotation off, which would leave
+   a static ring claiming nothing is happening. Pulse the opacity
+   instead — a state change with no movement. */
+@media (prefers-reduced-motion: reduce) {
+  @keyframes console-pulse {
+    0%,
+    100% {
+      opacity: 0.3;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+  .console-spinner {
+    animation: console-pulse 1.2s ease-in-out infinite !important;
+  }
+}

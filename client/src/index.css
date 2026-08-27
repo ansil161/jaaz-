@@ -125,6 +125,23 @@ body {
   overflow-x: clip;
 }
 
+/* ------------------------------------------------------------
+   The first-load overlay holds the page still while it is up.
+
+   A CLASS, NOT AN INLINE STYLE. <Nav> writes
+   `documentElement.style.overflow` directly for its mobile menu, and
+   on mount it writes the closed state — an empty string. The overlay
+   locks from a layout effect, which commits BEFORE that passive
+   effect runs, so an inline lock was being wiped a moment after it
+   was set and the page scrolled freely behind the intro. A class
+   survives it: Nav clearing the inline property leaves this rule
+   standing. Anything else that needs to freeze the document should
+   use this too rather than racing for the same inline property.
+   ------------------------------------------------------------ */
+html.intro-locked {
+  overflow: hidden;
+}
+
 /* Lenis owns the scroll; keep native smooth off so they don't fight. */
 html.lenis,
 html.lenis body {
@@ -1386,4 +1403,145 @@ html.lenis body {
       -webkit-text-stroke: 1px color-mix(in srgb, var(--color-cove) 55%, transparent);
     }
   }
+}
+
+/* ============================================================
+   SOLUTIONS — THE LENS
+
+   /solutions is one aperture that stops down. A single opening
+   in the centre of a held stage is the only place photography
+   exists on the page; everything outside it is ink and type, and
+   the opening's shape at each stop is the proportion of space
+   that solution actually touches.
+
+   THE TITLE IS LIT, NOT REVEALED
+   The stop's title is set twice, in the same place, at the same
+   size, from the same string. One copy is the real heading and
+   is always fully present. The second is `aria-hidden`, sits on
+   top, and is clipped by the SAME `inset()` the aperture is
+   using — so the only part of the title that is bright is the
+   part the opening falls across. As the lens stops down through
+   the nine, less and less of each title is in the light, and the
+   last one is a pin-spot on a word.
+
+   Light ADDS. That is why the lit copy is `--color-pure` with a
+   warm bloom rather than the unlit copy being made dimmer: a
+   beam does not subtract from what is outside it.
+
+   CONTRAST IS ON THE UNLIT COPY, NOT THE LIT ONE
+   The unlit copy carries the information, so it — not the
+   bright overlay — has to pass on its own. At 46% bone on ink it
+   clears 3:1, which is the large-text floor and what this size
+   is. It cannot be dropped to a ghost for effect.
+
+   NO `will-change` ON EITHER OF THESE. Both are clip-path
+   layers, and promoting a clip-path layer is what makes Chrome
+   intermittently rasterise the frame without the picture in it —
+   see the note on `.plate` above.
+   ============================================================ */
+@layer components {
+  /* One step between `.t-chapter` and `.t-cinema`. Height is part
+     of the condition for the same reason it is there: this title
+     is vertically CENTRED on the stage and the statement sits
+     under it, so a width-only clamp runs both off a short window. */
+  .t-stop {
+    font-family: var(--font-display);
+    font-size: clamp(1.9rem, min(5.4vw, 8.6vh), 5.5rem);
+    line-height: 0.94;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+
+  .stop-unlit {
+    color: rgba(230, 228, 224, 0.46);
+  }
+
+  .stop-lit {
+    color: var(--color-pure);
+    text-shadow:
+      0 0 32px rgba(201, 173, 124, 0.34),
+      0 0 96px rgba(201, 173, 124, 0.15);
+  }
+}
+
+/* The barrel. Nine marks down the right edge whose LENGTHS are the
+   aperture area at each stop — so the whole stopping-down curve is
+   readable at a glance and the mark you are on is where the lens
+   actually is. `--lens-tick` is written per item from the data.
+
+   It is a control, not a readout: every mark is a button that
+   travels the page to its stop.
+
+   The inactive mark sits one step up the grey ramp from where a
+   hairline on ink alone would want to be. Wherever the lens is open,
+   the barrel is standing on a photograph, and a 1px rule at `smoke`
+   disappears into any lit surface behind it. */
+.lens-tick {
+  display: block;
+  height: 1px;
+  width: calc(14px + var(--lens-tick, 0.5) * 62px);
+  background: var(--color-ash);
+  transition:
+    background 620ms var(--ease-out-quint),
+    opacity 620ms var(--ease-out-quint),
+    transform 620ms var(--ease-out-quint);
+  transform-origin: right center;
+}
+
+.lens-mark:hover .lens-tick,
+.lens-mark:focus-visible .lens-tick {
+  background: var(--color-fog);
+}
+
+.lens-mark[aria-current='true'] .lens-tick {
+  background: var(--color-cove);
+  transform: scaleY(2);
+}
+
+.lens-mark .lens-n {
+  transition:
+    color 620ms var(--ease-out-quint),
+    opacity 620ms var(--ease-out-quint);
+  color: var(--color-ash);
+}
+
+.lens-mark:hover .lens-n,
+.lens-mark:focus-visible .lens-n {
+  color: var(--color-fog);
+}
+
+.lens-mark[aria-current='true'] .lens-n {
+  color: var(--color-bone);
+}
+
+/* The rolling readouts — the stop number and the f-number. Both are
+   a column of all nine values translated by the scroll, which is
+   what a barrel does and what a crossfade cannot: you can see the
+   next value arriving. */
+.lens-roll {
+  /* The window is ONE value tall. Without a height the column simply
+     stacks all nine and `overflow: hidden` has nothing to clip. */
+  height: 1em;
+  overflow: hidden;
+  display: block;
+}
+/* The WINDOW is `.lens-roll`; the column inside it is what travels.
+   Moving the window instead just slides the readout up the page. */
+.lens-roll > span {
+  display: block;
+}
+.lens-roll > span > span {
+  display: block;
+  height: 1em;
+  line-height: 1;
+}
+
+/* Every layer that has to be cut by the opening reads the same three
+   properties off the stage, so ONE write per frame moves the aperture
+   AND the lit copy of the title AND the scrims inside it — instead of
+   ten elements each being handed their own parsed `clip-path` string. */
+.lens-clip {
+  clip-path: inset(
+    var(--ap-y, 0%) var(--ap-x, 0%) var(--ap-y, 0%) var(--ap-x, 0%) round var(--ap-r, 0%)
+  );
 }

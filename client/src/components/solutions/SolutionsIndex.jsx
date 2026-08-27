@@ -46,7 +46,7 @@ function Arrow({ size = 14, className = '' }) {
 }
 
 export default function SolutionsIndex() {
-  const { statement, index } = solutionsIndex
+  const { statement, index, lens } = solutionsIndex
 
   /* The list runs its own entrance rather than going through <Rise>.
      Not because Rise is broken — it is not — but because `fromTo` states
@@ -56,7 +56,15 @@ export default function SolutionsIndex() {
      tween is built; with `.hover-dim` also writing `opacity` on these
      same rows, an inferred end value is one stylesheet edit away from
      being wrong. Everything else on the page uses the same explicit
-     form. */
+     form.
+
+     THE TWEEN TARGET IS THE LINK, NOT THE ROW. `.hover-dim > *` is a
+     stylesheet rule, and an element's own style attribute always beats
+     one — so the moment this entrance finished and left `opacity: 1`
+     inline on the <li>, the dim could never apply again and the whole
+     effect was silently dead. Animating a child leaves the row's own
+     opacity to CSS, and the two multiply: the row dims to 0.4 while
+     the link inside it stays at 1. */
   const list = useGsapScope((el) => {
     const rows = gsap.utils.toArray(el.querySelectorAll('[data-row]'))
     if (!rows.length) return
@@ -113,15 +121,25 @@ export default function SolutionsIndex() {
 
         <ul ref={list} className="hover-dim mt-20 sm:mt-28">
           {solutions.map((s) => (
-            <li key={s.slug} data-row style={{ opacity: 0, visibility: 'hidden' }}>
+            <li key={s.slug}>
               <Link
-                to="/contact"
+                to={`/solutions/${s.slug}`}
+                data-row
+                style={{ opacity: 0, visibility: 'hidden' }}
                 className="focus-ring group flex flex-col gap-3 py-6 sm:flex-row sm:items-baseline sm:justify-between sm:gap-10 sm:py-7"
               >
                 <span className="flex min-w-0 items-baseline gap-6 sm:gap-9">
                   <span className="t-num w-7 shrink-0 text-xs text-cove">{s.n}</span>
-                  <span className="t-heading text-bone transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-3">
-                    {s.title}
+                  <span className="min-w-0 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-3">
+                    <span className="t-heading block text-bone">{s.title}</span>
+                    {/* What it TOUCHES, not what it contains. Nine product
+                        names ask the reader to remember what each one was;
+                        nine scopes let them recognise their own room. It is
+                        the same line the barrel puts in the corner of every
+                        stop, from the same place in the data. */}
+                    <span className="t-label mt-2.5 block text-mist">
+                      {lens.stops[s.slug]?.touches}
+                    </span>
                   </span>
                 </span>
 

@@ -1,0 +1,41 @@
+# Runtime dependencies for the JAAZ backend.
+#
+# Install into the checked-out virtualenv with:
+#     pip install -r requirements.txt
+
+Django==6.1
+djangorestframework==3.18.0
+django-cors-headers==4.9.0
+
+# Postgres driver. psycopg2-binary is what the project was already
+# running on; psycopg (v3) is present because it came in with the
+# original environment and is kept so the pinned set reproduces.
+psycopg2-binary==2.9.12
+psycopg==3.3.4
+
+# Argon2id password hashing (Django's Argon2PasswordHasher).
+argon2-cffi==25.1.0
+
+# HS256 signing/verification for the access token.
+PyJWT==2.13.0
+
+# Reads server/.env into the process environment during settings load.
+python-dotenv==1.2.3
+
+# Knowledge-base document parsing. Both are pure Python plus lxml, so there
+# is no system library to install alongside them.
+pypdf==6.16.2
+python-docx==1.2.0
+
+pillow==12.3.0
+
+# HTTP client for calling ai_service from the knowledge-base worker.
+requests==2.34.2
+
+# Not required, and deliberately absent:
+#   - No Celery/Redis. The queue is a document status column drained by
+#     `manage.py process_documents` with SELECT ... FOR UPDATE SKIP LOCKED.
+#   - No pgvector. It is not installed on the target PostgreSQL, so vectors
+#     live in a double precision[] column and search is exact. See
+#     knowledge_base/vector_store/providers/postgres.py for when that stops
+#     being enough.

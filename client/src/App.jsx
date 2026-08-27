@@ -1,12 +1,13 @@
-import { lazy, Suspense, useEffect } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { useLenis } from './lib/useLenis'
 import { useViewportHeight } from './lib/useViewportHeight'
 import { ScrollTrigger } from './lib/gsap'
 
 import { RouteProvider } from './components/chrome/PageTransition'
 import { useRoute } from './lib/route'
-import Preloader from './components/chrome/Preloader'
 import Nav from './components/chrome/Nav'
+import BrandIntroReveal from './components/chrome/BrandIntroReveal'
+import FloatingChatWidget from './components/chrome/FloatingChatWidget'
 
 import Home from './pages/Home'
 import About from './pages/About'
@@ -15,7 +16,9 @@ import Solutions from './pages/Solutions'
 import Rooms from './pages/Experience'
 import Projects from './pages/Projects'
 import ProjectDetail from './pages/ProjectDetail'
+import SolutionDetail from './pages/SolutionDetail'
 import { projectBySlug } from './data/projects'
+import { getSolution } from './data/solutions'
 /* The walkthrough carries three.js and its addons — roughly
    800KB before compression, which is more than the entire rest of
    the site put together. Imported statically it landed in the main
@@ -134,11 +137,40 @@ function resolveProject(path) {
   }
 }
 
+/* Same reasoning as resolveProject, one catalogue over. The nine
+   solutions each carry a full specification, a fit list and a
+   gallery, and none of it had anywhere to live: /solutions/<slug>
+   was never routed, so the index's only way onward was the contact
+   form. A visitor who wants to know what is IN a solution before
+   asking for a survey now has a page to read, and a place to link
+   someone to. */
+function resolveSolution(path) {
+  const [, section, slug, ...rest] = path.split('/')
+  if (section !== 'solutions' || !slug || rest.length) return null
+
+  const solution = getSolution(slug)
+  if (!solution) return null
+
+  return {
+    component: SolutionDetail,
+    title: `${solution.title} — Solutions — JAAZ`,
+    description: solution.sub,
+  }
+}
+
 function resolveRoute(path) {
   if (ROUTES[path]) return ROUTES[path]
 
   const project = resolveProject(path)
   if (project) return project
+
+  const solution = resolveSolution(path)
+  if (solution) return solution
+
+  /* An address under /solutions that names nothing lands on the
+     catalogue, for the same reason an unknown project lands on the
+     collection. */
+  if (path.startsWith('/solutions/')) return ROUTES['/solutions']
 
   /* An unrecognised project address lands on the collection rather
      than the homepage — it is the nearest thing to what was asked
@@ -179,6 +211,12 @@ export default function App() {
   useViewportHeight()
   useLenis()
 
+  /* The first-load reveal. State lives here, not inside the overlay,
+     because App does not remount on a route change — so the sequence
+     plays once per page load and a visitor moving between pages never
+     sees it again. */
+  const [intro, setIntro] = useState(true)
+
   /* Web fonts change line breaks, which changes every split-line
      measurement and every pin length on the page. Remeasure once
      they've actually landed. */
@@ -194,7 +232,6 @@ export default function App() {
 
   return (
     <RouteProvider>
-      <Preloader />
       <Nav />
 
       {/* tabIndex -1 so the router can move focus here after a route
@@ -203,7 +240,23 @@ export default function App() {
         <Page />
       </main>
 
+      <FloatingChatWidget />
+
       <div className="grain-layer" style={{ backgroundImage: GRAIN }} aria-hidden="true" />
+
+      {intro && (
+        <BrandIntroReveal
+          onComplete={() => {
+            setIntro(false)
+            /* The overlay held <html> at `overflow: hidden`, so while it
+               was up the document had no scroll height and every pin on
+               the page measured against something that could not move.
+               Remeasure now that it can — this is the same debt the old
+               <Preloader> settled on its way out. */
+            ScrollTrigger.refresh()
+          }}
+        />
+      )}
     </RouteProvider>
   )
 }

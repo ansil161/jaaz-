@@ -47,31 +47,86 @@ export const solutionsIndex = {
   image: img('theatre', 2400, '16:9'),
   imageAlt: 'A finished JAAZ private cinema with the house lights down',
 
-  /* The index reads the nine as CHAPTERS, in catalogue order, each
-     given a full screen of its own. `tint` is the only per-solution
-     thing this page adds: an atmosphere, not a brand colour. Three
-     values across nine rooms, because the point is that the light
-     changes from chapter to chapter, not that every room gets its
-     own hue. Values are raw `r,g,b` so a component can set its own
-     alpha per layer. */
-  chapters: {
+  /* ============================================================
+     THE LENS — the nine as STOPS on one barrel.
+
+     The index page is a single aperture that stops down. Every
+     stop below is that aperture's geometry for one solution, as
+     percentage insets from the edges of the stage, and the shape
+     is not decoration: it is the PROPORTION OF SPACE that
+     solution actually touches.
+
+     01 gives up a whole room, so the lens is wide open and the
+     photograph is the screen. 04 happens inside a wall, so it is
+     a narrow standing column. 07 has no room at all, so it is a
+     horizon. 09 is one chair, so it is a pin-spot. The barrel
+     runs from f/1.4 to f/22 in the standard series, in catalogue
+     order, and the tick lengths on the scale are the aperture
+     AREA at each stop — which is why the profile falls without
+     falling evenly. A monotonic ramp would be a chart; this is a
+     lens.
+
+     `x` and `y` are half-insets in percent (left = right, top =
+     bottom), so every stop is concentric with the one before it
+     and the morph between any two is a single interpolation of
+     one `inset()`. `r` is the corner radius in percent — the one
+     stop that is a pool of light rather than a rectangle uses 50
+     and becomes an ellipse.
+
+     `focus` is `object-position` for the plate behind the
+     opening. It exists because a narrow stop crops hard, and the
+     centre of a photograph is rarely the part worth cropping to.
+
+     `touches` is the readout in the top corner. It is the axis
+     the page is actually organised on, in plain words, and it is
+     the fastest answer to "which of these nine is mine".
+     ============================================================ */
+  lens: {
     hint: 'Scroll',
-    open: 'Explore',
+    open: 'Explore this',
+    barrel: 'Aperture',
     tints: {
       warm: '201, 173, 124',
       dusk: '104, 128, 154',
       ash: '150, 150, 158',
     },
-    tint: {
-      'private-home-theatre': 'warm',
-      'living-room-theatre-upgrade': 'warm',
-      'home-automation-control': 'ash',
-      'acoustic-treatment': 'ash',
-      'party-event-audio': 'warm',
-      'bar-lounge-audio': 'warm',
-      'outdoor-terrace-sound': 'dusk',
-      'lighting-ambience-design': 'warm',
-      'premium-seating': 'ash',
+    stops: {
+      'private-home-theatre': {
+        f: '1.4', x: 0, y: 0, r: 0, focus: '50% 50%', tint: 'warm',
+        touches: 'A room given over entirely',
+      },
+      'living-room-theatre-upgrade': {
+        f: '2', x: 7, y: 19, r: 0, focus: '50% 46%', tint: 'warm',
+        touches: 'One wall of a room you already use',
+      },
+      'home-automation-control': {
+        f: '2.8', x: 30, y: 11, r: 0, focus: '50% 44%', tint: 'ash',
+        touches: 'One button, every room',
+      },
+      'acoustic-treatment': {
+        f: '4', x: 39, y: 7, r: 0, focus: '50% 50%', tint: 'ash',
+        touches: 'Inside the walls',
+      },
+      'party-event-audio': {
+        f: '5.6', x: 6, y: 33, r: 0, focus: '50% 54%', tint: 'warm',
+        touches: 'The whole floor, one night',
+      },
+      'bar-lounge-audio': {
+        f: '8', x: 24, y: 17, r: 0, focus: '50% 48%', tint: 'warm',
+        touches: 'One room, all evening',
+      },
+      'outdoor-terrace-sound': {
+        f: '11', x: 3, y: 38, r: 0, focus: '50% 58%', tint: 'dusk',
+        touches: 'Everything outside',
+      },
+      'lighting-ambience-design': {
+        f: '16', x: 31, y: 12, r: 50, focus: '64% 46%', tint: 'warm',
+        touches: 'The air in the room',
+      },
+      'premium-seating': {
+        f: '22', x: 38, y: 26, r: 2, focus: '50% 74%', tint: 'ash',
+        touches: 'Where you actually sit',
+      },
     },
   },
 
@@ -456,8 +511,8 @@ export const solutions = [
     meta: 'Indoor or outdoor · Permanent or event · 1–2 days',
     range: 'Low to mid',
     signature: 'spectrum',
-    hero: img('chair', 2600, '16:9'),
-    heroAlt: 'A private entertainment room set up for an event',
+    hero: img('grand', 2600, '16:9'),
+    heroAlt: 'A large dark interior set up for an event',
     statement: 'Cinema sound and party sound are not the same job.',
     intro: [
       'A calibrated home theatre is designed to be accurate at one moderate level, for people sitting down and paying attention. A party is the opposite specification: loud, even across a whole floor, and forgiving of a hundred people absorbing the high frequencies.',
@@ -880,3 +935,89 @@ export const getSolution = (slug) => solutions.find((s) => s.slug === slug)
 /** `related` slugs resolved to the entries themselves, missing ones dropped. */
 export const relatedTo = (solution) =>
   (solution.related ?? []).map(getSolution).filter(Boolean)
+
+/* ============================================================
+   CROSS-REFERENCES
+
+   The `fit.no` lists are the most useful copy in this file and
+   the easiest to waste. Almost every entry ends by naming the
+   solution the visitor should be reading instead — "see Bar &
+   Lounge Audio", "start with Acoustic Treatment", "this is
+   included in Private Home Theatre" — which means the catalogue
+   already knows how to route someone who has landed on the
+   wrong page. Rendered as flat text, it makes them go back to
+   the index and search for a name they half-remember.
+
+   So the names are matched and turned into links.
+
+   WHY A DECLARED LIST AND NOT A HEURISTIC
+   The copy refers to solutions by whatever reads best in the
+   sentence — "the Living Room Upgrade" for a solution titled
+   "Living Room Theatre Upgrade", "Premium Seating" for one
+   titled "Premium Seating & Recliners". Deriving short forms by
+   splitting titles on `&` gets "Party", "Bar" and "Outdoor",
+   which are ordinary English words that would light up half the
+   sentences on the page as links. Every phrase that becomes a
+   link is written down here, and adding a new way of referring
+   to a solution is a deliberate edit rather than a side effect.
+
+   Matched longest-first, so "Acoustic Treatment & Room
+   Engineering" wins before "Acoustic Treatment" can match its
+   first two words.
+   ============================================================ */
+const ALIASES = {
+  'private-home-theatre': ['Private Home Theatre'],
+  'living-room-theatre-upgrade': ['Living Room Theatre Upgrade', 'Living Room Upgrade'],
+  'home-automation-control': ['Home Automation & Control'],
+  'acoustic-treatment': ['Acoustic Treatment & Room Engineering', 'Acoustic Treatment'],
+  'party-event-audio': ['Party & Event Audio'],
+  'bar-lounge-audio': ['Bar & Lounge Audio'],
+  'outdoor-terrace-sound': ['Outdoor / Terrace Sound'],
+  'lighting-ambience-design': ['Lighting & Ambience Design'],
+  'premium-seating': ['Premium Seating & Recliners', 'Premium Seating'],
+}
+
+const NAMES = Object.entries(ALIASES)
+  .flatMap(([slug, names]) => names.map((name) => ({ slug, name })))
+  .sort((a, b) => b.name.length - a.name.length)
+
+/**
+ * Split a sentence into plain strings and `{ slug, name }` links.
+ *
+ * `self` is the page the sentence is ON — a solution linking to
+ * itself is a control that does nothing, which reads as broken, so
+ * its own names are skipped and left as text.
+ */
+export function crossRefs(text, self) {
+  const parts = []
+  let rest = String(text)
+
+  while (rest) {
+    let hit = null
+
+    for (const entry of NAMES) {
+      if (entry.slug === self) continue
+      const at = rest.indexOf(entry.name)
+      if (at === -1) continue
+      if (!hit || at < hit.at) hit = { ...entry, at }
+    }
+
+    if (!hit) {
+      parts.push(rest)
+      break
+    }
+
+    if (hit.at > 0) parts.push(rest.slice(0, hit.at))
+    parts.push({ slug: hit.slug, name: hit.name })
+    rest = rest.slice(hit.at + hit.name.length)
+  }
+
+  return parts
+}
+
+/** The next solution in catalogue order, wrapping — so a detail page
+ *  always has somewhere to go that is not "back". */
+export const nextSolution = (slug) => {
+  const i = solutions.findIndex((s) => s.slug === slug)
+  return solutions[(i + 1) % solutions.length]
+}

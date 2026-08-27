@@ -1,0 +1,19 @@
+# The virtualenv lives inside the repo but must never be committed —
+# it is ~40MB of platform-specific binaries. Recreate it with
+# `python -m venv venv && pip install -r requirements.txt`.
+venv/
+.venv/
+
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Real secrets. Only .env.example is tracked.
+.env
+.env.*
+!.env.example
+
+*.log
+db.sqlite3
+/media/
+/staticfiles/

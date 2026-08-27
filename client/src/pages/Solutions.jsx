@@ -1,37 +1,33 @@
-import Overture from '../components/solutions/Overture'
-import Chapters from '../components/solutions/Chapters'
-import SolutionsIndex from '../components/solutions/SolutionsIndex'
+import Catalogue from '../components/solutions/Catalogue'
 import ClosingCta from '../components/ui/ClosingCta'
 import Footer from '../components/sections/Footer'
 import { solutionsIndex } from '../data/solutions'
 
 /* ============================================================
-   SOLUTIONS — INDEX
+   SOLUTIONS — THE CATALOGUE
 
-   One dark world, top to bottom, read as a sequence of rooms.
+   CATALOGUE  the headline, then all nine as cards: a
+              photograph, what it touches, what band it costs
+              in, and a way into its own page.
+   CTA        the consultation, which is what the page is for.
 
-   OVERTURE   one room, held, and the headline.
-   CHAPTERS   the nine, in catalogue order, each given a screen
-              of its own and about two screens of scroll. Each
-              sticks, drifts, and is covered by the next.
-   CLOSE      all nine at one size, then the consultation.
+   The closing "all nine in one place" list that used to sit at
+   the bottom has gone with the lens it was closing. It existed
+   because the lens showed one solution at a time, and someone
+   thirteen screens down should not have had to scroll back up
+   to reach the room they liked. A page that already shows all
+   nine at once does not owe anyone a second list of them.
 
-   NO SECTION DIVIDERS
-   The previous build poured an <OrganicWave> between every
-   change of material and inverted to paper in the middle. Both
-   are gone. Sections here hand over by being covered — the next
-   stage scrolls over the last one while it sinks and dims — and
-   the only thing that marks a change is the light behind it.
-   That is the whole point of the redesign: separation by
-   composition and atmosphere, never by a drawn edge.
+   `components/solutions/Lens.jsx` and `LensStack.jsx` are still
+   on disk and no longer routed. They are the pinned-aperture
+   build this replaced, kept rather than deleted only because
+   they are not in git yet.
    ============================================================ */
 
 export default function Solutions() {
   return (
     <>
-      <Overture />
-      <Chapters />
-      <SolutionsIndex />
+      <Catalogue />
 
       <ClosingCta
         heading={solutionsIndex.cta.heading}
