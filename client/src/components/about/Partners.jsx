@@ -62,26 +62,28 @@ export default function Partners() {
       <Rise className="mt-16 border-y border-white/10 py-7" y={18}>
         <Marquee duration={64} reverse>
           {technology.brands.map((b) => (
-            <span key={b} className="t-label px-7 text-ash sm:px-10">
-              {b}
+            <span key={b} className="flex items-center whitespace-nowrap">
+              <span className="t-label px-4 text-pure font-bold tracking-[0.2em] text-sm sm:px-6">
+                {b}
+              </span>
+              <span className="px-3 text-xs text-[#c9ad7c] opacity-80 sm:px-5" aria-hidden="true">✦</span>
             </span>
           ))}
         </Marquee>
       </Rise>
 
       <div className="shell-wide mt-14">
-        <ConfirmNote>{partners.note}</ConfirmNote>
+        {partners.note && <ConfirmNote>{partners.note}</ConfirmNote>}
 
-        {/* The technology chapter lives on the homepage, so this has to
-            cross pages before it scrolls — `#technology` alone would
-            find nothing here and quietly do nothing. */}
-        <Link
-          to="/#technology"
-          className="link-underline t-label focus-ring mt-10 inline-block text-pure"
-        >
-          {partners.cta}
-          <span aria-hidden="true"> &#8594;</span>
-        </Link>
+        {partners.cta && (
+          <Link
+            to="/#technology"
+            className="link-underline t-label focus-ring mt-10 inline-block text-pure"
+          >
+            {partners.cta}
+            <span aria-hidden="true"> &#8594;</span>
+          </Link>
+        )}
       </div>
     </section>
   )

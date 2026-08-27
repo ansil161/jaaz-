@@ -205,9 +205,11 @@ export default function Team() {
           ))}
         </Rise>
 
-        <ConfirmNote className="mx-auto mt-16 sm:mt-20">
-          {team.note}
-        </ConfirmNote>
+        {team.note && (
+          <ConfirmNote className="mx-auto mt-16 sm:mt-20">
+            {team.note}
+          </ConfirmNote>
+        )}
 
         {/* --- What the team actually covers --- */}
         <Rise

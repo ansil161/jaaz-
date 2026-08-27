@@ -65,11 +65,23 @@ import { spaces } from '../../data/site'
    it is not. Judge this from a screenshot.
    ============================================================ */
 
-/* How long a card holds before the row advances. */
-const DWELL = 5200
+/* How long a card holds before the row advances, and how long the
+   move itself takes. The two are one setting, not two.
+
+   At DWELL 1000 the glide has to come down with it. A 900ms
+   transition inside a 1000ms cycle leaves a card still for about a
+   tenth of a second — the row never settles, and what reads is
+   continuous sliding rather than a carousel with steps in it. At
+   520 there is roughly half a second of rest between moves, which
+   is the least that still reads as arriving somewhere.
+
+   If this is ever slowed back down, raise both: the glide should
+   stay near half the dwell. */
+const DWELL = 1000
+const GLIDE_MS = 520
 
 const EASE = 'cubic-bezier(0.16, 1, 0.3, 1)'
-const GLIDE = `transform 900ms ${EASE}, opacity 900ms ${EASE}`
+const GLIDE = `transform ${GLIDE_MS}ms ${EASE}, opacity ${GLIDE_MS}ms ${EASE}`
 
 export default function SpacesCarousel({ items = spaces.items }) {
   const N = items.length
@@ -207,36 +219,31 @@ export default function SpacesCarousel({ items = spaces.items }) {
       </div>
 
       {/* ---- The readout ----
-          Where the row has got to, and nothing more. Inset by the same
-          padding the viewport uses so it starts at the active card's
-          left edge rather than under a peek.
+          Six ticks, the active one lit, and no numeral. A position
+          indicator drawn as a scale rather than as dots, because dots
+          are the universal sign for "these are buttons" and none of
+          these are.
 
-          `aria-live` is deliberately absent: this changes every five
-          seconds on its own, and announcing that six times a minute
-          would be noise. The cards themselves are the content, and the
-          inactive ones are `aria-hidden`, so a screen reader is read
-          the active room and nothing else. */}
+          Inset by the same padding the viewport uses, so it starts at
+          the active card's left edge rather than under a peek.
+
+          `aria-hidden`, and no `aria-live`: this advances on its own
+          every three seconds, and announcing that twenty times a
+          minute would be noise. The cards are the content, and the
+          inactive ones are hidden, so a screen reader gets the active
+          room and nothing else. */}
       <div
-        className="mt-7 flex items-baseline gap-4"
+        aria-hidden="true"
+        className="mt-7 flex items-center gap-1.5"
         style={{ paddingInline: 'calc((100% - var(--card-w)) / 2)' }}
       >
-        <span className="t-num text-[0.6875rem] text-pure">
-          {items[active].n}
-          <span className="text-fog/50"> / {String(N).padStart(2, '0')}</span>
-        </span>
-
-        {/* Six ticks, the active one lit. A position indicator drawn as
-            a scale rather than as dots, because dots are the universal
-            sign for "these are buttons" and none of these are. */}
-        <span aria-hidden="true" className="flex flex-1 items-center gap-1.5">
-          {items.map((s, i) => (
-            <span
-              key={s.n}
-              className="h-px flex-1 transition-colors duration-700"
-              style={{ background: i === active ? '#fff' : 'rgba(255,255,255,0.14)' }}
-            />
-          ))}
-        </span>
+        {items.map((s, i) => (
+          <span
+            key={s.n}
+            className="h-px flex-1 transition-colors duration-700"
+            style={{ background: i === active ? '#fff' : 'rgba(255,255,255,0.14)' }}
+          />
+        ))}
       </div>
     </div>
   )

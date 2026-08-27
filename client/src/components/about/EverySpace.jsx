@@ -117,7 +117,7 @@ export default function EverySpace() {
           ))}
         </ul>
 
-        <ConfirmNote className="mt-14">{everySpace.note}</ConfirmNote>
+        {everySpace.note && <ConfirmNote className="mt-14">{everySpace.note}</ConfirmNote>}
       </div>
     </section>
   )

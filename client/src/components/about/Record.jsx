@@ -47,7 +47,7 @@ export default function Record() {
           </Rise>
         </Drift>
 
-        <ConfirmNote className="mt-14">{record.note}</ConfirmNote>
+        {record.note && <ConfirmNote className="mt-14">{record.note}</ConfirmNote>}
       </div>
     </section>
   )

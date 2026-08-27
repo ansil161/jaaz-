@@ -187,7 +187,19 @@ export const heroStages = [
 export const promise = {
   label: 'The Promise',
   statement: ['Luxury without', 'comfort is', 'not luxury.'],
-  body: 'A great picture you have to squint at is not a great picture. Sound that fatigues you is not great sound. A room you leave early was never worth building. JAAZ starts where most cinemas stop — with the body in the chair.',
+  /* The paragraph is three parallel negations and then the turn,
+     and the three are not an arbitrary list: they are the site's own
+     comfort axes in order — picture, sound, room. Authored apart so
+     the section can set them as the triad they already are instead
+     of running them together into one grey block. */
+  denials: [
+    'A great picture you have to squint at is not a great picture.',
+    'Sound that fatigues you is not great sound.',
+    'A room you leave early was never worth building.',
+  ],
+  /* Split at the dash so the phrase the whole page turns on can carry
+     the emphasis without the component parsing punctuation. */
+  turn: ['JAAZ starts where most cinemas stop —', 'with the body in the chair.'],
   watermark: 'LUXURY',
 }
 

@@ -105,9 +105,7 @@ export default function FloatingChatWidget() {
                     }`}
                   />
                 </div>
-                <p className="font-mono text-[0.625rem] tracking-wider text-mist uppercase">
-                  Architectural & Cinema RAG
-                </p>
+               
               </div>
             </div>
 
@@ -221,7 +219,7 @@ export default function FloatingChatWidget() {
             </div>
 
             <div className="mt-1.5 flex items-center justify-between px-1 font-mono text-[0.5625rem] text-ash tracking-wider uppercase">
-              <span>JAAZ RAG Engine</span>
+            
               <span>Press Enter to send</span>
             </div>
           </div>

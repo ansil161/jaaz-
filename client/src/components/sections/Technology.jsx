@@ -83,10 +83,10 @@ export default function Technology() {
             <Marquee key={i} duration={54} reverse={i === 1}>
               {row.map((b) => (
                 <span key={b} className="flex items-center whitespace-nowrap">
-                  <span className="t-label px-6 text-ash transition-colors duration-500 hover:text-pure sm:px-8">
+                  <span className="t-label px-4 text-pure font-bold tracking-[0.2em] text-sm sm:px-6">
                     {b}
                   </span>
-                  <span className="h-1 w-1 shrink-0 rounded-full bg-ash/50" aria-hidden="true" />
+                  <span className="px-3 text-xs text-[#c9ad7c] opacity-80 sm:px-5" aria-hidden="true">✦</span>
                 </span>
               ))}
             </Marquee>

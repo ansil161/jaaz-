@@ -14,13 +14,14 @@ import { useRoute } from '../../lib/route'
    three objects instead of five. The action beside it is a filled
    plate, so there is exactly one pressable-looking thing up here.
 
-   The bar itself still has no background.
-
-   The whole thing is mix-blend-mode: difference, so it reads
-   white over the black sections and flips to black over the
-   paper ones without a single conditional. That is why the bar
-   can stay transparent all the way down a page that inverts
-   three times — no scrim, no colour logic, no flicker.
+   THE BAR IS A SOLID BLACK BAND. It was transparent and
+   `mix-blend-mode: difference`, which let it read white over the
+   black sections and flip to black over the paper ones without a
+   single conditional. That is gone by request: the background is
+   `--color-ink` at all times, with no transparency, no
+   backdrop-filter, no gradient and no adaptation to whatever is
+   underneath. Everything inside it is therefore coloured
+   explicitly — see the long note on <header> below.
 
    It does not move. The bar used to retract on scroll down and
    return on scroll up, which meant its position depended on the
@@ -80,8 +81,36 @@ export default function Nav() {
     <div>
       {/* No `will-change-transform`: nothing animates this element any
           more, and a standing compositing hint on a full-width fixed
-          layer is a cost with nothing to pay for it. */}
-      <header className="fixed inset-x-0 top-0 z-50 mix-blend-difference">
+          layer is a cost with nothing to pay for it.
+
+          A SOLID BLACK BAR. NO BLEND, NO SCRIM, NO ADAPTATION.
+          This used to be `mix-blend-difference` over a transparent
+          bar: the wordmark and the capsule inverted against whatever
+          was behind them, so one transparent element read correctly
+          down a page that inverts three times, with no colour logic
+          and no flicker.
+
+          It is now an opaque `--color-ink` band at all times, by
+          request. Two consequences that follow from removing the
+          blend rather than from anything else:
+
+          1. NOTHING IN HERE CAN RELY ON INVERSION ANY MORE. Every
+             mark that used to be white-because-it-differenced — the
+             wordmark, the chips, the menu rules — is now explicitly
+             white. If a new child is added up here, give it a colour;
+             there is no longer anything that will pick one for it.
+          2. THE ACTION BUTTON IS NOW A WHITE PLATE. It was a black
+             fill, which is invisible on a black bar; see the note on
+             `.btn-glaze`. It still renders in its own fixed layer
+             below rather than in this track — moving it back would
+             change the bar's spacing, which this change is not
+             allowed to touch.
+
+          The hairline is doing real work: over the dark sections a
+          black bar on a near-black page has no edge at all, and the
+          brief asks for it to stay clearly visible over every
+          section. It is the lightest rule that achieves that. */}
+      <header className="fixed inset-x-0 top-0 z-50 border-b border-white/[0.1] bg-ink">
         {/* THREE TRACKS, NOT `justify-between`. The capsule has to sit
             on the page's centre line, and space-between can only put
             it midway between the mark and the action — which is a
@@ -111,21 +140,10 @@ export default function Nav() {
           </nav>
 
           <div className="col-start-3 flex items-center justify-end gap-5">
-            {/* The action is a filled plate now, not a third underlined
-                phrase. With the links grouped into the capsule, a bare
-                text link out here would read as a stray fourth item;
-                the fill is what makes it the one thing on the bar you
-                are meant to press. `.btn-flat` already self-inverts
-                under the blend — its off-white ground goes light over
-                the dark sections and dark over the paper ones, and the
-                ink label flips with it. The padding is tightened from
-                the page-scale button to sit inside a 40px bar. */}
-            <Link
-              to="/contact"
-              className="btn-flat focus-ring hidden px-5 py-3 sm:inline-flex"
-            >
-              Start a Project
-            </Link>
+            {/* The action used to sit here. It lives in its own layer
+                below the header now — see the note on <header>. The
+                menu button is all that is left in this track, which
+                puts it exactly where it already was: hard right. */}
 
             {/* Two rules that become an X. */}
             <button
@@ -147,6 +165,31 @@ export default function Nav() {
           </div>
         </div>
       </header>
+
+      {/* ---- The action ----
+           Outside the header because the header blends and this button
+           is black; see the note up there. It is aligned to the bar
+           rather than placed near it: same `.shell` gutter, same
+           vertical padding, so it lands on the header's own row to the
+           pixel and moves with it at every breakpoint.
+
+           The layer is `pointer-events-none` with the link opting back
+           in, so a full-width strip across the top of every page does
+           not swallow clicks meant for the page. And below `lg` the
+           menu button is still in the header at the right edge, so the
+           track is inset by its 2rem width plus the 1.25rem gap that
+           used to separate the two — the button sits where it always
+           sat, next to the rules rather than under them. */}
+      <div className="pointer-events-none fixed inset-x-0 top-0 z-50">
+        <div className="shell flex justify-end py-4 pr-[calc(var(--gutter)+3.25rem)] sm:py-5 lg:pr-[var(--gutter)]">
+          <Link
+            to="/contact"
+            className="btn-glaze focus-ring pointer-events-auto hidden px-5 py-3 sm:inline-flex"
+          >
+            <span>Start a Project</span>
+          </Link>
+        </div>
+      </div>
 
       {/* ---- Mobile overlay ---- */}
       <div

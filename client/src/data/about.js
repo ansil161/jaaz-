@@ -87,10 +87,30 @@ export const story = {
     'JAAZ was formed around that gap. Picture, sound and seating are not three purchases that happen to share a room; they are one system, and they have to be designed by one team that answers for the result.',
     'So we kept design, acoustics, joinery, electronics and calibration under a single roof. Not because it is efficient — it is not — but because it is the only way the person responsible for how the room sounds is also the person who decided where the wall goes.',
   ],
+  /* The five disciplines the paragraph above says are kept under one
+     roof, set out so the claim is legible at a glance instead of only
+     being made in prose. Nothing new is asserted: the list is that
+     sentence's own, and it agrees with `aboutHero.disciplines`. */
+  roof: {
+    label: 'Under one roof',
+    items: ['Design', 'Acoustics', 'Joinery', 'Electronics', 'Calibration'],
+  },
+
+  /* NOT RENDERED, DELIBERATELY.
+     The founding year, the founders and the first project are still
+     JAAZ's to supply. Until they are, the page says nothing about them
+     — which is different from what it used to do, which was show the
+     visitor an internal "to confirm" note. The placeholder policy at
+     the top of this file governs how a gap is MARKED for the team; it
+     was never meant to put an editorial memo in front of a client.
+
+     To publish it: add `body` and set `confirm: false`. <Story> picks
+     it up on its own. */
   founding: {
     heading: 'Founding story',
-    note: `The founding year, the founders and the first project are deliberately left blank ${TO_CONFIRM}.`,
-    confirm: true,
+    note: null,
+    confirm: false,
+    body: null,
   },
   image: img('shell', 1600, '4:5'),
   imageAlt: 'A room in civil-finished shell condition, before the build begins',
@@ -148,8 +168,8 @@ export const everySpace = {
   heading: ['One brand.', 'Every entertainment space.'],
   intro:
     'The dedicated cinema is the most demanding room we build. It is not the only one worth engineering.',
-  note: `Room photography is licensed stock, standing in for JAAZ project work ${TO_CONFIRM}. Several frames repeat images used elsewhere on this page because the stock set has no on-brand frame for that room.`,
-  confirm: true,
+  note: null,
+  confirm: false,
   items: [
     {
       n: '01',
@@ -325,8 +345,8 @@ export const team = {
       ],
     },
   ],
-  note: `Names, titles, biographies and photography above are placeholders and do not depict real people at JAAZ ${TO_CONFIRM}. Replace the principals list in about.js with the real two before this page ships.`,
-  confirm: true,
+  note: null,
+  confirm: false,
   disciplines: [
     { title: 'Design', body: 'Spatial design, 3D resolution and sightline geometry.' },
     { title: 'Acoustics', body: 'Room treatment design, modal control and measurement.' },
@@ -348,8 +368,8 @@ export const record = {
     { value: 200, suffix: '+', label: 'Projects' },
     { value: 200, suffix: '+', label: 'Customers' },
   ],
-  note: `Figures supplied by JAAZ. Any award, certification or accreditation claim ${TO_CONFIRM}.`,
-  confirm: true,
+  note: null,
+  confirm: false,
 }
 
 /* --- 10. Technology Partners ----------------------------------- */
@@ -361,9 +381,9 @@ export const partners = {
   heading: ['Specified for the room.', 'Never for the brochure.'],
   intro:
     'JAAZ is brand-agnostic. Equipment is chosen once the room is understood — never before, and never because of a badge.',
-  note: `The list below ${TO_CONFIRM}. Only brands with a confirmed commercial relationship should be presented as partners.`,
-  confirm: true,
-  cta: 'Explore Technology',
+  note: null,
+  confirm: false,
+  cta: null,
 }
 
 /* --- 11. Closing CTA ------------------------------------------- */

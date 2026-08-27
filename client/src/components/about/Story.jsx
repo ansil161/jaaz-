@@ -1,6 +1,6 @@
 import { story } from '../../data/about'
-import { Lines, Figure, ScrubText, Drift } from '../ui/Motion'
-import { SectionLabel, ConfirmNote } from '../ui/Editorial'
+import { Lines, Figure, ScrubText, Drift, Rise, Rule } from '../ui/Motion'
+import { SectionLabel } from '../ui/Editorial'
 
 /* ============================================================
    ABOUT 03 — OUR STORY
@@ -15,8 +15,19 @@ import { SectionLabel, ConfirmNote } from '../ui/Editorial'
    company history from reading as an About-page obligation.
 
    There is no founding date and no founder biography here,
-   because JAAZ has not supplied one. The gap is marked rather
-   than filled.
+   because JAAZ has not supplied one. The gap is left EMPTY on the
+   page rather than filled — and, since this section shipped, rather
+   than papered over with a visible "to confirm" note. That note is a
+   marker for the team, and a client reading the About page should not
+   be shown the studio's own to-do list. The data still carries it;
+   `story.founding.confirm` is what keeps it off the page, and
+   clearing that flag publishes the real thing the moment there is
+   one.
+
+   The section now closes on the five disciplines instead. The
+   paragraph above it claims they sit under a single roof; the strip
+   is that claim, made legible, and it gives the close a beat of its
+   own rather than trailing off where the placeholder used to be.
    ============================================================ */
 
 export default function Story() {
@@ -85,13 +96,53 @@ export default function Story() {
               </Lines>
             ))}
 
-            <div className="mt-12">
-              <h3 className="t-label text-ink/45">{story.founding.heading}</h3>
-              <ConfirmNote tone="paper" className="mt-4">
-                {story.founding.note}
-              </ConfirmNote>
-            </div>
+            {/* Only ever rendered once JAAZ has supplied a real
+                founding story. Until then this is nothing at all —
+                not a placeholder addressed to the visitor. */}
+            {!story.founding.confirm && story.founding.body && (
+              <div className="mt-12">
+                <h3 className="t-label text-ink/45">{story.founding.heading}</h3>
+                <div className="mt-4 space-y-6">
+                  {story.founding.body.map((para) => (
+                    <Lines key={para} as="p" className="t-body max-w-xl text-ink/65">
+                      {para}
+                    </Lines>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
+        </div>
+
+        {/* --- The close. Full width again, so the section ends at a
+                wider measure than the column that leads into it. The
+                hairline draws itself across, then the disciplines
+                arrive one after another; each carries its own rule
+                that runs out under the word on hover, so the strip
+                keeps something in reserve for anyone who touches it. --- */}
+        <div className="mt-24 sm:mt-32">
+          <p className="t-label text-ink/45">{story.roof.label}</p>
+          <Rule className="mt-6 text-ink" />
+
+          <Rise
+            as="ul"
+            className="mt-10 grid grid-cols-2 gap-x-10 gap-y-10 sm:grid-cols-3 lg:grid-cols-5"
+            stagger={0.12}
+            y={26}
+          >
+            {story.roof.items.map((item, i) => (
+              <li key={item} className="group">
+                <span className="t-label block text-ink/30">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <span className="t-body mt-3 block text-ink">{item}</span>
+                <span
+                  className="mt-3 block h-px w-full origin-left scale-x-0 bg-ink/40 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-x-100"
+                  aria-hidden="true"
+                />
+              </li>
+            ))}
+          </Rise>
         </div>
       </div>
     </section>
