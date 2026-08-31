@@ -11,49 +11,23 @@ The query half of RAG, exposed on its own. Two callers want it:
 No LLM is involved. That is the point — it isolates retrieval quality from
 generation quality, which are two different problems with two different
 fixes.
+
+No business logic lives here. A route validates, delegates, and returns; the
+request and response shapes are in modules/retrieval/schemas.py.
 """
 
 from __future__ import annotations
 
 from fastapi import APIRouter
-from pydantic import BaseModel, ConfigDict, Field
 
 from app.api.dependencies import ChatCallerDep, ResourcesDep
-from app.modules.chat.schemas import SourceOut
 from app.modules.rag import citations
 from app.modules.retrieval.models import RetrievalQuery
+from app.modules.retrieval.schemas import SearchRequest, SearchResponse, SearchStats
 from app.modules.vector_store.filters import SearchFilter
+from app.shared.schemas import SourceOut
 
 router = APIRouter(prefix="/retrieval", tags=["retrieval"])
-
-
-class SearchRequest(BaseModel):
-    model_config = ConfigDict(populate_by_name=True)
-
-    query: str = Field(min_length=1, max_length=2_000)
-    top_k: int | None = Field(default=None, ge=1, le=50, alias="topK")
-    document_ids: list[str] | None = Field(default=None, alias="documentIds")
-    knowledge_base_id: str | None = Field(default=None, alias="knowledgeBaseId")
-
-
-class SearchStats(BaseModel):
-    model_config = ConfigDict(populate_by_name=True)
-
-    dense_count: int = Field(alias="denseCount")
-    sparse_count: int = Field(alias="sparseCount")
-    fused_count: int = Field(alias="fusedCount")
-    final_count: int = Field(alias="finalCount")
-    retrieval_ms: int = Field(alias="retrievalMs")
-    rerank_ms: int = Field(alias="rerankMs")
-
-
-class SearchResponse(BaseModel):
-    model_config = ConfigDict(populate_by_name=True)
-
-    query: str
-    model: str
-    hits: list[SourceOut]
-    stats: SearchStats
 
 
 @router.post("/search", response_model=SearchResponse, response_model_by_alias=True)

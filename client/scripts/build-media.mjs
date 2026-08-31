@@ -169,7 +169,7 @@ async function main() {
     manifest[key] = entry
   }
 
-  const manifestPath = path.join(ROOT, 'src', 'data', 'media-manifest.json')
+  const manifestPath = path.join(ROOT, 'src', 'features', 'public', 'data', 'media-manifest.json')
   await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`)
 
   console.log(`${files.length} still(s) + ${reels.length} reel(s) -> ${built} file(s) written.`)

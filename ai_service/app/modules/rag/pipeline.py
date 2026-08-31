@@ -43,7 +43,6 @@ from app.core.config import (
     RetrievalSettings,
     Settings,
 )
-from app.core.exceptions import LLMError
 from app.core.logging import Stopwatch, get_logger
 from app.modules.llm.base import (
     ChatMessage,
@@ -382,4 +381,4 @@ def _log_fields(metadata: GenerationMetadata) -> dict[str, object]:
     }
 
 
-__all__ = ["LLMError", "PreparedAnswer", "RagAnswer", "RagPipeline"]
+__all__ = ["PreparedAnswer", "RagAnswer", "RagPipeline"]

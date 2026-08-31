@@ -143,7 +143,6 @@ class GenerationMetadata(BaseModel):
 
     provider: str = ""
     model: str = ""
-    fell_back: bool = False
     query_rewritten: bool = False
     rewritten_query: str | None = None
     retrieval_count: int = 0

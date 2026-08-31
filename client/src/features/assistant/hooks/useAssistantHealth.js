@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 
-import { chatApi } from '../api/chatApi'
+import { chatApi } from '@/features/assistant/services/chatApi'
 
 /* Whether the assistant can answer right now.
  *

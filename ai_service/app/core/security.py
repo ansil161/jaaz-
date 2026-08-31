@@ -20,8 +20,7 @@ the token is mandatory in production.
 from __future__ import annotations
 
 import hmac
-from dataclasses import dataclass, field
-from typing import Any
+from dataclasses import dataclass
 
 from .config import Settings
 from .exceptions import ForbiddenError, NotAuthenticatedError
@@ -46,7 +45,6 @@ class CallerIdentity:
     # None means "everything this tenant may see", which is not the same as
     # "everything".
     allowed_document_ids: tuple[str, ...] | None = None
-    attributes: dict[str, Any] = field(default_factory=dict)
 
 
 def verify_service_token(authorization: str | None, settings: Settings) -> None:

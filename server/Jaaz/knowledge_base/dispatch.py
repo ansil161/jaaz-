@@ -35,6 +35,7 @@ logger = logging.getLogger('jaaz.knowledge_base')
 EAGER = 'eager'
 THREAD = 'thread'
 WORKER = 'worker'
+CELERY = 'celery'
 
 
 def _run(document_id):
@@ -93,7 +94,14 @@ def enqueue_document_processing(document_id):
         logger.info('Document %s queued for the processing worker', document_id)
         return WORKER
 
+    if mode == CELERY:
+        from .tasks import process_document_task
+
+        transaction.on_commit(lambda: process_document_task.delay(document_id))
+        logger.info('Document %s dispatched to Celery task queue', document_id)
+        return CELERY
+
     raise ValueError(
         f'Unknown RAG_TASK_DISPATCH {mode!r}. Expected one of: '
-        f'{EAGER}, {THREAD}, {WORKER}.'
+        f'{EAGER}, {THREAD}, {WORKER}, {CELERY}.'
     )

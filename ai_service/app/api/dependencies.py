@@ -16,7 +16,7 @@ from typing import Annotated
 
 from fastapi import Depends, Header, Request
 
-from app.core.config import Settings, get_settings
+from app.core.config import Settings
 from app.core.exceptions import InvalidRequestError, RateLimitedError
 from app.core.lifecycle import AppResources
 from app.core.security import CallerIdentity, verify_service_token
@@ -174,5 +174,4 @@ __all__ = [
     "SettingsDep",
     "SlidingWindowRateLimiter",
     "get_resources",
-    "get_settings",
 ]

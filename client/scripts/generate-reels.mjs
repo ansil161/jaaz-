@@ -77,7 +77,7 @@ const CRAFT =
   'Photoreal cinematic commercial photography, full-frame 35mm or 50mm look, shallow natural depth of field, high dynamic range, realistic materials and reflections. Real unposed people with correct anatomy and natural expressions, hands never distorted. No CGI sheen, no cartoon rendering, no excessive neon, no RGB gamer clichés, no on-screen text, no captions, no subtitles, no brand marks, no logos, no watermark. 16:9.'
 
 /* `slug` is the manifest key the app asks for — it must stay in
-   step with `reel:` in src/data/tonight.js, which is why both are
+   step with `reel:` in src/features/public/data/tonight.js, which is why both are
    listed here and checked at startup. */
 const REELS = [
   {

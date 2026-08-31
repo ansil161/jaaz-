@@ -40,11 +40,11 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
-const MANIFEST = path.join(ROOT, 'src', 'data', 'media-manifest.json')
+const MANIFEST = path.join(ROOT, 'src', 'features', 'public', 'data', 'media-manifest.json')
 const OUT = path.join(ROOT, 'media-src', 'PROMPTS.md')
 
 /* --- The bible. Kept identical to `houseBible` in
-   src/data/experience.js, which is the copy the app renders
+   src/features/public/data/experience.js, which is the copy the app renders
    from. If you change one, change both. --- */
 const BIBLE = [
   'Single-storey contemporary residence. Full-height glazing on the east elevation, slim blackened-steel frames, deep roof overhang, flat parapet roof.',
@@ -58,7 +58,7 @@ const DISCIPLINE =
 
 /* --- STILLS -------------------------------------------------
    `slot` is the manifest key the app asks for. Nothing here is
-   decorative: every entry is referenced by src/data/experience.js
+   decorative: every entry is referenced by src/features/public/data/experience.js
    and will appear as an empty stage or a disabled control until
    it exists. --- */
 const STILLS = [

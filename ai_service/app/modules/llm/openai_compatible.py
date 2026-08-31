@@ -20,38 +20,31 @@ from typing import Any
 
 import httpx
 
-from app.core.config import LLMProviderSettings
-from app.core.exceptions import LLMBadRequestError, LLMError, LLMTimeoutError
+from app.core.exceptions import LLMError, LLMTimeoutError
 from app.core.logging import get_logger
 from app.shared.types import TokenUsage
 
 from .base import (
     GenerationRequest,
     GenerationResult,
-    LLMProvider,
     StreamChunk,
 )
+from .http import HttpLLMProvider
 
 logger = get_logger(__name__)
 
-_RETRYABLE_STATUS = frozenset({408, 409, 429, 500, 502, 503, 504})
 
-
-class OpenAICompatibleProvider(LLMProvider):
+class OpenAICompatibleProvider(HttpLLMProvider):
     name = "openai_compatible"
 
-    def __init__(self, settings: LLMProviderSettings,
-                 client: httpx.AsyncClient | None = None) -> None:
-        self._settings = settings
-        self._owns_client = client is None
-        self._client = client or httpx.AsyncClient(
-            timeout=httpx.Timeout(settings.timeout_seconds, connect=10.0),
-            limits=httpx.Limits(max_connections=32, max_keepalive_connections=16),
-        )
-
-    @property
-    def model(self) -> str:
-        return self._settings.model
+    # Construction, the base URL, per-request timeouts, health, shutdown
+    # and status-to-error mapping are shared with Gemini — see http.py.
+    #
+    # The retryable set is the base's plus 409, which is what this dialect
+    # has always treated as retryable here and Gemini has not. Kept as it
+    # was rather than unified: the two were deliberately different.
+    retryable_statuses = frozenset({408, 409, 429, 500, 502, 503, 504})
+    _logger = logger
 
     # -- public ----------------------------------------------------------
 
@@ -139,18 +132,7 @@ class OpenAICompatibleProvider(LLMProvider):
             raise LLMError(provider=self.name,
                            context={"cause": type(exc).__name__}) from exc
 
-    async def health(self) -> bool:
-        return bool(self._settings.api_key and self._settings.model)
-
-    async def aclose(self) -> None:
-        if self._owns_client:
-            await self._client.aclose()
-
     # -- internals -------------------------------------------------------
-
-    @property
-    def _base(self) -> str:
-        return self._settings.base_url.rstrip("/")
 
     def _headers(self) -> dict[str, str]:
         key = self._settings.api_key
@@ -158,10 +140,6 @@ class OpenAICompatibleProvider(LLMProvider):
             "Content-Type": "application/json",
             "Authorization": f"Bearer {key.get_secret_value() if key else ''}",
         }
-
-    def _timeout(self, request: GenerationRequest) -> httpx.Timeout:
-        seconds = request.timeout_seconds or self._settings.timeout_seconds
-        return httpx.Timeout(seconds, connect=10.0)
 
     def _payload(self, request: GenerationRequest, *, stream: bool
                  ) -> dict[str, Any]:
@@ -186,23 +164,6 @@ class OpenAICompatibleProvider(LLMProvider):
         if request.stop:
             payload["stop"] = list(request.stop)
         return payload
-
-    def _raise_for_status(self, response: httpx.Response) -> None:
-        if response.status_code < 400:
-            return
-
-        detail = response.text[:500]
-        logger.warning(
-            "LLM request failed",
-            extra={"provider": self.name, "status": response.status_code,
-                   "detail": detail},
-        )
-
-        if response.status_code in _RETRYABLE_STATUS:
-            raise LLMError(provider=self.name,
-                           context={"status": response.status_code})
-        raise LLMBadRequestError(provider=self.name,
-                                 context={"status": response.status_code})
 
 
 class GroqProvider(OpenAICompatibleProvider):

@@ -470,6 +470,7 @@ KNOWLEDGE_BASE = {
     # eager  → run inline in the request (tests; never production)
     # thread → run on a background thread (single-process development)
     # worker → leave it queued for `manage.py process_documents`
+    # celery → dispatch via Celery task queue (Redis backend)
     'TASK_DISPATCH': env('RAG_TASK_DISPATCH', 'thread' if DEBUG else 'worker'),
     'WORKER_POLL_SECONDS': env_int('RAG_WORKER_POLL_SECONDS', 5),
     # A document stuck mid-ingest for longer than this is assumed to belong
@@ -477,6 +478,19 @@ KNOWLEDGE_BASE = {
     'STALE_PROCESSING_MINUTES': env_int('RAG_STALE_PROCESSING_MINUTES', 15),
     'MAX_PROCESSING_ATTEMPTS': env_int('RAG_MAX_PROCESSING_ATTEMPTS', 5),
 }
+
+
+# ---------------------------------------------------------------------------
+# Celery & Redis Task Queue Configuration
+# ---------------------------------------------------------------------------
+CELERY_BROKER_URL = env('CELERY_BROKER_URL', 'redis://127.0.0.1:6379/0')
+CELERY_RESULT_BACKEND = env('CELERY_RESULT_BACKEND', 'redis://127.0.0.1:6379/0')
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
 
 
 # ---------------------------------------------------------------------------

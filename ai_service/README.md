@@ -94,17 +94,30 @@ app/
 │   ├── rag/                   pipeline, context builder, prompts, citations
 │   ├── retrieval/             hybrid search, RRF, reranking, query rewriting
 │   ├── embeddings/            BGE behind an interface; dense + sparse
-│   ├── llm/                   Gemini, Groq/xAI, fallback, factory
+│   ├── llm/                   Gemini, Groq/xAI, fallback, factory, shared
+│   │                          HTTP plumbing
 │   ├── vector_store/          Qdrant behind an interface; metadata filters
 │   └── indexing/              chunks in, vectors in Qdrant
 ├── workers/                   the reindex worker, its queue, its jobs
-└── shared/                    domain types used across modules
+└── shared/                    types.py  domain nouns used across modules
+                               schemas.py wire types used by more than one
+                               endpoint
 
 tests/
-├── unit/          fusion, citations, context, filters, fallback, rewriting
+├── unit/          fusion, citations, context, filters, fallback, rewriting,
+│                  the HTTP providers (respx, at the transport boundary)
 ├── integration/   the API through its real dependency graph, fakes at the edge
 └── evaluation/    retrieval and answer quality against a labelled dataset
 ```
+
+Each module owns its own wire contract: `modules/chat/schemas.py`,
+`modules/indexing/schemas.py` and `modules/retrieval/schemas.py` hold the
+request and response models for the endpoints those modules serve, so a route
+file validates, delegates and returns and holds no schema of its own. The one
+exception is `shared/schemas.py`, for the types that appear in more than one
+response — `SourceOut` is returned by both chat and retrieval, and having
+`retrieval` import it from `chat` is exactly the coupling `shared/` exists to
+prevent.
 
 `modules/` are modules, not services. Retrieval calling embeddings is a
 function call, not an HTTP request — splitting them into separate deployables
@@ -292,8 +305,9 @@ venv/Scripts/python -m pytest -m evaluation -s # quality report
 ```
 
 No test calls a paid API. Providers are faked at the HTTP boundary with
-`respx`, so the request this service actually builds is asserted — a mocked
-client would only assert that the mock was called.
+`respx` (`tests/unit/test_llm_providers.py`), so the request this service
+actually builds is asserted — its JSON body, its headers and its URL. A
+mocked client would only assert that the mock was called.
 
 `tests/evaluation/` measures retrieval quality (hit rate, recall, precision,
 MRR, NDCG) and answer quality (groundedness, citation correctness) against a

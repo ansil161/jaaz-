@@ -53,10 +53,6 @@ def bind_context(**values: Any) -> None:
     _request_context.set(current)
 
 
-def get_context() -> dict[str, Any]:
-    return dict(_context())
-
-
 @contextmanager
 def request_context(**values: Any) -> Iterator[str]:
     """Scope a block of work to a request id, restoring the previous context."""

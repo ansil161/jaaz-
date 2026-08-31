@@ -22,7 +22,7 @@ from fastapi import APIRouter, status
 
 from app.api.dependencies import IndexCallerDep, ResourcesDep
 from app.core.logging import bind_context, get_logger
-from app.modules.chat.schemas import (
+from app.modules.indexing.schemas import (
     DeleteDocumentResponse,
     IndexDocumentRequest,
     IndexDocumentResponse,

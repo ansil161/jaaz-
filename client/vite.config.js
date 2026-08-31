@@ -55,6 +55,15 @@ function consoleRoutes() {
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss(), consoleRoutes()],
+  /* `@` is the src root. Every module under src/ addresses its siblings
+   * through it rather than by counting `../` hops, so a file can be moved
+   * between features without rewriting the imports of everything it pulls
+   * in — which is the whole point of arranging the tree by feature. */
+  resolve: {
+    alias: {
+      '@': here('./src'),
+    },
+  },
   build: {
     rollupOptions: { input: ENTRIES },
   },

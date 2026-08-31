@@ -1,6 +1,6 @@
 # PRODUCT — JAZ
 
-> Inferred from the repository (client/src/data/site.js, solutions.js, about.js,
+> Inferred from the repository (client/src/features/public/data/site.js, solutions.js, about.js,
 > contact.js, HOME_PAGE_DESIGN.MD) rather than from a live interview. Every line
 > below is traceable to shipped copy or code. Correct anything that is wrong.
 

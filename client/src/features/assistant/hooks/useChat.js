@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { NetworkError } from '../../../lib/api'
-import { chatApi } from '../api/chatApi'
+import { NetworkError } from '@/services/api/client'
+import { chatApi } from '@/features/assistant/services/chatApi'
 
 /* The open conversation, and the streaming state machine that drives it.
  *

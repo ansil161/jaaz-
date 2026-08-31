@@ -26,8 +26,7 @@ from typing import Any
 
 import httpx
 
-from app.core.config import LLMProviderSettings
-from app.core.exceptions import LLMBadRequestError, LLMError, LLMTimeoutError
+from app.core.exceptions import LLMError, LLMTimeoutError
 from app.core.logging import get_logger
 from app.shared.types import ChatRole, TokenUsage
 
@@ -35,30 +34,21 @@ from .base import (
     ChatMessage,
     GenerationRequest,
     GenerationResult,
-    LLMProvider,
     StreamChunk,
 )
+from .http import HttpLLMProvider
 
 logger = get_logger(__name__)
 
-_RETRYABLE_STATUS = frozenset({408, 429, 500, 502, 503, 504})
 
-
-class GeminiProvider(LLMProvider):
+class GeminiProvider(HttpLLMProvider):
     name = "gemini"
 
-    def __init__(self, settings: LLMProviderSettings,
-                 client: httpx.AsyncClient | None = None) -> None:
-        self._settings = settings
-        self._owns_client = client is None
-        self._client = client or httpx.AsyncClient(
-            timeout=httpx.Timeout(settings.timeout_seconds, connect=10.0),
-            limits=httpx.Limits(max_connections=32, max_keepalive_connections=16),
-        )
-
-    @property
-    def model(self) -> str:
-        return self._settings.model
+    # Construction, the base URL, per-request timeouts, health, shutdown
+    # and status-to-error mapping are shared with the OpenAI-compatible
+    # providers — see http.py.
+    _logger = logger
+    _failure_message = "Gemini request failed"
 
     # -- public ----------------------------------------------------------
 
@@ -134,18 +124,7 @@ class GeminiProvider(LLMProvider):
             raise LLMError(provider=self.name,
                            context={"cause": type(exc).__name__}) from exc
 
-    async def health(self) -> bool:
-        return bool(self._settings.api_key and self._settings.model)
-
-    async def aclose(self) -> None:
-        if self._owns_client:
-            await self._client.aclose()
-
     # -- internals -------------------------------------------------------
-
-    @property
-    def _base(self) -> str:
-        return self._settings.base_url.rstrip("/")
 
     def _headers(self) -> dict[str, str]:
         key = self._settings.api_key
@@ -155,10 +134,6 @@ class GeminiProvider(LLMProvider):
             # the path.
             "x-goog-api-key": key.get_secret_value() if key else "",
         }
-
-    def _timeout(self, request: GenerationRequest) -> httpx.Timeout:
-        seconds = request.timeout_seconds or self._settings.timeout_seconds
-        return httpx.Timeout(seconds, connect=10.0)
 
     def _payload(self, request: GenerationRequest) -> dict[str, Any]:
         payload: dict[str, Any] = {
@@ -186,24 +161,6 @@ class GeminiProvider(LLMProvider):
             payload["generationConfig"]["stopSequences"] = list(request.stop)
 
         return payload
-
-    def _raise_for_status(self, response: httpx.Response) -> None:
-        if response.status_code < 400:
-            return
-
-        # The body can echo the prompt. Logged, never raised.
-        detail = response.text[:500]
-        logger.warning(
-            "Gemini request failed",
-            extra={"provider": self.name, "status": response.status_code,
-                   "detail": detail},
-        )
-
-        if response.status_code in _RETRYABLE_STATUS:
-            raise LLMError(provider=self.name,
-                           context={"status": response.status_code})
-        raise LLMBadRequestError(provider=self.name,
-                                 context={"status": response.status_code})
 
 
 def _to_content(message: ChatMessage) -> dict[str, Any]:

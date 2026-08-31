@@ -12,11 +12,10 @@ to exactly one set of access rules instead of two that can disagree.
 
 from __future__ import annotations
 
-from typing import Any
-
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
-from app.shared.types import ChatRole, GenerationMetadata, Source
+from app.shared.schemas import SourceOut
+from app.shared.types import ChatRole, GenerationMetadata
 
 # A question longer than this is not a question. The cap exists because the
 # text is embedded and then put in a prompt, both of which cost money in
@@ -57,40 +56,6 @@ class ChatRequest(BaseModel):
         if not stripped:
             raise ValueError("Enter a question.")
         return stripped
-
-
-class SourceOut(BaseModel):
-    model_config = ConfigDict(populate_by_name=True)
-
-    document_id: str = Field(alias="documentId")
-    document_name: str = Field(alias="documentName")
-    chunk_id: str = Field(alias="chunkId")
-    chunk_index: int = Field(alias="chunkIndex")
-    page: int | None = None
-    pages: list[int] = Field(default_factory=list)
-    heading: str | None = None
-    citation_number: int = Field(alias="citationNumber")
-    score: float
-    excerpt: str
-
-    @classmethod
-    def of(cls, source: Source) -> SourceOut:
-        # Built field by field rather than `model_validate(source.model_dump())`:
-        # the domain type uses snake_case and this one is alias-first, and
-        # relying on pydantic to bridge the two silently depends on validation
-        # flags that changed between minor versions.
-        return cls(
-            documentId=source.document_id,
-            documentName=source.document_name,
-            chunkId=source.chunk_id,
-            chunkIndex=source.chunk_index,
-            page=source.page,
-            pages=list(source.pages),
-            heading=source.heading,
-            citationNumber=source.citation_number,
-            score=source.score,
-            excerpt=source.excerpt,
-        )
 
 
 class ChatMetadataOut(BaseModel):
@@ -142,46 +107,3 @@ class ChatResponse(BaseModel):
     answer: str
     sources: list[SourceOut] = Field(default_factory=list)
     metadata: ChatMetadataOut
-
-
-class IndexChunkIn(BaseModel):
-    model_config = ConfigDict(populate_by_name=True)
-
-    chunk_id: str = Field(alias="chunkId")
-    chunk_index: int = Field(alias="chunkIndex")
-    content: str
-    token_count: int = Field(default=0, alias="tokenCount")
-    metadata: dict[str, Any] = Field(default_factory=dict)
-
-
-class IndexDocumentRequest(BaseModel):
-    """What Django's knowledge-base worker sends after chunking a document.
-
-    Django extracts and chunks — it owns the file bytes and already has a
-    tested pipeline for it. This service embeds and indexes.
-    """
-
-    model_config = ConfigDict(populate_by_name=True)
-
-    document_id: str = Field(alias="documentId")
-    document_name: str = Field(alias="documentName")
-    document_type: str = Field(default="", alias="documentType")
-    knowledge_base_id: str = Field(default="default", alias="knowledgeBaseId")
-    language: str = "en"
-    chunks: list[IndexChunkIn] = Field(min_length=1, max_length=5_000)
-
-
-class IndexDocumentResponse(BaseModel):
-    model_config = ConfigDict(populate_by_name=True)
-
-    document_id: str = Field(alias="documentId")
-    indexed_chunks: int = Field(alias="indexedChunks")
-    embedding_model: str = Field(alias="embeddingModel")
-    dimensions: int
-
-
-class DeleteDocumentResponse(BaseModel):
-    model_config = ConfigDict(populate_by_name=True)
-
-    document_id: str = Field(alias="documentId")
-    deleted: bool = True

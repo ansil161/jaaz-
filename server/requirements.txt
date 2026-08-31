@@ -32,10 +32,13 @@ pillow==12.3.0
 # HTTP client for calling ai_service from the knowledge-base worker.
 requests==2.34.2
 
-# Not required, and deliberately absent:
-#   - No Celery/Redis. The queue is a document status column drained by
-#     `manage.py process_documents` with SELECT ... FOR UPDATE SKIP LOCKED.
+# Background task queue and broker
+celery>=5.3.6
+redis>=5.0.0
+
+# Deliberately absent:
 #   - No pgvector. It is not installed on the target PostgreSQL, so vectors
 #     live in a double precision[] column and search is exact. See
 #     knowledge_base/vector_store/providers/postgres.py for when that stops
 #     being enough.
+

@@ -1,6 +1,6 @@
 import { Fragment, memo, useMemo } from 'react'
 
-import { hasOpenFence, parseBlocks } from '../utils/markdown'
+import { hasOpenFence, parseBlocks } from '@/features/assistant/utils/markdown'
 import CopyButton from './CopyButton'
 
 /* Answer text, rendered as React elements.

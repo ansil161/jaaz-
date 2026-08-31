@@ -24,9 +24,10 @@ from app.core.security import CallerIdentity
 from app.modules.llm.base import ChatMessage
 from app.modules.rag.pipeline import RagAnswer, RagPipeline
 from app.modules.vector_store.filters import SearchFilter
+from app.shared.schemas import SourceOut
 
 from . import streaming
-from .schemas import ChatMetadataOut, ChatRequest, ChatResponse, SourceOut
+from .schemas import ChatMetadataOut, ChatRequest, ChatResponse
 
 logger = get_logger(__name__)
 

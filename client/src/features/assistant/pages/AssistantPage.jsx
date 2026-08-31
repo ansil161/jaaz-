@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { AlertTriangle, ArrowDown, PanelLeft } from 'lucide-react'
 
-import Spinner from '../../../components/console/Spinner'
-import Composer from '../components/Composer'
-import ConversationList from '../components/ConversationList'
-import EmptyState from '../components/EmptyState'
-import MessageBubble from '../components/MessageBubble'
-import { useAssistantHealth } from '../hooks/useAssistantHealth'
-import { useChat } from '../hooks/useChat'
-import { useConversations } from '../hooks/useConversations'
+import Spinner from '@/components/feedback/Spinner'
+import Composer from '@/features/assistant/components/Composer'
+import ConversationList from '@/features/assistant/components/ConversationList'
+import EmptyState from '@/features/assistant/components/EmptyState'
+import MessageBubble from '@/features/assistant/components/MessageBubble'
+import { useAssistantHealth } from '@/features/assistant/hooks/useAssistantHealth'
+import { useChat } from '@/features/assistant/hooks/useChat'
+import { useConversations } from '@/features/assistant/hooks/useConversations'
 
 /* The assistant screen.
  *

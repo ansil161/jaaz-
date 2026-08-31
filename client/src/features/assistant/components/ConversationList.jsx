@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { MessageSquarePlus, Trash2 } from 'lucide-react'
 
-import Spinner from '../../../components/console/Spinner'
+import Spinner from '@/components/feedback/Spinner'
 
 /* Past conversations, newest first.
  *

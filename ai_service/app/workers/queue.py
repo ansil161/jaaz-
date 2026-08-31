@@ -35,7 +35,6 @@ from __future__ import annotations
 import asyncio
 import uuid
 from abc import ABC, abstractmethod
-from collections.abc import Awaitable, Callable
 from dataclasses import dataclass, field
 from enum import StrEnum
 from typing import Any
@@ -65,9 +64,6 @@ class Job:
     error: str = ""
     result: dict[str, Any] = field(default_factory=dict)
     progress: dict[str, Any] = field(default_factory=dict)
-
-
-JobHandler = Callable[[Job], Awaitable[dict[str, Any]]]
 
 
 class JobQueue(ABC):
@@ -151,6 +147,3 @@ class InMemoryJobQueue(JobQueue):
 
     def get(self, job_id: str) -> Job | None:
         return self._jobs.get(job_id)
-
-    def pending(self) -> int:
-        return self._queue.qsize()

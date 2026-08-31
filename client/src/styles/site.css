@@ -1,0 +1,1726 @@
+@import 'tailwindcss';
+
+/* ------------------------------------------------------------
+   CUSTOM VARIANTS
+
+   `kit-tall` gates the one layout on this site that needs vertical
+   room as well as horizontal. It was written for the horizontal
+   rail in <Collections>; that section has been removed from the
+   homepage, and <Tonight> is now its only consumer.
+
+   Tonight uses it to lock itself to `--app-h` — one screen, no
+   scrolling within the section — because its composition only
+   works when the stage, the copy column and the rail are all
+   visible at once. Anything shorter than the threshold keeps the
+   same desktop composition but lets the section run its natural
+   height, which is the honest fallback: a section forced into a
+   viewport it does not fit just hides its own overflow.
+
+   THE REDUCED-MOTION CLAUSE IS DELIBERATELY KEPT. It is no longer
+   protecting a GSAP pin, so it now simply means a reduced-motion
+   visitor gets the natural-height layout. That is a safe place to
+   land, and removing the clause would silently change what those
+   visitors see — so it stays until someone decides otherwise on
+   purpose.
+   ------------------------------------------------------------ */
+@custom-variant kit-tall (@media (min-width: 1024px) and (min-height: 760px) and (prefers-reduced-motion: no-preference));
+
+/* ------------------------------------------------------------
+   `tall-lg` gates the running head on /projects — the project
+   number, scope and route into the project that STICKS beside a
+   chapter's photographs while they travel past it.
+
+   Sticking is only worth anything if the thing that sticks is
+   meaningfully shorter than the window. On a 1366x768 laptop the
+   viewport is about 600px tall, and that column is most of it —
+   so it would pin to the top of a screen it very nearly fills,
+   which reads as a layout that has come unstuck rather than one
+   that is holding. Below the threshold it simply scrolls with
+   its chapter, which is the correct short-window composition and
+   not a degraded one.
+
+   Written as a custom variant rather than inline. Tailwind does
+   not compile a stacked arbitrary media variant
+   (`lg:[@media(min-height:720px)]:sticky`) — it emits NO rule at
+   all, silently, so the class list reads exactly as intended and
+   the element is `position: static` in the browser. Declaring
+   the condition once, here, is the only version of this that can
+   be verified.
+   ------------------------------------------------------------ */
+@custom-variant tall-lg (@media (min-width: 1024px) and (min-height: 720px));
+
+/* ============================================================
+   JAAZ — DESIGN SYSTEM
+   Black + white. Architectural. Editorial. Cinematic.
+   ============================================================ */
+
+@theme {
+  /* --- Monochrome ramp. Warm-neutral, never blue-grey. --- */
+  --color-ink: #000000;
+  --color-ink-2: #050505;
+  --color-ink-3: #0b0b0c;
+  --color-ink-4: #141416;
+  --color-smoke: #2a2a2d;
+  --color-ash: #55555b;
+  --color-mist: #8a8a91;
+  --color-fog: #b8b8bd;
+  --color-bone: #e6e4e0;
+  --color-paper: #f4f2ee;
+  --color-pure: #ffffff;
+
+  /* --- Signal. One colour, deliberately outside the monochrome ramp. ---
+     Reserved for Process's timeline — the single place on the site
+     that needs a "you are here" state a ramp of greys can't carry. Not
+     a brand colour and not for reuse elsewhere: a second accent would
+     make this one read as decoration instead of as a state. */
+  --color-signal: #c11f2c;
+
+  /* --- Cove. The warm light, given a solid value. ---
+     Every closing CTA already carries this hue as a radial-gradient
+     glow — the same "screen just switched off" warmth the hero opens
+     on. This is not a second accent competing with `--color-signal`;
+     it is that existing motif made legible as flat text, solid rather
+     than translucent, for the one word each CTA headline singles out. */
+  --color-cove: #c9ad7c;
+
+  /* --- Type --- */
+  --font-display: 'Instrument Serif', 'Times New Roman', serif;
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* --- Motion --- */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+:root {
+  color-scheme: dark;
+  /* Overwritten with the measured viewport height by useViewportHeight;
+     this is only what full-bleed stages use before the hook runs. */
+  --app-h: 100svh;
+  --gutter: clamp(1.25rem, 5vw, 5rem);
+  --rule: rgba(255, 255, 255, 0.12);
+  --rule-ink: rgba(0, 0, 0, 0.14);
+}
+
+* {
+  min-width: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: #000;
+  color: #e6e4e0;
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-synthesis-weight: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
+}
+
+/* ------------------------------------------------------------
+   The first-load overlay holds the page still while it is up.
+
+   A CLASS, NOT AN INLINE STYLE. <Nav> writes
+   `documentElement.style.overflow` directly for its mobile menu, and
+   on mount it writes the closed state — an empty string. The overlay
+   locks from a layout effect, which commits BEFORE that passive
+   effect runs, so an inline lock was being wiped a moment after it
+   was set and the page scrolled freely behind the intro. A class
+   survives it: Nav clearing the inline property leaves this rule
+   standing. Anything else that needs to freeze the document should
+   use this too rather than racing for the same inline property.
+   ------------------------------------------------------------ */
+html.intro-locked {
+  overflow: hidden;
+}
+
+/* Lenis owns the scroll; keep native smooth off so they don't fight. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+::selection {
+  background: #fff;
+  color: #000;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #000;
+}
+::-webkit-scrollbar-thumb {
+  background: #2a2a2d;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #55555b;
+}
+
+/* ------------------------------------------------------------
+   PLATE GRADING — registered, so it can actually animate.
+
+   `.plate` builds its `filter` out of four custom properties, which
+   makes per-slot grading a one-class change. The catch is that an
+   UNREGISTERED custom property is not an animatable value: change one
+   on an element that is transitioning `filter` and Chrome applies the
+   new value to the cascade but holds the old computed filter, so the
+   picture lands one state behind and only catches up on the NEXT
+   change. That is silent — nothing errors, the inline style reads
+   correctly, and only the pixels are wrong.
+
+   Registering each as a <number> gives it a type the interpolator
+   understands, so `transition: filter` becomes a real interpolation.
+   Comfort's plates resolve from desaturated to full colour on this,
+   and the two About sections that brighten a plate on hover
+   (EverySpace, HumanFactors) were quietly suffering the same lag.
+
+   `--plate-blur` is deliberately NOT registered. It is the one of the
+   five that is READ FROM AN ANCESTOR — Chapters.jsx pushes a
+   scroll-velocity blur onto every plate below it with a single
+   property — and registration defaults to `inherits: false`, which
+   would cut that off. The four below are only ever set on the plate
+   element itself, so they lose nothing by not inheriting.
+   ------------------------------------------------------------ */
+@property --plate-grayscale {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+@property --plate-saturate {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 1;
+}
+@property --plate-contrast {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 1;
+}
+@property --plate-brightness {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 1;
+}
+
+/* ------------------------------------------------------------
+   Everything below lives in @layer components.
+
+   Tailwind v4 declares `@layer theme, base, components, utilities`.
+   UNLAYERED css beats every layered rule no matter where it sits in
+   the file — so an unlayered `.plate { filter: ... }` silently
+   won over `brightness-125`, and `.t-mega { font-size }` would have
+   won over `text-sm`. Declaring these as components puts them where
+   a utility can override them, which is the whole contract of a
+   utility framework.
+   ------------------------------------------------------------ */
+@layer components {
+  /* ============================================================
+     TYPE PRIMITIVES
+     One display face, one sans. Scale does the work, not variety.
+     ============================================================ */
+
+  .font-display {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.015em;
+    line-height: 0.95;
+  }
+
+  .t-mega {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 10.5vw, 11rem);
+    line-height: 0.86;
+    letter-spacing: -0.03em;
+  }
+  /* The hero headline gets its own step. It has to be commanding
+     AND leave the lit screen readable behind it — `t-mega` sized
+     type covers the screen entirely and kills the reveal. */
+  .t-hero {
+    font-family: var(--font-display);
+    /* The floor is set by the longest headline line fitting inside
+       `.mask-line`, which clips horizontally as well as vertically. */
+    font-size: clamp(2.05rem, 6.6vw, 6.75rem);
+    line-height: 0.98;
+    letter-spacing: -0.028em;
+  }
+  /* The projected title card. `t-mega` is sized off width alone, and
+     three lines of it are taller than a 600px window — the last line
+     falls out of the frame, and its exit mask then reveals it on the
+     way past, which is the one artefact a title card cannot have.
+     Height is therefore part of the condition here, exactly as it is
+     for `.kit-tall` at the top of this file. */
+  .t-cinema {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, min(8.4vw, 12.8vh), 8.5rem);
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+  }
+  /* The chapter headline for a pinned section that has to share its
+     stage with something else — <EverySeat> gives most of its width
+     to the drawing, so its headline lives in a ~36% column and stacks
+     to three lines. `t-display` sized off width alone runs that column
+     off the top of a 540px stage and straight through the chapter
+     mark. Same reasoning as `.t-cinema`, one step down. */
+  .t-chapter {
+    font-family: var(--font-display);
+    font-size: clamp(1.85rem, min(4.4vw, 7.6vh), 4.5rem);
+    line-height: 0.96;
+    letter-spacing: -0.022em;
+  }
+  .t-display {
+    font-family: var(--font-display);
+    font-size: clamp(2.3rem, 6.2vw, 6.25rem);
+    line-height: 0.94;
+    letter-spacing: -0.025em;
+  }
+  .t-heading {
+    font-family: var(--font-display);
+    font-size: clamp(1.85rem, 3.5vw, 3.5rem);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+  }
+  .t-sub {
+    font-family: var(--font-sans);
+    font-weight: 300;
+    font-size: clamp(1rem, 1.3vw, 1.28rem);
+    line-height: 1.55;
+    letter-spacing: -0.005em;
+  }
+  .t-body {
+    font-family: var(--font-sans);
+    font-weight: 300;
+    font-size: clamp(0.9375rem, 1.02vw, 1.0625rem);
+    line-height: 1.7;
+    letter-spacing: -0.003em;
+  }
+
+  /* The label. Every section is anchored by one. */
+  .t-label {
+    font-family: var(--font-mono);
+    font-weight: 400;
+    font-size: 0.6875rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+  }
+  .t-num {
+    font-family: var(--font-mono);
+    font-weight: 300;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+  }
+
+  .italic-display {
+    font-style: italic;
+  }
+
+  /* ============================================================
+     LAYOUT
+     ============================================================ */
+
+  .shell {
+    padding-inline: var(--gutter);
+  }
+  .shell-wide {
+    /* `width: 100%` is load-bearing: with only `margin-inline: auto`,
+       a flex child opts out of `align-items: stretch` and shrink-wraps
+       to its content instead of filling the row. */
+    width: 100%;
+    max-width: 108rem;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .rule {
+    border-color: var(--rule);
+  }
+  .on-paper {
+    --rule: var(--rule-ink);
+  }
+
+  /* ============================================================
+     MOTION PRIMITIVES
+     Elements start hidden and are released by GSAP. Without JS,
+     `.no-js` on <html> restores everything.
+     ============================================================ */
+
+  .no-js [data-reveal],
+  .no-js [data-split] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .mask-line {
+    display: block;
+    overflow: hidden;
+    padding-block: 0.08em;
+    margin-block: -0.08em;
+  }
+
+  /* The inline sibling of `.mask-line`. A word-level reveal needs the
+     mask to sit inline with the text flow so the heading still wraps
+     naturally at every width — which `.mask-line`, being a block, cannot
+     do. Used where a reveal has to survive resize without re-splitting. */
+  .mask-word {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+    padding-block: 0.12em;
+    margin-block: -0.12em;
+  }
+
+  /* ------------------------------------------------------------
+     HOVER DIM — separation without a separator.
+
+     A list with no rules between its rows needs some other way to
+     say where one entry ends. Dimming every sibling of whatever is
+     under the cursor does it with light instead of geometry, which
+     is the whole point on a page that has given up decorative
+     lines. Written here rather than as two Tailwind variants
+     because `hover:` and `group-hover:` generate equal-specificity
+     rules whose winner depends on Tailwind's own sort order — this
+     cannot be broken by a class list being reordered.
+     ------------------------------------------------------------ */
+  .hover-dim > * {
+    transition: opacity 600ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .hover-dim:hover > * {
+    opacity: 0.32;
+  }
+  .hover-dim > *:hover,
+  .hover-dim > *:focus-within {
+    opacity: 1;
+  }
+
+  /* SplitText line wrappers */
+  .split-line {
+    overflow: hidden;
+    padding-bottom: 0.1em;
+    margin-bottom: -0.1em;
+  }
+
+  /* ============================================================
+     COMPONENTS
+     ============================================================ */
+
+  /* --- The nav capsule ------------------------------------------
+     The primary links are grouped onto one plate instead of running
+     loose across the bar. Three links spaced across 1200px of empty
+     header read as three unrelated words; the same three inside a
+     held shape read as a set, and the bar resolves into three things
+     — mark, menu, action — instead of five.
+
+     EVERY VALUE HERE IS WHITE AT AN ALPHA, and that is a hard
+     constraint, not a style choice. The header is
+     `mix-blend-mode: difference`, which is what lets one transparent
+     bar stay legible over a page that inverts from black to paper
+     three times on the way down. Difference computes |backdrop −
+     source|, so a plate built from white alpha resolves to a light
+     tint over the black sections and to exactly its own weight of
+     shade over the paper ones — the capsule inverts with the bar for
+     free. Any opaque or coloured fill breaks that: it would blend to
+     its own complement and land as a coloured slab on one half of
+     the site.
+
+     RADIUS. Fully round, and the only round thing in a system built
+     from right angles — which is the point. It reads as a control
+     rather than as another framed block, and it is what separates
+     the menu from the square action button beside it at a glance. */
+  /* ------------------------------------------------------------
+     Fractions of WHITE, because the bar behind them is solid black.
+     They were briefly fractions of black for a white bar; the
+     geometry never changed through either pass — same padding, same
+     radius, same 2.5rem hit target — only which end of the ramp the
+     translucency is measured from.
+     ------------------------------------------------------------ */
+  .nav-capsule {
+    display: flex;
+    align-items: center;
+    gap: 0.125rem;
+    padding: 0.3125rem;
+    border: 1px solid rgb(255 255 255 / 0.16);
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.07);
+  }
+
+  /* One link inside the capsule. The hit target is the chip, not the
+     word — 2.5rem of height at every item, so the row is a set of
+     controls rather than a line of text that happens to be clickable. */
+  .nav-chip {
+    padding: 0.5rem 1.05rem;
+    border-radius: 999px;
+    color: #fff;
+    /* 700, and the weight is LOADED — index.html requests JetBrains
+       Mono at 300;400;700. `body` sets `font-synthesis-weight: none`,
+       so a weight the font does not ship is not faked, it is silently
+       ignored: asking for bold against a 300;400 subset renders at 400
+       and nothing reports it. */
+    font-weight: 700;
+    white-space: nowrap;
+    transition:
+      color 0.35s ease,
+      background-color 0.35s ease;
+  }
+  .nav-chip:hover,
+  .nav-chip:focus-visible {
+    color: #fff;
+    background: rgb(255 255 255 / 0.1);
+  }
+  /* Current page. The site has real routes, so the capsule has to be
+     able to say which one you are on. Every chip is white at 700, so
+     colour cannot carry the state on its own — the fill is what says
+     which one you are on, one step brighter than hover. */
+  .nav-chip[aria-current='page'] {
+    color: #fff;
+    background: rgb(255 255 255 / 0.16);
+  }
+
+  /* The one button in the system. Fill wipes up from the base. */
+  .btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.875rem;
+    padding: 1.0625rem 2rem;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    overflow: hidden;
+    isolation: isolate;
+    cursor: pointer;
+    background: transparent;
+    color: inherit;
+    -webkit-tap-highlight-color: transparent;
+    transition: color 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: currentColor;
+    transform: translateY(101%);
+    transition: transform 0.62s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn:hover::before,
+  .btn:focus-visible::before {
+    transform: translateY(0);
+  }
+  .btn:hover,
+  .btn:focus-visible {
+    color: var(--btn-hover-ink, #000);
+  }
+  /* The paper-section variant — Brand's "Discover More".
+
+     TWO THINGS WERE BROKEN HERE, and they compounded into a button
+     whose label vanished the moment the fill arrived.
+
+     1. THE FILL WAS `currentColor`. `.btn::before` paints the wipe in
+        `currentColor`, which is the same value the label is drawn in,
+        so the plate and the text it sits behind can never differ —
+        whatever `color` resolves to on hover, the label is painted in
+        exactly the shade that is sliding up underneath it. The fill is
+        pinned to `--color-ink` below instead: it is a black plate
+        because that is what the design asks for, not because of
+        whatever the text happens to be doing.
+
+     2. THE HOVER COLOUR NEVER APPLIED. `.btn:hover` sets `color` from
+        inside @layer components, and the element carried Tailwind's
+        `text-ink` from @layer utilities — and a layer beats
+        specificity, so `.btn:hover` lost every time. Adding weight to
+        the selector would not have helped; the utility had to come off
+        the element, which is why `.btn-on-paper` now declares its own
+        resting colour rather than leaving it to a class in the markup.
+
+     The border stays `--color-ink` in both states. It is on
+     `currentColor` by default, which would flip it to paper on hover
+     and ring the black plate with a light halo against the paper
+     section.
+
+     TIMING IS DELIBERATELY UNTOUCHED. The label still crosses
+     black→paper over `.btn`'s 0.5s while the plate wipes up over 0.62s
+     on the same curve. A vertical wipe passing through the glyphs can
+     never be perfectly legible — while the plate's edge bisects the
+     type, one half of every letter is on paper and the other on ink,
+     and a single colour cannot serve both — so the honest measure is
+     how briefly it is poor. These curves put the label under 3:1 for
+     about 35ms across hover-in and hover-out combined; sweeping the
+     duration from 0.05s to 0.35s, with and without a delay and on both
+     linear and this easing, does not beat that by enough to be seen
+     (the best found was ~30ms). Do not "fix" the timing — the bug was
+     never here, it was the two items above. The arrow inherits `color`
+     and comes with it, and keeps its 0.3rem nudge. */
+  .btn-on-paper {
+    color: var(--color-ink);
+    border-color: var(--color-ink);
+    --btn-hover-ink: var(--color-paper);
+  }
+  .btn-on-paper::before {
+    background: var(--color-ink);
+  }
+  .btn .btn-arrow {
+    transition: transform 0.62s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn:hover .btn-arrow {
+    transform: translateX(0.3rem);
+  }
+
+  /* `.btn-solid`, `.btn-lg` and `.cta-route` — the filled pill, its
+     large size step, and the contact-rail row style — lived here for
+     the aperture-style closing CTA this system replaced. The closing
+     CTA now uses `.btn-flat` and `.cta-footnote` below, read off
+     glazewindowsystems.com's own CTA rather than built as pill
+     variants; nothing in the codebase references the three removed
+     classes any longer. */
+
+  /* The closing-CTA action, redrawn off a real measurement rather than
+     this system's own house pill. Reference: glazewindowsystems.com's
+     footer CTA button, read via computed styles — sharp corners (not
+     `.btn`'s 999px pill), an off-white fill at 90% opacity, 10px/600
+     /2px-tracked uppercase label, 13.6px 28px padding, and a hover that
+     only slides the arrow — no wipe fill, no color shift. Kept as its
+     own class rather than a `.btn` variant because the shape itself
+     (square, not round) is the point of matching the reference; a
+     modifier on the pill button couldn't carry that. */
+  .btn-flat {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.85rem 1.75rem;
+    background: rgb(244 242 238 / 0.9);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 0.125em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+  }
+  .btn-flat:hover,
+  .btn-flat:focus-visible {
+    background-color: var(--color-paper);
+  }
+  .btn-flat .btn-flat-arrow {
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn-flat:hover .btn-flat-arrow,
+  .btn-flat:focus-visible .btn-flat-arrow {
+    transform: translateX(0.25rem);
+  }
+
+  /* The one button in the bar, and the only pressable-looking thing
+     up here.
+
+     IT IS A WHITE PLATE BECAUSE THE BAR IS BLACK. It used to be a
+     black fill with white insets and a white sheen — a glass pill,
+     and a good one, but every part of that effect is white-on-dark
+     and the bar it now sits on is #000. A black fill on a black bar
+     is not a quiet button, it is a missing one, and the highlights
+     that would have rescued it are exactly the layers that stop
+     working when the fill goes light.
+
+     So the plate is inverted and the glaze layers are re-pitched in
+     black: a whisper of shade at the top instead of a white
+     highlight, and a dark travelling sheen on hover instead of a
+     white one. The geometry, padding, radius, type and motion are
+     untouched. */
+  .btn-glaze {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.85rem 1.75rem;
+    border-radius: 999px;
+    border: 1px solid rgb(0 0 0 / 0.12);
+    background: #fff;
+    color: #000;
+    font-family: var(--font-sans);
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.125em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    cursor: pointer;
+    overflow: hidden;
+    isolation: isolate;
+    box-shadow:
+      inset 0 -1px 0 rgb(0 0 0 / 0.08),
+      0 10px 30px -14px rgb(0 0 0 / 0.9);
+    transition:
+      border-color 0.35s ease,
+      box-shadow 0.35s ease,
+      transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* The label sits above both glaze layers. */
+  .btn-glaze > * {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* The standing highlight. */
+  .btn-glaze::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 58%;
+    border-radius: inherit;
+    background: linear-gradient(
+      to bottom,
+      rgb(0 0 0 / 0.07),
+      rgb(0 0 0 / 0.02) 62%,
+      transparent
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* The travelling sheen. */
+  .btn-glaze::after {
+    content: '';
+    position: absolute;
+    top: -60%;
+    bottom: -60%;
+    left: 0;
+    width: 42%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgb(0 0 0 / 0.09),
+      transparent
+    );
+    transform: translateX(-160%) skewX(-20deg);
+    pointer-events: none;
+    z-index: 1;
+    transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn-glaze:hover,
+  .btn-glaze:focus-visible {
+    border-color: rgb(0 0 0 / 0.28);
+    box-shadow:
+      inset 0 -1px 0 rgb(0 0 0 / 0.12),
+      0 6px 14px -8px rgb(0 0 0 / 0.5),
+      0 14px 34px -14px rgb(0 0 0 / 0.95);
+    transform: translateY(-1px);
+  }
+  .btn-glaze:hover::after,
+  .btn-glaze:focus-visible::after {
+    transform: translateX(340%) skewX(-20deg);
+  }
+
+  /* The arrow keeps `.btn-flat`'s behaviour so the two actions on the
+     site still move the same way. */
+  .btn-glaze .btn-flat-arrow {
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn-glaze:hover .btn-flat-arrow,
+  .btn-glaze:focus-visible .btn-flat-arrow {
+    transform: translateX(0.25rem);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .btn-glaze,
+    .btn-glaze::after {
+      transition: none;
+    }
+    .btn-glaze:hover,
+    .btn-glaze:focus-visible {
+      transform: none;
+    }
+  }
+
+  /* The small, quiet alternate route under the button — Glaze's "or
+     call ...", one muted line rather than a second button. */
+  .cta-footnote {
+    color: rgb(245 245 243 / 0.5);
+    font-size: 0.82rem;
+    letter-spacing: 0.02em;
+    transition: color 0.4s ease;
+  }
+  a.cta-footnote:hover,
+  a.cta-footnote:focus-visible {
+    color: rgb(245 245 243 / 0.85);
+  }
+
+  /* ============================================================
+     FOOTER ATMOSPHERE
+
+     Four small pieces that turn a flat charcoal block into a
+     composed one. All of it is background — nothing here is ever
+     read, clicked or tabbed to, which is the whole discipline:
+     the moment a watermark competes with the directory type in
+     front of it, it stops being atmosphere and starts being
+     noise. Every value below is set at the level where you
+     notice the footer feels deeper without being able to say
+     why.
+     ============================================================ */
+
+  /* The house mark as a signature: script-weight italic, DRAWN AS AN
+     OUTLINE, medium-sized, bottom-left, running off the page edge.
+
+     Three decisions, and each one is why the earlier version was
+     wrong:
+
+     OUTLINE, NOT FILL. A filled watermark is a block of tone — it
+     either sits too pale to see or too heavy behind the directory
+     type, and there is no setting in between. A hairline contour has
+     almost no area, so it can be genuinely visible (0.17 vs the 0.10
+     a fill had to live at) while adding nearly nothing to the field
+     behind the text. It is also the same drawing language the rest
+     of this site is built in: `.plan` renders a whole room as 1px
+     contour.
+
+     ITALIC AND LOWERCASE. Upright caps read as a logo someone
+     enlarged. The italic lowercase cut of the display face has entry
+     and exit strokes and a descender that carries below the baseline
+     — it reads as a written signature rather than as set type, which
+     is the whole difference between "fancy" and "big".
+
+     SPREAD ACROSS THE DIRECTORY, NOT SET AS A WORD. The three glyphs
+     are tracked out to 0.42em so they land one per column band — j
+     under the brand column, a under EXPLORE/REACH US, z under VISIT
+     — and the whole directory reads as sitting ON the mark rather
+     than beside it. Letter-spacing rather than a larger font-size
+     because width is what was missing: at natural tracking the word
+     covered the middle two columns and left VISIT on bare charcoal.
+
+     `margin-inline-end` cancels the trailing letter-space. CSS adds
+     the space after the LAST glyph too, and the flex centring above
+     counts it as part of the box — without the negative margin the
+     visible ink sits half a track left of centre, which at this size
+     is ~130px of drift and reads as a mistake.
+
+     46vw IS A CEILING, and a measured one. Pushed to 54vw the
+     renderer stopped responding entirely: a ~740px italic outline is
+     a very large stroked-and-masked glyph to rasterise, and Chrome
+     hung on it hard enough to need the tab killed. If this ever
+     wants to be bigger, it stops being live text and becomes an SVG
+     path — do not just raise the clamp.
+
+     THE MASK RUNS UPWARD, and that is the point of the whole layer.
+     It is opaque where it meets the page edge and thins to about a
+     sixth of that at the top, so the mark is dense at the bottom and
+     only a suggestion where it crosses the directory links — present
+     behind the type, never competing with it. Fading the other way —
+     solid on top, out at the bottom — is what made this read as its
+     own band: the mark had to be given empty room of its own to fade
+     INTO, and a strip of dark nothing under the legal line is a
+     section, however little is in it. Anchored to the bottom and
+     cropped by the footer's `overflow-hidden`, the same word becomes
+     what is behind the page rather than the last thing on it.
+
+     `-webkit-text-stroke` does the contour (supported in every
+     current engine; where it is not, `color: transparent` leaves an
+     invisible mark — the footer loses a texture, never a word). */
+  .footer-wordmark {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 400;
+    /* Sized so the WHOLE word fits the block. The 46vw this used to
+       carry was set when the mark read JAZ; the fourth letter pushed
+       it ~690px past the footer's own width at desktop and the name
+       came out as "jaa". The mark is meant to be cropped by the
+       bottom edge, never by the sides — a wordmark missing a letter
+       reads as a bug, not as texture.
+
+       The ratio behind the number: four glyphs plus three visible
+       gaps of 0.42em is ~2.84x the font-size once the trailing
+       letter-space is cancelled by the negative margin below, so
+       32vw lands the mark at roughly 91% of the block's width. */
+    font-size: clamp(7rem, 32vw, 30rem);
+    line-height: 0.85;
+    letter-spacing: 0.42em;
+    margin-inline-end: -0.42em;
+    white-space: nowrap;
+    user-select: none;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.15);
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.16) 0%,
+      rgba(0, 0, 0, 0.34) 26%,
+      rgba(0, 0, 0, 0.62) 50%,
+      rgba(0, 0, 0, 0.88) 72%,
+      rgba(0, 0, 0, 1) 88%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.16) 0%,
+      rgba(0, 0, 0, 0.34) 26%,
+      rgba(0, 0, 0, 0.62) 50%,
+      rgba(0, 0, 0, 0.88) 72%,
+      rgba(0, 0, 0, 1) 88%
+    );
+  }
+
+  /* The warm light pooling at the base of the block — the footer's
+     own version of the cove wash that opens the hero. Anchored to
+     the bottom edge so it reads as light coming UP off the mark
+     rather than as a panel someone tinted. */
+  .footer-glow {
+    background:
+      radial-gradient(
+        70% 62% at 50% 108%,
+        rgba(201, 173, 124, 0.1) 0%,
+        rgba(201, 173, 124, 0.035) 42%,
+        transparent 72%
+      ),
+      radial-gradient(
+        46% 40% at 84% 4%,
+        rgba(255, 255, 255, 0.035) 0%,
+        transparent 68%
+      );
+  }
+
+  /* A hairline that fades out at both ends instead of running edge
+     to edge. Used for the seam where the page hands over to the
+     footer: a hard full-bleed border reads as two documents stacked,
+     a fading one reads as the same field getting quieter. */
+  .rule-fade {
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(255, 255, 255, 0.16) 22%,
+      rgba(255, 255, 255, 0.16) 78%,
+      transparent 100%
+    );
+  }
+
+  /* The social tiles. Same fill-wipe idiom as `.btn` — the fill
+     rises from the base — so the one interactive square down here
+     behaves like every other button in the system rather than
+     inventing a third hover language. The lift is 2px: enough to
+     feel answered, not enough to look like a card. */
+  .social-tile {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    transition:
+      transform 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+      color 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .social-tile::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(
+      to top,
+      rgba(255, 255, 255, 0.14) 0%,
+      rgba(255, 255, 255, 0.03) 100%
+    );
+    transform: translateY(101%);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .social-tile:hover,
+  .social-tile:focus-visible {
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.42);
+    color: var(--color-pure);
+  }
+  .social-tile:hover::before,
+  .social-tile:focus-visible::before {
+    transform: translateY(0);
+  }
+
+  /* Text link with a rule that wipes left-to-right. */
+  .link-underline {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 0.2em;
+  }
+  .link-underline::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .link-underline:hover::after,
+  .link-underline:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  /* Photography runs in full colour. The INTERFACE is black and white —
+     type, rules, buttons, chrome — and the pictures are the only colour
+     on the page, which is what makes them read as the subject rather
+     than as decoration.
+
+     Grading goes through custom properties rather than a hard-coded
+     `filter`, because a plain `filter` declaration here BEATS Tailwind's
+     `brightness-*` / `contrast-*` utilities (same specificity, later in
+     the cascade) and silently swallows every per-image correction.
+     Override per slot with `[--plate-brightness:1.05]`, or desaturate a
+     single image with `[--plate-grayscale:1]`. */
+  .plate {
+    --plate-grayscale: 0;
+    --plate-saturate: 1;
+    --plate-contrast: 1;
+    --plate-brightness: 1;
+    /* `--plate-blur` is deliberately NOT declared here. It is read from
+       whichever ancestor sets it, so a section can push a scroll-velocity
+       blur onto every plate inside it with one custom property and no
+       per-image bookkeeping. Declaring a local default would shadow the
+       inherited value and the effect would silently do nothing. */
+    filter: grayscale(var(--plate-grayscale)) saturate(var(--plate-saturate))
+      contrast(var(--plate-contrast)) brightness(var(--plate-brightness))
+      blur(var(--plate-blur, 0px));
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* ------------------------------------------------------------
+     SOFT PLATE — the rounded photographic frame.
+
+     Most photography on this site is a bleed: a hard rectangle butted
+     into the grid, because the page reads as a printed sheet. The two
+     About sections that present rooms as a SET rather than as a spread
+     — Human Factors and Scope — need the opposite: each image has to
+     read as an object you could pick up, so it gets soft corners, a
+     hairline that behaves like glass rather than like a border, and a
+     shadow deep enough to lift it off pure black.
+
+     Ring and shadow are one declaration on purpose. Tailwind's
+     `ring-*` utilities write `box-shadow`, so a ring utility would
+     REPLACE the lift shadow rather than compose with it — the plate
+     would gain an outline and silently lose its depth.
+     ------------------------------------------------------------ */
+  .plate-soft {
+    border-radius: clamp(1rem, 1.7vw, 1.6rem);
+    box-shadow:
+      inset 0 0 0 1px rgb(255 255 255 / 0.1),
+      0 32px 64px -32px rgb(0 0 0 / 0.9);
+    transition: box-shadow 0.7s var(--ease-out-expo);
+  }
+  .group:hover .plate-soft,
+  .group:focus-within .plate-soft {
+    box-shadow:
+      inset 0 0 0 1px rgb(255 255 255 / 0.26),
+      0 44px 88px -34px rgb(0 0 0 / 1);
+  }
+
+  /* The panel the Human Factors columns sit in. Barely there by
+     design — a 5%-white wash and a hairline, not a card — so the
+     triptych gains a premium, contained surface without turning the
+     page's editorial type into three boxed features. */
+  .panel-soft {
+    border-radius: clamp(1.25rem, 2.1vw, 2rem);
+    border: 1px solid rgb(255 255 255 / 0.08);
+    background:
+      linear-gradient(to bottom, rgb(255 255 255 / 0.055), rgb(255 255 255 / 0.012));
+    transition: border-color 0.7s var(--ease-out-expo);
+  }
+  .group:hover .panel-soft,
+  .group:focus-within .panel-soft {
+    border-color: rgb(255 255 255 / 0.2);
+  }
+
+  /* ------------------------------------------------------------
+     NAV SCRIM
+
+     The bar carries no plate — it is mix-blend-difference, which is
+     what lets one transparent rail read correctly over a page that
+     inverts three times. The cost is that once you are past the hero
+     it lands on set text, and a centred wordmark lands on the middle
+     column, which is exactly where the copy is.
+
+     This is the only thing put between them: a band of BLUR and no
+     colour. Colour would have to pick a side in a page that inverts;
+     blur does not, and it defeats the collision at the source by
+     making the few lines under the bar illegible as text rather than
+     by painting over them. Height and the mask are tuned so the band
+     has no visible edge, and the bar fades it in only once the hero
+     is behind you.
+     ------------------------------------------------------------ */
+  .nav-scrim {
+    visibility: hidden;
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
+    -webkit-mask-image: linear-gradient(to bottom, #000 42%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 42%, transparent 100%);
+  }
+
+  .focus-ring:focus-visible {
+    outline: 1px solid currentColor;
+    outline-offset: 4px;
+  }
+
+  /* Film grain — one layer, over everything, forever. */
+}
+
+.grain-layer {
+  position: fixed;
+  inset: -60%;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.04;
+  mix-blend-mode: soft-light;
+  background-repeat: repeat;
+  animation: grain-shift 0.72s steps(3) infinite;
+}
+@keyframes grain-shift {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  33% {
+    transform: translate3d(-1.2%, 1.4%, 0);
+  }
+  66% {
+    transform: translate3d(1.4%, -0.9%, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* ============================================================
+   REDUCED MOTION
+   Nothing moves. Everything stays legible and complete.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .grain-layer {
+    animation: none;
+  }
+}
+
+/* ============================================================
+   SCENE ATMOSPHERE
+   Small, endless loops that keep the room feeling alive even
+   when the page is completely still.
+   ============================================================ */
+
+@keyframes jaz-twinkle {
+  0%,
+  100% {
+    opacity: var(--tw-lo, 0.18);
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes jaz-scroll-tick {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(250%);
+  }
+}
+.jaz-scroll-tick {
+  animation: jaz-scroll-tick 2.1s cubic-bezier(0.76, 0, 0.24, 1) infinite;
+}
+
+/* Faint architectural grid, for the one section that wants to read as
+   a blueprint rather than a page: Process. Ink-based rather than the
+   cool slate-grey a reference might use — the ramp at the top of this
+   file is warm-neutral by rule, and a blue-grey grid line would be
+   the one thing on the page that quietly breaks it. */
+.grid-blueprint {
+  background-image:
+    linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+
+/* ------------------------------------------------------------
+   SOLUTION SIGNATURES
+
+   Nine solutions, nine small badge motifs — one per `signature`
+   key in data/solutions.js — so each detail hero reads as being
+   about ITS OWN mechanism rather than a shared template with a
+   different headline dropped in. Each is a loop, not an entrance:
+   the same "never fully at rest" rule the rest of the site's
+   motion follows. Kept as plain CSS rather than GSAP because
+   nine independent scoped contexts for a corner badge is more
+   machinery than the effect is worth.
+   ------------------------------------------------------------ */
+
+@keyframes sig-aperture {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.22); }
+}
+@keyframes sig-seam-sweep {
+  0% { transform: translateX(-120%); opacity: 0; }
+  15%, 85% { opacity: 1; }
+  100% { transform: translateX(120%); opacity: 0; }
+}
+@keyframes sig-scene-pulse {
+  0%, 100% { opacity: 0.22; }
+  50% { opacity: 1; }
+}
+@keyframes sig-decay-bar {
+  0% { transform: scaleY(1); opacity: 1; }
+  100% { transform: scaleY(0.08); opacity: 0.3; }
+}
+@keyframes sig-eq-bounce {
+  0%, 100% { transform: scaleY(0.3); }
+  50% { transform: scaleY(1); }
+}
+@keyframes sig-dimmer-turn {
+  0%, 100% { transform: rotate(-38deg); }
+  50% { transform: rotate(38deg); }
+}
+@keyframes sig-ripple {
+  0% { transform: scale(0.4); opacity: 0.9; }
+  100% { transform: scale(1.9); opacity: 0; }
+}
+@keyframes sig-recliner-tilt {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-18deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [class^='sig-'],
+  [class*=' sig-'] {
+    animation: none !important;
+  }
+}
+
+/* ------------------------------------------------------------
+   HORIZONTAL RAILS
+
+   The global `::-webkit-scrollbar` rule above paints an 8px dark
+   track, which is right for the page and wrong under a row of
+   photographs — it reads as a border the cards are sitting on.
+   Rails hide their own bar and rely on the crop at the right edge
+   (and, on desktop, on an explicit progress rule) to say that
+   there is more.
+
+   Not scroll-snap-type: that belongs on the element in markup, so
+   a rail can opt out of snapping at one breakpoint and keep it at
+   another without a second class here.
+   ------------------------------------------------------------ */
+.rail-x {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  /* Momentum on iOS, and a scroll container that does not hand
+     horizontal overscroll to the browser's back gesture. */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  /* Load-bearing, and the failure is silent without it.
+
+     `scroll-snap-align: start` aligns a card's edge to the SCROLLPORT
+     edge, not to the padding edge — so a snapping rail immediately
+     scrolls itself by exactly one gutter to satisfy the first snap
+     point, and the leading gutter the track's padding was there to
+     provide disappears. The first card ends up flush against the
+     window while every other section on the page starts at --gutter.
+
+     scroll-padding moves the snapport in, so `start` now means
+     "aligned to the gutter" and the rail agrees with the shell. */
+  scroll-padding-inline: var(--gutter);
+}
+.rail-x::-webkit-scrollbar {
+  display: none;
+}
+
+/* Edge fade for marquees and horizontal rails. */
+.edge-fade-x {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 8%,
+    #000 92%,
+    transparent
+  );
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jaz-scroll-tick {
+    animation: none;
+  }
+}
+
+/* ============================================================
+   BEFORE / AFTER COMPARE
+   The seam is one custom property. Clip, handle and bleed all
+   read from it, so a drag is one style write per frame rather
+   than a React render per frame.
+   ============================================================ */
+
+.jaz-compare {
+  --seam: 38%;
+  --bleed: 0.18;
+  cursor: ew-resize;
+}
+
+/* The "before" plate is clipped to the left of the seam. */
+.jaz-compare [data-before] {
+  clip-path: inset(0 calc(100% - var(--seam)) 0 0);
+}
+
+.jaz-compare [data-handle] {
+  left: var(--seam);
+}
+
+/* Light spilling across the join. Width and opacity both scale with
+   `--bleed`, which drag velocity drives. `screen` so it adds light to
+   whatever is underneath instead of painting a grey bar over it. */
+.jaz-compare [data-bleed] {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--seam);
+  z-index: 25;
+  width: calc(6rem + 14rem * var(--bleed));
+  transform: translateX(-50%);
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: calc(0.25 + 0.75 * var(--bleed));
+  background: radial-gradient(
+    ellipse 50% 60% at 50% 50%,
+    rgba(255, 244, 224, calc(0.42 * var(--bleed))) 0%,
+    rgba(255, 236, 205, calc(0.16 * var(--bleed))) 38%,
+    rgba(255, 230, 195, 0) 72%
+  );
+}
+
+/* A hairline of warm light sitting exactly on the join. */
+.jaz-compare [data-bleed]::after {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  left: 50%;
+  width: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 240, 214, 0) 0%,
+    rgba(255, 240, 214, 0.85) 22%,
+    rgba(255, 240, 214, 0.85) 78%,
+    rgba(255, 240, 214, 0) 100%
+  );
+}
+
+.jaz-compare .jaz-grip {
+  transition:
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.jaz-compare:hover .jaz-grip,
+.jaz-compare [data-handle]:focus-visible .jaz-grip {
+  transform: scale(1.12);
+  border-color: rgba(255, 255, 255, 0.85);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jaz-compare .jaz-grip {
+    transition: none;
+  }
+}
+
+
+/* ============================================================
+   CHAPTER 01 — PROJECTION
+
+   The one effect on this site that cannot be expressed as a
+   Tailwind utility, because it is a MASK made of two gradients
+   intersected. Everything else about <LightsDown> is transform
+   and opacity; this is the part that does the actual work.
+
+   The photograph underneath is always at full opacity. What
+   changes is how much of it the light has reached:
+
+     · a conic gradient centred on the projector port, opaque
+       inside the beam's half-angle and clear outside it, which
+       is the WEDGE;
+     · a radial gradient at the same point, opaque out to the
+       throw distance, which is how FAR the light has got.
+
+   Intersect the two and you have a cone of light with a real
+   apex, a real spread and a real reach — three numbers GSAP can
+   scrub. Growing a wedge from 3° to 58° while its reach runs
+   from 5% to 150% reads as light arriving. A cross-fade of the
+   same photograph reads as a slideshow. That difference is the
+   entire reason this block exists.
+
+   `--rot` is the beam's centre bearing in degrees clockwise from
+   straight up, matching conic-gradient's own convention. It is
+   re-aimed at the portrait breakpoint because the apex-to-floor
+   vector genuinely rotates when the frame does.
+
+   DEGRADATION: where `mask-composite` is unsupported the two
+   layers union instead of intersecting, so the reveal becomes a
+   plain circle of light rather than a cone. Softer, still light,
+   never a blank frame.
+   ============================================================ */
+
+.beam {
+  --apex-x: 78%;
+  --apex-y: 13%;
+  --rot: 232;
+  --spread: 3; /* half-angle, degrees — scrubbed */
+  --feather: 7; /* soft edge either side of the wedge — scrubbed, in step with the spread */
+  --reach: 5; /* throw, % of the frame's diagonal — scrubbed */
+}
+
+@media (max-width: 767px) {
+  .beam {
+    --apex-x: 70%;
+    --apex-y: 9%;
+    --rot: 199;
+  }
+}
+
+.beam-frame {
+  -webkit-mask-image:
+    conic-gradient(
+      from calc((var(--rot) - var(--spread) - var(--feather)) * 1deg) at var(--apex-x)
+        var(--apex-y),
+      transparent 0deg,
+      #000 calc(var(--feather) * 1deg),
+      #000 calc((2 * var(--spread) + var(--feather)) * 1deg),
+      transparent calc((2 * var(--spread) + 2 * var(--feather)) * 1deg),
+      transparent 360deg
+    ),
+    radial-gradient(
+      circle at var(--apex-x) var(--apex-y),
+      #000 0%,
+      #000 calc(var(--reach) * 1%),
+      transparent calc((var(--reach) + 26) * 1%)
+    );
+  mask-image:
+    conic-gradient(
+      from calc((var(--rot) - var(--spread) - var(--feather)) * 1deg) at var(--apex-x)
+        var(--apex-y),
+      transparent 0deg,
+      #000 calc(var(--feather) * 1deg),
+      #000 calc((2 * var(--spread) + var(--feather)) * 1deg),
+      transparent calc((2 * var(--spread) + 2 * var(--feather)) * 1deg),
+      transparent 360deg
+    ),
+    radial-gradient(
+      circle at var(--apex-x) var(--apex-y),
+      #000 0%,
+      #000 calc(var(--reach) * 1%),
+      transparent calc((var(--reach) + 26) * 1%)
+    );
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+/* The light itself, rather than what it lands on. Slightly wider
+   than the mask so the haze spills a little past the lit edge,
+   which is what stops the cone reading as a shape with a border.
+   `screen` so it ADDS light instead of painting a pale wedge over
+   the photograph. */
+.beam-cone {
+  background: conic-gradient(
+    from calc((var(--rot) - var(--spread) - var(--feather) * 1.6) * 1deg) at var(--apex-x)
+      var(--apex-y),
+    transparent 0deg,
+    rgba(255, 243, 222, 0.13) calc(var(--feather) * 1.6deg),
+    rgba(255, 243, 222, 0.13) calc((2 * var(--spread) + var(--feather) * 1.6) * 1deg),
+    transparent calc((2 * var(--spread) + var(--feather) * 3.2) * 1deg),
+    transparent 360deg
+  );
+  -webkit-mask-image: radial-gradient(
+    circle at var(--apex-x) var(--apex-y),
+    rgba(0, 0, 0, 0.9) 0%,
+    rgba(0, 0, 0, 0.42) calc(var(--reach) * 0.6 * 1%),
+    transparent calc((var(--reach) + 14) * 1%)
+  );
+  mask-image: radial-gradient(
+    circle at var(--apex-x) var(--apex-y),
+    rgba(0, 0, 0, 0.9) 0%,
+    rgba(0, 0, 0, 0.42) calc(var(--reach) * 0.6 * 1%),
+    transparent calc((var(--reach) + 14) * 1%)
+  );
+  mix-blend-mode: screen;
+}
+
+/* ============================================================
+   FADE-PLATE
+
+   The entrance used wherever a keyed block replaces its own
+   content in place — a material sample, a product panel, a line
+   of copy that changed because a control moved. It exists because
+   swapping text under a static block reads as nothing having
+   happened, and the visitor then cannot tell whether the control
+   they just pressed did anything at all.
+
+   Deliberately small: 8px and a fade. Anything larger competes
+   with the room, which is the thing that is actually supposed to
+   be changing.
+   ============================================================ */
+@keyframes fade-plate {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @keyframes fade-plate {
+    from {
+      opacity: 1;
+      transform: none;
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+/* ============================================================
+   TONIGHT — the outlined numeral
+
+   The big hollow "01" in the WHAT'S TONIGHT? section. Same
+   `-webkit-text-stroke` technique as `.footer-wordmark`, with one
+   important difference: THAT numeral is decoration and this one is
+   content. The footer can afford to lose its wordmark on an engine
+   without text-stroke — it loses a texture, never a word. This
+   numeral tells you which of the six you are looking at, so
+   `color: transparent` failing open would delete information.
+
+   Hence the `@supports` guard: the hollow contour is the enhanced
+   state, and anything that cannot draw it gets a solid, dimmed
+   numeral instead of an invisible one. Written as a bare fallback
+   FIRST and the stroke second so the cascade does the work.
+   ============================================================ */
+@layer components {
+  .numeral-hollow {
+    font-family: var(--font-display);
+    font-size: clamp(4.5rem, min(11vw, 17vh), 11rem);
+    line-height: 0.78;
+    letter-spacing: 0.01em;
+    font-variant-numeric: tabular-nums;
+    user-select: none;
+    /* The readable fallback. */
+    color: color-mix(in srgb, var(--color-cove) 45%, transparent);
+  }
+
+  @supports (-webkit-text-stroke: 1px black) {
+    .numeral-hollow {
+      color: transparent;
+      -webkit-text-stroke: 1.15px var(--color-cove);
+    }
+  }
+}
+
+/* ============================================================
+   PROJECTS — the outlined index
+
+   The 001–006 sitting above each row's tag on /projects.
+   MONOSPACE rather than the display face `.numeral-hollow` uses,
+   and the difference is not decoration: these are an INDEX — a
+   position in a list — and tabular mono is what an index is set
+   in. It is also the only way six figures read as one column of
+   equal widths rather than six differently-shaped words.
+
+   It is a QUIET element. The stroke is thin and mixed well down
+   toward the ground, because this number labels the row; it does
+   not announce it. The title does that.
+
+   Same `@supports` guard, and the same reasoning, as
+   `.numeral-hollow` above: the hollow contour is the enhanced
+   state, and an engine that cannot draw a text-stroke gets a
+   solid dimmed numeral rather than an invisible one. Bare
+   fallback FIRST, stroke second, so the cascade does the work —
+   `color: transparent` failing open would delete the number.
+   ============================================================ */
+@layer components {
+  .numeral-index {
+    font-family: var(--font-mono);
+    font-size: clamp(3rem, 6vw, 5rem);
+    font-weight: 400;
+    line-height: 0.82;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    user-select: none;
+    /* The readable fallback. */
+    color: color-mix(in srgb, var(--color-cove) 28%, transparent);
+  }
+
+  @supports (-webkit-text-stroke: 1px black) {
+    .numeral-index {
+      color: transparent;
+      -webkit-text-stroke: 1px color-mix(in srgb, var(--color-cove) 55%, transparent);
+    }
+  }
+}
+
+/* ============================================================
+   SOLUTIONS — THE LENS
+
+   /solutions is one aperture that stops down. A single opening
+   in the centre of a held stage is the only place photography
+   exists on the page; everything outside it is ink and type, and
+   the opening's shape at each stop is the proportion of space
+   that solution actually touches.
+
+   THE TITLE IS LIT, NOT REVEALED
+   The stop's title is set twice, in the same place, at the same
+   size, from the same string. One copy is the real heading and
+   is always fully present. The second is `aria-hidden`, sits on
+   top, and is clipped by the SAME `inset()` the aperture is
+   using — so the only part of the title that is bright is the
+   part the opening falls across. As the lens stops down through
+   the nine, less and less of each title is in the light, and the
+   last one is a pin-spot on a word.
+
+   Light ADDS. That is why the lit copy is `--color-pure` with a
+   warm bloom rather than the unlit copy being made dimmer: a
+   beam does not subtract from what is outside it.
+
+   CONTRAST IS ON THE UNLIT COPY, NOT THE LIT ONE
+   The unlit copy carries the information, so it — not the
+   bright overlay — has to pass on its own. At 46% bone on ink it
+   clears 3:1, which is the large-text floor and what this size
+   is. It cannot be dropped to a ghost for effect.
+
+   NO `will-change` ON EITHER OF THESE. Both are clip-path
+   layers, and promoting a clip-path layer is what makes Chrome
+   intermittently rasterise the frame without the picture in it —
+   see the note on `.plate` above.
+   ============================================================ */
+@layer components {
+  /* One step between `.t-chapter` and `.t-cinema`. Height is part
+     of the condition for the same reason it is there: this title
+     is vertically CENTRED on the stage and the statement sits
+     under it, so a width-only clamp runs both off a short window. */
+  .t-stop {
+    font-family: var(--font-display);
+    font-size: clamp(1.9rem, min(5.4vw, 8.6vh), 5.5rem);
+    line-height: 0.94;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+
+  .stop-unlit {
+    color: rgba(230, 228, 224, 0.46);
+  }
+
+  .stop-lit {
+    color: var(--color-pure);
+    text-shadow:
+      0 0 32px rgba(201, 173, 124, 0.34),
+      0 0 96px rgba(201, 173, 124, 0.15);
+  }
+}
+
+/* The barrel. Nine marks down the right edge whose LENGTHS are the
+   aperture area at each stop — so the whole stopping-down curve is
+   readable at a glance and the mark you are on is where the lens
+   actually is. `--lens-tick` is written per item from the data.
+
+   It is a control, not a readout: every mark is a button that
+   travels the page to its stop.
+
+   The inactive mark sits one step up the grey ramp from where a
+   hairline on ink alone would want to be. Wherever the lens is open,
+   the barrel is standing on a photograph, and a 1px rule at `smoke`
+   disappears into any lit surface behind it. */
+.lens-tick {
+  display: block;
+  height: 1px;
+  width: calc(14px + var(--lens-tick, 0.5) * 62px);
+  background: var(--color-ash);
+  transition:
+    background 620ms var(--ease-out-quint),
+    opacity 620ms var(--ease-out-quint),
+    transform 620ms var(--ease-out-quint);
+  transform-origin: right center;
+}
+
+.lens-mark:hover .lens-tick,
+.lens-mark:focus-visible .lens-tick {
+  background: var(--color-fog);
+}
+
+.lens-mark[aria-current='true'] .lens-tick {
+  background: var(--color-cove);
+  transform: scaleY(2);
+}
+
+.lens-mark .lens-n {
+  transition:
+    color 620ms var(--ease-out-quint),
+    opacity 620ms var(--ease-out-quint);
+  color: var(--color-ash);
+}
+
+.lens-mark:hover .lens-n,
+.lens-mark:focus-visible .lens-n {
+  color: var(--color-fog);
+}
+
+.lens-mark[aria-current='true'] .lens-n {
+  color: var(--color-bone);
+}
+
+/* The rolling readouts — the stop number and the f-number. Both are
+   a column of all nine values translated by the scroll, which is
+   what a barrel does and what a crossfade cannot: you can see the
+   next value arriving. */
+.lens-roll {
+  /* The window is ONE value tall. Without a height the column simply
+     stacks all nine and `overflow: hidden` has nothing to clip. */
+  height: 1em;
+  overflow: hidden;
+  display: block;
+}
+/* The WINDOW is `.lens-roll`; the column inside it is what travels.
+   Moving the window instead just slides the readout up the page. */
+.lens-roll > span {
+  display: block;
+}
+.lens-roll > span > span {
+  display: block;
+  height: 1em;
+  line-height: 1;
+}
+
+/* Every layer that has to be cut by the opening reads the same three
+   properties off the stage, so ONE write per frame moves the aperture
+   AND the lit copy of the title AND the scrims inside it — instead of
+   ten elements each being handed their own parsed `clip-path` string. */
+.lens-clip {
+  clip-path: inset(
+    var(--ap-y, 0%) var(--ap-x, 0%) var(--ap-y, 0%) var(--ap-x, 0%) round var(--ap-r, 0%)
+  );
+}

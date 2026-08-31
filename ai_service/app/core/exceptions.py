@@ -27,8 +27,6 @@ class ErrorCode:
     VECTOR_STORE_UNAVAILABLE = "VECTOR_STORE_UNAVAILABLE"
     LLM_UNAVAILABLE = "LLM_UNAVAILABLE"
     LLM_TIMEOUT = "LLM_TIMEOUT"
-    NO_CONTEXT_FOUND = "NO_CONTEXT_FOUND"
-    CLIENT_DISCONNECTED = "CLIENT_DISCONNECTED"
 
     INTERNAL_ERROR = "INTERNAL_ERROR"
 
@@ -142,15 +140,3 @@ class LLMBadRequestError(LLMError):
     code = ErrorCode.LLM_UNAVAILABLE
     retryable = False
 
-
-class NoContextFoundError(AIServiceError):
-    """Retrieval returned nothing usable.
-
-    Not an error in the failure sense — it is an answer ("I don't know"), and
-    the chat service turns it into one rather than a 4xx.
-    """
-
-    status_code = 200
-    code = ErrorCode.NO_CONTEXT_FOUND
-    message = "I could not find anything about that in the knowledge base."
-    retryable = False

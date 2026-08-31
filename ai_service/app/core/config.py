@@ -288,8 +288,10 @@ class ObservabilitySettings(BaseModel):
     # JSON in production so a log shipper can parse it; human-readable
     # locally, where the reader is a person.
     log_format: Literal["json", "console"] = "console"
-    # Logs the first N characters of a question at DEBUG. Off by default:
-    # questions are user content and belong in a log only deliberately.
+    # Reserved: intended to log the first N characters of a question at
+    # DEBUG. Nothing reads it yet. Kept rather than dropped because it is
+    # documented in .env.example and an operator may already have set it;
+    # removing it would silently change what a deployment's .env means.
     log_query_text: bool = False
 
 
@@ -364,10 +366,6 @@ class Settings(BaseSettings):
     @property
     def is_production(self) -> bool:
         return self.environment == "production"
-
-    @property
-    def is_testing(self) -> bool:
-        return self.environment == "testing"
 
 
 @lru_cache(maxsize=1)
