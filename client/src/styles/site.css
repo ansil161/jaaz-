@@ -74,64 +74,6 @@
    ------------------------------------------------------------ */
 @custom-variant stage-tall (@media (min-height: 700px));
 
-/* ------------------------------------------------------------
-   `prism-tall` gates the one paragraph <Prism>'s claim column
-   cannot always afford.
-
-   The section is a pinned full-viewport composition with a
-   photograph at its centre and five markers around it, and the
-   claim lives in a column that is 19% of the stage. The
-   supporting sentence is the one block in there that can stand
-   down, and below the threshold it does.
-
-   620 IS MEASURED, NOT ROUND. The field is the window less the
-   bar clearance, the header row, the index rail and the widget
-   clearance — about H minus 291 — and the tallest thing that has
-   to fit in it is the reading panel with its readout, at roughly
-   280px including breathing room. That puts the real floor at
-   571, and 620 is that with a margin.
-
-   The first pass used 700, which is wrong in the expensive
-   direction: a maximised 1366x768 laptop reports about 660px of
-   viewport, so the threshold that was meant to protect the rare
-   short window was standing content down on the single most
-   common desktop size on the site.
-
-   It is never shown on a phone at all — see the mobile
-   composition in <PrismFacets> — so the width half of the
-   condition is doing real work rather than tidying.
-
-   Declared here rather than written inline for the reason given
-   above `tall-lg`: Tailwind silently emits NOTHING for a stacked
-   arbitrary media variant, so a condition used in a class list
-   has to be defined once, in one place, where it can be
-   verified.
-   ------------------------------------------------------------ */
-@custom-variant prism-tall (@media (min-width: 1024px) and (min-height: 620px));
-
-/* ------------------------------------------------------------
-   `prism-short` is the other half of the same threshold, and it
-   gates the reading panel's readout.
-
-   The panel is centred in a field that is whatever the window has
-   left after the bar above and the index below. At 700px of
-   window that is about 400px and everything fits; below it the
-   panel is taller than its own field and the last readout row
-   lands ON the index rail — an overlap, not a crop, so it does
-   not look like a layout under pressure, it looks like a bug.
-
-   The readout is the block that stands down, for the same reason
-   the supporting sentence does in the claim column: the position,
-   the name, the description and the rule are the panel, and four
-   axes are the panel's evidence. A short window keeps the panel
-   and loses the evidence. It is never gated on a phone, which has
-   natural height and room for all of it.
-
-   Written as its own variant, exactly complementary to
-   `prism-tall`, so the two can never both apply and neither has
-   to win a cascade race against a breakpoint.
-   ------------------------------------------------------------ */
-@custom-variant prism-short (@media (min-width: 1024px) and (max-height: 619px));
 
 /* ============================================================
    JAAZ — DESIGN SYSTEM
@@ -2052,49 +1994,42 @@ html.lenis body {
 /* ============================================================
    SIGNATURE — THE PRISM
 
-   <Prism> is one room at the centre of a composition and five
-   faces of it around the edge.
+   Five wide bands, one per atmosphere of one room, that stack
+   and slide over one another. The mechanism is `position:
+   sticky` and nothing else; <Prism> adds a recede on the covered
+   card and would be removable without breaking anything here.
 
    ------------------------------------------------------------
-   WHY THIS BLOCK WAS REWRITTEN ONCE ALREADY
+   HOW THE STACK WORKS, IN THREE DECLARATIONS
 
-   The first build was flat, and the reason was structural rather
-   than a matter of taste. Every other section on this page sets
-   its argument in Instrument Serif at the system's real display
-   sizes — `.t-display` runs to 6.25rem, `.t-cinema` to 8.5rem,
-   `.t-chapter` to 4.5rem. This section put its claim in a 19%
-   sidebar column and therefore had to shrink the display voice to
-   3.3rem, the smallest on the page, to make it fit.
+     .prism-slot   height = card height x --dwell. This is the
+                   SCROLL DISTANCE a face gets. It is a normal
+                   block in the flow, so five of them simply make
+                   the section five slots tall.
 
-   Once the serif was that small, the loudest thing in the section
-   was 9px mono, and 9px mono on black is a wireframe. Everything
-   that read as "generic and minimal" followed from that one
-   decision, and no amount of extra effects would have fixed it.
+     .prism-card   `position: sticky; top: --prism-top`. It sticks
+                   the moment its slot's top passes the header and
+                   stays until its slot's bottom does — which is
+                   exactly the extra height the dwell bought.
 
-   The fix is not more. It is three things:
+     z-index       ascends with the index, set inline in the JSX.
+                   Without it a later card slides UNDER the one it
+                   should be covering.
 
-     SCALE     The claim goes back to a real display size and the
-               photograph OVERLAPS it, so the type costs no
-               vertical space in a pinned one-viewport section.
-               "One room." reads complete; "Different worlds."
-               runs behind the room and is cut by it. The
-               typography performs the sentence.
+   There is no measured height, no pin, no scrub and no
+   ResizeObserver anywhere in this. That is the point: the version
+   this replaced needed all four.
 
-     MATERIAL  The room lights the page it sits on. `.prism-bleed`
-               throws the active face's own colour temperature out
-               of the aperture and onto the black, and the cut
-               carries a raking hairline and an inner falloff. A
-               photograph on flat black with a flat 16% stroke is
-               a placeholder; a photograph that spills light is an
-               opening.
+   ------------------------------------------------------------
+   `--prism-top` IS A MEASUREMENT, NOT A ROUND NUMBER
 
-     TYPE MIX  Mono stopped being the whole voice. It now means
-               MEASUREMENT — the numbers and the readout's keys —
-               and everything that is a name is set in the display
-               serif the rest of the site speaks in.
-
-   Nothing below adds a colour, a face or a primitive the site did
-   not already own. It is the same brand, less apologetic.
+   The cards stick UNDER the site's header, which is a solid bar
+   on the homepage: `py-4` around an `h-9` mark measures 68px on a
+   phone, and `py-5` around `h-10` measures 85.5px above `sm` —
+   not the 80 the arithmetic gives, because the mark's line box is
+   taller than the image. A card stuck any higher than that has
+   its first line permanently under an opaque bar, and it looks
+   correct in every preview harness because the bar is not there.
    ============================================================ */
 
 @property --wash-power {
@@ -2103,382 +2038,244 @@ html.lenis body {
   initial-value: 0.3;
 }
 
-/* ------------------------------------------------------------
-   THE CLAIM
-
-   Its own step, and it needs one. `.t-display` and `.t-chapter`
-   are sized off viewport width alone; this line has to stay in a
-   known relationship to the aperture that cuts it, which means
-   the WINDOW HEIGHT is part of the condition — the same reasoning
-   that gives `.t-cinema` and `.t-chapter` their `min()` terms.
-
-   5.86vw IS MEASURED, NOT ESTIMATED, and the first attempt at it
-   is why the note says so. "Different worlds." is seventeen
-   characters and Instrument Serif was assumed to average about
-   0.44em each; measured in the browser it is nearer 0.32em, which
-   is a third narrower — so at 4.1vw the line stopped fifty pixels
-   SHORT of the aperture, the photograph cut nothing, and the one
-   device the composition is built on silently did not happen. It
-   looked like a deliberately short line, which is the worst way
-   for an effect to fail.
-
-   The aperture's left edge stands at 29% of the field, and a line
-   that overruns it by 18% of its own length solves to a width of
-   0.354 of the field, which at 0.32em a character is 5.86vw. The
-   The vh term holds it on a short window, where two lines of it
-   would otherwise take two thirds of the field's height and the
-   second line would land on the HOST marker at 69%. The cap holds
-   it on a monitor wide enough for the shell's own 108rem limit to
-   have stopped the field growing with the viewport.
-
-   Between 1024 and 2560 the overrun stays between 14% and 22% —
-   unmistakably cut, never enough to swallow a whole word.
-   ------------------------------------------------------------ */
-.prism-claim {
-  font-family: var(--font-display);
-  font-size: clamp(2.1rem, min(5.86vw, 12vh), 6.4rem);
-  line-height: 0.96;
-  letter-spacing: -0.028em;
+.prism-scene {
+  --prism-top: 4.75rem;
+  /* A BAND, NOT A PANEL. At `--app-h - 9rem` capped at 40rem the
+     cards were nearly two thirds of a tall window each, and five
+     of them plus a dwell made the section 5.4 viewports of a
+     homepage that is already 23,000px long. Capped at 34rem they
+     read as wide horizontal bands — which is the proportion the
+     reference this is built to actually uses — and the section
+     comes in at about 4.2. */
+  --prism-h: clamp(22rem, calc(var(--app-h) - 11rem), 34rem);
+}
+@media (min-width: 640px) {
+  .prism-scene {
+    --prism-top: 6rem;
+  }
 }
 
-/* The reading panel's subhead. Display italic, because it is the
-   one line in the section written as a phrase rather than as a
-   label — "Two channels, nothing else" is a caption in a
-   catalogue, and the italic is what says so. */
-.prism-lede {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: clamp(1.35rem, min(1.9vw, 3.4vh), 1.75rem);
-  line-height: 1.14;
-  letter-spacing: -0.014em;
+.prism-stack {
+  position: relative;
+  padding-inline: var(--gutter);
+  /* Room under the last card so it is not butted against whatever
+     section follows. The stack's own bands carry no bottom
+     margin — a gap between cards would show the page through the
+     pile at the exact moment two of them overlap. */
+  padding-bottom: clamp(3rem, 8vh, 6rem);
 }
 
-/* ------------------------------------------------------------
-   THE LIGHT THE ROOM THROWS
-
-   The single largest reason the first pass read as a photograph
-   pasted onto black: the picture was lit and the page around it
-   was not, so the aperture had no relationship to the surface it
-   was cut into.
-
-   This is the same motif every closing CTA on this site already
-   carries — a wide, warm radial standing in for a screen that has
-   just been switched off — driven here by the same three
-   properties the wash inside the aperture uses. So HOST floods
-   the page as well as the room, and ESCAPE barely stains it. Same
-   variables, so the light inside and the light outside can never
-   disagree about what face you are on.
-
-   A GRADIENT, NOT A `filter: blur()`. The blurred version is the
-   obvious build and it asks the compositor to blur a
-   viewport-sized layer on every scroll frame inside a pin. Soft
-   stops cost nothing and are indistinguishable at this radius.
-   ------------------------------------------------------------ */
-/* THE SPILL IS CENTRED ON THE APERTURE; ONLY ITS COLOUR AND
-   STRENGTH CHANGE. That is not a simplification, it is the fix
-   for a visible bug: this element is nearly twice the size of the
-   frame it belongs to, so `--wash-at`, which is written as a
-   position inside the ROOM, resolved against a box the room is
-   only a third of. On ESCAPE — lit from `80% 66%` — the ellipse's
-   own extent ran past the element's right and bottom edges while
-   still at half strength, and the glow ended on two hard straight
-   lines in the middle of the page.
-
-   The direction the light comes from is carried by the wash
-   INSIDE the aperture, where the frame's edge is a real edge and
-   clipping is what is supposed to happen. Out here only the
-   colour temperature and the amount are legible anyway, and both
-   still come from the face. Radii and stops are set so the fade
-   completes inside the box at any window: 46% from a centred
-   origin reaches 96%, never 112%. */
-.prism-bleed {
-  background:
-    radial-gradient(
-      ellipse 46% 48% at 50% 50%,
-      rgba(var(--wash-tint, 198, 176, 138), calc(var(--wash-power) * 1.1)) 0%,
-      rgba(var(--wash-tint, 198, 176, 138), calc(var(--wash-power) * 0.46)) 38%,
-      rgba(var(--wash-tint, 198, 176, 138), calc(var(--wash-power) * 0.1)) 68%,
-      rgba(0, 0, 0, 0) 100%
-    );
+.prism-slot {
+  position: relative;
+  height: calc(var(--prism-h) * var(--dwell, 1.3));
+  margin-inline: auto;
+  max-width: 108rem;
 }
 
-/* The ground under everything. Not a vignette: a shallow lift
-   behind the centre of the stage so the aperture reads as an
-   opening in a surface rather than a hole in nothing, plus a warm
-   floor under the index. */
-.prism-ground {
-  background:
-    radial-gradient(ellipse 56% 50% at 50% 44%, rgb(255 255 255 / 0.05), transparent 74%),
-    radial-gradient(ellipse 92% 34% at 50% 106%, rgb(201 173 124 / 0.07), transparent 72%);
+/* THE BAND MUST FILL ITS SLOT, AND THIS RULE IS LOAD-BEARING.
+
+   `position: sticky` is constrained by the nearest block
+   container ANCESTOR, which is this element and not the slot. Left
+   at `height: auto` it shrink-wraps to exactly the card's own
+   height — so the card has zero travel inside its container, never
+   sticks, and all five bands scroll past as ordinary blocks with a
+   third of a card of empty page between them. Nothing errors and
+   the section looks like a list. */
+.prism-band {
+  display: block;
+  height: 100%;
 }
 
-/* ------------------------------------------------------------
-   THE APERTURE
-
-   The photograph is cut by a `clip-path` written from JS, and the
-   hairline tracing the cut is an SVG polygon written from the
-   SAME four numbers on the SAME frame — see `applyFacet` in
-   Prism.jsx. Only the opening shape is declared here, so the
-   first painted frame is already cut.
-
-   NO `will-change`, ANYWHERE IN THIS SUBTREE, and it is not an
-   oversight. A promoted layer containing a clip-path or a mask is
-   a layer Chrome intermittently fails to rasterise: the frame
-   draws and the photograph inside it stays black until an
-   unrelated repaint brings it back. The hint buys nothing here
-   and costs a picture. The same note governs `force3D: false` on
-   the room's two transforms in Prism.jsx.
-   ------------------------------------------------------------ */
-.prism-clip {
-  clip-path: polygon(3% 0%, 88% 0%, 100% 12%, 100% 96%, 96% 100%, 9% 100%, 0% 91%, 0% 3%);
-}
-
-/* The falloff at the cut. An inset shadow rather than a border,
-   because a border follows the element's rectangle and this
-   element is not one — the shadow is drawn inside the clip and is
-   therefore cut by the same polygon, so the darkening follows the
-   chamfers exactly and costs nothing to keep in sync. It is what
-   sets the photograph INTO the page instead of on top of it. */
-.prism-inset {
+.prism-card {
+  position: sticky;
+  top: var(--prism-top);
+  height: var(--prism-h);
+  overflow: hidden;
+  border-radius: clamp(0.75rem, 1.1vw, 1.25rem);
+  /* OPAQUE, AND NOT NEGOTIABLE. A stacked card with any
+     transparency shows the card beneath at exactly the moment the
+     two overlap, which is the moment the mechanism is being read
+     — the pile stops looking like five things and starts looking
+     like a rendering fault. */
+  background: var(--color-ink-3);
+  /* The hairline is `inset` so it follows the radius without a
+     border eating into the grid inside, and the lift is what
+     separates one card from the identical one behind it at the
+     instant they are edge to edge. */
   box-shadow:
-    inset 0 0 4.5rem 0.75rem rgb(0 0 0 / 0.42),
-    inset 0 0 1rem rgb(0 0 0 / 0.3);
+    inset 0 0 0 1px rgb(255 255 255 / 0.08),
+    0 -1.5rem 3rem -1.5rem rgb(0 0 0 / 0.9);
+  transform-origin: center top;
 }
 
-/* A RAKING HAIRLINE, NOT AN EVEN ONE. A stroke at one flat
-   opacity all the way round is a diagram's outline: it says the
-   shape was specified. Light falling across an edge does not do
-   that, so the stroke runs from a bright top-left to almost
-   nothing at the bottom-right and the cut reads as a real edge
-   catching the room's own light. */
-.prism-outline polygon {
-  fill: none;
-  stroke: url(#prism-edge);
-  stroke-width: 1;
+/* The card's own two columns. The photograph takes the larger
+   share on a desktop — it is the subject, and the copy is four
+   short lines that do not need half a screen. Below `lg` the
+   picture goes full width and the copy sits under it, because a
+   45% column on a phone is four words a line. */
+/* THE PICTURE GETS THE FLEXIBLE ROW, NOT THE COPY.
+
+   `.prism-shot`'s only child is absolutely positioned, so the
+   element has NO intrinsic height — an `auto` row resolves it to
+   zero and the phone gets a card containing the copy and a large
+   empty rectangle where the room should be. It is the kind of
+   break that reads as a missing image rather than as a wrong
+   grid, which is how it survives a glance.
+
+   So the picture takes `1fr` and the copy takes `auto`: the room
+   fills whatever the card has left after four short lines, which
+   is also the right hierarchy for a phone. */
+.prism-card-grid {
+  display: grid;
+  height: 100%;
+  grid-template-rows: minmax(0, 1fr) auto;
+}
+@media (min-width: 1024px) {
+  .prism-card-grid {
+    grid-template-rows: none;
+    grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+  }
+}
+
+.prism-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  order: 2;
+  padding: clamp(1.25rem, 3.5vh, 2.25rem) clamp(1.25rem, 3vw, 3.25rem);
+}
+@media (min-width: 1024px) {
+  .prism-copy {
+    order: 0;
+    padding-block: clamp(2rem, 5vh, 3.5rem);
+  }
+}
+
+.prism-shot {
+  position: relative;
+  order: 1;
+  overflow: hidden;
+  min-height: 0;
+  margin: 0;
+}
+@media (min-width: 1024px) {
+  .prism-shot {
+    order: 0;
+  }
+}
+
+/* The one photograph. `scale` is the crop's zoom, written inline
+   per face — a transform rather than a `background-size` so the
+   five framings cost one composited layer each instead of five
+   decoded copies. */
+.prism-plate {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  transform-origin: center;
 }
 
 /* ------------------------------------------------------------
-   THE LIGHT SIGNATURE INSIDE THE APERTURE
+   THE LIGHT SIGNATURE
 
-   The five faces change the LIGHT, never the photograph. This is
-   where they change it: an off-centre wash whose position, colour
-   temperature and power are three custom properties the scene
-   writes per face. WATCH puts it behind the screen and cools it;
-   HOST floods the floor; ESCAPE takes it down to a lamp in a
-   corner.
+   The five faces change the LIGHT, never the photograph. An
+   off-centre wash whose position, colour temperature and power
+   are three custom properties the face writes.
 
-   Composited normally rather than `mix-blend-mode: screen`. Screen
-   is the technically correct operator for added light and it is
-   the wrong choice here: the room underneath is exposed for the
-   dark, so a warm radial screened over it and the same radial at
-   alpha produce the same pixels — and one of them does not ask
-   the compositor for a blended full-screen layer inside a pin.
+   Composited normally rather than `mix-blend-mode: screen`.
+   Screen is the technically correct operator for added light and
+   it is the wrong choice here: the room is exposed for the dark,
+   so a warm radial screened over it and the same radial at alpha
+   produce the same pixels — and one of them does not ask the
+   compositor for a blended layer on each of five stacked cards.
    ------------------------------------------------------------ */
 .prism-wash {
   --wash-at: 50% 40%;
   --wash-tint: 198, 176, 138;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
   background: radial-gradient(
-    ellipse 78% 62% at var(--wash-at),
+    ellipse 74% 66% at var(--wash-at),
     rgba(var(--wash-tint), var(--wash-power)) 0%,
-    rgba(var(--wash-tint), calc(var(--wash-power) * 0.3)) 42%,
-    rgba(0, 0, 0, 0) 76%
+    rgba(var(--wash-tint), calc(var(--wash-power) * 0.32)) 44%,
+    rgba(0, 0, 0, 0) 78%
   );
 }
 
-/* ------------------------------------------------------------
-   THE IMPLIED GEOMETRY
-
-   Five hairlines, each from one face to the edge of the room, and
-   no ring joining them — see <PrismLines> for why the pentagon
-   the eye completes on its own is better than the one that could
-   be drawn.
-   ------------------------------------------------------------ */
-.prism-lines line {
-  stroke: rgb(255 255 255 / 0.1);
-  stroke-width: 1;
-  transition:
-    stroke 0.9s var(--ease-out-expo),
-    opacity 0.9s var(--ease-out-expo);
-}
-.prism-lines line[data-active] {
-  stroke: rgb(201 173 124 / 0.55);
-}
-
-/* ------------------------------------------------------------
-   THE FACES
-
-   A marker, a number and a name, five times around the room.
-
-   THE NAME IS SET IN THE DISPLAY SERIF, and that is the whole
-   difference between an exhibition wall and a tooltip layer.
-   These five words are the section's subject; at 10px mono they
-   were the least important-looking thing in a composition built
-   entirely around them. Mono is kept for the NUMBER, where it
-   means what mono means everywhere else on this site: a
-   measurement.
-
-   THE ACTIVE STATE IS FOUR SMALL THINGS AND NO FIFTH. The ring
-   opens on the marker, the number warms, the name goes to white,
-   and one hairline extends from it. Nothing scales, nothing
-   glows, nothing gains a background. Each is under the threshold
-   at which a visitor could name what changed, and together they
-   are unmistakable — which is the difference between emphasis and
-   a selected tab.
-   ------------------------------------------------------------ */
-.prism-face {
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-
-/* THE MARKER ALWAYS SITS ON THE ROOM SIDE OF ITS LABEL.
-
-   The node is where the hairline starts, so on a face whose label
-   reads leftward the marker has to be the RIGHTMOST thing in the
-   block or the line begins on the far side of its own type and
-   spends its first 40px travelling through the word it belongs
-   to. Left as a plain row it looks correct in isolation and wrong
-   the moment the connector is drawn — which is how it survived
-   the first pass. */
-@media (min-width: 1024px) {
-  .prism-face[data-side='left'] > span {
-    flex-direction: row-reverse;
-  }
-}
-
-/* The marker. A solid core that is always there, and a ring drawn
-   OUTSIDE it with a box-shadow spread so the core never moves —
-   a marker that changes size is a marker that jumps by a pixel on
-   a half-pixel grid, five times a section. */
-.prism-node {
-  display: block;
-  width: 5px;
-  height: 5px;
-  flex: none;
-  border-radius: 9999px;
-  background: rgb(255 255 255 / 0.38);
-  box-shadow: 0 0 0 0 rgb(201 173 124 / 0);
-  transition:
-    background-color 0.7s var(--ease-out-expo),
-    box-shadow 0.7s var(--ease-out-expo);
-}
-.prism-face:hover .prism-node {
-  background: rgb(255 255 255 / 0.65);
-}
-.prism-face[data-active] .prism-node {
-  background: var(--color-cove);
-  box-shadow: 0 0 0 5px rgb(201 173 124 / 0.16);
-}
-
-/* THE TWO FLOWS. `stack` for the three faces whose clearance is
-   horizontal, `row` for the two whose clearance is vertical —
-   which halves their height, and is the only reason WATCH and
-   ESCAPE clear the photograph on a 768px laptop. The reasoning is
-   written out over FACES in prismGeometry.js. */
-.prism-face-type {
-  position: relative;
-  display: block;
-}
-.prism-face[data-flow='row'] .prism-face-type {
-  display: flex;
-  align-items: baseline;
-  gap: 0.625rem;
-}
-.prism-face[data-side='left'] .prism-face-type {
-  text-align: right;
-}
-
-/* No `display` declared on either of the two below, and that is
-   the whole note. A plain `display: block` here sits after
-   Tailwind's utilities in the sheet and wins the tie against
-   `max-lg:hidden` on the same element — so the names the phone
-   composition deliberately drops were painted anyway, five of
-   them across a 44px band, overlapping each other and the
-   picture. The block behaviour is set inside the desktop media
-   query below instead. */
-.prism-face-n {
-  font-family: var(--font-mono);
-  font-weight: 300;
-  font-variant-numeric: tabular-nums;
-  font-size: 0.5625rem;
-  line-height: 1;
-  letter-spacing: 0.14em;
-  color: var(--color-mist);
-  transition: color 0.7s var(--ease-out-expo);
-}
-.prism-face[data-active] .prism-face-n {
-  color: var(--color-cove);
-}
-
-.prism-face-w {
-  font-family: var(--font-display);
-  font-size: clamp(1rem, min(1.35vw, 2.4vh), 1.3rem);
-  line-height: 1;
-  letter-spacing: -0.012em;
-  color: var(--color-fog);
-  transition: color 0.7s var(--ease-out-expo);
-}
-.prism-face:hover .prism-face-w {
-  color: var(--color-bone);
-}
-.prism-face[data-active] .prism-face-w {
-  color: var(--color-pure);
-}
-
-@media (min-width: 1024px) {
-  .prism-face-n,
-  .prism-face-w {
-    display: block;
-  }
-  .prism-face[data-flow='stack'] .prism-face-w {
-    margin-top: 0.3125rem;
-  }
-}
-
-/* The line extension. `scaleX` on a hairline, never a width — a
-   width animation is a layout a frame, and this one would run on
-   an element absolutely positioned inside a pinned stage.
-
-   It grows AWAY from the room in both directions, because the
-   label reads away from the room in both directions: the origin
-   follows the side, so the mark always travels outward and never
-   back across the picture.
-
-   No `display` here either, for the reason given above
-   `.prism-face-n`: it would beat the `max-lg:hidden` that keeps
-   this off the phone's marker band. Absolute positioning
-   blockifies the span on its own. */
-.prism-face-rule {
+.prism-veil {
   position: absolute;
-  top: calc(100% + 0.5rem);
-  width: 3rem;
-  height: 1px;
-  background: var(--color-cove);
-  opacity: 0.8;
-  transform: scaleX(0);
-  transition: transform 0.9s var(--ease-out-expo);
+  inset: 0;
+  pointer-events: none;
+  background: var(--color-ink);
 }
-.prism-face[data-side='right'] .prism-face-rule {
-  left: 0;
-  transform-origin: left center;
+
+/* A SHORT falloff at the picture's inner edge — an edge with a
+   shadow on it, not a blend.
+
+   The first version ran the gradient 38% across the photograph,
+   which dissolved the join between the copy panel and the room
+   into a long smear. The reference this section is built to holds
+   a crisp vertical boundary there, and it is right to: the card
+   is two materials butted together, and softening the seam over a
+   third of the picture makes it look like one material that has
+   been badly lit. Ten per cent is enough to stop the photograph's
+   own left edge cutting hard against the panel, and short enough
+   that the join still reads as a join. */
+.prism-shot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to right,
+    rgb(11 11 12 / 0.7) 0%,
+    rgb(11 11 12 / 0.18) 5%,
+    rgb(11 11 12 / 0) 11%
+  );
 }
-.prism-face[data-side='left'] .prism-face-rule {
-  right: 0;
-  transform-origin: right center;
-}
-.prism-face[data-active] .prism-face-rule {
-  transform: scaleX(1);
+@media (max-width: 1023px) {
+  .prism-shot::after {
+    background: linear-gradient(to bottom, rgb(11 11 12 / 0) 55%, rgb(11 11 12 / 0.9) 100%);
+  }
 }
 
 /* ------------------------------------------------------------
-   THE READOUT
+   TYPE
 
-   Four axes, stated in English. The KEY is mono because it names
-   a measurement; the VALUE is the sans, because "Immersive" is a
-   word and setting it in mono is the costume this site's engineer
-   voice is most likely to reach for and least entitled to. The
-   first pass had both in mono and the block read as terminal
-   output.
+   THE CLAIM. Its own step, because `.t-display` is sized off
+   viewport width alone and this one sits above a stack whose card
+   height is a function of the WINDOW HEIGHT — the same reasoning
+   that gives `.t-cinema` and `.t-chapter` their `min()` terms.
    ------------------------------------------------------------ */
+.prism-claim {
+  font-family: var(--font-display);
+  font-size: clamp(2.3rem, min(5.4vw, 9vh), 5.4rem);
+  line-height: 0.96;
+  letter-spacing: -0.028em;
+}
+
+/* THE BAND'S HEADLINE. Roman over italic, which is the lockup the
+   rest of this site sets its display type in, at a size that
+   holds its own beside a photograph taking 57% of the card. One
+   step below the claim: the claim is the section's argument and
+   this is one instance of it, and a caption set at the same size
+   as the thing it captions is two headlines arguing. */
+.prism-lockup {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, min(3.1vw, 6vh), 3.4rem);
+  line-height: 0.98;
+  letter-spacing: -0.024em;
+}
+
+/* MONO MEANS MEASUREMENT. The readout's KEY names an axis being
+   measured, so it is mono; its VALUE is a word, so it is the
+   sans. Both in mono — which an earlier build had — turns the
+   block into terminal output, which is the costume this site's
+   engineering voice is most likely to reach for and least
+   entitled to. */
 .prism-readout-k {
   font-family: var(--font-mono);
   font-size: 0.5625rem;
@@ -2494,192 +2291,31 @@ html.lenis body {
   color: var(--color-bone);
 }
 
+.prism-band-word {
+  font-size: 0.5625rem;
+  letter-spacing: 0.22em;
+}
+
 /* ------------------------------------------------------------
-   THE INDEX
+   REDUCED MOTION: THE SAME FIVE BANDS, UNSTACKED
 
-   Five names along one continuous rule, and a small marker that
-   travels under them. An exhibition index — the printed strip at
-   the foot of a wall that tells you which of five rooms you are
-   standing in — rather than tabs, a carousel or a transport.
-
-   The difference is where the emphasis lives. Tabs put a shape
-   around the selected one. A player puts a shape around the
-   control. This puts NOTHING around anything: one hairline runs
-   the full width, unbroken, and the only thing that moves is a
-   3px marker.
-
-   THE MARKER IS DRIVEN BY ONE PROPERTY. `<Prism>` writes
-   `--prism-marker` (0-1) once a scroll frame on the wrapper, and
-   `left` is computed from it here. `left` rather than a transform
-   because the value is a percentage of the RAIL and a transform
-   percentage resolves against the marker's own 3px box; the
-   translate that centres it is the constant, and the two compose
-   without either needing to know the other's units.
-
-   `--prism-marker` is deliberately NOT registered: registration
-   defaults to `inherits: false`, and this one is set on an
-   ancestor and read here.
+   The stack is a way of PRESENTING five things that are already
+   in the document in the right order, so removing it costs the
+   presentation and none of the content. The cards stop sticking,
+   the slots stop reserving travel they no longer need, and the
+   section becomes a column of five bands with a gap between
+   them — where a gap is now correct, because nothing is ever
+   overlapping anything.
    ------------------------------------------------------------ */
-.prism-index-w {
-  font-family: var(--font-display);
-  font-size: clamp(0.9rem, min(1.15vw, 2vh), 1.15rem);
-  line-height: 1;
-  letter-spacing: -0.01em;
-  transition: color 0.7s var(--ease-out-expo);
-}
-
-.prism-index-rail,
-.prism-index-marker {
-  position: absolute;
-  bottom: 0;
-  pointer-events: none;
-}
-.prism-index-rail {
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: rgb(255 255 255 / 0.14);
-}
-.prism-index-marker {
-  left: calc(var(--prism-marker, 0.1) * 100%);
-  width: 3px;
-  height: 3px;
-  margin-bottom: -1px;
-  border-radius: 9999px;
-  background: var(--color-cove);
-  box-shadow: 0 0 0 4px rgb(201 173 124 / 0.14);
-  transform: translateX(-50%);
-}
-
-/* Reduced motion never runs the pin, so there is no playhead to
-   report and the marker would sit at the head of the rail under
-   every face. It follows the SELECTION instead — see the branch
-   in Prism.jsx that writes it — and it moves with a transition
-   rather than a scrub, because a marker that teleports is the one
-   part of this a still composition cannot get away with. */
 @media (prefers-reduced-motion: reduce) {
-  .prism-index-marker {
-    transition: left 0.45s var(--ease-out-expo);
+  .prism-slot {
+    height: auto;
   }
-}
-
-/* ============================================================
-   SIGNATURE — THE INVISIBLE ORBIT
-
-   <Possibilities> is the one section on this page that is a
-   MECHANISM rather than a layout. Eight environments ride a
-   circular path whose centre sits off the left edge of the stage
-   and whose radius is roughly the stage's own width, so what is
-   ever on screen is a single shallow C — an arc, never a circle.
-
-   THE CIRCLE IS NEVER DRAWN, and after the furniture pass there
-   is no drawn geometry in this section at all — no rules, no
-   frame, no rail. The eye reads the arc off the marks travelling
-   it, which is the only way it was ever going to read.
-
-   Everything that moves per scroll frame is written from JS as a
-   transform, an opacity or a custom property — no layout property
-   is touched inside the scrub. The two rules that carry state
-   (`.orbit-clip`, `.orbit-roll`) are read-only consumers of those
-   properties, exactly like `.lens-clip` on /solutions.
-
-   NOTHING IN HERE MAY EVER GET `will-change`. The gallery's
-   layers are clip-path layers, and a promoted clip-path layer is
-   the one thing Chrome intermittently fails to rasterise on this
-   site — the frame draws and the photograph inside stays black.
-   ============================================================ */
-
-/* THE ROOM THE ORBIT STANDS IN.
-
-   This section was the only pinned stage on the homepage with no
-   ground under it — flat #000 with grey type on it, while Promise,
-   LightsDown, Calibration, Prism and Transform are all lit. That is
-   what made it read as a generic minimal layout rather than as part
-   of this site: the page's founding idea, in the client's own brief,
-   is that the interior lights come up as you scroll.
-
-   Same two-part idiom as `.prism-ground`, which solves the same
-   problem for the same kind of stage: a cool key where the
-   photograph is, and a warm cove bounce off the floor. The third
-   layer is this section's own — the picture sits well right of
-   centre here, so the falloff is centred on IT rather than on the
-   stage, which grades the wide empty margin the orbit swings
-   through instead of leaving it dead black.
-
-   Cove is not a new colour on this stage. It is already the badge
-   dot and the barrel; this is the same warmth given the surface it
-   was always implying. */
-.orbit-ground {
-  background:
-    radial-gradient(ellipse 48% 54% at 54% 44%, rgb(255 253 247 / 0.055), transparent 70%),
-    radial-gradient(ellipse 86% 34% at 48% 106%, rgb(201 173 124 / 0.07), transparent 72%),
-    radial-gradient(126% 100% at 56% 46%, #0a0a0b 0%, #050505 54%, #000 84%);
-}
-
-/* THE LIGHT THE PICTURE THROWS.
-
-   A cove spill sized well past the frame, so the warmth lands on the
-   black around the photograph and on the marks passing through it —
-   which is what a lit screen in a dark room actually does.
-
-   Its strength is driven from the scrub, not fixed: it falls away
-   through a crossing and comes back up as the next room lands, so
-   every station arrives by the lights coming up on it. Plain alpha,
-   never `mix-blend-mode` — stacked blend layers inside a pinned
-   stage are what hang this renderer, and over a room this dark the
-   two are indistinguishable. */
-.orbit-pool {
-  background: radial-gradient(
-    ellipse 72% 64% at 50% 48%,
-    rgb(228 201 154 / 0.19) 0%,
-    rgb(201 173 124 / 0.08) 40%,
-    rgb(201 173 124 / 0.02) 62%,
-    transparent 78%
-  );
-}
-
-/* One station on the orbit.
-
-   `transform-origin` is the ANCHOR, not the centre. Each mark is
-   placed by its right edge (the dot) and typeset leftwards from
-   it, so scaling a distant mark down pulls the type toward the
-   path instead of sliding the dot off it — the dot is the thing
-   that has to stay on the curve. */
-.orbit-mark {
-  position: absolute;
-  left: 0;
-  top: 0;
-  transform-origin: 100% 50%;
-}
-
-/* The gallery aperture. Same three-property contract as
-   `.lens-clip`, minus the radius — this frame is architectural and
-   has no corners to round. One write per frame cuts the picture,
-   its wash and its hairline ring together. */
-.orbit-clip {
-  clip-path: inset(var(--ap-y, 0%) var(--ap-x, 0%) var(--ap-y, 0%) var(--ap-x, 0%));
-}
-
-/* The readouts. A window one row tall over a column of all eight
-   values, moved by the scroll — the barrel idiom from /solutions.
-   A value you can watch ARRIVING is what makes the section read as
-   a mechanism; a cross-fade would only report that it had changed. */
-.orbit-roll {
-  height: var(--roll-h);
-  overflow: hidden;
-}
-.orbit-roll > [data-col] > [data-row] {
-  height: var(--roll-h);
-}
-
-/* The cursor's light on the picture. A single soft pool at 7%, and
-   it is the only thing on the stage that responds to the pointer —
-   the marks deliberately do not, because eight elements chasing a
-   cursor is a toy and this is a gallery. */
-.orbit-light {
-  background: radial-gradient(
-    32rem 32rem at var(--lx, 50%) var(--ly, 50%),
-    rgb(255 255 255 / 0.07),
-    transparent 62%
-  );
+  .prism-slot + .prism-slot {
+    margin-top: clamp(1rem, 2.5vh, 1.75rem);
+  }
+  .prism-card {
+    position: relative;
+    top: auto;
+  }
 }

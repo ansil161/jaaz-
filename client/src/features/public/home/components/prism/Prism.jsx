@@ -1,904 +1,184 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
-import Plate from '@/features/public/components/Plate'
-import { hasStill } from '@/features/public/utils/media'
-import { prism, prismModes, prismModeCount } from '@/features/public/data/prism'
-import {
-  useGsapScope,
-  gsap,
-  ScrollTrigger,
-  prefersReducedMotion,
-} from '@/lib/animation/useGsap'
-import PrismFacets from './PrismFacets'
-import PrismLines from './PrismLines'
-import PrismPanel from './PrismPanel'
-import PrismIndex from './PrismIndex'
-import { FRAME, at, faceAt, markerAt, facetClip, facetSvg } from './prismGeometry'
+import { prism, prismModes } from '@/features/public/data/prism'
+import { useGsapScope, gsap, prefersReducedMotion } from '@/lib/animation/useGsap'
+import PrismBand from './PrismBand'
 
 /* ============================================================
    THE PRISM
 
    One room. Different worlds.
 
-   ONE OBJECT, FIVE FACES. A single photograph of a single room
-   sits at the centre of the composition inside an aperture cut
-   out of the page. Five modes — WATCH, PLAY, LISTEN, HOST,
-   ESCAPE — are placed around it, off any axis and off any
-   circle, each tied back to the room by one short hairline.
-   Scrolling turns the object to a different face: the light in
-   the room changes, the aperture is cut differently, and the
-   reading panel changes what it says. The photograph never
-   moves, and never swaps. That is the argument.
+   Five wide bands, one per atmosphere, that STACK: each sticks
+   under the header while the next slides up and covers it. The
+   band you are leaving is still there, directly beneath the one
+   arriving, for the whole length of the transition — which is
+   why this mechanism suits this claim and a carousel would not.
+   A section arguing that one room becomes five things should put
+   two of them edge to edge and let you look.
 
    ------------------------------------------------------------
-   THE ONE RULE: THE ROOM DOES NOT CHANGE, THE LIGHT DOES
+   THE STACK IS CSS. THE SCRIPT ONLY ADDS DEPTH.
 
-   There is exactly one <img> in this section and it is loaded
-   once. Everything that separates the five modes is a filter, a
-   radial wash, a flat veil, and four chamfer percentages — all
-   of them CSS on properties that already exist. If a future edit
-   gives a mode its own picture, the headline becomes a lie the
-   layout is telling and the section is worth nothing.
+   `position: sticky` on every card, at the same `top`, inside
+   slots taller than the cards, is the entire mechanism. It works
+   with no JavaScript at all, it survives a failed bundle, and it
+   needs no pin, no scrub and no measured height — which is why
+   this section is now a fraction of the code the pinned build
+   was.
 
-   ------------------------------------------------------------
-   WHAT WAS REMOVED, AND WHY IT IS NOT COMING BACK
-
-   This slot held a cinematic "snap" — a drawn hand, a countdown
-   to contact, two frames of blowout, a particle throw, a masked
-   wipe — across 3.4 viewports of pinned scroll. The five modes
-   were the content and they lived in the last 40% of it.
-
-   The whole apparatus (SnapHand, SnapMotes, handGeometry, the
-   BEATS timeline, the contact-point measurement, the mote
-   canvas) is gone. Nothing here is a shortened version of it:
-   a composition that states the idea on arrival does not need a
-   sequence to explain it, and the pin is now 2.2 viewports of
-   pure face-turning rather than 3.4 of story.
+   GSAP does one thing on top of it: as a card is covered it
+   recedes, scaling down a couple of per cent and dimming, so the
+   pile reads as physical rather than as a stack of decals.
+   Delete every ScrollTrigger below and the section still works
+   correctly; it just goes flat.
 
    ------------------------------------------------------------
-   WHY THE FACE IS NOT ON THE SCRUB TIMELINE
+   TWO ELEMENTS PER CARD, AND THE REASON IS `sticky`
 
-   Everything continuous — the parallax, the index marker — is
-   scrubbed. WHICH of five faces you are on is not continuous, so
-   it is React state, derived from the playhead in `onUpdate` and
-   set only on the frames where the integer actually changes:
-   five renders across the whole pin rather than one per scroll
-   frame.
-
-   That split is what makes the index clickable. The control
-   moves the SCROLL; the playhead then derives the face exactly
-   as it always does. One source of truth and nothing to
-   reconcile, where setting the index on click would have it
-   overwritten by the next scroll frame.
+   The slot is the sticky positioner and `[data-card]` is what
+   moves. They cannot be the same element: a transform on a
+   `position: sticky` box re-bases the containing block it sticks
+   within, so the stick point drifts by however far the card has
+   been scaled and the whole pile slides out of register. Two
+   elements, one job each, and the transform composes.
 
    ------------------------------------------------------------
-   FIVE PARALLAX LAYERS, AND NO 3D
+   REDUCED MOTION GETS THE SAME SECTION, UNSTACKED
 
-   Depth here is entirely differential speed. Across the pin the
-   hairlines travel furthest, then the markers, then the type,
-   then the room (which moves the other way), then the panel. The
-   pointer does the same thing an order of magnitude smaller — a
-   few pixels, never a tilt. Two separate elements per layer, an
-   outer one for the scroll and an inner one for the pointer, so
-   the two transforms compose instead of fighting over one `y`.
-
-   `force3D: false` ON THE ROOM LAYER IS LOAD-BEARING. Its
-   descendant carries the aperture's `clip-path`, and a promoted
-   layer containing a clip-path or a mask is one Chrome
-   intermittently fails to rasterise: the frame draws and the
-   photograph inside it stays black until an unrelated repaint
-   brings it back. GSAP's default `force3D: "auto"` promotes for
-   the duration of a tween, and a scrubbed tween lasts as long as
-   the section does. A 2D translate on one element costs nothing
-   measurable and cannot lose the picture.
-
-   ------------------------------------------------------------
-   REDUCED MOTION KEEPS THE WHOLE SECTION
-
-   There is nothing here that only makes sense in motion, which
-   is the advantage of a composition over a sequence. No pin, no
-   scrub, no parallax, no pointer — the same layout, at rest,
-   with the index setting the face directly and the light
-   changing without a tween. Nothing is hidden and nothing is
-   explained away.
+   No sticky, no recede: five bands in a column, read one after
+   another. Nothing is hidden and nothing is explained away — the
+   stack is a way of presenting five things that are already in
+   the document in the right order, so taking it away costs the
+   presentation and none of the content.
    ============================================================ */
 
-const TAB_ID = 'prism-tab'
-const PANEL_ID = 'prism-panel'
-
-/* The pin is looked up by id when a face is selected rather than
-   held in a ref. A ref has a lifecycle — matchMedia re-runs its
-   callback on a breakpoint change and StrictMode double-invokes
-   the layout effect, and each of those runs the teardown that
-   nulls it — so a cached instance is one ordering away from
-   being null at the moment somebody clicks, and the control then
-   does nothing at all with no error to find. The registry always
-   has the live one, or nothing, and "nothing" is a state this
-   already handles: it means reduced motion, and no pin to
-   travel. */
-const TRIGGER_ID = 'prism-scene'
-
-/* The five layers, slowest-moving first.
-
-   `y` is the TOTAL scroll travel across the pin, applied as
-   +y/2 to -y/2, so every layer is at its designed position at
-   the middle of the section rather than at one end of it.
-   `px`/`py` are the pointer's maximum pull in pixels, at the
-   corners of the stage. Negative values on the room are what
-   makes it read as the thing furthest away. */
-const LAYERS = [
-  { k: 'lines', y: 40, px: 10, py: 8 },
-  { k: 'faces', y: 26, px: 7, py: 5 },
-  { k: 'type', y: 15, px: 3, py: 2 },
-  { k: 'room', y: -18, px: -4, py: -3, flat: true },
-  { k: 'panel', y: 9, px: 2, py: 2 },
-]
-
-/**
- * Write the aperture.
- *
- * ONE FUNCTION, TWO CONSUMERS, ONE FRAME. The `clip-path` on the
- * photograph and the `points` of the hairline tracing it are
- * generated from the same four numbers here, so they cannot
- * disagree by the couple of pixels that nobody catches in review
- * and everybody sees on the page.
- *
- * Called from the layout effect as well as the mode effect: a
- * `useEffect` runs after paint, so leaving the first write to it
- * shows one frame of an unclipped rectangle on every mount.
- */
-/* THE RESTING STATE, DECLARED IN THE MARKUP.
-
-   The face effect runs after the first paint, so between the
-   browser drawing the section and React getting to it there is
-   one frame the photograph is rendered with `.plate`'s neutral
-   filter and a black veil at full strength — a black rectangle
-   where the room is. One frame is enough to see.
-
-   These are the same four numbers the first face carries, applied
-   inline so the very first painted frame is already WATCH.
-   Derived from the data rather than typed out, so editing the
-   first mode cannot leave a stale opening state behind. */
-const REST = prismModes[0]
-const REST_GRADE = {
-  '--plate-brightness': REST.grade.brightness,
-  '--plate-contrast': REST.grade.contrast,
-  '--plate-saturate': REST.grade.saturate,
-}
-const REST_WASH = {
-  '--wash-at': REST.wash.at,
-  '--wash-tint': REST.wash.tint,
-  '--wash-power': REST.wash.power,
-}
-
-const applyFacet = (el, f) => {
-  if (!el) return
-  const clip = el.querySelector('[data-clip]')
-  const outline = el.querySelector('[data-outline]')
-  if (clip) clip.style.clipPath = facetClip(f)
-  if (outline) outline.setAttribute('points', facetSvg(f))
-}
+/* How much taller each slot is than the card inside it. At 1 a
+   card would be covered the instant it finished arriving, so
+   there would be no frame where a face is simply on screen being
+   itself; much past 1.4 and the section outstays five short
+   sentences. This is the section's pacing dial, and the only
+   number in this file that is a taste decision rather than a
+   measurement. */
+const DWELL = 1.18
 
 export default function Prism() {
-  const [index, setIndex] = useState(0)
-  const mode = prismModes[index]
-
-  /* The live aperture, as four numbers. Held in a ref rather than
-     in state because it is written on every frame of a 0.9s
-     morph and read by nothing in React — see the effect below. */
-  const facet = useRef({ ...prismModes[0].facet })
-
-  /* Whether the face effect has ever run. It applies its state
-     instantly the first time and tweens every time after — the
-     reasoning is written out where it is read. */
-  const first = useRef(true)
-
-  /* ---- Selecting a face moves the scroll, not the state ---- */
-  const select = useCallback((i) => {
-    const wrapped = ((i % prismModeCount) + prismModeCount) % prismModeCount
-    const st = ScrollTrigger.getById(TRIGGER_ID)
-    const lenis = typeof window !== 'undefined' ? window.__lenis : null
-
-    /* No pin to travel through — reduced motion, or the trigger
-       has not been built yet. Setting the index directly is the
-       correct behaviour there, not a degraded one. */
-    if (!st) {
-      setIndex(wrapped)
-      return
-    }
-
-    const y = st.start + (st.end - st.start) * at(wrapped)
-    if (lenis) lenis.scrollTo(y, { duration: 1.05 })
-    else window.scrollTo({ top: y, behavior: 'smooth' })
-  }, [])
-
-  /* ============================================================
-     THE SCENE
-     ============================================================ */
   const root = useGsapScope((el) => {
-    const q = (s) => el.querySelector(s)
-    const indexEl = q('[data-index]')
+    if (prefersReducedMotion()) return
 
-    const layer = (k) => q(`[data-par="${k}"]`)
-    const point = (k) => q(`[data-point="${k}"]`)
-
-    /* Before paint, so the photograph is never seen unclipped. */
-    applyFacet(el, facet.current)
-
-    /* --- Reduced motion: the composition, standing still. ---
-       Everything below this line is scroll and pointer. None of
-       it carries meaning the layout does not already carry, so
-       there is nothing to substitute — the section simply is what
-       it is, and the index effect further down still runs. */
-    if (prefersReducedMotion()) {
-      indexEl?.style.setProperty('--prism-marker', '0.1')
-      return
-    }
+    const slots = gsap.utils.toArray(el.querySelectorAll('[data-slot]'))
+    const cards = slots.map((s) => s.querySelector('[data-card]'))
 
     const mm = gsap.matchMedia()
 
-    mm.add({ wide: '(min-width: 1024px)', narrow: '(max-width: 1023px)' }, (ctx) => {
-      const { wide } = ctx.conditions
-
-      const tl = gsap.timeline({
-        defaults: { ease: 'none' },
-        scrollTrigger: {
-          id: TRIGGER_ID,
-          trigger: el,
-          /* ---- THE PIN IS A DESKTOP DECISION ----
-
-             WIDE: pin the stage and scrub the five faces through
-             2.2 viewports of travel, against the 3.4 the
-             cinematic build took to reach the same five. A pin is
-             a promise that something is happening; this one has
-             five things and no story, so it is priced for five.
-
-             `end` is ABSOLUTE PIXELS FROM A FUNCTION. A function
-             returning `+=N%` resolves against the trigger's own
-             height, which pinSpacing then grows by that amount —
-             so every refresh multiplies the pin again. Same note,
-             same fix, as <LightsDown> and <Spaces>.
-
-             NARROW: no pin at all, and no invented travel. The
-             section is a natural-height stack there (see the note
-             on the stage), and the faces turn as it crosses the
-             screen — from the point it is meaningfully in view to
-             the point it is meaningfully out of it. A phone gets
-             the same five faces driven by the same scroll, and
-             nothing seizes the page to deliver them. */
-          start: wide ? 'top top' : 'top 72%',
-          end: wide ? () => `+=${Math.round(window.innerHeight * 2.2)}` : 'bottom 32%',
-          pin: wide ? '[data-stage]' : false,
-          scrub: 0.55,
-          anticipatePin: wide ? 1 : 0,
-          invalidateOnRefresh: true,
-          onUpdate: (self) => {
-            const p = self.progress
-
-            /* One property write drives the whole rail. See the
-               note in <PrismIndex>. */
-            indexEl?.style.setProperty('--prism-marker', markerAt(p).toFixed(4))
-
-            /* The only thing in the scene that becomes React
-               state, and only on the frames where the integer
-               actually moves. */
-            const next = faceAt(p)
-            setIndex((prev) => (prev === next ? prev : next))
+    mm.add('(min-width: 768px)', () => {
+      /* THE LAST CARD NEVER RECEDES. Nothing covers it, so
+         animating it would dim the face the section ends on for
+         no reason a visitor could see the cause of. */
+      const tweens = slots.slice(0, -1).map((slot, i) =>
+        gsap.fromTo(
+          cards[i],
+          { scale: 1, opacity: 1 },
+          {
+            scale: 0.94,
+            opacity: 0.45,
+            ease: 'none',
+            scrollTrigger: {
+              /* Driven by the NEXT slot, not by this one. What
+                 happens to this card is entirely a function of how
+                 far the card above it has travelled; tying it to
+                 anything else puts the recede out of step with the
+                 thing causing it. */
+              trigger: slots[i + 1],
+              start: 'top bottom',
+              end: 'top top',
+              scrub: 0.4,
+            },
           },
-        },
-      })
+        ),
+      )
 
-      /* ---- The five layers ---- */
-      LAYERS.forEach(({ k, y, flat }) => {
-        const node = layer(k)
-        if (!node) return
-        tl.fromTo(
-          node,
-          { y: y / 2 },
-          { y: -y / 2, duration: 1, force3D: !flat },
-          0,
-        )
-      })
-
-      /* The room breathes very slightly across the pin. Not a
-         push-in and not a reveal: a pinned frame that is also
-         perfectly still is the one thing that makes a pin read as
-         a page that has stopped responding, and 3% over two
-         viewports is below the threshold at which anyone can say
-         what changed. */
-      const roomInner = point('room')
-      if (roomInner) {
-        tl.fromTo(
-          roomInner,
-          { scale: 1.03 },
-          { scale: 1, duration: 1, force3D: false },
-          0,
-        )
-      }
-
-      /* ---- Arrival ----
-         Opacity only, and deliberately so: every one of these
-         elements already has `y` written by the scrub above, and
-         a second timeline animating the same property on the same
-         node is the class of bug that looks like a rendering
-         glitch. The layers stagger in the order they are read. */
-      const arrivals = LAYERS.map((l) => layer(l.k)).filter(Boolean)
-      const intro = gsap.from([...arrivals, indexEl].filter(Boolean), {
-        autoAlpha: 0,
-        duration: 1.1,
-        stagger: 0.09,
-        ease: 'jaz',
-        scrollTrigger: { trigger: el, start: 'top 78%', once: true },
-      })
-
-      return () => {
-        tl.kill()
-        intro.scrollTrigger?.kill()
-        intro.kill()
-      }
+      return () => tweens.forEach((t) => t.kill())
     })
 
-    /* ============================================================
-       THE POINTER
-
-       A few pixels, on a fine pointer only. The brief every line
-       of this obeys is that it must be impossible to point at:
-       the room moves four pixels against ten on the hairlines, so
-       what the eye registers is DEPTH rather than movement. There
-       is no rotation anywhere in it — a tilt would make the
-       composition a card being held, and the aperture is meant to
-       be cut into the page rather than lying on it.
-       ============================================================ */
-    const fine =
-      typeof window !== 'undefined' &&
-      window.matchMedia('(hover: hover) and (pointer: fine) and (min-width: 1024px)').matches
-
-    if (!fine) return () => mm.revert()
-
-    const setters = LAYERS.map(({ k, px, py, flat }) => {
-      const node = point(k)
-      if (!node) return null
-      const opts = { duration: 0.9, ease: 'power3', force3D: !flat }
-      return { x: gsap.quickTo(node, 'x', opts), y: gsap.quickTo(node, 'y', opts), px, py }
-    }).filter(Boolean)
-
-    const onMove = (e) => {
-      const r = el.getBoundingClientRect()
-      if (!r.width || !r.height) return
-      const nx = (e.clientX - r.left) / r.width - 0.5
-      const ny = (e.clientY - r.top) / r.height - 0.5
-      setters.forEach((s) => {
-        s.x(nx * s.px * 2)
-        s.y(ny * s.py * 2)
+    /* The copy arrives once, as its band does. `once` rather than
+       a scrub: a line that re-animates every time its card is
+       uncovered on the way back up is a line that never settles. */
+    const reveals = slots
+      .map((slot) => {
+        const lines = slot.querySelectorAll('[data-rise]')
+        if (!lines.length) return null
+        return gsap.from(lines, {
+          autoAlpha: 0,
+          y: 24,
+          duration: 1,
+          stagger: 0.08,
+          ease: 'jaz',
+          scrollTrigger: { trigger: slot, start: 'top 72%', once: true },
+        })
       })
-    }
-
-    const onLeave = () =>
-      setters.forEach((s) => {
-        s.x(0)
-        s.y(0)
-      })
-
-    el.addEventListener('pointermove', onMove)
-    el.addEventListener('pointerleave', onLeave)
+      .filter(Boolean)
 
     return () => {
-      el.removeEventListener('pointermove', onMove)
-      el.removeEventListener('pointerleave', onLeave)
       mm.revert()
+      reveals.forEach((r) => r.kill())
     }
   }, [])
-
-  /* ============================================================
-     THE FACE ITSELF
-
-     Its own effect, keyed on the mode, and NOT part of the scrub
-     timeline. Two reasons, both load-bearing:
-
-     1. The copy is React-rendered, so the nodes the timeline
-        would target are replaced on every change — a tween built
-        once at mount would be holding a stale element.
-     2. It has to behave identically whether the face changed
-        because you scrolled or because you clicked, and a tween
-        that runs on the value rather than on the playhead does
-        that for free.
-
-     THE APERTURE IS TWEENED THROUGH A PROXY, not through two
-     independent tweens. The `clip-path` on the photograph and the
-     `points` of the hairline that outlines it are generated from
-     the same four numbers, in the same `onUpdate`, on the same
-     frame. Animating them separately puts the outline a couple of
-     pixels off the picture for the length of every transition —
-     which is the amount nobody catches in review and everybody
-     sees on the page.
-
-     The grade goes on the IMAGE, never on its frame: `.plate`
-     declares its own `--plate-*` defaults, and an element's own
-     declaration beats an inherited one, so the same properties
-     set on a wrapper are silently ignored.
-     ============================================================ */
-  useEffect(() => {
-    const el = root.current
-    if (!el) return
-
-    const img = el.querySelector('[data-room-img]')
-    /* BOTH wash layers, written together. The one inside the
-       aperture and the one spilling out of it are the same light,
-       and two `querySelector` calls is the cheapest way to make
-       that structurally true rather than a thing a future edit
-       has to remember. */
-    const wash = el.querySelectorAll('[data-wash], [data-bleed]')
-    const veil = el.querySelector('[data-veil]')
-    const swaps = el.querySelectorAll('[data-swap]')
-    const softs = el.querySelectorAll('[data-swap-soft]')
-    const indexEl = el.querySelector('[data-index]')
-
-    /* THE FIRST RUN IS NOT A TRANSITION, AND THAT IS A BUG FIX
-       RATHER THAN A REFINEMENT.
-
-       This effect is a `useEffect`, so it runs AFTER the first
-       paint, and every tween in it reads its start value from
-       whatever the element happens to carry at that moment. On a
-       change that is exactly right — the room is lit one way and
-       is asked to become lit another. On MOUNT it means the veil
-       starts from its CSS opacity of 1 and takes 0.9s to reach
-       WATCH's 0.3, so the section opens on a solid black aperture
-       and fades the photograph up out of it. The grade does the
-       same thing from `.plate`'s neutral defaults, and the wash
-       runs its dip on a room nobody has seen yet.
-
-       It looked like an intentional reveal, which is why it would
-       have shipped. It is not: it is the section failing to be
-       ITSELF for the first second of every visit. So the first
-       run applies its state instantly, and the resting values are
-       also declared inline in the markup below (see REST), which
-       covers the frame between paint and this effect. */
-    const reduce = prefersReducedMotion()
-    const instant = reduce || first.current
-    first.current = false
-    const duration = instant ? 0 : 0.9
-
-    /* Reduced motion never runs the pin, so the marker has no
-       playhead to report and would sit at the left end of the
-       rail under every face. It follows the selection instead. */
-    if (reduce) indexEl?.style.setProperty('--prism-marker', markerAt(at(index)).toFixed(4))
-
-    const writeFacet = () => applyFacet(el, facet.current)
-    writeFacet()
-
-    const tl = gsap.timeline({ defaults: { duration, ease: 'jaz-io', overwrite: 'auto' } })
-
-    tl.to(facet.current, { ...mode.facet, onUpdate: writeFacet }, 0)
-
-    if (img) {
-      tl.to(
-        img,
-        {
-          '--plate-brightness': mode.grade.brightness,
-          '--plate-contrast': mode.grade.contrast,
-          '--plate-saturate': mode.grade.saturate,
-        },
-        0,
-      )
-    }
-
-    if (wash.length) {
-      tl.set(
-        wash,
-        { '--wash-at': mode.wash.at, '--wash-tint': mode.wash.tint, '--wash-power': mode.wash.power },
-        0,
-      )
-      /* The light does not slide across the room; it goes out and
-         comes back up somewhere else, which is what a lighting
-         state change actually looks like. There is nothing to
-         come back from on the first run. */
-      tl.fromTo(wash, { opacity: instant ? 1 : 0.12 }, { opacity: 1 }, 0)
-    }
-
-    if (veil) tl.to(veil, { opacity: mode.veil }, 0)
-
-    if (instant) {
-      gsap.set(swaps, { yPercent: 0, autoAlpha: 1 })
-      gsap.set(softs, { y: 0, autoAlpha: 1 })
-    } else {
-      if (swaps.length) {
-        tl.fromTo(
-          swaps,
-          { yPercent: 105, autoAlpha: 0 },
-          { yPercent: 0, autoAlpha: 1, duration: 0.66, stagger: 0.055, ease: 'jaz' },
-          0,
-        )
-      }
-      if (softs.length) {
-        tl.fromTo(
-          softs,
-          { y: 12, autoAlpha: 0 },
-          { y: 0, autoAlpha: 1, duration: 0.66, stagger: 0.045, ease: 'jaz' },
-          0.06,
-        )
-      }
-    }
-
-    return () => tl.kill()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mode, index])
-
-  const rendered = hasStill(prism.room.still)
 
   return (
     <section
       ref={root}
       id={prism.id}
       aria-label="One room, different worlds"
-      /* `isolate` so the pinned child keeps its own stacking
-         context — without it Safari can paint it under the next
-         section's background the moment the pin releases. */
+      /* `isolate` so the stack keeps its own stacking context —
+         without it the sticky cards can be painted under the next
+         section's background the moment the stack releases. */
       className="prism-scene relative isolate bg-ink"
     >
-      {/* ONE VIEWPORT ON A DESKTOP, AND NOT ON A PHONE.
+      {/* ---- The claim, once, above the stack ----
+          THE TOP PADDING CLEARS THE NAV. The site's bar is `py-4`
+          around an `h-9` mark on a phone (68px) and measures
+          85.5px above `sm`. This section no longer pins, so the
+          header only has to clear it on arrival rather than for
+          the whole scroll — but the cards below stick UNDER that
+          bar, which is what `--prism-top` in site.css is for. */}
+      <header className="shell-wide pt-[clamp(4.5rem,12vh,8rem)] pb-[clamp(2rem,5vh,3.5rem)]">
+        <span className="t-label flex items-center gap-3 text-fog">
+          {prism.chapter}
+          <span className="block h-px w-10 bg-white/20" aria-hidden="true" />
+        </span>
 
-          `--app-h` is the MEASURED height (see useViewportHeight),
-          so it is honest on mobile browsers whose chrome makes
-          100vh a lie — and it is still the wrong box below `lg`.
-          The narrow composition is a STACK: heading, a band of
-          markers, the room, the panel, the index. Stacked into
-          one 760px screen the room collapses to about 130px,
-          which is not a large photograph with information around
-          it, it is a thumbnail with a wall of type under it. On a
-          560px-tall tablet the same stack simply overflows and
-          the index lands on the readout.
-
-          So below `lg` the section runs its natural height and is
-          not pinned at all — the faces still turn on scroll, from
-          an ordinary scrubbed trigger over the section's own
-          travel (see the narrow branch of the matchMedia). A
-          phone gets a real picture and no scroll lock, which is
-          also the pattern people complain about least. */}
-      <div data-stage className="relative w-full overflow-hidden bg-ink lg:h-[var(--app-h)]">
-        {/* The ground the composition is cut out of. Not a
-            decoration and not a vignette: a barely-there lift
-            behind the centre of the frame, so the aperture reads
-            as an opening in a dark surface rather than as a
-            picture pasted onto black. */}
-        <div aria-hidden="true" className="prism-ground absolute inset-0" />
-
-        {/* THE TWO CLEARANCES ARE MEASURED, NOT CHOSEN.
-
-            TOP: MEASURED ON THE HOMEPAGE, not read off the bar's
-            class list. `py-4` around an `h-9` mark comes to 68px
-            on a phone, and `py-5` around `h-10` measures 85.5px
-            above `sm` — not the 80 the arithmetic gives, because
-            the mark's own line box is taller than the image. This
-            stage is pinned at `top: 0`, so a single clamp whose
-            floor cleared the phone left the chapter mark UNDER the
-            desktop bar at any window short enough for the vh term
-            to bottom out — which is every 1366x768 laptop. Two
-            clamps, one per bar height.
-
-            Anything set at the usual section rhythm sits
-            underneath it entirely, invisible on the page while
-            looking perfectly correct in isolation. That is the
-            failure mode a section built in its own preview harness
-            ships with, and this section has a preview harness.
-
-            BOTTOM: the site mounts an "Ask JAAZ AI" pill at
-            `fixed bottom-6 right-6 z-[80]`, which owns roughly the
-            bottom 72px of the right-hand edge. The index rail is
-            interactive across its full width, and a control that
-            silently does nothing where a visitor happens to click
-            is worse than one that is not there. */}
-        <div
-          className="relative z-10 mx-auto flex w-full max-w-[108rem] flex-col px-[var(--gutter)] pt-[clamp(4.75rem,11vh,6rem)] pb-[clamp(5rem,8.5vh,6.5rem)] lg:h-full lg:pt-[clamp(6.25rem,12vh,7.5rem)]"
-        >
-          {/* ---- The running head ---- */}
-          <header className="flex shrink-0 items-center gap-3">
-            <span className="t-label text-fog">{prism.chapter}</span>
-            {/* The rule, and nothing after it. A second label here
-                said "5 faces / one room", which is the headline an
-                inch below it in display serif — and a claim
-                repeated in small mono a moment before it is made
-                properly reads as a page that does not trust its own
-                typography. The rule running off into the gutter is
-                the mark; the space after it is the point. */}
-            <span className="block h-px w-10 bg-white/20" aria-hidden="true" />
-          </header>
-
-          {/* ============================================================
-              THE FIELD
-
-              The coordinate box every number in prismGeometry.js is
-              a percentage of. On desktop it is a positioning
-              context and all five children are absolute inside it;
-              below `lg` it collapses to an ordinary column and the
-              same five children take their places in the flow. One
-              DOM, two compositions — see <PrismFacets> for why the
-              phone gets a different arrangement rather than a
-              smaller one.
-              ============================================================ */}
-          <div
-            data-field
-            className="relative mt-[clamp(1.25rem,3vh,2.5rem)] flex flex-col gap-[clamp(1rem,2vh,1.5rem)] lg:mt-[clamp(1.5rem,3vh,2.5rem)] lg:block lg:min-h-0 lg:flex-1"
-          >
-            {/* ---- L1 · the implied geometry ----
-                Desktop only. On a phone there is no room around the
-                photograph for a line to cross, and five hairlines
-                over the picture would be decoration on top of the
-                one thing the section is selling. */}
-            <div
-              data-par="lines"
-              aria-hidden="true"
-              className="pointer-events-none max-lg:hidden lg:absolute lg:inset-0"
-            >
-              <div data-point="lines" className="h-full w-full">
-                <PrismLines index={index} />
-              </div>
-            </div>
-
-            {/* ---- L3 · the claim ----
-
-                FIRST IN THE DOM, WHICH IS THE ENTIRE DEVICE. The
-                room paints after it and therefore over it, so
-                "One room." reads complete and "Different worlds."
-                runs behind the photograph and is cut by it. The
-                sentence does what it says.
-
-                It also costs no vertical space. That is not a
-                bonus, it is what makes a real display size
-                possible at all in a pinned one-viewport section:
-                the previous build put this claim in a 19% sidebar
-                and had to shrink the site's display voice to
-                3.3rem — the smallest on the page — to fit it,
-                which is why the section read as a wireframe with a
-                photograph in it. Set beside the room the type
-                cannot be big. Set behind it, it can.
-
-                The block is 46% wide against an aperture whose
-                left edge stands at 29%, and `.prism-claim`'s
-                clamp is tuned so the long line overruns that edge
-                by 14-22% of its own length at every window from
-                1024 to 2560 — enough to be unmistakably cut,
-                never enough to swallow a whole word. */}
-            <div
-              data-par="type"
-              className="order-1 shrink-0 lg:absolute lg:top-[12%] lg:left-0 lg:order-none lg:w-[46%]"
-            >
-              <div data-point="type">
-                <h2 className="prism-claim text-pure">
-                  {prism.heading.map((line, i) => (
-                    <span key={line} className="block">
-                      {i === 1 ? <em className="italic-display text-cove">{line}</em> : line}
-                    </span>
-                  ))}
-                </h2>
-                {/* THE SUPPORTING SENTENCE STANDS DOWN ON A SHORT
-                    WINDOW, and is never on a phone at all.
-                    Everything else here is load-bearing; one
-                    sentence of support is the block that can go
-                    when a short laptop leaves the field about
-                    370px of height. Declared as ONE custom variant
-                    rather than stacked inline, because Tailwind
-                    silently emits no rule at all for a stacked
-                    arbitrary media variant (see the note above it
-                    in site.css). */}
-                <p className="t-body prism-tall:block mt-[clamp(1rem,2.6vh,1.75rem)] hidden max-w-[30ch] text-fog">
-                  {prism.intro}
-                </p>
-              </div>
-            </div>
-
-            {/* ---- L4 · the room ----
-                Placed before the markers in the DOM so the markers
-                and their hairlines paint over the aperture's edge
-                rather than under it.
-
-                The four inset values come from FRAME in
-                prismGeometry.js through custom properties rather
-                than being typed into the class list, so the
-                photograph and the markers around it are placed from
-                ONE set of numbers. Tailwind cannot read a JS
-                constant; a custom property can. */}
-            <div
-              data-par="room"
-              style={{
-                '--f-l': `${FRAME.l}%`,
-                '--f-r': `${100 - FRAME.r}%`,
-                '--f-t': `${FRAME.t}%`,
-                '--f-b': `${100 - FRAME.b}%`,
-              }}
-              className="relative order-3 h-[clamp(15rem,52vh,30rem)] lg:absolute lg:top-[var(--f-t)] lg:right-[var(--f-r)] lg:bottom-[var(--f-b)] lg:left-[var(--f-l)] lg:order-none lg:h-auto"
-            >
-              {/* THE LIGHT THE ROOM THROWS ONTO THE PAGE.
-
-                  First child, so it paints under the photograph,
-                  and inset NEGATIVELY so it escapes the aperture it
-                  belongs to — the whole point is that the light
-                  does not stop at the cut. It carries the same
-                  three wash properties as the layer inside the
-                  frame, written by the same effect, so the colour
-                  temperature outside the room can never disagree
-                  with the one inside it.
-
-                  This is the single thing that separates a
-                  photograph pasted onto black from an opening in a
-                  lit surface, and the first build did not have it.
-                  Same motif as the radial every closing CTA on
-                  this site already carries. */}
-              <div
-                data-bleed
-                aria-hidden="true"
-                style={REST_WASH}
-                className="prism-bleed pointer-events-none absolute -inset-[42%]"
-              />
-
-              <div data-point="room" className="h-full w-full">
-                {/* THE APERTURE.
-
-                    NO `will-change` ANYWHERE IN THIS SUBTREE, and
-                    it is not an oversight — see the header. The
-                    clip-path is written by JS on this element and
-                    the outline below traces the same four numbers,
-                    so the two can never disagree. */}
-                <div data-clip className="prism-clip relative h-full w-full overflow-hidden">
-                  {rendered ? (
-                    <Plate
-                      slot={prism.room.still}
-                      alt={prism.room.alt}
-                      data-room-img
-                      sizes="(min-width: 1024px) 42vw, 92vw"
-                      loading="eager"
-                      fetchPriority="low"
-                      style={REST_GRADE}
-                      className="plate absolute inset-0"
-                    />
-                  ) : (
-                    <img
-                      data-room-img
-                      src={prism.room.photo}
-                      alt={prism.room.alt}
-                      /* EAGER, AND NOT AN OVERSIGHT. This is the
-                         only picture in a full-bleed pinned stage,
-                         and lazy-loading defers it until a viewport
-                         test a pinned section fails in the first
-                         place — the scene would open on an empty
-                         aperture. `fetchPriority="low"` is what
-                         keeps that honest: off the critical path,
-                         not deferred. */
-                      loading="eager"
-                      fetchPriority="low"
-                      decoding="async"
-                      draggable="false"
-                      style={REST_GRADE}
-                      className="plate absolute inset-0"
-                    />
-                  )}
-
-                  {/* The light signature. Along with the grade on
-                      the photograph above, the ONLY thing that
-                      changes between the five faces. */}
-                  <div
-                    data-wash
-                    aria-hidden="true"
-                    style={REST_WASH}
-                    className="prism-wash absolute inset-0"
-                  />
-
-                  {/* Flat dark, for the faces that are mostly it.
-                      Opening at WATCH's value, never at the CSS
-                      default of 1 — see REST. */}
-                  <div
-                    data-veil
-                    aria-hidden="true"
-                    style={{ opacity: REST.veil }}
-                    className="absolute inset-0 bg-ink"
-                  />
-
-                  {/* The falloff at the cut, drawn INSIDE the clip
-                      so it follows the chamfers exactly. What sets
-                      the photograph into the page rather than on
-                      top of it. */}
-                  <div aria-hidden="true" className="prism-inset absolute inset-0" />
-                </div>
-
-                {/* The hairline that traces the cut. Its own SVG,
-                    overlaid exactly on the frame box in a 0-100
-                    viewBox, so its points and the clip-path above
-                    are literally the same numbers.
-
-                    The stroke is a gradient rather than a flat
-                    value: an edge lit evenly all the way round is
-                    a diagram's outline, and this one is meant to
-                    be catching the room's own light. */}
-                <svg
-                  aria-hidden="true"
-                  viewBox="0 0 100 100"
-                  preserveAspectRatio="none"
-                  className="prism-outline pointer-events-none absolute inset-0 h-full w-full"
-                >
-                  <defs>
-                    <linearGradient id="prism-edge" x1="0" y1="0" x2="1" y2="1">
-                      <stop offset="0%" stopColor="rgb(255 255 255 / 0.42)" />
-                      <stop offset="45%" stopColor="rgb(255 255 255 / 0.16)" />
-                      <stop offset="100%" stopColor="rgb(255 255 255 / 0.05)" />
-                    </linearGradient>
-                  </defs>
-                  <polygon data-outline vectorEffect="non-scaling-stroke" />
-                </svg>
-              </div>
-            </div>
-
-            {/* ---- L2 · the five faces ----
-                A 3.75rem band above the image on a phone; the whole
-                field on a desktop. */}
-            <div
-              data-par="faces"
-              className="pointer-events-none relative order-2 h-[2.75rem] shrink-0 lg:absolute lg:inset-0 lg:order-none lg:h-auto"
-            >
-              <div data-point="faces" className="h-full w-full">
-                <PrismFacets
-                  modes={prismModes}
-                  index={index}
-                  onSelect={select}
-                  className="absolute inset-0"
-                />
-              </div>
-            </div>
-
-            {/* ---- L5 · the reading panel ----
-
-                HUNG FROM THE APERTURE'S TOP EDGE, not centred in
-                the field. Centred, it floated: its first line
-                landed on no edge in the composition and the block
-                read as a column that had been dropped in beside
-                the picture. Sharing the frame's own top inset —
-                the same `--f-t` the photograph is placed from —
-                gives the reading column and the room one line to
-                start from, which is the whole difference between
-                three elements in a row and a composition.
-
-                It also removes the collision the centred version
-                had on a short window, where a panel taller than
-                its field grew in both directions and put its last
-                readout row on the index rail. */}
-            <div
-              data-par="panel"
-              style={{ '--f-t': `${FRAME.t}%` }}
-              className="order-4 shrink-0 lg:absolute lg:top-[var(--f-t)] lg:right-0 lg:order-none lg:w-[19%]"
-            >
-              <div data-point="panel">
-                <PrismPanel
-                  mode={mode}
-                  total={prismModeCount}
-                  panelId={PANEL_ID}
-                  tabId={TAB_ID}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* ---- The index ----
-              CLEAR OF THE FLOATING CHAT WIDGET. The site mounts an
-              "Ask JAAZ AI" pill at `fixed bottom-6 right-6
-              z-[80]`, which owns roughly the bottom 72px of the
-              right-hand edge. The stage's bottom padding is set
-              past that on purpose: text losing a corner to that
-              widget is a shrug, an INTERACTIVE cell losing one is
-              a control that silently does nothing where a visitor
-              happens to click — and it does not show up in this
-              section's own preview, because the widget is not
-              there. */}
-          <div data-index className="mt-[clamp(1rem,2.5vh,2rem)] shrink-0">
-            <PrismIndex
-              modes={prismModes}
-              index={index}
-              onSelect={select}
-              tabId={TAB_ID}
-              panelId={PANEL_ID}
-              label="Choose a face"
-            />
-            <div className="mt-[clamp(0.5rem,1.4vh,0.75rem)]">
-              <span className="t-label text-[0.5625rem] text-mist">{prism.hint}</span>
-            </div>
-          </div>
+        <div className="mt-[clamp(1.5rem,4vh,2.75rem)] flex flex-col gap-[clamp(1rem,3vh,2rem)] lg:flex-row lg:items-end lg:justify-between lg:gap-16">
+          <h2 className="prism-claim text-pure">
+            {prism.heading.map((line, i) => (
+              <span key={line} className="block">
+                {i === 1 ? <em className="italic-display text-cove">{line}</em> : line}
+              </span>
+            ))}
+          </h2>
+          <p className="t-body max-w-[38ch] text-fog lg:pb-[0.6em]">{prism.intro}</p>
         </div>
+      </header>
+
+      {/* ---- The stack ----
+          One slot per face. The slot carries the scroll distance;
+          the card inside it sticks. See the header for why they
+          have to be two elements.
+
+          `zIndex` ASCENDS WITH THE INDEX and is not decoration:
+          sticky elements paint in DOM order, so without it a
+          later card would slide UNDER the one it is supposed to
+          be covering — which looks like the stack running
+          backwards. */}
+      <div className="prism-stack">
+        {prismModes.map((mode, i) => (
+          <div
+            key={mode.key}
+            data-slot
+            style={{ '--dwell': DWELL, zIndex: i + 1 }}
+            className="prism-slot"
+          >
+            <PrismBand mode={mode} index={i} />
+          </div>
+        ))}
       </div>
     </section>
   )
