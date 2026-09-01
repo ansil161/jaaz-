@@ -40,8 +40,8 @@ import { getSolution } from '@/features/public/data/solutions'
    untouched.
 
    `data/tonight.js` is GONE, and anything half-written against it has to be
-   repointed: the homepage section it fed was replaced by <Snap>, whose
-   content lives in data/snap.js. */
+   repointed: the homepage section it fed was replaced by <Prism>, whose
+   content lives in data/prism.js. */
 const House = lazy(() => import('@/features/public/house/pages/HousePage'))
 
 const ROUTES = {

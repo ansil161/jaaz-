@@ -38,7 +38,7 @@
   <body>
     <div id="root"></div>
     <!--
-      /snap.html?reduced=1 forces the reduced-motion branch.
+      /prism.html?reduced=1 forces the reduced-motion branch.
 
       Two reasons this lives here rather than in the module. It has to
       run BEFORE any module evaluates, because `prefersReducedMotion()`
@@ -47,7 +47,9 @@
       screenshotting puts the tab at `visibilityState: hidden`, which
       stops rAF, which stops GSAP's ticker, which strands every scrubbed
       timeline. The reduced-motion branch needs no ticker, so it is the
-      one path that screenshots honestly.
+      one path that screenshots honestly — and because <Prism> is a
+      composition rather than a sequence, that branch shows the whole
+      section rather than a degraded version of it.
 
       Dev-only — this file is not among the build inputs in
       vite.config.js and never ships.
@@ -61,6 +63,6 @@
             : real(q)
       }
     </script>
-    <script type="module" src="/src/app/public/snap-preview.jsx"></script>
+    <script type="module" src="/src/app/public/prism-preview.jsx"></script>
   </body>
 </html>

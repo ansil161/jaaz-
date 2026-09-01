@@ -74,6 +74,31 @@
    ------------------------------------------------------------ */
 @custom-variant stage-tall (@media (min-height: 700px));
 
+/* ------------------------------------------------------------
+   `prism-tall` gates the one paragraph <Prism>'s claim column
+   cannot always afford.
+
+   The section is a pinned full-viewport composition with a
+   photograph at its centre and five markers around it, and the
+   claim lives in a column that is 20.5% of the stage. On a
+   maximised 1366x768 laptop the field leaves that column about
+   440px of height, which the three-line display headline and the
+   panel opposite it have first call on. The supporting sentence
+   is the one block in there that can stand down, and below the
+   threshold it does.
+
+   It is never shown on a phone at all — see the mobile
+   composition in <PrismFacets> — so the width half of the
+   condition is doing real work rather than tidying.
+
+   Declared here rather than written inline for the reason given
+   above `tall-lg`: Tailwind silently emits NOTHING for a stacked
+   arbitrary media variant, so a condition used in a class list
+   has to be defined once, in one place, where it can be
+   verified.
+   ------------------------------------------------------------ */
+@custom-variant prism-tall (@media (min-width: 1024px) and (min-height: 700px));
+
 /* ============================================================
    JAAZ — DESIGN SYSTEM
    Black + white. Architectural. Editorial. Cinematic.
@@ -1991,177 +2016,319 @@ html.lenis body {
 }
 
 /* ============================================================
-   SIGNATURE SNAP
+   SIGNATURE — THE PRISM
 
-   The one section on this site whose consequences all radiate
-   from a single measured point. `<Snap>` measures where the two
-   fingertips of the drawn hand meet and writes it onto the stage
-   once per refresh as `--snap-x` / `--snap-y`; the wipe that
-   carries the cinema in, and the blowout at the peak, both read
-   it from there. One measurement, two layers, and they cannot
-   drift apart the way three hand-tuned percentages would.
+   <Prism> is one room at the centre of a composition and five
+   faces of it around the edge. Everything in this block exists
+   to keep that idea and to stop it from becoming a diagram.
+
+   THE RULE THIS WHOLE BLOCK OBEYS: nothing here draws a
+   container. No card, no panel, no pill, no box, no ring, no
+   glow. There are hairlines, there is type, and there is one
+   photograph inside an aperture cut out of the page. The moment
+   any of these gains an outline, the section becomes a dashboard
+   and the room becomes a screenshot in it.
+
+   The section it replaced — a drawn hand snapping over a masked
+   radial wipe — is gone in its entirety, along with `--wipe`,
+   `.snap-reveal`, `.snap-flash` and the transport. Nothing below
+   is a renamed version of any of them.
    ============================================================ */
 
-/* The radius of the light front, as a percentage of the distance
-   from the contact point to the furthest corner. Registered so it
-   is a typed number rather than a token — the mask below is
-   rebuilt from it on every scrub frame, and a typed value is
-   parsed once instead of re-tokenised. Runs to ~118 rather than
-   100 because the soft leading edge has to clear the corner too,
-   not just reach it. */
-@property --wipe {
-  syntax: '<number>';
-  inherits: false;
-  initial-value: 0;
-}
+/* The wash's power is registered so it is a typed number rather
+   than a token: it is re-read on every frame of a face change,
+   and a typed value is parsed once instead of re-tokenised. */
 @property --wash-power {
   syntax: '<number>';
   inherits: false;
-  initial-value: 0.34;
+  initial-value: 0.3;
 }
 
 /* ------------------------------------------------------------
-   THE WIPE
+   THE GROUND
 
-   BOTH STOPS SCALE WITH `--wipe`, and that is not a shortcut for
-   `radius, radius + feather`. Two things depend on it.
-
-   At `--wipe: 0` both stops land on 0%, so every pixel is past
-   the last stop and the layer is fully transparent. Written the
-   obvious way — a hard stop at the radius and a soft one 14%
-   beyond it — a wipe of zero still leaves a soft blob of the
-   finished room sitting at the contact point from the first
-   frame of the section, which gives the ending away before the
-   hand has even been drawn.
-
-   And the feather then GROWS with the radius, which is what an
-   expanding front of light actually does. A fixed 14% band reads
-   as a hard-edged circle by the time it is crossing the frame.
+   Not a vignette and not decoration. The aperture has to read as
+   an OPENING IN A DARK SURFACE rather than as a picture pasted
+   onto black, and the only thing that separates those two
+   readings is whether the surface around the opening has any
+   luminance of its own. Two very shallow ellipses — one behind
+   the room, one under the index — give it about three per cent,
+   which is enough for the cut edge to exist and not enough for
+   anyone to notice a gradient.
    ------------------------------------------------------------ */
-.snap-reveal {
-  -webkit-mask-image: radial-gradient(
-    circle at var(--snap-x, 50%) var(--snap-y, 50%),
-    #000 calc(var(--wipe) * 0.86%),
-    rgba(0, 0, 0, 0) calc(var(--wipe) * 1%)
-  );
-  mask-image: radial-gradient(
-    circle at var(--snap-x, 50%) var(--snap-y, 50%),
-    #000 calc(var(--wipe) * 0.86%),
-    rgba(0, 0, 0, 0) calc(var(--wipe) * 1%)
-  );
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
+.prism-ground {
+  background:
+    radial-gradient(ellipse 52% 46% at 50% 42%, rgb(255 255 255 / 0.035), transparent 72%),
+    radial-gradient(ellipse 90% 30% at 50% 104%, rgb(201 173 124 / 0.05), transparent 70%);
 }
 
 /* ------------------------------------------------------------
-   THE PEAK
+   THE CLAIM
 
-   Warm white, and thrown FROM the contact point rather than laid
-   flat across the frame. A full-bleed white flash is a page
-   fault; a blowout with an origin is a thing that happened at a
-   place, and on the one frame the whole section exists for that
-   difference is the difference.
-
-   PLAIN ALPHA, NOT `mix-blend-mode: screen`. Screen is the
-   technically correct operator for added light and it is the
-   wrong choice here: the room underneath is near black, so
-   screening a warm white over it and compositing it normally
-   produce the same pixels — and this layer is full-bleed inside
-   a pin that already carries a mask and a canvas. Blend modes
-   on stacked full-screen layers in one pinned stage is how a
-   compositor stops keeping up.
+   Its own step on the type scale, and it needs one. `.t-display`
+   is sized off viewport width alone, and this headline lives in a
+   column that is 20.5% of the stage — three lines of a
+   width-scaled display face run that column off the top of the
+   field and straight through the markers beside it. Height is
+   part of the condition here for exactly the reason it is part of
+   `.t-cinema`'s.
    ------------------------------------------------------------ */
-.snap-flash {
-  opacity: 0;
-  visibility: hidden;
-  background: radial-gradient(
-    circle at var(--snap-x, 50%) var(--snap-y, 50%),
-    rgba(255, 249, 238, 0.95) 0%,
-    rgba(255, 241, 217, 0.5) 16%,
-    rgba(255, 236, 205, 0.14) 40%,
-    rgba(255, 236, 205, 0) 68%
-  );
+.prism-heading {
+  font-family: var(--font-display);
+  font-size: clamp(1.65rem, min(3vw, 5.6vh), 3.3rem);
+  line-height: 0.98;
+  letter-spacing: -0.024em;
+}
+
+/* The face's name in the reading panel. One step down from the
+   claim, because the claim is the section's argument and this is
+   its caption — and a caption set at the same size as the thing
+   it captions is two headlines arguing. */
+.prism-word {
+  font-family: var(--font-display);
+  font-size: clamp(1.85rem, min(5.4vw, 4.6vh), 2.85rem);
+  line-height: 0.94;
+  letter-spacing: -0.02em;
+}
+
+/* ------------------------------------------------------------
+   THE APERTURE
+
+   The photograph is cut by a `clip-path` written from JS, and the
+   hairline that traces the cut is an SVG polygon written from the
+   SAME four numbers on the SAME frame — see `applyFacet` in
+   Prism.jsx. Neither is declared here beyond the opening shape,
+   which exists only so the first painted frame is already cut.
+
+   NO `will-change`, ANYWHERE IN THIS SUBTREE, and it is not an
+   oversight. A promoted layer containing a clip-path or a mask is
+   a layer Chrome intermittently fails to rasterise: the frame
+   draws and the photograph inside it stays black until an
+   unrelated repaint brings it back. The hint buys nothing here
+   and costs a picture. The same note governs `force3D: false` on
+   the room's two transforms in Prism.jsx.
+   ------------------------------------------------------------ */
+.prism-clip {
+  clip-path: polygon(3% 0%, 88% 0%, 100% 12%, 100% 96%, 96% 100%, 9% 100%, 0% 91%, 0% 3%);
+}
+
+.prism-outline polygon {
+  fill: none;
+  stroke: rgb(255 255 255 / 0.16);
+  stroke-width: 1;
+  transition: stroke 0.9s var(--ease-out-expo);
 }
 
 /* ------------------------------------------------------------
    THE LIGHT SIGNATURE
 
-   The five states change the LIGHT, never the photograph. This
-   layer is where they change it: an off-centre wash whose
-   position, colour temperature and power are three custom
-   properties the scene writes per state. WATCH puts it behind
-   the screen and cools it; HOST floods the floor; ESCAPE takes
-   it down to a lamp in a corner.
+   The five faces change the LIGHT, never the photograph. This is
+   where they change it: an off-centre wash whose position, colour
+   temperature and power are three custom properties the scene
+   writes per face. WATCH puts it behind the screen and cools it;
+   HOST floods the floor; ESCAPE takes it down to a lamp in a
+   corner.
 
-   Composited normally, for the same reason as `.snap-flash`
-   above: over a room this dark, a warm radial at alpha and the
-   same radial screened are indistinguishable, and one of them
-   does not ask the compositor for a third blended full-screen
-   layer inside the pin.
+   Composited normally rather than `mix-blend-mode: screen`. Screen
+   is the technically correct operator for added light and it is
+   the wrong choice here: the room underneath is exposed for the
+   dark, so a warm radial screened over it and the same radial at
+   alpha produce the same pixels — and one of them does not ask
+   the compositor for a blended full-screen layer inside a pin.
    ------------------------------------------------------------ */
-.snap-wash {
+.prism-wash {
   --wash-at: 50% 40%;
   --wash-tint: 198, 176, 138;
   background: radial-gradient(
-    ellipse 76% 60% at var(--wash-at),
+    ellipse 78% 62% at var(--wash-at),
     rgba(var(--wash-tint), var(--wash-power)) 0%,
-    rgba(var(--wash-tint), calc(var(--wash-power) * 0.32)) 40%,
-    rgba(0, 0, 0, 0) 74%
+    rgba(var(--wash-tint), calc(var(--wash-power) * 0.3)) 42%,
+    rgba(0, 0, 0, 0) 76%
   );
 }
 
 /* ------------------------------------------------------------
-   THE TRANSPORT
+   THE IMPLIED GEOMETRY
 
-   Five bars along the foot, and each one fills as the scroll
-   passes through its own state. THE ARITHMETIC IS IN CSS ON
-   PURPOSE: the scene writes ONE property, `--states-p`, and each
-   cell derives its own fill from its own index —
+   Five hairlines, each from one face to the edge of the room, and
+   no ring joining them — see <PrismLines> for why the pentagon
+   the eye completes on its own is better than the one that could
+   be drawn.
 
-       scaleX(clamp(0, calc(--states-p * --n - --i), 1))
-
-   — so five bars cost one `setProperty` a frame instead of five
-   style writes. `--states-p`, `--n` and `--i` are deliberately
-   NOT registered: registration defaults to `inherits: false`,
-   and the first two are read by descendants of the element they
-   are set on.
-
-   A TRANSFORM, NEVER A WIDTH. A width animation on five elements
-   is five layouts a frame; `scaleX` on a hairline is composited
-   and costs nothing.
+   8% is the whole design of the inactive state. It is present if
+   you look for it and gone if you do not, which is the only
+   weight a connector is allowed on a page whose subject is a
+   photograph.
    ------------------------------------------------------------ */
-.snap-transport .snap-track,
-.snap-transport .snap-fill {
+.prism-lines line {
+  stroke: rgb(255 255 255 / 0.08);
+  stroke-width: 1;
+  transition:
+    stroke 0.9s var(--ease-out-expo),
+    opacity 0.9s var(--ease-out-expo);
+}
+.prism-lines line[data-active] {
+  stroke: rgb(201 173 124 / 0.5);
+}
+
+/* ------------------------------------------------------------
+   THE FACES
+
+   A marker, a number and a word, five times around the room.
+
+   THE ACTIVE STATE IS FOUR SMALL THINGS AND NO FIFTH. The ring
+   opens on the marker, the number warms, the word goes to white,
+   and one hairline extends from it. Nothing scales, nothing
+   glows, nothing gains a background. Each of those four is under
+   the threshold at which a visitor could name what changed, and
+   together they are unmistakable — which is the difference
+   between emphasis and a selected tab.
+   ------------------------------------------------------------ */
+.prism-face {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* The marker. A solid core that is always there, and a ring drawn
+   OUTSIDE it with a box-shadow spread so the core never moves —
+   a marker that changes size is a marker that jumps by a pixel on
+   a half-pixel grid, five times a section. */
+.prism-node {
+  display: block;
+  width: 4px;
+  height: 4px;
+  flex: none;
+  border-radius: 9999px;
+  background: rgb(255 255 255 / 0.34);
+  box-shadow: 0 0 0 0 rgb(201 173 124 / 0);
+  transition:
+    background-color 0.7s var(--ease-out-expo),
+    box-shadow 0.7s var(--ease-out-expo);
+}
+.prism-face:hover .prism-node {
+  background: rgb(255 255 255 / 0.6);
+}
+.prism-face[data-active] .prism-node {
+  background: var(--color-cove);
+  box-shadow: 0 0 0 4px rgb(201 173 124 / 0.16);
+}
+
+.prism-face-type {
+  position: relative;
+  display: block;
+}
+.prism-face[data-side='left'] .prism-face-type {
+  text-align: right;
+}
+
+.prism-face-n {
+  font-size: 0.5625rem;
+  line-height: 1;
+  color: var(--color-mist);
+  transition: color 0.7s var(--ease-out-expo);
+}
+.prism-face[data-active] .prism-face-n {
+  color: var(--color-cove);
+}
+
+.prism-face-w {
+  margin-top: 0.375rem;
+  font-size: 0.625rem;
+  line-height: 1;
+  letter-spacing: 0.18em;
+  color: var(--color-fog);
+  transition: color 0.7s var(--ease-out-expo);
+}
+.prism-face:hover .prism-face-w {
+  color: var(--color-bone);
+}
+.prism-face[data-active] .prism-face-w {
+  color: var(--color-pure);
+}
+
+/* The line extension. `scaleX` on a hairline, never a width — a
+   width animation is a layout a frame, and this one would run on
+   an element absolutely positioned inside a pinned stage.
+
+   It grows AWAY from the room in both directions, because the
+   label reads away from the room in both directions: the origin
+   follows the side, so the mark always travels outward and never
+   back across the picture. */
+.prism-face-rule {
   position: absolute;
-  top: 0;
+  top: calc(100% + 0.4375rem);
+  display: block;
+  width: 2.75rem;
+  height: 1px;
+  background: var(--color-cove);
+  opacity: 0.75;
+  transform: scaleX(0);
+  transition: transform 0.9s var(--ease-out-expo);
+}
+.prism-face[data-side='right'] .prism-face-rule {
+  left: 0;
+  transform-origin: left center;
+}
+.prism-face[data-side='left'] .prism-face-rule {
+  right: 0;
+  transform-origin: right center;
+}
+.prism-face[data-active] .prism-face-rule {
+  transform: scaleX(1);
+}
+
+/* ------------------------------------------------------------
+   THE INDEX
+
+   One unbroken rule under five names, and a marker that travels
+   along it. Not five filling bars: a continuous line is what
+   makes the row an index of ONE thing, where five segments make
+   it a progress bar with chapters — which is the media-player
+   idiom this section is specifically not.
+
+   THE MARKER IS DRIVEN BY ONE PROPERTY. `<Prism>` writes
+   `--prism-marker` (0-1) once a scroll frame on the wrapper, and
+   `left` is computed from it here. `left` rather than a transform
+   because the value is a percentage of the RAIL and a transform
+   percentage resolves against the marker's own 3px box; the
+   translate that centres it is the constant, and the two compose
+   without either needing to know the other's units.
+
+   `--prism-marker` is deliberately NOT registered: registration
+   defaults to `inherits: false`, and this one is set on an
+   ancestor and read here.
+   ------------------------------------------------------------ */
+.prism-index-rail,
+.prism-index-marker {
+  position: absolute;
+  bottom: 0;
+  pointer-events: none;
+}
+.prism-index-rail {
   left: 0;
   right: 0;
   height: 1px;
-  transform-origin: left center;
+  background: rgb(255 255 255 / 0.12);
 }
-.snap-transport .snap-track {
-  background: rgb(255 255 255 / 0.14);
-  transition: background-color 0.5s var(--ease-out-expo);
-}
-.snap-transport .snap-fill {
+.prism-index-marker {
+  left: calc(var(--prism-marker, 0.1) * 100%);
+  width: 3px;
+  height: 3px;
+  margin-bottom: -1px;
+  border-radius: 9999px;
   background: var(--color-cove);
-  transform: scaleX(clamp(0, calc(var(--states-p, 0) * var(--n) - var(--i)), 1));
-}
-.snap-transport button:hover .snap-track,
-.snap-transport button[data-active] .snap-track {
-  background: rgb(255 255 255 / 0.3);
+  transform: translateX(-50%);
 }
 
-/* Reduced motion never runs the pin, so the transport has no
-   playhead to report and the fill would sit at zero under every
-   state — which reads as five disabled controls. It becomes a
-   plain selected/unselected marker instead. */
+/* Reduced motion never runs the pin, so there is no playhead to
+   report and the marker would sit at the head of the rail under
+   every face. It follows the SELECTION instead — see the branch
+   in Prism.jsx that writes it — and it moves with a transition
+   rather than a scrub, because a marker that teleports is the one
+   part of this a still composition cannot get away with. */
 @media (prefers-reduced-motion: reduce) {
-  .snap-transport .snap-fill {
-    transform: scaleX(0);
-  }
-  .snap-transport button[data-active] .snap-fill {
-    transform: scaleX(1);
+  .prism-index-marker {
+    transition: left 0.45s var(--ease-out-expo);
   }
 }
 
@@ -2174,10 +2341,10 @@ html.lenis body {
    and whose radius is roughly the stage's own width, so what is
    ever on screen is a single shallow C — an arc, never a circle.
 
-   THE CIRCLE IS NEVER DRAWN, and nothing here draws a curve. The
-   only geometry in the section's own CSS is four VERTICAL
-   hairlines, which is the opposite hint on purpose: the eye reads
-   the arc from the marks travelling it, not from a guide.
+   THE CIRCLE IS NEVER DRAWN, and after the furniture pass there
+   is no drawn geometry in this section at all — no rules, no
+   frame, no rail. The eye reads the arc off the marks travelling
+   it, which is the only way it was ever going to read.
 
    Everything that moves per scroll frame is written from JS as a
    transform, an opacity or a custom property — no layout property
@@ -2190,16 +2357,6 @@ html.lenis body {
    the one thing Chrome intermittently fails to rasterise on this
    site — the frame draws and the photograph inside stays black.
    ============================================================ */
-
-/* The substrate. Column lines off a floor plan, masked at both
-   ends so they read as structure the composition is standing on
-   rather than as a border around it. */
-.orbit-rules {
-  background-image: linear-gradient(to right, rgb(255 255 255 / 0.05) 1px, transparent 1px);
-  background-size: 25% 100%;
-  background-position: -1px 0;
-  mask-image: linear-gradient(to bottom, transparent, #000 16%, #000 84%, transparent);
-}
 
 /* One station on the orbit.
 

@@ -5,7 +5,7 @@ import Possibilities from '@/features/public/home/components/Possibilities'
 import LightsDown from '@/features/public/home/components/LightsDown'
 import Calibration from '@/features/public/home/components/Calibration'
 import Spaces from '@/features/public/home/components/Spaces'
-import Snap from '@/features/public/home/components/snap/Snap'
+import Prism from '@/features/public/home/components/prism/Prism'
 import Craft from '@/features/public/home/components/Craft'
 import Transform from '@/features/public/home/components/Transform'
 import Testimonials from '@/features/public/home/components/Testimonials'
@@ -71,25 +71,27 @@ export default function Home() {
 
       {/* WHAT IT IS FOR — the rooms, then what happens inside them.
           Placed immediately after <Spaces> because the two are one
-          argument in two halves: Spaces names the rooms, the Snap
-          shows one of them becoming five different evenings without
+          argument in two halves: Spaces names the rooms, the Prism
+          shows one of them being five different evenings without
           moving.
 
-          This slot used to hold <Tonight> — six nights, six
-          photographs, an instrument rail — which made the same
-          argument by ENUMERATION. Enumeration is the weakest form
-          of it: six pictures of six rooms is exactly what a visitor
-          already expects a builder's site to contain, so it proved
-          nothing at the point where they were deciding whether to
-          believe the claim above it.
+          This slot has held the same claim three ways. <Tonight>
+          made it by ENUMERATION — six nights, six photographs —
+          which is the weakest form of it, because six pictures of
+          six rooms is exactly what a visitor already expects a
+          builder's site to contain. <Snap> made it by
+          STORYTELLING, and put the five evenings in the last 40%
+          of a 3.4-viewport pin most people never finished.
 
-          The Snap makes it by TRANSFORMATION instead, and it is
-          still the page's only section the visitor drives rather
-          than scrolls past — the transport at its foot moves the
-          scroll, so the choice is genuinely theirs. Worth spending
-          at the point where they have just been told what can be
-          built and have not yet been told how. */}
-      <Snap />
+          The Prism makes it STRUCTURALLY: one photograph at the
+          centre of a composition, five faces of it around the
+          edge, and the whole idea legible on arrival. It is still
+          the page's only section the visitor drives rather than
+          scrolls past — the index at its foot moves the scroll, so
+          the choice is genuinely theirs. Worth spending at the
+          point where they have just been told what can be built
+          and have not yet been told how. */}
+      <Prism />
 
       {/* PROOF — the one section that argues rather than shows.
           It sits here, after the rooms and before the craft, because

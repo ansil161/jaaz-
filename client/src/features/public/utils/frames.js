@@ -19,11 +19,19 @@ import manifest from '@/features/public/data/frames-manifest.json'
 
    THE RESOLVER RETURNS NULL AND THAT IS A FEATURE. Nothing in
    the manifest is a legitimate state, not an error — the same
-   rule `reel()` follows. `<SnapHand>` draws a vector hand when
-   there is no sequence, so the scene is complete and reviewable
-   before a single frame has been rendered, and swaps to the
-   rendered gesture the moment one lands in the manifest with no
+   rule `reel()` follows. A consumer draws whatever it can draw
+   without frames, so a scene is complete and reviewable before a
+   single frame has been rendered, and swaps to the rendered
+   sequence the moment one lands in the manifest with no
    component change at all.
+
+   NOTHING IMPORTS THIS TODAY. The homepage section that was going
+   to (a scrubbed hand gesture) has been replaced by <Prism>,
+   which is a composition and needs no sequence at all. The file
+   stays for `theatre/walkthrough`, which is still a placeholder
+   entry in the manifest and is the house walkthrough's asset, not
+   the homepage's — see the note above the lazy <House> import in
+   routes.js.
 
    `placeholder: true` on an entry means the frames on disk are
    standing in for the real render. It is carried through so a
@@ -36,7 +44,7 @@ import manifest from '@/features/public/data/frames-manifest.json'
 export const sequences = Object.keys(manifest)
 
 /**
- * `sequence('snap/hand')` -> what exists for that sequence.
+ * `sequence('theatre/walkthrough')` -> what exists for that sequence.
  *
  * Always returns an object, never null, so callers branch on
  * `urls` rather than on the shape of the return value.

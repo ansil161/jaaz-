@@ -3,22 +3,29 @@ import { createRoot } from 'react-dom/client'
 import '@/styles/site.css'
 import { useViewportHeight } from '@/features/public/hooks/useViewportHeight'
 import { useLenis } from '@/features/public/hooks/useLenis'
-import Snap from '@/features/public/home/components/snap/Snap'
+import Prism from '@/features/public/home/components/prism/Prism'
 
 /* ============================================================
-   /snap.html — the Snap on its own
+   /prism.html — the Prism on its own
 
    One section, a screen of nothing either side of it so the pin
    has somewhere to start and somewhere to release into, and none
    of the rest of the homepage in the way. (The same harness
    `promise-preview.jsx` used before it was retired.)
 
-   It earns its place beyond first review. The scene is four
-   acts across three and a half viewports of scroll, and finding
-   the two frames at the peak by scrolling past eleven other
+   It earns its place beyond first review. The composition places
+   five markers, a reading panel and a cut aperture against one
+   photograph, and every one of those positions is tuned against a
+   window size — reaching it by scrolling past eleven other
    sections every time is how tuning stops happening. This entry
    is dev-only — `vite.config.js` lists three build inputs and
    this is not one of them, so it never ships.
+
+   ONE THING THIS HARNESS CANNOT SHOW YOU: the floating "Ask JAAZ
+   AI" pill the site mounts at `fixed bottom-6 right-6 z-[80]`.
+   The index rail's bottom clearance is set to clear it, and it is
+   not here, so a clearance regression looks fine in this preview
+   and covers a control on the actual page.
    ============================================================ */
 
 document.documentElement.classList.remove('no-js')
@@ -31,7 +38,7 @@ function Preview() {
       <div className="shell-wide t-label flex h-screen items-end bg-ink pb-20 text-mist">
         scroll down
       </div>
-      <Snap />
+      <Prism />
       <div className="shell-wide t-label flex h-screen items-start bg-ink pt-20 text-mist">
         next section
       </div>
