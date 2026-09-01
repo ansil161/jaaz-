@@ -55,29 +55,104 @@ import { prismModeCount } from '@/features/public/data/prism'
    ============================================================ */
 
 /** The room's aperture, as a box in field percentages. */
-export const FRAME = { l: 31, r: 69, t: 13, b: 87 }
+export const FRAME = { l: 29, r: 71, t: 12, b: 88 }
 
 /**
  * The five faces.
  *
  * `x`,`y`   the node — the small marker, and where its hairline
- *           starts. Vertically centred on the label block.
+ *           starts. The label block is centred on it vertically.
  * `side`    which way the label reads away from the node:
  *           'right' puts the type to the right of the marker,
  *           'left' right-aligns it so it ends at the marker.
  *           Always pointing AWAY from the room, so no label ever
  *           has to cross the photograph to be read.
+ * `flow`    'stack' sets the number over the word; 'row' sets
+ *           them side by side. NOT a style choice — see below.
  * `link`    where the hairline lands on the frame.
  * `arc`     the mobile position, as a percentage of the shallow
  *           band above the image. Desktop coordinates are useless
  *           there — see <PrismFacets>.
+ *
+ * ------------------------------------------------------------
+ * THE THREE SIDE FACES ARE PLACED AGAINST THE COLUMNS, NOT JUST
+ * AGAINST THE ROOM
+ *
+ * A face's label is roughly 5% of the field wide, and PLAY,
+ * LISTEN and HOST all read outward — so their type ends up in the
+ * strip between the photograph and a text column, and the number
+ * that matters is the clearance on the FAR side. Measured on a
+ * 1360px window, the first pass left LISTEN eleven pixels from
+ * the reading panel and HOST eleven from the claim, which is not
+ * a gutter, it is two blocks that look joined. Each of the three
+ * is set so both of its gaps are near 2.5% of the field —
+ * about 30px — and the frame is 29-71 rather than 31-69 so the
+ * photograph gets the width that buys.
+ *
+ * ------------------------------------------------------------
+ * WHY THE TOP AND BOTTOM FACES READ ACROSS
+ *
+ * Every coordinate here is a percentage, and every label is a
+ * fixed number of pixels tall. Those two facts fight on a short
+ * window: on a maximised 1366x768 laptop the field is about
+ * 340px, so a stacked 34px label is a TENTH of the height it is
+ * being placed in, and WATCH and ESCAPE — the only two faces
+ * whose clearance is vertical — end up sitting on the
+ * photograph's edge. On a tall window the same label is a
+ * twentieth of the field and the composition looks exactly as
+ * drawn, which is why this is the kind of break that ships.
+ *
+ * So the two faces with vertical clearance set their number and
+ * word ACROSS, at half the height, and the three with horizontal
+ * clearance keep the stack. It is also simply the better
+ * composition: a label reads along the edge it belongs to.
  */
 export const FACES = [
-  { key: 'watch', x: 40.0, y: 5.5, side: 'right', link: { x: 40.0, y: 13.0 }, arc: { x: 8, y: 66 } },
-  { key: 'play', x: 72.5, y: 21.0, side: 'right', link: { x: 69.0, y: 17.0 }, arc: { x: 29.5, y: 26 } },
-  { key: 'listen', x: 73.5, y: 58.0, side: 'right', link: { x: 69.0, y: 58.0 }, arc: { x: 50, y: 8 } },
-  { key: 'host', x: 27.0, y: 69.0, side: 'left', link: { x: 31.0, y: 73.0 }, arc: { x: 70.5, y: 26 } },
-  { key: 'escape', x: 50.0, y: 92.5, side: 'right', link: { x: 50.0, y: 87.0 }, arc: { x: 92, y: 66 } },
+  {
+    key: 'watch',
+    x: 38.0,
+    y: 5.0,
+    side: 'right',
+    flow: 'row',
+    link: { x: 38.0, y: 12.0 },
+    arc: { x: 8, y: 66 },
+  },
+  {
+    key: 'play',
+    x: 72.5,
+    y: 21.0,
+    side: 'right',
+    flow: 'stack',
+    link: { x: 71.0, y: 17.0 },
+    arc: { x: 29.5, y: 26 },
+  },
+  {
+    key: 'listen',
+    x: 73.5,
+    y: 58.0,
+    side: 'right',
+    flow: 'stack',
+    link: { x: 71.0, y: 58.0 },
+    arc: { x: 50, y: 8 },
+  },
+  {
+    key: 'host',
+    x: 26.5,
+    y: 69.0,
+    side: 'left',
+    flow: 'stack',
+    link: { x: 29.0, y: 73.0 },
+    arc: { x: 70.5, y: 26 },
+  },
+  {
+    key: 'escape',
+    x: 48.0,
+    y: 95.0,
+    side: 'right',
+    flow: 'row',
+    link: { x: 48.0, y: 88.0 },
+    arc: { x: 92, y: 66 },
+  },
 ]
 
 /* ------------------------------------------------------------

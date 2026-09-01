@@ -59,6 +59,7 @@ export default function PrismFacets({ modes, index, onSelect, className = '' }) 
             tabIndex={-1}
             data-face
             data-side={face.side}
+            data-flow={face.flow}
             data-active={active || undefined}
             onClick={() => onSelect(i)}
             style={{
@@ -80,8 +81,8 @@ export default function PrismFacets({ modes, index, onSelect, className = '' }) 
               <span className="prism-node" />
 
               <span className="prism-face-type max-lg:contents">
-                <span className="prism-face-n t-num block">{mode.n}</span>
-                <span className="prism-face-w t-label block max-lg:hidden">{mode.word}</span>
+                <span className="prism-face-n t-num">{mode.n}</span>
+                <span className="prism-face-w t-label max-lg:hidden">{mode.word}</span>
                 {/* The fine line extension. Grows from the side the
                     label reads towards, so it always travels away
                     from the room rather than back into it. */}

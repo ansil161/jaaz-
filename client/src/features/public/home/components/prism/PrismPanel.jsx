@@ -40,12 +40,12 @@ export default function PrismPanel({ mode, total, panelId, tabId, className = ''
           bare number: "03" alone is a label, "03 / 05" is a place
           in something, which is the only thing the reader needs
           before the name. */}
-      <span className="t-num hidden text-[0.6875rem] text-mist lg:block">
+      <span className="t-num prism-tall:block hidden text-[0.6875rem] text-mist">
         <span data-swap-soft className="inline-block text-cove">{mode.n}</span>
         <span className="text-fog/40"> / 0{total}</span>
       </span>
 
-      <div className="lg:mt-[clamp(1.25rem,3vh,2.25rem)]">
+      <div className="lg:mt-[clamp(0.875rem,3vh,2.25rem)]">
         <span className="mask-line block">
           <h3 data-swap className="prism-word block text-pure">
             {mode.word}
@@ -57,7 +57,7 @@ export default function PrismPanel({ mode, total, panelId, tabId, className = ''
         <span data-swap-soft className="mt-3 block h-px w-16 bg-cove/70" />
       </div>
 
-      <p className="mt-[clamp(0.875rem,2vh,1.25rem)]">
+      <p className="mt-[clamp(0.75rem,2vh,1.25rem)]">
         <span className="mask-line block">
           <span data-swap className="t-label block text-fog">
             {mode.title}
@@ -65,7 +65,7 @@ export default function PrismPanel({ mode, total, panelId, tabId, className = ''
         </span>
       </p>
 
-      <p className="t-body mt-[clamp(0.875rem,2vh,1.375rem)] max-w-[30ch] text-bone">
+      <p className="t-body mt-[clamp(0.75rem,2vh,1.375rem)] max-w-[30ch] text-bone">
         <span className="mask-line block">
           <span data-swap className="block">
             {mode.line}
@@ -75,7 +75,13 @@ export default function PrismPanel({ mode, total, panelId, tabId, className = ''
 
       {/* The four axes. Stated in English — see the note in
           data/prism.js on why this is not an AV specification. */}
-      <dl data-swap-soft className="mt-[clamp(0.875rem,2.4vh,1.25rem)] grid grid-cols-2 gap-x-8 lg:mt-[clamp(1.5rem,4vh,2.5rem)] lg:block">
+      {/* CAPPED ON A TABLET. Below `lg` the readout is a 2x2 grid in
+          a column as wide as the page, and at 834px that puts
+          "AMBIENCE" and "DARK" at opposite ends of a 380px rule
+          with nothing between them — a row that has stopped being
+          a pair and become two unrelated words. The cap is a
+          reading measure, not a container. */}
+      <dl data-swap-soft className="mt-[clamp(0.875rem,2.4vh,1.25rem)] prism-short:hidden grid max-w-[34rem] grid-cols-2 gap-x-8 lg:mt-[clamp(1.25rem,4vh,2.5rem)] lg:block lg:max-w-none">
         {mode.readout.map(([k, v]) => (
           <div
             key={k}

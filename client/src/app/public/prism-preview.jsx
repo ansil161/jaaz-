@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import '@/styles/site.css'
 import { useViewportHeight } from '@/features/public/hooks/useViewportHeight'
 import { useLenis } from '@/features/public/hooks/useLenis'
+import { gsap, ScrollTrigger } from '@/lib/animation/useGsap'
 import Prism from '@/features/public/home/components/prism/Prism'
 
 /* ============================================================
@@ -29,6 +30,29 @@ import Prism from '@/features/public/home/components/prism/Prism'
    ============================================================ */
 
 document.documentElement.classList.remove('no-js')
+
+/* ------------------------------------------------------------
+   THE ONE HOOK THIS HARNESS EXISTS TO PROVIDE
+
+   A pinned, scrubbed section cannot be reviewed through browser
+   automation. Screenshotting puts the tab at
+   `visibilityState: hidden`, which stops rAF, which stops GSAP's
+   ticker, which strands every ScrollTrigger — so the page scrolls
+   and nothing on it moves, and the section looks broken when it
+   is not.
+
+   `?reduced=1` below is the honest way to screenshot the
+   COMPOSITION. This is the honest way to drive the SCRUB: set the
+   scroll position, then call `__ST.update()` by hand, and every
+   `onUpdate` runs against the real playhead without needing a
+   frame. It is the difference between reviewing five faces and
+   reviewing the first one five times.
+
+   Dev-only, like the rest of this file — `vite.config.js` lists
+   three build inputs and this is not one of them.
+   ------------------------------------------------------------ */
+window.__ST = ScrollTrigger
+window.__gsap = gsap
 
 function Preview() {
   useViewportHeight()

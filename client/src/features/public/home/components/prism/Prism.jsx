@@ -146,6 +146,30 @@ const LAYERS = [
  * `useEffect` runs after paint, so leaving the first write to it
  * shows one frame of an unclipped rectangle on every mount.
  */
+/* THE RESTING STATE, DECLARED IN THE MARKUP.
+
+   The face effect runs after the first paint, so between the
+   browser drawing the section and React getting to it there is
+   one frame the photograph is rendered with `.plate`'s neutral
+   filter and a black veil at full strength — a black rectangle
+   where the room is. One frame is enough to see.
+
+   These are the same four numbers the first face carries, applied
+   inline so the very first painted frame is already WATCH.
+   Derived from the data rather than typed out, so editing the
+   first mode cannot leave a stale opening state behind. */
+const REST = prismModes[0]
+const REST_GRADE = {
+  '--plate-brightness': REST.grade.brightness,
+  '--plate-contrast': REST.grade.contrast,
+  '--plate-saturate': REST.grade.saturate,
+}
+const REST_WASH = {
+  '--wash-at': REST.wash.at,
+  '--wash-tint': REST.wash.tint,
+  '--wash-power': REST.wash.power,
+}
+
 const applyFacet = (el, f) => {
   if (!el) return
   const clip = el.querySelector('[data-clip]')
@@ -162,6 +186,11 @@ export default function Prism() {
      in state because it is written on every frame of a 0.9s
      morph and read by nothing in React — see the effect below. */
   const facet = useRef({ ...prismModes[0].facet })
+
+  /* Whether the face effect has ever run. It applies its state
+     instantly the first time and tweens every time after — the
+     reasoning is written out where it is read. */
+  const first = useRef(true)
 
   /* ---- Selecting a face moves the scroll, not the state ---- */
   const select = useCallback((i) => {
@@ -215,21 +244,32 @@ export default function Prism() {
         scrollTrigger: {
           id: TRIGGER_ID,
           trigger: el,
-          start: 'top top',
-          /* Absolute pixels from a function. A function returning
-             `+=N%` resolves against the trigger's own height,
-             which pinSpacing then grows by that amount — so every
-             refresh multiplies the pin again. Same note, same fix,
-             as <LightsDown> and <Spaces>.
+          /* ---- THE PIN IS A DESKTOP DECISION ----
 
-             2.2 viewports for five faces, against the 3.4 the
+             WIDE: pin the stage and scrub the five faces through
+             2.2 viewports of travel, against the 3.4 the
              cinematic build took to reach the same five. A pin is
              a promise that something is happening; this one has
-             five things and no story, so it is priced for five. */
-          end: () => `+=${Math.round(window.innerHeight * (wide ? 2.2 : 1.7))}`,
-          pin: '[data-stage]',
+             five things and no story, so it is priced for five.
+
+             `end` is ABSOLUTE PIXELS FROM A FUNCTION. A function
+             returning `+=N%` resolves against the trigger's own
+             height, which pinSpacing then grows by that amount —
+             so every refresh multiplies the pin again. Same note,
+             same fix, as <LightsDown> and <Spaces>.
+
+             NARROW: no pin at all, and no invented travel. The
+             section is a natural-height stack there (see the note
+             on the stage), and the faces turn as it crosses the
+             screen — from the point it is meaningfully in view to
+             the point it is meaningfully out of it. A phone gets
+             the same five faces driven by the same scroll, and
+             nothing seizes the page to deliver them. */
+          start: wide ? 'top top' : 'top 72%',
+          end: wide ? () => `+=${Math.round(window.innerHeight * 2.2)}` : 'bottom 32%',
+          pin: wide ? '[data-stage]' : false,
           scrub: 0.55,
-          anticipatePin: 1,
+          anticipatePin: wide ? 1 : 0,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
             const p = self.progress
@@ -387,8 +427,30 @@ export default function Prism() {
     const softs = el.querySelectorAll('[data-swap-soft]')
     const indexEl = el.querySelector('[data-index]')
 
+    /* THE FIRST RUN IS NOT A TRANSITION, AND THAT IS A BUG FIX
+       RATHER THAN A REFINEMENT.
+
+       This effect is a `useEffect`, so it runs AFTER the first
+       paint, and every tween in it reads its start value from
+       whatever the element happens to carry at that moment. On a
+       change that is exactly right — the room is lit one way and
+       is asked to become lit another. On MOUNT it means the veil
+       starts from its CSS opacity of 1 and takes 0.9s to reach
+       WATCH's 0.3, so the section opens on a solid black aperture
+       and fades the photograph up out of it. The grade does the
+       same thing from `.plate`'s neutral defaults, and the wash
+       runs its dip on a room nobody has seen yet.
+
+       It looked like an intentional reveal, which is why it would
+       have shipped. It is not: it is the section failing to be
+       ITSELF for the first second of every visit. So the first
+       run applies its state instantly, and the resting values are
+       also declared inline in the markup below (see REST), which
+       covers the frame between paint and this effect. */
     const reduce = prefersReducedMotion()
-    const duration = reduce ? 0 : 0.9
+    const instant = reduce || first.current
+    first.current = false
+    const duration = instant ? 0 : 0.9
 
     /* Reduced motion never runs the pin, so the marker has no
        playhead to report and would sit at the left end of the
@@ -422,13 +484,17 @@ export default function Prism() {
       )
       /* The light does not slide across the room; it goes out and
          comes back up somewhere else, which is what a lighting
-         state change actually looks like. */
-      tl.fromTo(wash, { opacity: reduce ? 1 : 0.12 }, { opacity: 1 }, 0)
+         state change actually looks like. There is nothing to
+         come back from on the first run. */
+      tl.fromTo(wash, { opacity: instant ? 1 : 0.12 }, { opacity: 1 }, 0)
     }
 
     if (veil) tl.to(veil, { opacity: mode.veil }, 0)
 
-    if (!reduce) {
+    if (instant) {
+      gsap.set(swaps, { yPercent: 0, autoAlpha: 1 })
+      gsap.set(softs, { y: 0, autoAlpha: 1 })
+    } else {
       if (swaps.length) {
         tl.fromTo(
           swaps,
@@ -445,9 +511,6 @@ export default function Prism() {
           0.06,
         )
       }
-    } else {
-      gsap.set(swaps, { yPercent: 0, autoAlpha: 1 })
-      gsap.set(softs, { y: 0, autoAlpha: 1 })
     }
 
     return () => tl.kill()
@@ -466,13 +529,26 @@ export default function Prism() {
          section's background the moment the pin releases. */
       className="prism-scene relative isolate bg-ink"
     >
-      {/* ONE VIEWPORT AT EVERY WIDTH. `--app-h` is the MEASURED
-          height (see useViewportHeight), so it is already correct
-          on mobile browsers whose chrome makes 100vh a lie. A
-          pinned element shorter than the screen holding it plays
-          inside a letterboxed strip, which does not read as a
-          scene at all. */}
-      <div data-stage className="relative h-[var(--app-h)] w-full overflow-hidden bg-ink">
+      {/* ONE VIEWPORT ON A DESKTOP, AND NOT ON A PHONE.
+
+          `--app-h` is the MEASURED height (see useViewportHeight),
+          so it is honest on mobile browsers whose chrome makes
+          100vh a lie — and it is still the wrong box below `lg`.
+          The narrow composition is a STACK: heading, a band of
+          markers, the room, the panel, the index. Stacked into
+          one 760px screen the room collapses to about 130px,
+          which is not a large photograph with information around
+          it, it is a thumbnail with a wall of type under it. On a
+          560px-tall tablet the same stack simply overflows and
+          the index lands on the readout.
+
+          So below `lg` the section runs its natural height and is
+          not pinned at all — the faces still turn on scroll, from
+          an ordinary scrubbed trigger over the section's own
+          travel (see the narrow branch of the matchMedia). A
+          phone gets a real picture and no scroll lock, which is
+          also the pattern people complain about least. */}
+      <div data-stage className="relative w-full overflow-hidden bg-ink lg:h-[var(--app-h)]">
         {/* The ground the composition is cut out of. Not a
             decoration and not a vignette: a barely-there lift
             behind the centre of the frame, so the aperture reads
@@ -482,13 +558,22 @@ export default function Prism() {
 
         {/* THE TWO CLEARANCES ARE MEASURED, NOT CHOSEN.
 
-            TOP: the site's bar is `py-4` around an `h-9` mark on a
-            phone (68px) and `py-5` around `h-10` above `sm` (80px),
-            and this stage is pinned at `top: 0` — so anything set
-            at the usual section rhythm sits underneath it,
-            invisible on the page while looking perfectly correct
-            in isolation. That is the failure mode a section built
-            in its own preview harness ships with.
+            TOP: MEASURED ON THE HOMEPAGE, not read off the bar's
+            class list. `py-4` around an `h-9` mark comes to 68px
+            on a phone, and `py-5` around `h-10` measures 85.5px
+            above `sm` — not the 80 the arithmetic gives, because
+            the mark's own line box is taller than the image. This
+            stage is pinned at `top: 0`, so a single clamp whose
+            floor cleared the phone left the chapter mark UNDER the
+            desktop bar at any window short enough for the vh term
+            to bottom out — which is every 1366x768 laptop. Two
+            clamps, one per bar height.
+
+            Anything set at the usual section rhythm sits
+            underneath it entirely, invisible on the page while
+            looking perfectly correct in isolation. That is the
+            failure mode a section built in its own preview harness
+            ships with, and this section has a preview harness.
 
             BOTTOM: the site mounts an "Ask JAAZ AI" pill at
             `fixed bottom-6 right-6 z-[80]`, which owns roughly the
@@ -497,15 +582,19 @@ export default function Prism() {
             silently does nothing where a visitor happens to click
             is worse than one that is not there. */}
         <div
-          className="relative z-10 mx-auto flex h-full w-full max-w-[108rem] flex-col px-[var(--gutter)] pt-[clamp(5.25rem,11vh,7.25rem)] pb-[clamp(5rem,8.5vh,6.5rem)]"
+          className="relative z-10 mx-auto flex w-full max-w-[108rem] flex-col px-[var(--gutter)] pt-[clamp(4.75rem,11vh,6rem)] pb-[clamp(5rem,8.5vh,6.5rem)] lg:h-full lg:pt-[clamp(6.25rem,12vh,7.5rem)]"
         >
           {/* ---- The running head ---- */}
           <header className="flex shrink-0 items-center gap-3">
             <span className="t-label text-fog">{prism.chapter}</span>
-            <span className="block h-px w-8 bg-white/20" aria-hidden="true" />
-            <span className="t-label text-mist max-sm:hidden">
-              {prismModeCount} faces · one room
-            </span>
+            {/* The rule, and nothing after it. A second label here
+                said "5 faces / one room", which is the headline an
+                inch below it in display serif — and a claim
+                repeated in small mono a moment before it is made
+                properly reads as a page that does not trust its own
+                typography. The rule running off into the gutter is
+                the mark; the space after it is the point. */}
+            <span className="block h-px w-10 bg-white/20" aria-hidden="true" />
           </header>
 
           {/* ============================================================
@@ -522,7 +611,7 @@ export default function Prism() {
               ============================================================ */}
           <div
             data-field
-            className="relative mt-[clamp(1rem,3vh,2.5rem)] flex min-h-0 flex-1 flex-col gap-[clamp(0.75rem,2vh,1.25rem)] lg:mt-[clamp(1.5rem,3vh,2.5rem)] lg:block"
+            className="relative mt-[clamp(1.25rem,3vh,2.5rem)] flex flex-col gap-[clamp(1rem,2vh,1.5rem)] lg:mt-[clamp(1.5rem,3vh,2.5rem)] lg:block lg:min-h-0 lg:flex-1"
           >
             {/* ---- L1 · the implied geometry ----
                 Desktop only. On a phone there is no room around the
@@ -558,7 +647,7 @@ export default function Prism() {
                 '--f-t': `${FRAME.t}%`,
                 '--f-b': `${100 - FRAME.b}%`,
               }}
-              className="relative order-3 min-h-0 flex-1 lg:absolute lg:top-[var(--f-t)] lg:right-[var(--f-r)] lg:bottom-[var(--f-b)] lg:left-[var(--f-l)] lg:order-none lg:flex-none"
+              className="relative order-3 h-[clamp(15rem,52vh,30rem)] lg:absolute lg:top-[var(--f-t)] lg:right-[var(--f-r)] lg:bottom-[var(--f-b)] lg:left-[var(--f-l)] lg:order-none lg:h-auto"
             >
               <div data-point="room" className="h-full w-full">
                 {/* THE APERTURE.
@@ -574,9 +663,10 @@ export default function Prism() {
                       slot={prism.room.still}
                       alt={prism.room.alt}
                       data-room-img
-                      sizes="(min-width: 1024px) 38vw, 92vw"
+                      sizes="(min-width: 1024px) 42vw, 92vw"
                       loading="eager"
                       fetchPriority="low"
+                      style={REST_GRADE}
                       className="plate absolute inset-0"
                     />
                   ) : (
@@ -596,6 +686,7 @@ export default function Prism() {
                       fetchPriority="low"
                       decoding="async"
                       draggable="false"
+                      style={REST_GRADE}
                       className="plate absolute inset-0"
                     />
                   )}
@@ -603,10 +694,22 @@ export default function Prism() {
                   {/* The light signature. Along with the grade on
                       the photograph above, the ONLY thing that
                       changes between the five faces. */}
-                  <div data-wash aria-hidden="true" className="prism-wash absolute inset-0" />
+                  <div
+                    data-wash
+                    aria-hidden="true"
+                    style={REST_WASH}
+                    className="prism-wash absolute inset-0"
+                  />
 
-                  {/* Flat dark, for the faces that are mostly it. */}
-                  <div data-veil aria-hidden="true" className="absolute inset-0 bg-ink" />
+                  {/* Flat dark, for the faces that are mostly it.
+                      Opening at WATCH's value, never at the CSS
+                      default of 1 — see REST. */}
+                  <div
+                    data-veil
+                    aria-hidden="true"
+                    style={{ opacity: REST.veil }}
+                    className="absolute inset-0 bg-ink"
+                  />
                 </div>
 
                 {/* The hairline that traces the cut. Its own SVG,
@@ -629,7 +732,7 @@ export default function Prism() {
                 field on a desktop. */}
             <div
               data-par="faces"
-              className="pointer-events-none relative order-2 h-[3.25rem] shrink-0 lg:absolute lg:inset-0 lg:order-none lg:h-auto"
+              className="pointer-events-none relative order-2 h-[2.75rem] shrink-0 lg:absolute lg:inset-0 lg:order-none lg:h-auto"
             >
               <div data-point="faces" className="h-full w-full">
                 <PrismFacets
@@ -644,7 +747,7 @@ export default function Prism() {
             {/* ---- L3 · the claim ---- */}
             <div
               data-par="type"
-              className="order-1 shrink-0 lg:absolute lg:inset-y-0 lg:left-0 lg:order-none lg:flex lg:w-[20.5%] lg:flex-col lg:justify-center"
+              className="order-1 shrink-0 lg:absolute lg:inset-y-0 lg:left-0 lg:order-none lg:flex lg:w-[19%] lg:flex-col lg:justify-center"
             >
               <div data-point="type">
                 <h2 className="prism-heading text-pure">
@@ -674,7 +777,7 @@ export default function Prism() {
             {/* ---- L5 · the reading panel ---- */}
             <div
               data-par="panel"
-              className="order-4 shrink-0 lg:absolute lg:inset-y-0 lg:right-0 lg:order-none lg:flex lg:w-[20%] lg:flex-col lg:justify-center"
+              className="order-4 shrink-0 lg:absolute lg:inset-y-0 lg:right-0 lg:order-none lg:flex lg:w-[19%] lg:flex-col lg:justify-center"
             >
               <div data-point="panel">
                 <PrismPanel

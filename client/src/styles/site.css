@@ -80,12 +80,22 @@
 
    The section is a pinned full-viewport composition with a
    photograph at its centre and five markers around it, and the
-   claim lives in a column that is 20.5% of the stage. On a
-   maximised 1366x768 laptop the field leaves that column about
-   440px of height, which the three-line display headline and the
-   panel opposite it have first call on. The supporting sentence
-   is the one block in there that can stand down, and below the
-   threshold it does.
+   claim lives in a column that is 19% of the stage. The
+   supporting sentence is the one block in there that can stand
+   down, and below the threshold it does.
+
+   620 IS MEASURED, NOT ROUND. The field is the window less the
+   bar clearance, the header row, the index rail and the widget
+   clearance — about H minus 291 — and the tallest thing that has
+   to fit in it is the reading panel with its readout, at roughly
+   280px including breathing room. That puts the real floor at
+   571, and 620 is that with a margin.
+
+   The first pass used 700, which is wrong in the expensive
+   direction: a maximised 1366x768 laptop reports about 660px of
+   viewport, so the threshold that was meant to protect the rare
+   short window was standing content down on the single most
+   common desktop size on the site.
 
    It is never shown on a phone at all — see the mobile
    composition in <PrismFacets> — so the width half of the
@@ -97,7 +107,31 @@
    has to be defined once, in one place, where it can be
    verified.
    ------------------------------------------------------------ */
-@custom-variant prism-tall (@media (min-width: 1024px) and (min-height: 700px));
+@custom-variant prism-tall (@media (min-width: 1024px) and (min-height: 620px));
+
+/* ------------------------------------------------------------
+   `prism-short` is the other half of the same threshold, and it
+   gates the reading panel's readout.
+
+   The panel is centred in a field that is whatever the window has
+   left after the bar above and the index below. At 700px of
+   window that is about 400px and everything fits; below it the
+   panel is taller than its own field and the last readout row
+   lands ON the index rail — an overlap, not a crop, so it does
+   not look like a layout under pressure, it looks like a bug.
+
+   The readout is the block that stands down, for the same reason
+   the supporting sentence does in the claim column: the position,
+   the name, the description and the rule are the panel, and four
+   axes are the panel's evidence. A short window keeps the panel
+   and loses the evidence. It is never gated on a phone, which has
+   natural height and room for all of it.
+
+   Written as its own variant, exactly complementary to
+   `prism-tall`, so the two can never both apply and neither has
+   to win a cascade race against a breakpoint.
+   ------------------------------------------------------------ */
+@custom-variant prism-short (@media (min-width: 1024px) and (max-height: 619px));
 
 /* ============================================================
    JAAZ — DESIGN SYSTEM
@@ -2189,6 +2223,21 @@ html.lenis body {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* THE MARKER ALWAYS SITS ON THE ROOM SIDE OF ITS LABEL.
+
+   The node is where the hairline starts, so on a face whose label
+   reads leftward the marker has to be the RIGHTMOST thing in the
+   block or the line begins on the far side of its own type and
+   spends its first 40px travelling through the word it belongs
+   to. Left as a plain row it looks correct in isolation and wrong
+   the moment the connector is drawn — which is how it survived
+   the first pass. */
+@media (min-width: 1024px) {
+  .prism-face[data-side='left'] > span {
+    flex-direction: row-reverse;
+  }
+}
+
 /* The marker. A solid core that is always there, and a ring drawn
    OUTSIDE it with a box-shadow spread so the core never moves —
    a marker that changes size is a marker that jumps by a pixel on
@@ -2213,14 +2262,32 @@ html.lenis body {
   box-shadow: 0 0 0 4px rgb(201 173 124 / 0.16);
 }
 
+/* THE TWO FLOWS. `stack` for the three faces whose clearance is
+   horizontal, `row` for the two whose clearance is vertical —
+   which halves their height, and is the only reason WATCH and
+   ESCAPE clear the photograph on a 768px laptop. The reasoning is
+   written out over FACES in prismGeometry.js. */
 .prism-face-type {
   position: relative;
   display: block;
+}
+.prism-face[data-flow='row'] .prism-face-type {
+  display: flex;
+  align-items: baseline;
+  gap: 0.625rem;
 }
 .prism-face[data-side='left'] .prism-face-type {
   text-align: right;
 }
 
+/* NO `display` DECLARED ON EITHER OF THESE, and that is the whole
+   note. A plain `.prism-face-w { display: block }` here sits after
+   Tailwind's utilities in the sheet and wins the tie against
+   `max-lg:hidden` on the same element — so the words the phone
+   composition deliberately drops were painted anyway, five of them
+   across a 44px band, overlapping each other and the picture. The
+   block behaviour is set on the two flows below instead, both of
+   which are inside the desktop media query. */
 .prism-face-n {
   font-size: 0.5625rem;
   line-height: 1;
@@ -2232,12 +2299,21 @@ html.lenis body {
 }
 
 .prism-face-w {
-  margin-top: 0.375rem;
   font-size: 0.625rem;
   line-height: 1;
   letter-spacing: 0.18em;
   color: var(--color-fog);
   transition: color 0.7s var(--ease-out-expo);
+}
+
+@media (min-width: 1024px) {
+  .prism-face-n,
+  .prism-face-w {
+    display: block;
+  }
+  .prism-face[data-flow='stack'] .prism-face-w {
+    margin-top: 0.375rem;
+  }
 }
 .prism-face:hover .prism-face-w {
   color: var(--color-bone);
@@ -2254,10 +2330,14 @@ html.lenis body {
    label reads away from the room in both directions: the origin
    follows the side, so the mark always travels outward and never
    back across the picture. */
+/* No `display` here either, and for the reason given above
+   `.prism-face-n`: it would beat the `max-lg:hidden` that keeps
+   this off the phone's marker band. Absolute positioning
+   blockifies the span on its own, so there was never anything to
+   declare. */
 .prism-face-rule {
   position: absolute;
   top: calc(100% + 0.4375rem);
-  display: block;
   width: 2.75rem;
   height: 1px;
   background: var(--color-cove);
