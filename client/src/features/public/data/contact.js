@@ -245,6 +245,18 @@ export const mapPanel = {
 export const contactCta = {
   heading: ['Six questions, then', 'a conversation.'],
   body: 'The enquiry above is the fastest way in. If you would rather just talk, the line is open through studio hours.',
+  /* The closing card carries a photograph now, and this page gets
+     its own rather than inheriting the footer's default: the
+     default is a finished lounge, which is the right picture under
+     "a room worth staying in" and the wrong one under a headline
+     about starting a conversation. The atrium plate is architecture
+     — steel, glass and one amber screen — which is a studio you
+     walk into, not a room you are being sold. Optional everywhere
+     else; <Footer> falls back to `footer.cta.plate` without it. */
+  plate: {
+    src: img('atrium', 1400, '5:4'),
+    alt: 'A dark steel-and-glass interior lit by one amber screen',
+  },
   primary: { label: 'Write the brief', to: '/contact#consultation' },
   secondary: { label: 'Call the studio', href: 'tel:+919847000000' },
 }

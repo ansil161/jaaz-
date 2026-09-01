@@ -36,8 +36,12 @@ import { getSolution } from '@/features/public/data/solutions'
 
    Both routes point at the three.js walkthrough until that page lands. Put
    the new page back on them the moment it does — the data it is being built
-   against (features/public/data/tonight.js, data/frames-manifest.json) is
-   untouched. */
+   against (data/frames-manifest.json, now read through utils/frames.js) is
+   untouched.
+
+   `data/tonight.js` is GONE, and anything half-written against it has to be
+   repointed: the homepage section it fed was replaced by <Snap>, whose
+   content lives in data/snap.js. */
 const House = lazy(() => import('@/features/public/house/pages/HousePage'))
 
 const ROUTES = {

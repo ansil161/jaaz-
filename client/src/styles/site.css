@@ -49,6 +49,31 @@
    ------------------------------------------------------------ */
 @custom-variant tall-lg (@media (min-width: 1024px) and (min-height: 720px));
 
+/* ------------------------------------------------------------
+   `stage-tall` gates the one paragraph a full-viewport pinned
+   stage cannot always afford.
+
+   <Possibilities>'s orbit stacks nine blocks into a column that
+   has, on a maximised 1366x768 laptop, about 439px between the
+   header clearance and the chat-widget clearance. Everything in
+   that stack is load-bearing except the section's supporting
+   sentence — so on a short window that sentence is the block that
+   stands down, and the disclosure, the room name and the room's
+   description all keep their room.
+
+   700 rather than 660, which was the first answer: at 660 the
+   sentence technically fits on a wide window and overflows a
+   narrow one by 7px, because the narrower column wraps both it and
+   the room description onto an extra line each. The threshold has
+   to clear the WORST column width the orbit allows, not the best.
+
+   Declared here rather than written inline for the reason given
+   above `tall-lg`: Tailwind silently emits NOTHING for a stacked
+   arbitrary media variant, so a condition used in a class list has
+   to be defined once, in one place, where it can be verified.
+   ------------------------------------------------------------ */
+@custom-variant stage-tall (@media (min-height: 700px));
+
 /* ============================================================
    JAAZ — DESIGN SYSTEM
    Black + white. Architectural. Editorial. Cinematic.
@@ -294,6 +319,53 @@ html.lenis body {
     font-size: clamp(1.85rem, 3.5vw, 3.5rem);
     line-height: 1.02;
     letter-spacing: -0.02em;
+  }
+
+  /* The sans display voice, for the closing card only.
+
+     Every other headline on this site is Instrument Serif, and
+     that is not being changed — this is one deliberate exception,
+     because the reference the footer is built to sets its offer in
+     a heavy grotesque and the serif does not carry the same
+     directness at the end of a page.
+
+     600 rather than 700: Inter's bold is the weight that makes an
+     interface look like a slide deck, and 600 at this size already
+     reads as heavy against the 300 body text beside it. The
+     tracking is negative and the leading is tight (1.08) for the
+     same reason a display face is set that way — at 3rem, default
+     spacing leaves the two lines drifting apart and the block stops
+     reading as one statement. */
+  .t-heading-sans {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: clamp(1.7rem, 2.8vw, 2.85rem);
+    line-height: 1.08;
+    letter-spacing: -0.032em;
+  }
+
+  /* The directory column heading.
+
+     The reference sets these as small BOLD DARK SANS, and this
+     replaces the 0.24em-tracked mono `.t-label` the footer used to
+     head its columns with. On charcoal that mono label was a
+     system-wide idiom worth keeping; on paper, four of them across
+     the top of a sitemap read as machine output rather than as a
+     directory, and the reference's own answer — a heading that
+     looks like a heading — is simply better here.
+
+     Ink at full strength against `--color-ash` links is what makes
+     the two levels separate at a glance. It is a weight and colour
+     step, not a size step: at 15px the heading is the same size as
+     the links under it, which is what keeps the column reading as
+     one block instead of five. */
+  .t-col-head {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    line-height: 1.4;
+    letter-spacing: -0.006em;
+    color: var(--color-ink);
   }
   .t-sub {
     font-family: var(--font-sans);
@@ -854,7 +926,16 @@ html.lenis body {
     white-space: nowrap;
     user-select: none;
     color: transparent;
-    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.15);
+    /* INK, not white — the footer this sits in is paper now.
+       0.09 rather than the 0.15 the white version carried: a dark
+       hairline on a light ground is far more present than a light
+       one on a dark ground at the same alpha, and at 0.15 the mark
+       stopped being texture and started being a drawing behind the
+       links. This is also the one element the reference footer does
+       not have, and it is kept deliberately: four columns of links
+       on plain white with nothing behind them is the generic
+       footer, and this is the thing that stops it being one. */
+    -webkit-text-stroke: 1px rgba(0, 0, 0, 0.09);
     -webkit-mask-image: linear-gradient(
       to bottom,
       rgba(0, 0, 0, 0.16) 0%,
@@ -873,76 +954,260 @@ html.lenis body {
     );
   }
 
-  /* The warm light pooling at the base of the block — the footer's
-     own version of the cove wash that opens the hero. Anchored to
-     the bottom edge so it reads as light coming UP off the mark
-     rather than as a panel someone tinted. */
+  /* The warm light pooling at the base of the block. On the dark
+     footer this was the cove wash from the hero, read as light. On
+     paper it does the opposite job and has to be built the opposite
+     way: paper is already brighter than the gradient could make it,
+     so this WARMS rather than lifts — a cream cast at the base that
+     ties the paper to the gold panel above it and keeps the block
+     from being flat white.
+
+     Kept well under 0.2: past that the wash stops looking like the
+     paper's own colour and starts looking like a stain, and the
+     legal type sitting in it loses contrast for no gain. */
   .footer-glow {
     background:
       radial-gradient(
-        70% 62% at 50% 108%,
-        rgba(201, 173, 124, 0.1) 0%,
-        rgba(201, 173, 124, 0.035) 42%,
-        transparent 72%
+        78% 58% at 50% 106%,
+        rgba(201, 173, 124, 0.17) 0%,
+        rgba(201, 173, 124, 0.06) 46%,
+        transparent 74%
       ),
-      radial-gradient(
-        46% 40% at 84% 4%,
-        rgba(255, 255, 255, 0.035) 0%,
-        transparent 68%
-      );
+      radial-gradient(40% 36% at 88% 2%, rgba(201, 173, 124, 0.09) 0%, transparent 70%);
   }
 
-  /* A hairline that fades out at both ends instead of running edge
-     to edge. Used for the seam where the page hands over to the
-     footer: a hard full-bleed border reads as two documents stacked,
-     a fading one reads as the same field getting quieter. */
+  /* The seam where the page hands over to the footer.
+
+     A fading hairline was right when both sides were charcoal —
+     the same field getting quieter. It is pointless now: the page
+     above is near-black and the footer is paper, so the seam is
+     already the hardest edge on the site and a hairline drawn on
+     top of it is invisible.
+
+     What it does instead is soften the FIRST few pixels of paper,
+     so the transition is a fast ramp rather than a switch. Twelve
+     pixels — enough to take the buzz off the boundary, not enough
+     to read as a gradient anyone chose. */
   .rule-fade {
-    height: 1px;
-    background: linear-gradient(
-      to right,
-      transparent 0%,
-      rgba(255, 255, 255, 0.16) 22%,
-      rgba(255, 255, 255, 0.16) 78%,
-      transparent 100%
-    );
+    height: 12px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.09) 0%, transparent 100%);
   }
 
-  /* The social tiles. Same fill-wipe idiom as `.btn` — the fill
-     rises from the base — so the one interactive square down here
-     behaves like every other button in the system rather than
-     inventing a third hover language. The lift is 2px: enough to
-     feel answered, not enough to look like a card. */
-  .social-tile {
-    position: relative;
-    overflow: hidden;
-    isolation: isolate;
-    transition:
-      transform 0.55s cubic-bezier(0.16, 1, 0.3, 1),
-      border-color 0.55s cubic-bezier(0.16, 1, 0.3, 1),
-      color 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  /* ------------------------------------------------------------
+     THE CLOSING CARD — a gold panel on a paper footer
+
+     The reference this footer is built to puts a saturated colour
+     panel on a white page and lists the sitemap underneath in
+     plain dark type. That is the arrangement, and this is it in
+     JAAZ's palette: `--color-cove` where the reference has green,
+     `--color-paper` where it has white.
+
+     THE CARD IS THE BRIGHT OBJECT and the footer around it is the
+     quiet one — the opposite of every other section on this site,
+     which is the point. The page arrives at its end and the
+     lights come up.
+
+     COVE IS A REAL COLOUR HERE, not a glow. Everywhere else on
+     the site this hue exists only as a translucent radial wash —
+     the warmth of a screen that has just gone off. At full
+     opacity across a panel this size it stops being light and
+     becomes paint, and that is the one decision to be conscious
+     of: it makes gold the brand colour of the footer rather than
+     an accent inside it.
+
+     ONE gradient, not two. The first build shaded the top-right
+     as well, to give the panel a light direction — and that shade
+     put a tone at the photograph's edge that the veil beside it
+     did not match, so a darker gold stripe appeared down the seam
+     at exactly the place the whole veil exists to hide. Two
+     layers mixing toward the same colour by different routes will
+     not land on the same value, and the only reliable fix is to
+     have one of them stop having an opinion.
+
+     So the right side of the panel is plain `--color-cove`, the
+     veil starts at plain `--color-cove` too, and the seam is
+     mathematically the same colour on both sides. The light
+     direction the removed layer was providing is now doing what
+     it should have been doing all along: coming from the
+     photograph. The remaining lift is warm, low, and anchored to
+     the bottom-left corner where the copy sits — a mix of the
+     same hue, because a grey or white overlay here would
+     desaturate the gold in patches and read as a printing fault. */
+  .footer-card {
+    background:
+      radial-gradient(
+        84% 128% at 2% 104%,
+        color-mix(in srgb, var(--color-cove) 82%, #fff) 0%,
+        transparent 62%
+      ),
+      var(--color-cove);
   }
-  .social-tile::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: -1;
+
+  /* The seam between the photograph and the type beside it.
+
+     A picture butted against a text column reads as two rectangles
+     someone placed next to each other; the reference gets away
+     with a hard edge because its artwork is a cut-out on a flat
+     field and ours is a photograph of a room. So the card's own
+     colour is laid back over the image and taken to nothing across
+     the first third of it — the photograph emerges out of the
+     panel instead of being pasted into it.
+
+     IT FADES TO GOLD, NOT TO BLACK. When the card was ink this
+     layer was `--color-ink-2` at decreasing alpha, which is the
+     same gradient the eye reads as a vignette. Over a gold panel
+     the identical construction would darken the photograph's left
+     edge into a brown smear — the wrong colour AND the wrong
+     value. The stops below are the card's own top-left mix, so the
+     picture dissolves into the exact tone it is sitting on.
+
+     The direction changes with the layout, because the seam does.
+     Stacked (below `lg`) the picture sits ON TOP of the copy and
+     the fade runs downward into it; side by side it runs inward
+     from the left. Two gradients, not one rotated: a diagonal fade
+     over a wide panel bleaches a corner rather than an edge, and
+     the corner it bleaches is the one with the room in it. */
+  .footer-card-veil {
+    /* The panel's own colour, exactly — see `.footer-card` above
+       for why this must not be a mix of it. */
+    --veil: var(--color-cove);
     background: linear-gradient(
-      to top,
-      rgba(255, 255, 255, 0.14) 0%,
-      rgba(255, 255, 255, 0.03) 100%
+      to bottom,
+      transparent 62%,
+      color-mix(in srgb, var(--veil) 52%, transparent) 84%,
+      var(--veil) 100%
     );
-    transform: translateY(101%);
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .social-tile:hover,
-  .social-tile:focus-visible {
-    transform: translateY(-2px);
-    border-color: rgba(255, 255, 255, 0.42);
-    color: var(--color-pure);
+  @media (width >= 64rem) {
+    /* SHORT. The first build of this ran the fade to nothing across
+       74% of the panel, which was tuned when the card was near-black
+       and the veil was the same value as the photograph it lay over
+       — invisible for most of its length. Over gold it is not: a
+       long gold ramp across a dark interior does not dissolve the
+       picture, it sepia-tints two-thirds of it, and the room stops
+       being a photograph and starts being a graphic.
+
+       Clear by 38% instead. That is enough to kill the vertical seam
+       — which is all this layer was ever for — and it leaves the
+       majority of the frame ungraded. */
+    .footer-card-veil {
+      background: linear-gradient(
+        to right,
+        var(--veil) 0%,
+        color-mix(in srgb, var(--veil) 72%, transparent) 9%,
+        color-mix(in srgb, var(--veil) 22%, transparent) 24%,
+        transparent 38%
+      );
+    }
   }
-  .social-tile:hover::before,
-  .social-tile:focus-visible::before {
-    transform: translateY(0);
+
+  /* The card's two actions.
+
+     `.btn-flat` and `.btn-flat-ghost` could not be reused: both are
+     written for a dark field — an off-white fill and a white
+     hairline — and both are load-bearing for <ClosingCta>, which
+     still runs on ink on four other pages. These are their inverse,
+     and only the footer uses them.
+
+     Dark buttons on the colour panel is the reference's own
+     arrangement (its two app-store badges are near-black on the
+     green), and it is also the only version that works: a paper
+     button on cove is a 2.2:1 pairing, and the label would have to
+     be gold on white to stay legible, which is a third colour for
+     no reason. Ink on cove is 9.7:1.
+
+     The ghost's padding is the filled one's minus 1px on both axes
+     because it carries a border and the other does not; without
+     the subtraction two buttons in the same row are 2px different
+     in height — exactly visible enough to look like a mistake and
+     not obviously enough to diagnose. */
+  .btn-flat-ink {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.9rem 1.75rem;
+    background: var(--color-ink);
+    color: var(--color-paper);
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .btn-flat-ink:hover,
+  .btn-flat-ink:focus-visible {
+    background-color: var(--color-smoke);
+  }
+  .btn-flat-ink .btn-flat-arrow {
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn-flat-ink:hover .btn-flat-arrow,
+  .btn-flat-ink:focus-visible .btn-flat-arrow {
+    transform: translateX(0.25rem);
+  }
+
+  .btn-flat-ink-ghost {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: calc(0.9rem - 1px) calc(1.75rem - 1px);
+    border: 1px solid rgba(0, 0, 0, 0.38);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition:
+      border-color 0.35s ease,
+      background-color 0.35s ease;
+  }
+  .btn-flat-ink-ghost:hover,
+  .btn-flat-ink-ghost:focus-visible {
+    border-color: var(--color-ink);
+    background-color: rgba(0, 0, 0, 0.06);
+  }
+
+  /* The social marks, as the reference draws them: solid dark
+     discs with the glyph knocked out in paper, sitting at the far
+     right of the legal line.
+
+     They replace the outlined squares this footer used to carry.
+     An outlined square works on charcoal because the border is the
+     only thing separating it from the field; on paper an outline
+     of the same weight reads as an empty box waiting for content,
+     and four of them read as a broken image grid. A filled disc has
+     no such ambiguity — and it is the one place the reference's own
+     drawing is unarguably better than what was here.
+
+     Hover goes to COVE, not to a lighter ink, so the row answers in
+     the same colour the card above it is painted in. That is also
+     why the lift is gone: a 2px rise made sense for a square that
+     was pretending to be a key, and a disc that changes colour does
+     not need to move as well. */
+  .social-dot {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.125rem;
+    height: 2.125rem;
+    border-radius: 50%;
+    background: var(--color-ink);
+    color: var(--color-paper);
+    transition:
+      background-color 0.4s ease,
+      color 0.4s ease;
+  }
+  .social-dot:hover,
+  .social-dot:focus-visible {
+    background-color: var(--color-cove);
+    color: var(--color-ink);
   }
 
   /* Text link with a rule that wipes left-to-right. */
@@ -1722,5 +1987,262 @@ html.lenis body {
 .lens-clip {
   clip-path: inset(
     var(--ap-y, 0%) var(--ap-x, 0%) var(--ap-y, 0%) var(--ap-x, 0%) round var(--ap-r, 0%)
+  );
+}
+
+/* ============================================================
+   SIGNATURE SNAP
+
+   The one section on this site whose consequences all radiate
+   from a single measured point. `<Snap>` measures where the two
+   fingertips of the drawn hand meet and writes it onto the stage
+   once per refresh as `--snap-x` / `--snap-y`; the wipe that
+   carries the cinema in, and the blowout at the peak, both read
+   it from there. One measurement, two layers, and they cannot
+   drift apart the way three hand-tuned percentages would.
+   ============================================================ */
+
+/* The radius of the light front, as a percentage of the distance
+   from the contact point to the furthest corner. Registered so it
+   is a typed number rather than a token — the mask below is
+   rebuilt from it on every scrub frame, and a typed value is
+   parsed once instead of re-tokenised. Runs to ~118 rather than
+   100 because the soft leading edge has to clear the corner too,
+   not just reach it. */
+@property --wipe {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+@property --wash-power {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0.34;
+}
+
+/* ------------------------------------------------------------
+   THE WIPE
+
+   BOTH STOPS SCALE WITH `--wipe`, and that is not a shortcut for
+   `radius, radius + feather`. Two things depend on it.
+
+   At `--wipe: 0` both stops land on 0%, so every pixel is past
+   the last stop and the layer is fully transparent. Written the
+   obvious way — a hard stop at the radius and a soft one 14%
+   beyond it — a wipe of zero still leaves a soft blob of the
+   finished room sitting at the contact point from the first
+   frame of the section, which gives the ending away before the
+   hand has even been drawn.
+
+   And the feather then GROWS with the radius, which is what an
+   expanding front of light actually does. A fixed 14% band reads
+   as a hard-edged circle by the time it is crossing the frame.
+   ------------------------------------------------------------ */
+.snap-reveal {
+  -webkit-mask-image: radial-gradient(
+    circle at var(--snap-x, 50%) var(--snap-y, 50%),
+    #000 calc(var(--wipe) * 0.86%),
+    rgba(0, 0, 0, 0) calc(var(--wipe) * 1%)
+  );
+  mask-image: radial-gradient(
+    circle at var(--snap-x, 50%) var(--snap-y, 50%),
+    #000 calc(var(--wipe) * 0.86%),
+    rgba(0, 0, 0, 0) calc(var(--wipe) * 1%)
+  );
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+/* ------------------------------------------------------------
+   THE PEAK
+
+   Warm white, and thrown FROM the contact point rather than laid
+   flat across the frame. A full-bleed white flash is a page
+   fault; a blowout with an origin is a thing that happened at a
+   place, and on the one frame the whole section exists for that
+   difference is the difference.
+
+   PLAIN ALPHA, NOT `mix-blend-mode: screen`. Screen is the
+   technically correct operator for added light and it is the
+   wrong choice here: the room underneath is near black, so
+   screening a warm white over it and compositing it normally
+   produce the same pixels — and this layer is full-bleed inside
+   a pin that already carries a mask and a canvas. Blend modes
+   on stacked full-screen layers in one pinned stage is how a
+   compositor stops keeping up.
+   ------------------------------------------------------------ */
+.snap-flash {
+  opacity: 0;
+  visibility: hidden;
+  background: radial-gradient(
+    circle at var(--snap-x, 50%) var(--snap-y, 50%),
+    rgba(255, 249, 238, 0.95) 0%,
+    rgba(255, 241, 217, 0.5) 16%,
+    rgba(255, 236, 205, 0.14) 40%,
+    rgba(255, 236, 205, 0) 68%
+  );
+}
+
+/* ------------------------------------------------------------
+   THE LIGHT SIGNATURE
+
+   The five states change the LIGHT, never the photograph. This
+   layer is where they change it: an off-centre wash whose
+   position, colour temperature and power are three custom
+   properties the scene writes per state. WATCH puts it behind
+   the screen and cools it; HOST floods the floor; ESCAPE takes
+   it down to a lamp in a corner.
+
+   Composited normally, for the same reason as `.snap-flash`
+   above: over a room this dark, a warm radial at alpha and the
+   same radial screened are indistinguishable, and one of them
+   does not ask the compositor for a third blended full-screen
+   layer inside the pin.
+   ------------------------------------------------------------ */
+.snap-wash {
+  --wash-at: 50% 40%;
+  --wash-tint: 198, 176, 138;
+  background: radial-gradient(
+    ellipse 76% 60% at var(--wash-at),
+    rgba(var(--wash-tint), var(--wash-power)) 0%,
+    rgba(var(--wash-tint), calc(var(--wash-power) * 0.32)) 40%,
+    rgba(0, 0, 0, 0) 74%
+  );
+}
+
+/* ------------------------------------------------------------
+   THE TRANSPORT
+
+   Five bars along the foot, and each one fills as the scroll
+   passes through its own state. THE ARITHMETIC IS IN CSS ON
+   PURPOSE: the scene writes ONE property, `--states-p`, and each
+   cell derives its own fill from its own index —
+
+       scaleX(clamp(0, calc(--states-p * --n - --i), 1))
+
+   — so five bars cost one `setProperty` a frame instead of five
+   style writes. `--states-p`, `--n` and `--i` are deliberately
+   NOT registered: registration defaults to `inherits: false`,
+   and the first two are read by descendants of the element they
+   are set on.
+
+   A TRANSFORM, NEVER A WIDTH. A width animation on five elements
+   is five layouts a frame; `scaleX` on a hairline is composited
+   and costs nothing.
+   ------------------------------------------------------------ */
+.snap-transport .snap-track,
+.snap-transport .snap-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  transform-origin: left center;
+}
+.snap-transport .snap-track {
+  background: rgb(255 255 255 / 0.14);
+  transition: background-color 0.5s var(--ease-out-expo);
+}
+.snap-transport .snap-fill {
+  background: var(--color-cove);
+  transform: scaleX(clamp(0, calc(var(--states-p, 0) * var(--n) - var(--i)), 1));
+}
+.snap-transport button:hover .snap-track,
+.snap-transport button[data-active] .snap-track {
+  background: rgb(255 255 255 / 0.3);
+}
+
+/* Reduced motion never runs the pin, so the transport has no
+   playhead to report and the fill would sit at zero under every
+   state — which reads as five disabled controls. It becomes a
+   plain selected/unselected marker instead. */
+@media (prefers-reduced-motion: reduce) {
+  .snap-transport .snap-fill {
+    transform: scaleX(0);
+  }
+  .snap-transport button[data-active] .snap-fill {
+    transform: scaleX(1);
+  }
+}
+
+/* ============================================================
+   SIGNATURE — THE INVISIBLE ORBIT
+
+   <Possibilities> is the one section on this page that is a
+   MECHANISM rather than a layout. Eight environments ride a
+   circular path whose centre sits off the left edge of the stage
+   and whose radius is roughly the stage's own width, so what is
+   ever on screen is a single shallow C — an arc, never a circle.
+
+   THE CIRCLE IS NEVER DRAWN, and nothing here draws a curve. The
+   only geometry in the section's own CSS is four VERTICAL
+   hairlines, which is the opposite hint on purpose: the eye reads
+   the arc from the marks travelling it, not from a guide.
+
+   Everything that moves per scroll frame is written from JS as a
+   transform, an opacity or a custom property — no layout property
+   is touched inside the scrub. The two rules that carry state
+   (`.orbit-clip`, `.orbit-roll`) are read-only consumers of those
+   properties, exactly like `.lens-clip` on /solutions.
+
+   NOTHING IN HERE MAY EVER GET `will-change`. The gallery's
+   layers are clip-path layers, and a promoted clip-path layer is
+   the one thing Chrome intermittently fails to rasterise on this
+   site — the frame draws and the photograph inside stays black.
+   ============================================================ */
+
+/* The substrate. Column lines off a floor plan, masked at both
+   ends so they read as structure the composition is standing on
+   rather than as a border around it. */
+.orbit-rules {
+  background-image: linear-gradient(to right, rgb(255 255 255 / 0.05) 1px, transparent 1px);
+  background-size: 25% 100%;
+  background-position: -1px 0;
+  mask-image: linear-gradient(to bottom, transparent, #000 16%, #000 84%, transparent);
+}
+
+/* One station on the orbit.
+
+   `transform-origin` is the ANCHOR, not the centre. Each mark is
+   placed by its right edge (the dot) and typeset leftwards from
+   it, so scaling a distant mark down pulls the type toward the
+   path instead of sliding the dot off it — the dot is the thing
+   that has to stay on the curve. */
+.orbit-mark {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 100% 50%;
+}
+
+/* The gallery aperture. Same three-property contract as
+   `.lens-clip`, minus the radius — this frame is architectural and
+   has no corners to round. One write per frame cuts the picture,
+   its wash and its hairline ring together. */
+.orbit-clip {
+  clip-path: inset(var(--ap-y, 0%) var(--ap-x, 0%) var(--ap-y, 0%) var(--ap-x, 0%));
+}
+
+/* The readouts. A window one row tall over a column of all eight
+   values, moved by the scroll — the barrel idiom from /solutions.
+   A value you can watch ARRIVING is what makes the section read as
+   a mechanism; a cross-fade would only report that it had changed. */
+.orbit-roll {
+  height: var(--roll-h);
+  overflow: hidden;
+}
+.orbit-roll > [data-col] > [data-row] {
+  height: var(--roll-h);
+}
+
+/* The cursor's light on the picture. A single soft pool at 7%, and
+   it is the only thing on the stage that responds to the pointer —
+   the marks deliberately do not, because eight elements chasing a
+   cursor is a toy and this is a gallery. */
+.orbit-light {
+  background: radial-gradient(
+    32rem 32rem at var(--lx, 50%) var(--ly, 50%),
+    rgb(255 255 255 / 0.07),
+    transparent 62%
   );
 }

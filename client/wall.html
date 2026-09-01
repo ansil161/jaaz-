@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- The brand mark, replacing the template lightning bolt that
+         shipped with the scaffold. An opaque black tile rather than a
+         transparent glyph: the lockup's inks are dark, so a
+         transparent favicon disappears into every dark tab strip. The
+         tile carries the logotype alone — BRIO and the tagline are
+         unreadable at 16px. -->
+    <link rel="icon" type="image/png" sizes="512x512" href="/jaz-icon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/jaz-apple-touch.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#000000" />
+    <title>JAAZ — Private Home Entertainment</title>
+    <meta
+      name="description"
+      content="JAAZ designs private cinemas and luxury home entertainment spaces where picture, sound and seating are engineered around one idea: comfort."
+    />
+    <!-- Social card: the full lockup on the brand's own black. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="JAAZ — Private Home Entertainment" />
+    <meta
+      property="og:description"
+      content="JAAZ designs private cinemas and luxury home entertainment spaces where picture, sound and seating are engineered around one idea: comfort."
+    />
+    <meta property="og:image" content="/jaz-og.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="/jaz-og.jpg" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <!--
+      /wall.html?reduced=1 forces the flat branch.
+
+      Two reasons this lives here rather than in the module. It has to
+      run BEFORE any module evaluates, because the gate is read during
+      the component's first render. And it is the only way to QA a
+      pinned section through the browser MCP at all: screenshotting puts
+      the tab at `visibilityState: hidden`, which stops rAF, which stops
+      GSAP's ticker, which strands every scrubbed timeline. The flat
+      branch needs no ticker, so it is the one path that screenshots
+      honestly.
+
+      NOTE THE POLARITY, which is where the copy of this block in
+      snap.html would get it wrong here: <Possibilities> gates its wall
+      on `(prefers-reduced-motion: NO-PREFERENCE)`, so a patch that
+      answers `matches: true` to every query mentioning the feature
+      would switch the wall ON, not off. Answer by which keyword the
+      query actually carries.
+
+      Dev-only — this file is not among the build inputs in
+      vite.config.js and never ships.
+    -->
+    <script>
+      if (new URLSearchParams(location.search).has('reduced')) {
+        const real = window.matchMedia.bind(window)
+        const stub = (q, matches) => ({
+          matches,
+          media: q,
+          addEventListener() {},
+          removeEventListener() {},
+          addListener() {},
+          removeListener() {},
+        })
+        window.matchMedia = (q) =>
+          q.includes('prefers-reduced-motion')
+            ? stub(q, q.includes('no-preference') ? false : true)
+            : real(q)
+      }
+    </script>
+
+    <script type="module" src="/src/app/public/wall-preview.jsx"></script>
+  </body>
+</html>

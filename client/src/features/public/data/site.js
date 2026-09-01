@@ -97,9 +97,9 @@ export const img = (name, w = 1600, ratio = '16:10') => {
    Projects used to point at the homepage rail (`/#projects`) because
    there was no projects PAGE to send anyone to, and a nav item that
    leads nowhere costs more trust than a missing one. There is one
-   now — /projects, plus a page per room — so the item is a real
-   destination and the homepage rail is what it should always have
-   been: a preview of it.
+   now — /projects, plus a page per room — and the homepage rail it
+   used to preview is gone entirely, replaced by <Possibilities>, so
+   /projects is the only address the work has.
 
    SOLUTIONS is a plain link to the catalogue page, not a dropdown —
    the nine solutions live and are browsed entirely on `/solutions`
@@ -186,21 +186,74 @@ export const heroStages = [
 /* --- 2. The Promise ------------------------------------------- */
 export const promise = {
   label: 'The Promise',
-  statement: ['Luxury without', 'comfort is', 'not luxury.'],
-  /* The paragraph is three parallel negations and then the turn,
-     and the three are not an arbitrary list: they are the site's own
-     comfort axes in order — picture, sound, room. Authored apart so
-     the section can set them as the triad they already are instead
-     of running them together into one grey block. */
-  denials: [
-    'A great picture you have to squint at is not a great picture.',
-    'Sound that fatigues you is not great sound.',
-    'A room you leave early was never worth building.',
+
+  /* ---- The statement ----
+     Authored as the beats it is SPOKEN in rather than as the lines it
+     is typeset in, because the section builds it one beat at a time:
+     LUXURY, then WITHOUT, then COMFORT, and only then the interruption.
+     The grouping below is still the typeset shape — an array per line,
+     a word-group per beat — so the component never has to guess where
+     a line breaks or which words arrive together.
+
+     `turn: true` marks the two words the sentence pivots on. They are
+     the only italic in the section and the only beat that arrives
+     from the side rather than from below: the sentence is going one
+     way and 'is not' cuts across it. */
+  statement: [
+    [{ w: 'Luxury' }],
+    [{ w: 'without' }, { w: 'comfort' }],
+    [{ w: 'is not', turn: true }, { w: 'luxury.' }],
   ],
-  /* Split at the dash so the phrase the whole page turns on can carry
-     the emphasis without the component parsing punctuation. */
-  turn: ['JAAZ starts where most cinemas stop —', 'with the body in the chair.'],
-  watermark: 'LUXURY',
+
+  /* ---- The three beats ----
+     The same three parallel negations the section has always carried —
+     the site's own comfort axes in order, PICTURE, SOUND, ROOM — but
+     split at the joint they were always hiding: a subject, and the
+     thing that disqualifies it.
+
+       A beautiful picture / you shouldn't have to squint at
+       Powerful sound     / that shouldn't make you turn it down
+       A beautiful room   / that shouldn't make you want to leave
+
+     Set as one grey paragraph they were three sentences nobody
+     finished. Given a beat each, the setup can land, hold, and then be
+     answered — which is how the line is read out loud anyway.
+
+     They are NOT captioned PICTURE / SOUND / ROOM. Each subject names
+     itself in its first three words, and labelling them would be
+     writing new copy onto the page to explain copy that is already
+     clear. */
+  beats: [
+    {
+      subject: 'A beautiful picture',
+      answer: ['You shouldn’t have', 'to squint to enjoy it.'],
+    },
+    {
+      subject: 'Powerful sound',
+      answer: ['Shouldn’t make you', 'want to turn it down.'],
+    },
+    {
+      subject: 'A beautiful room',
+      answer: ['Shouldn’t make you', 'want to leave it.'],
+    },
+  ],
+
+  /* ---- The turn ----
+     This used to read "JAAZ starts where most cinemas stop — with the
+     body in the chair." The idea is right and it is kept; the words
+     are not. "The body in the chair" is how an engineer describes a
+     listening position, and a brand that has just spent a full pin
+     arguing it starts with the PERSON cannot land that argument on a
+     noun that turns them into a payload.
+
+     Stated as a first-person commitment instead, and split so the two
+     halves can arrive apart: the denial, then the answer. 'with you.'
+     is the only colour in the section and the last two words of it. */
+  turn: {
+    lead: ['We don’t start', 'with the technology.'],
+    resolve: ['We start', 'with you.'],
+    coda: 'Because the best entertainment experience isn’t measured by what’s in the room. It’s measured by how long you want to stay in it.',
+  },
 }
 
 /* --- 3b. Before / After --------------------------------------- */
@@ -246,86 +299,154 @@ export const brand = {
   imageAlt: 'A JAAZ private cinema, lights raised',
 }
 
-/* --- 4b. Projects --------------------------------------------- */
-/* Proof, immediately after the claim. The stats above say 200+
-   projects; this is where that stops being a number.
+/* --- 4b. Possibilities ---------------------------------------- */
+/* WHAT REPLACED THE PORTFOLIO, AND WHY.
 
-   Filters are a flat list rather than a nested taxonomy — with six
-   rooms, a two-level filter is furniture pretending to be
-   navigation. `tags` is an array so a room can be both.
+   This slot used to hold a rail of six "signed off" rooms. JAAZ
+   does not yet have photography of its own work at the standard
+   the rest of this page is set to, and a portfolio built out of
+   stock interiors is a portfolio that is lying — quietly, but at
+   the exact point on the page where a visitor is trying to decide
+   whether to trust the claim above it.
 
-   `slug` is the same room's address on /projects/:slug, so the rail
-   is a PREVIEW of the collection rather than a second, shorter
-   version of it. The full entry — overview, spec, gallery,
-   technology — lives in data/projects.js; the six strings here are
-   its deliberately shorter homepage voice, which is why they were
-   not replaced by an import. Keep the two in step: the slug is the
-   only thing tying them together. */
-export const projects = {
-  label: 'Selected Work',
-  heading: ['Rooms we have', 'signed off.'],
-  intro: 'Six of the last two hundred. Every one measured, documented and handed over on one button.',
-  filters: [
-    { id: 'all', label: 'All rooms' },
-    { id: 'theatre', label: 'Private theatre' },
-    { id: 'living', label: 'Living & social' },
-    { id: 'gaming', label: 'Gaming' },
-    { id: 'corporate', label: 'Corporate' },
-  ],
+   So the section stops claiming and starts PROPOSING. Every frame
+   below is conceptual or reference material, it says so on the
+   stage in mono type that never leaves the screen, and nothing
+   here is captioned with a city, a seat count or a sign-off date.
+   The honesty is not a disclaimer bolted on afterwards; it is the
+   reason the section is allowed to be this aspirational.
+
+   THE CATEGORY IS THE ARGUMENT, THE TITLE IS THE ROOM.
+   `label` is one of five categories — a private cinema, a living
+   cinema, gaming, lounge, outdoor — and it repeats, because a
+   category is a kind of room rather than a room. `title` never
+   repeats. That split is what lets eight environments sit under
+   five headings without the same word appearing twice as a
+   headline and reading as a bug.
+
+   `line` is what the stage holds at display size. `body` is the
+   sentence underneath it. `meta` is the mono annotation — the two
+   or three facts a room of this kind is actually specified by,
+   set as type rather than drawn into a badge.
+
+   ORDER IS THE SEQUENCE THE PINNED STAGE DISSOLVES THROUGH: the
+   five categories in the order above, and inside each one the
+   darkest, most dedicated room first. It walks from a room that
+   does nothing but show films out through the house and finally
+   outdoors. Reordering these is a content decision, not a layout
+   one.
+
+   EVERY FRAME IS CAPTIONED AS WHAT IT ACTUALLY SHOWS. Three of
+   these slots were originally assigned on the strength of the
+   comment beside the id in PLATES rather than the photograph the
+   CDN returns, and all three were wrong: `fire` is an OUTDOOR fire
+   pit in front of a projection screen, not a snug; `fluted` is a
+   treated lounge vignette with no screen in it at all; and there
+   is no gaming photograph anywhere in the verified set. In a
+   section whose entire licence to be aspirational is that it tells
+   you the imagery is reference material, captioning a picture as a
+   room it plainly is not is the one mistake that cannot be made
+   here. Check the pixels before adding a frame, not the comment. */
+export const possibilities = {
+  label: 'Possibilities',
+  heading: ['What could your', 'room become?'],
+  intro:
+    'Five kinds of room, and eight ways they get pointed at something. What follows is direction, not a portfolio.',
+  /* The disclosure, in two registers. `note` is the sentence in the
+     header, where there is room to be plain about it. `badge` is the
+     mono mark that stays on the stage for the whole sequence — small,
+     hairline-ruled, never dismissed, because a disclosure that scrolls
+     away is a disclosure that was written for the wrong reader. */
+  /* Short on purpose. It is set in mono at 11px, where a
+     three-line sentence stops reading as a note and starts reading
+     as small print somebody is hoping you will skip. */
+  note: 'Conceptual and reference environments — the character a space can take, not photographs of JAAZ installations.',
+  badge: 'Concept / Reference',
+  /* Navigation, not an ask. The homepage deliberately carries no
+     closing CTA — see the note in HomePage.jsx — so the way OUT of
+     this section is a route to the catalogue, the same job the old
+     rail's 'All projects' link did. */
+  link: { label: 'How we build them', to: '/solutions' },
   items: [
     {
       n: '01',
-      title: 'The Long Room',
-      slug: 'the-long-room',
-      meta: 'Private theatre · 11 seats · Bengaluru',
-      body: 'A basement nobody else would quote on. Three tiers, decoupled floor, 2.39:1 masked screen.',
-      tags: ['theatre'],
-      image: img('theatre', 1400, '4:5'),
+      label: 'Private Cinema',
+      title: 'The Dedicated Room',
+      line: 'Designed for the film, not the equipment.',
+      body: 'Tiered seating, a masked 2.39:1 screen and a room whose acoustics were drawn before any of its finishes were chosen.',
+      meta: 'Dedicated room · 8–14 seats · full masking',
+      image: img('theatre', 1600, '16:9'),
+      alt: 'A dark private cinema with tiered recliners and a star-field ceiling',
     },
     {
       n: '02',
-      title: 'Low Latency',
-      slug: 'low-latency',
-      meta: 'Gaming room · 4 stations · Kochi',
-      body: 'Positional audio and a 120 Hz projector, with lighting scenes cued off the console.',
-      tags: ['gaming'],
-      image: img('slatted', 1400, '4:5'),
+      label: 'Private Cinema',
+      title: 'The Dark Room',
+      line: 'Nothing in the room competes with the screen.',
+      body: 'Black architecture, no reflective surface left facing the picture, and one warm plane of light — the room disappears and the film does not.',
+      meta: 'Dedicated room · 0.0 lx ambient · black shell',
+      image: img('atrium', 1600, '16:9'),
+      alt: 'A near-black glazed interior with a single warm perforated screen glowing behind it',
     },
     {
       n: '03',
-      title: 'The Boardroom Cut',
-      slug: 'the-boardroom-cut',
-      meta: 'Corporate screening · 16 seats · Dubai',
-      body: 'A conference room by day that closes down into a reference cinema by six.',
-      tags: ['corporate'],
-      image: img('modern', 1400, '4:5'),
+      label: 'Living Cinema',
+      title: 'The Room That Disappears',
+      line: 'Performance without visual clutter.',
+      body: 'Speakers behind the plaster, every cable buried, one control. It reads as a living room right up until the moment it does not.',
+      meta: 'Living system · concealed speakers · single remote',
+      image: img('livingAlt', 1600, '16:9'),
+      alt: 'A dark lounge with a long low sofa and two large framed artworks',
     },
     {
       n: '04',
-      title: 'Sunday Matinee',
-      slug: 'sunday-matinee',
-      meta: 'Living room system · Chennai',
-      body: 'Every speaker concealed, every cable buried. The room reads as a living room until it does not.',
-      tags: ['living'],
-      image: img('fire', 1400, '4:5'),
+      label: 'Living Cinema',
+      title: 'Open Plan',
+      line: 'A system that has to hold a whole floor.',
+      body: 'Sound designed for a space with no back wall, tuned so the sofa and the kitchen island are listening to the same mix.',
+      meta: 'Open plan · multi-zone · steered coverage',
+      image: img('modern', 1600, '16:9'),
+      alt: 'A modern open-plan interior with a staircase, long table and full-height glazing',
     },
     {
       n: '05',
-      title: 'Nightcap',
-      slug: 'nightcap',
-      meta: 'Bar & lounge · Kochi',
-      body: 'Distributed audio tuned for conversation first, with a screen that drops when it is wanted.',
-      tags: ['living'],
-      image: img('bar', 1400, '4:5'),
+      label: 'Gaming',
+      title: 'Low Latency',
+      line: 'Precision at every frame.',
+      body: 'A 120 Hz path from console to screen, positional audio placed to the seat rather than to the room, and light that takes its cue from the game.',
+      meta: 'Gaming room · 120 Hz · sub-frame latency',
+      image: img('slatted', 1600, '16:9'),
+      alt: 'A curved slatted room in cool grey with low seating',
     },
     {
       n: '06',
-      title: 'Open Air',
-      slug: 'open-air',
-      meta: 'Terrace cinema · Goa',
-      body: 'Weather-rated throughout, calibrated twice — once for still air and once for the monsoon.',
-      tags: ['living', 'theatre'],
-      image: img('terrace', 1400, '4:5'),
+      label: 'Lounge',
+      title: 'Quiet Hours',
+      line: 'Treatment that reads as joinery, not as foam.',
+      body: 'Fluted timber and concealed absorption doing acoustic work in a room nobody would describe as a cinema.',
+      meta: 'Lounge · fluted timber · broadband absorption',
+      image: img('fluted', 1600, '16:9'),
+      alt: 'A fluted timber wall lit from above, with a low sofa and a stone table',
+    },
+    {
+      n: '07',
+      label: 'Lounge',
+      title: 'After the Credits',
+      line: 'Entertainment beyond the credits.',
+      body: 'Distributed audio tuned for conversation first, with a screen that only appears at the point somebody wants one.',
+      meta: 'Bar & lounge · distributed audio · concealed screen',
+      image: img('bar', 1600, '16:9'),
+      alt: 'A warm home bar with backlit bottle shelves and a timber counter',
+    },
+    {
+      n: '08',
+      label: 'Outdoor',
+      title: 'Under Open Skies',
+      line: 'Cinema under open skies.',
+      body: 'A screen, a fire and seating arranged around both — weather-rated throughout, and calibrated twice: once for still air, once for the monsoon that arrives anyway.',
+      meta: 'Terrace · weather-rated · dual calibration',
+      image: img('fire', 1600, '16:9'),
+      alt: 'An outdoor terrace at night with a fire pit in front of a large projection screen',
     },
   ],
 }
@@ -462,70 +583,137 @@ export const spaces = {
   ],
 }
 
-/* --- Chapter 03: Every Seat ----------------------------------- */
-/* The engineering chapter. It is staged on a REAL PHOTOGRAPH of a
-   JAAZ room rather than on a diagram of one — the argument is about
-   chairs people sit in, and a plan view of chairs is a drawing of
-   the argument rather than the argument.
+/* --- Chapter 03: Calibration ---------------------------------- */
+/* The engineering chapter, and the only section on the site that
+   argues rather than shows. It is staged on ONE PHOTOGRAPH of a
+   JAAZ room with the house lights down; every figure it prints is
+   derived, at module load, from the two plans below.
 
-   Two coordinate systems, and they do different jobs.
+   TWO PLANS, ONE PHYSICS. `asBuilt` is the room in the picture —
+   speakers at the screen edges, the seating block on the acoustic
+   axis, both rows inside the coverage window. `asFound` is the
+   same brief laid out the way rooms are usually laid out: front
+   channels pushed into the corners of the screen wall, the block a
+   little off centre, the front row pulled too close to the screen.
+   The section shows what each one measures, at the same seven
+   chairs, through the same function.
 
-   `x` / `y` are METRES in the real room, origin at the screen wall,
-   x measured from centre. EverySeat.jsx derives every number it
-   prints from them — path length, arrival spread at 343 m/s, level
-   spread at 20·log10. Nothing is typed in: move a seat 200mm here
-   and every figure on screen moves with it.
+   BOTH SETS ARE LABELLED ON SCREEN — `layoutFound` / `layoutBuilt`
+   — because the photograph never changes. The picture is always
+   the JAAZ room; the first set of numbers is what the conventional
+   layout of it would measure, and saying so is the difference
+   between a comparison and a lie.
+
+   Nothing is typed by hand, the two figures in prose included:
+   `foundFigure` and `builtFigure` are templates the component
+   fills from the model. Move a chair 200 mm here and every value,
+   every pool of light and both sentences move with it.
+
+   TWO COORDINATE SYSTEMS, AND THEY DO DIFFERENT JOBS.
+
+   `x` / `y` are METRES in the real room — origin at the screen
+   wall, x from the acoustic centre — and only the acoustics read
+   them.
 
    `mark` is a PERCENTAGE POSITION IN THE PHOTOGRAPH, so the light
-   that lands on each seat lands on the chair that seat actually is.
-   The two are independent on purpose — the plate can be re-cropped,
-   or replaced with JAAZ's own photography, by editing `mark` alone
-   and leaving the acoustics untouched.
+   that lands on each chair lands on the chair that chair actually
+   is. `s` scales its pool: a chair further from the camera catches
+   a smaller one, and a single size for all seven is the fastest
+   way to make light in a room look like an overlay stuck to the
+   glass. The two are independent on purpose — the plate can be
+   re-cropped, or replaced with JAAZ's own photography, by editing
+   `mark` alone and leaving the acoustics untouched.
 
-   Seven seats, front row of three and a rear row of four, because
-   that is the room in the photograph. */
-export const everySeat = {
-  id: 'every-seat',
+   SEVEN CHAIRS, THREE IN FRONT AND FOUR BEHIND, because that is
+   the room in the photograph. The two seat lists are
+   index-matched: chair 03 as found is chair 03 as built. */
+export const calibration = {
+  id: 'calibration',
   chapter: 'Ch. 03',
   label: 'Calibration',
-  heading: 'Every seat',
-  intro: "Reference-grade performance isn't reserved for the centre.",
-  resolve: 'Measured, not eyeballed.',
-  resolveSub: 'Every seat. Every time.',
-  sheet: 'Arrival spread, per seat',
-  settled: 'After calibration · 0.00 ms at every chair',
-  caption: 'Seven positions · 11.4.6 · measured at the chair',
-  /* Speed of sound at 20 °C, and the reference every trim is cut
-     against. It is printed in the section, so it lives here. */
+
+  /* The title card, and its turn. The whole section is the second
+     line earning the first. */
+  title: ['You may never', 'see the difference.'],
+  titleTurn: ['But you will', 'always feel it.'],
+
+  /* The scroll story, stage by stage. */
+  silence: 'A room can look perfect.',
+  question: ['Does every seat', 'feel the same?'],
+  measure: 'One microphone. Every chair. No averages.',
+  found: 'The room is working. It is not balanced.',
+  change: ['So the room is laid out', 'against the measurement.'],
+  changeSub:
+    'Front channels in to the screen edges. The block back on the axis. Both rows moved into the window.',
+  resolve: ['Every seat.', 'The same intention.'],
+  resolveSub:
+    'Picture, sound and comfort are tuned for the people in the room — not just the equipment inside it.',
+  hint: 'Move across the room',
+
+  /* Which layout the numbers on the picture belong to. */
+  layoutFound: 'Conventional layout',
+  layoutBuilt: 'JAAZ layout',
+  unit: 'dB · against the room average',
+
+  /* Both figures are templates, not statements. The component
+     fills them from the two plans below, so the copy cannot drift
+     away from the geometry it is describing. */
+  foundFigure: '{a} dB between the best chair and the worst.',
+  builtFigure: '{a} dB — and no chair more than {b} dB off the room average.',
+  probe: ['Arrival', 'Level', 'Picture'],
+  viewIn: 'in window',
+  viewOut: 'outside window',
+  /* Read out top-right, in order, as the pin runs. */
+  stages: ['Silence', 'Question', 'Measure', 'Layout', 'Balance'],
+
+  /* Speed of sound at 20 °C. It is printed in the section, so it
+     lives here. */
   speedOfSound: 343,
-  room: { w: 6.4, d: 9.0, h: 3.1 },
-  /* The three front channels. Only these are traced, because the
-     argument needs them and seven paths per chair is a diagram
-     nobody can read. */
-  speakers: [
-    { id: 'L', x: -1.85, y: 0.6 },
-    { id: 'C', x: 0, y: 0.44 },
-    { id: 'R', x: 1.85, y: 0.6 },
-  ],
-  /* `row` scales the light: a chair further from the camera catches
-     a smaller pool of it, and a pool the same size on every seat is
-     the fastest way to make an overlay look stuck to the glass
-     rather than lying in the room. */
-  seats: [
-    { n: '01', x: -1.5, y: 5.0, row: 0, mark: { x: 37.1, y: 48.8 } },
-    { n: '02', x: 0, y: 5.0, row: 0, mark: { x: 45.0, y: 46.2 } },
-    { n: '03', x: 1.5, y: 5.0, row: 0, mark: { x: 53.6, y: 43.8 } },
-    { n: '04', x: -2.25, y: 6.6, row: 1, mark: { x: 60.7, y: 42.4 } },
-    { n: '05', x: -0.75, y: 6.6, row: 1, mark: { x: 66.3, y: 41.4 } },
-    { n: '06', x: 0.75, y: 6.6, row: 2, mark: { x: 72.9, y: 39.7 } },
-    { n: '07', x: 2.25, y: 6.6, row: 2, mark: { x: 80.2, y: 39.3 } },
-  ],
-  /* 16:9, and the ratio is load-bearing: `mark` is a percentage of
-     THIS frame, so the component reproduces the cover-crop geometry
-     by hand rather than letting object-fit decide where the chairs
-     ended up. */
-  plate: img('theatre', 2200, '16:9'),
-  plateAlt: 'A JAAZ private cinema with the house lights down',
+  /* The picture window every chair has to land inside — 30° to 40°
+     of horizontal viewing angle is the industry's own range, and
+     the probe prints where each chair falls in it. The
+     conventional layout's front row lands at 50°, which is the
+     same layout failing the picture as well as the sound. */
+  viewWindow: [30, 40],
+  room: { w: 6.4, d: 8.4 },
+  screenWidth: 4.2,
+
+  plate: img('theatre', 2600, '16:9'),
+  plateAlt: 'A JAAZ private cinema with the house lights down, seven recliners in two tiers',
+
+  asFound: {
+    speakers: [
+      { id: 'L', x: -2.6, y: 0.45 },
+      { id: 'C', x: 0, y: 0.4 },
+      { id: 'R', x: 2.6, y: 0.45 },
+    ],
+    seats: [
+      { x: -1.1, y: 4.5 },
+      { x: 0.3, y: 4.5 },
+      { x: 1.7, y: 4.5 },
+      { x: -1.8, y: 6.9 },
+      { x: -0.4, y: 6.9 },
+      { x: 1.0, y: 6.9 },
+      { x: 2.4, y: 6.9 },
+    ],
+  },
+
+  asBuilt: {
+    speakers: [
+      { id: 'L', x: -1.85, y: 0.55 },
+      { id: 'C', x: 0, y: 0.4 },
+      { id: 'R', x: 1.85, y: 0.55 },
+    ],
+    seats: [
+      { x: -1.5, y: 6.2, mark: { x: 37.1, y: 48.8, s: 1 } },
+      { x: 0, y: 6.2, mark: { x: 45.0, y: 46.2, s: 1 } },
+      { x: 1.5, y: 6.2, mark: { x: 53.6, y: 43.8, s: 1 } },
+      { x: -2.1, y: 7.15, mark: { x: 60.7, y: 42.4, s: 0.79 } },
+      { x: -0.7, y: 7.15, mark: { x: 66.3, y: 41.4, s: 0.79 } },
+      { x: 0.7, y: 7.15, mark: { x: 72.9, y: 39.7, s: 0.64 } },
+      { x: 2.1, y: 7.15, mark: { x: 80.2, y: 39.3, s: 0.64 } },
+    ],
+  },
 }
 
 /* --- 6. From Setup to Showtime -------------------------------- */
@@ -681,16 +869,47 @@ export const footer = {
      same way the reference footer sets its positioning line — one
      short claim, not a sentence. */
   tagline: 'Engineered around comfort.',
+  /* Trimmed to one sentence when the directory gained a fifth
+     column. It sits under the lockup as the brand column's only
+     prose, and three sentences there made the widest column also
+     the tallest — the four link columns beside it then read as
+     footnotes to a paragraph rather than as a set of equals. The
+     full version of this text is the About page's job. */
   description:
-    'Private cinemas and luxury entertainment spaces — designed, built and calibrated by one accountable team across acoustics, joinery, electronics and seating. Based in Kochi, working across India and the Gulf.',
+    'Private cinemas and entertainment spaces, engineered end to end by one accountable team.',
   credential: 'Private cinema since 2013',
 
-  /* The closing CTA that opens the footer on EVERY page. A page can
-     override it (Contact does) by passing its own `cta` to <Footer>. */
+  /* The closing CTA that opens the footer on EVERY page — now a
+     panel rather than a band, so it carries a photograph of its
+     own. A page can override the whole object (Contact does) by
+     passing its own `cta` to <Footer>; `plate` is optional there
+     and falls back to this one.
+
+     `body` is the contact page's own promise, verbatim. The card
+     needs a line under the headline — the reference's shape has a
+     sub-line and the headline alone leaves the panel top-heavy —
+     and inventing a new claim to fill it would have been the one
+     unforgivable way to fill it. */
   cta: {
     heading: ['Let’s build a room', 'worth staying in.'],
+    body: 'Tell us the room, the budget band and how you want to use it. One reply within a working day.',
+    /* The backlit fluted lounge, not the flagship cinema. The
+       headline is about a room worth STAYING in, and the cinema
+       plate is already the hero's dissolve target and section
+       five's photograph — a third run of it at the foot of every
+       page turns the site's best frame into wallpaper. Verified
+       against the CDN: `fluted` renders as a warm low-lit lounge
+       vignette, cushions and backlit ribbing, which is the
+       sentence above with the lights on. */
+    plate: {
+      src: img('fluted', 1400, '5:4'),
+      alt: 'A low-lit lounge with a backlit fluted wall behind the seating',
+    },
     primary: { label: 'Discuss your project', to: '/contact#consultation' },
-    secondary: { label: 'or call +91 98470 00000', href: 'tel:+919847000000' },
+    /* Was "or call +91 98470 00000" — the trailing half of a
+       sentence, which is what a text footnote under a button can
+       be and what a button beside one cannot. */
+    secondary: { label: 'Call +91 98470 00000', href: 'tel:+919847000000' },
   },
 
   contact: {
@@ -706,10 +925,42 @@ export const footer = {
     title: 'Explore',
     links: [
       { label: 'Solutions', href: '/solutions' },
-      { label: 'Work', href: '/#projects' },
+      /* The real page, not the old homepage anchor. `#projects` was
+         the id of the portfolio rail that <Possibilities> replaced;
+         with that section gone the link scrolled to nothing. */
+      { label: 'Work', href: '/projects' },
       { label: 'About', href: '/about' },
       { label: 'The Craft', href: '/#craft' },
       { label: 'Contact', href: '/contact' },
+    ],
+  },
+
+  /* The fifth column, and the reason the directory is worth
+     rebuilding rather than restyling.
+
+     The reference's footer is four columns because the site behind
+     it has four real branches to list. This one had three, and one
+     of them was an address — so the sitemap stopped at the level of
+     "Solutions" while nine solution PAGES sat one click further in
+     with no route to them from anywhere except the catalogue index.
+     Five of the nine are listed here by name and the sixth line
+     opens the rest, which is the shape a footer sitemap is for:
+     the shortest path from the bottom of any page to the specific
+     thing someone came to read.
+
+     Five and not nine because a column that outruns the four
+     beside it stops being a column. They are the five with the
+     broadest reach — the flagship, the most-requested, and the
+     three standalone services that sell on their own. */
+  solutions: {
+    title: 'Solutions',
+    links: [
+      { label: 'Private Home Theatre', href: '/solutions/private-home-theatre' },
+      { label: 'Living Room Upgrade', href: '/solutions/living-room-theatre-upgrade' },
+      { label: 'Automation & Control', href: '/solutions/home-automation-control' },
+      { label: 'Acoustic Treatment', href: '/solutions/acoustic-treatment' },
+      { label: 'Lighting & Ambience', href: '/solutions/lighting-ambience-design' },
+      { label: 'All nine solutions', href: '/solutions', more: true },
     ],
   },
 
@@ -730,10 +981,15 @@ export const footer = {
       'https://www.google.com/maps/search/?api=1&query=Marine%20Drive%2C%20Kochi%2C%20Kerala',
   },
 
-  /* `icon` keys are drawn in Footer.jsx — square outline buttons, the
-     same row the reference runs under its FOLLOW label. */
+  /* `icon` keys are drawn in Footer.jsx — square outline buttons.
+
+     The FOLLOW label these used to sit under is gone with the row's
+     move into the legal line: a heading over four marks parked at
+     the right-hand end of a copyright rule reads as a fifth column
+     with nothing in it, and the marks are self-labelling anyway —
+     each carries its own `aria-label` for the readers that need
+     one. */
   social: {
-    title: 'Follow',
     links: [
       { label: 'Instagram', icon: 'instagram', href: '#' },
       { label: 'Facebook', icon: 'facebook', href: '#' },

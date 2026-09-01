@@ -1,11 +1,11 @@
 import Hero from '@/features/public/home/components/Hero'
 import ThePromise from '@/features/public/home/components/Promise'
 import Brand from '@/features/public/home/components/Brand'
-import Projects from '@/features/public/home/components/Projects'
+import Possibilities from '@/features/public/home/components/Possibilities'
 import LightsDown from '@/features/public/home/components/LightsDown'
-import EverySeat from '@/features/public/home/components/EverySeat'
+import Calibration from '@/features/public/home/components/Calibration'
 import Spaces from '@/features/public/home/components/Spaces'
-import Tonight from '@/features/public/home/components/tonight/Tonight'
+import Snap from '@/features/public/home/components/snap/Snap'
 import Craft from '@/features/public/home/components/Craft'
 import Transform from '@/features/public/home/components/Transform'
 import Testimonials from '@/features/public/home/components/Testimonials'
@@ -20,7 +20,7 @@ import Footer from '@/features/public/layouts/Footer'
 
      FEEL      Hero, Promise
      WHO       Brand + the three verified numbers
-     PROOF     Projects, before any further claims are made
+     PROPOSAL  Possibilities, before any further claims are made
      — breath —
      WHAT      Spaces, then Tonight — the rooms, then the nights
      — breath —
@@ -36,7 +36,7 @@ import Footer from '@/features/public/layouts/Footer'
 
    2. NO MORE THAN TWO TYPOGRAPHIC SECTIONS IN A ROW. Every
       third slot is a full-bleed frame — the two chapter pins
-      (<LightsDown>, <EverySeat>), plus Spaces and Transform,
+      (<LightsDown>, <Calibration>), plus Spaces and Transform,
       which carry their own images. A page this long that reads as one continuous
       column of set type is a page nobody reaches the end of.
 
@@ -54,8 +54,14 @@ export default function Home() {
       {/* WHO — and the numbers behind it */}
       <Brand />
 
-      {/* PROOF — placed before the rest of the claims, not after */}
-      <Projects />
+      {/* WHAT IT COULD BE — placed before the rest of the claims,
+          not after. This slot used to hold a portfolio rail; it holds
+          a proposal instead, because JAAZ does not yet have its own
+          photography and a portfolio built out of stock interiors is
+          a portfolio that is lying at the exact point where a visitor
+          is deciding whether to trust the claim above it. Everything
+          in it is disclosed as conceptual / reference material. */}
+      <Possibilities />
 
       {/* — breath — */}
       <LightsDown />
@@ -63,17 +69,37 @@ export default function Home() {
       {/* WHAT WE BUILD */}
       <Spaces />
 
-      {/* WHAT IT IS FOR — the rooms, then the nights they hold.
+      {/* WHAT IT IS FOR — the rooms, then what happens inside them.
           Placed immediately after <Spaces> because the two are one
-          argument in two halves: Spaces names the rooms, Tonight
-          shows what happens inside them. It is also the page's only
-          section the visitor drives rather than scrolls, which is
-          worth spending at the point where they have just been told
-          what can be built and have not yet been told how. */}
-      <Tonight />
+          argument in two halves: Spaces names the rooms, the Snap
+          shows one of them becoming five different evenings without
+          moving.
 
-      {/* — breath — */}
-      <EverySeat />
+          This slot used to hold <Tonight> — six nights, six
+          photographs, an instrument rail — which made the same
+          argument by ENUMERATION. Enumeration is the weakest form
+          of it: six pictures of six rooms is exactly what a visitor
+          already expects a builder's site to contain, so it proved
+          nothing at the point where they were deciding whether to
+          believe the claim above it.
+
+          The Snap makes it by TRANSFORMATION instead, and it is
+          still the page's only section the visitor drives rather
+          than scrolls past — the transport at its foot moves the
+          scroll, so the choice is genuinely theirs. Worth spending
+          at the point where they have just been told what can be
+          built and have not yet been told how. */}
+      <Snap />
+
+      {/* PROOF — the one section that argues rather than shows.
+          It sits here, after the rooms and before the craft, because
+          it is the hinge between them: everything above it is what a
+          JAAZ room feels like, everything below it is how one is
+          built, and this is the section that earns the right to move
+          from the first to the second. It is also a full-bleed frame,
+          which keeps the two-typographic-sections-in-a-row rule
+          intact across the join. */}
+      <Calibration />
 
       {/* HOW IT IS BUILT */}
       <Craft />
