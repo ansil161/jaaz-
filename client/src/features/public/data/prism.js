@@ -61,6 +61,23 @@ import { img } from './site'
    the variety honest instead of bought.
 
    ------------------------------------------------------------
+   EVERY ROW AND EVERY FACE CARRIES A DRAWN MARK
+
+   A readout of eight small words in two rows is a caption, and it
+   read as one: the section's most concrete content was also its
+   least present. So each face has a glyph and each of the four
+   axes has a glyph, drawn in the site's own line work at stroke
+   1.25 with square caps (see prismIcons.jsx for why they are
+   authored rather than imported from the icon library this repo
+   already ships).
+
+   The third item on a readout row is that row's glyph key. It
+   lives in the data rather than being mapped from the axis name
+   in the component, because the axis name is copy and can be
+   rewritten — "Ambience" could become "Mood" tomorrow — and copy
+   that silently controls which picture appears is a trap.
+
+   ------------------------------------------------------------
    THE READOUT IS IN ENGLISH, NOT IN UNITS
 
    An earlier build set it in AV specifications — 0.6 fL, 24p,
@@ -175,10 +192,10 @@ export const prism = {
       lockup: ['Reference', 'cinema.'],
       line: 'The room disappears, and the picture is the only thing left in it.',
       readout: [
-        ['Light', 'Focused'],
-        ['Sound', 'Immersive'],
-        ['Screen', 'Active'],
-        ['Ambience', 'Dark'],
+        ['Light', 'Focused', 'light'],
+        ['Sound', 'Immersive', 'sound'],
+        ['Screen', 'Active', 'screen'],
+        ['Ambience', 'Dark', 'ambience'],
       ],
       grade: { brightness: 0.58, contrast: 1.26, saturate: 0.72 },
       wash: { at: '62% 40%', tint: '176, 190, 208', power: 0.26 },
@@ -195,10 +212,10 @@ export const prism = {
       lockup: ['Low-latency', 'play.'],
       line: 'The picture gets faster than the room, and the room keeps up with it.',
       readout: [
-        ['Light', 'Alert'],
-        ['Sound', 'Reactive'],
-        ['Screen', 'Fast'],
-        ['Ambience', 'Charged'],
+        ['Light', 'Alert', 'light'],
+        ['Sound', 'Reactive', 'sound'],
+        ['Screen', 'Fast', 'screen'],
+        ['Ambience', 'Charged', 'ambience'],
       ],
       grade: { brightness: 0.88, contrast: 1.24, saturate: 1.1 },
       wash: { at: '66% 46%', tint: '150, 178, 208', power: 0.36 },
@@ -213,10 +230,10 @@ export const prism = {
       lockup: ['Two-channel', 'listening.'],
       line: 'The screen goes dark on purpose, and the room becomes an instrument.',
       readout: [
-        ['Light', 'Low'],
-        ['Sound', 'Precise'],
-        ['Screen', 'Resting'],
-        ['Ambience', 'Warm'],
+        ['Light', 'Low', 'light'],
+        ['Sound', 'Precise', 'sound'],
+        ['Screen', 'Resting', 'screen'],
+        ['Ambience', 'Warm', 'ambience'],
       ],
       grade: { brightness: 0.7, contrast: 1.06, saturate: 0.74 },
       wash: { at: '24% 56%', tint: '214, 168, 116', power: 0.32 },
@@ -232,10 +249,10 @@ export const prism = {
       lockup: ['House-lights', 'hosting.'],
       line: 'Every seat becomes a good seat, and nobody is watching alone.',
       readout: [
-        ['Light', 'Open'],
-        ['Sound', 'Background'],
-        ['Screen', 'Ambient'],
-        ['Ambience', 'Social'],
+        ['Light', 'Open', 'light'],
+        ['Sound', 'Background', 'sound'],
+        ['Screen', 'Ambient', 'screen'],
+        ['Ambience', 'Social', 'ambience'],
       ],
       grade: { brightness: 1.14, contrast: 0.98, saturate: 1.04 },
       wash: { at: '50% 74%', tint: '236, 214, 178', power: 0.44 },
@@ -253,10 +270,10 @@ export const prism = {
       lockup: ['Late-night', 'escape.'],
       line: 'Everything drops to the lowest setting the room has, and stays there.',
       readout: [
-        ['Light', 'Faint'],
-        ['Sound', 'Enveloping'],
-        ['Screen', 'Quiet'],
-        ['Ambience', 'Intimate'],
+        ['Light', 'Faint', 'light'],
+        ['Sound', 'Enveloping', 'sound'],
+        ['Screen', 'Quiet', 'screen'],
+        ['Ambience', 'Intimate', 'ambience'],
       ],
       grade: { brightness: 0.46, contrast: 1.14, saturate: 0.52 },
       wash: { at: '78% 62%', tint: '196, 152, 104', power: 0.22 },

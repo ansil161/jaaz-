@@ -1,6 +1,7 @@
 import Plate from '@/features/public/components/Plate'
 import { hasStill } from '@/features/public/utils/media'
 import { prism, prismModeCount } from '@/features/public/data/prism'
+import PrismIcon from './prismIcons'
 
 /* ============================================================
    ONE BAND
@@ -73,10 +74,24 @@ export default function PrismBand({ mode, index, style }) {
         <div className="prism-card-grid">
           {/* ---- The copy ---- */}
           <div className="prism-copy">
-            <div className="flex items-baseline gap-3">
-              <span className="t-num text-[0.625rem] text-cove">{mode.n}</span>
-              <span className="t-num text-[0.625rem] text-fog/35">/ 0{prismModeCount}</span>
-              <span className="prism-band-word t-label ml-auto text-mist">{mode.word}</span>
+            {/* THE FACE'S MARK, WHERE THE COUNTER USED TO BE.
+
+                "01 / 05" was the most prominent thing in the copy
+                block and the least useful: the stack itself says
+                where you are — the pile under the card grows as
+                you go — so the numeral was answering a question
+                the layout had already answered, in the one
+                typographic register (tabular mono) that reads as
+                machine output.
+
+                The glyph does what the numeral could not: it says
+                what the face IS before a word is read. The number
+                is not lost, it has moved to where it is actually
+                needed — the band's accessible name and the live
+                region, so a screen reader still gets "03 of 05". */}
+            <div className="prism-mark">
+              <PrismIcon name={mode.key} size={26} className="prism-mark-glyph" />
+              <span className="prism-mark-word">{mode.word}</span>
             </div>
 
             {/* The lockup. Roman over italic, the site's display
@@ -94,23 +109,58 @@ export default function PrismBand({ mode, index, style }) {
 
             <p
               data-rise
-              className="t-body mt-[clamp(0.875rem,2.2vh,1.5rem)] max-w-[38ch] text-fog"
+              className="t-sub mt-[clamp(0.875rem,2.2vh,1.5rem)] max-w-[34ch] text-bone"
             >
               {mode.line}
             </p>
 
-            {/* The four axes. The key is mono because it names an
-                axis being measured; the value is the sans, because
-                "Immersive" is a word — both in mono turns the
-                block into terminal output. */}
+            {/* The four axes.
+
+                NO RULE ABOVE EACH CELL. Four hairlines over four
+                two-word cells is a table's ghost — it divides a
+                row that was never in danger of being misread, and
+                on a dark card at 12% white it is just visible
+                enough to look like an artefact. Each cell is
+                separated by its own glyph and by space, which is
+                what separation is for.
+
+                The VALUE leads and the axis name sits under it,
+                which is the opposite of the first build. "Focused"
+                is the interesting word; "Light" is the question it
+                answers, and a question set larger than its answer
+                is a form, not a specification. */}
             <dl
               data-rise
-              className="mt-[clamp(1.25rem,3.2vh,2.25rem)] grid max-w-[26rem] grid-cols-2 gap-x-8 sm:max-w-none sm:grid-cols-4 sm:gap-x-6"
+              className="prism-readout mt-[clamp(1.5rem,3.8vh,2.5rem)] grid max-w-[26rem] grid-cols-2 gap-x-7 gap-y-[clamp(0.875rem,2.4vh,1.375rem)] sm:max-w-none sm:grid-cols-4 sm:gap-x-5"
             >
-              {mode.readout.map(([k, v]) => (
-                <div key={k} className="border-t border-white/[0.12] pt-2">
-                  <dt className="prism-readout-k">{k}</dt>
-                  <dd className="prism-readout-v mt-1">{v}</dd>
+              {mode.readout.map(([k, v, glyph]) => (
+                /* TWO THINGS ARE LOAD-BEARING IN THIS SHAPE.
+
+                   The glyph lives INSIDE the `dt`. A `div` inside
+                   a `dl` may contain dt and dd elements and
+                   nothing else, so an `<svg>` sitting beside them
+                   — which is where it started — is invalid, and
+                   it is the kind of invalid that no browser
+                   complains about and every validator does. Inside
+                   the term it is also simply correct: the mark is
+                   a pictogram OF the axis, so it belongs to the
+                   word it draws. It is positioned out of the flow
+                   so it can sit beside both lines.
+
+                   And `dt` comes BEFORE `dd`, reversed only in the
+                   paint. A description list requires the term
+                   first, and that is also the order it should be
+                   read in — "Light: focused", not "focused:
+                   light". The column reverses visually because the
+                   VALUE is the interesting word and should lead
+                   the eye; `column-reverse` gets that without
+                   lying to a screen reader about which is which. */
+                <div key={k} className="prism-axis">
+                  <dt className="prism-readout-k">
+                    <PrismIcon name={glyph} size={18} className="prism-axis-glyph" />
+                    {k}
+                  </dt>
+                  <dd className="prism-readout-v">{v}</dd>
                 </div>
               ))}
             </dl>

@@ -2137,12 +2137,21 @@ html.lenis body {
   }
 }
 
+/* The copy side carries a shallow lift out of its top-left
+   corner and a warm floor under the readout — about three per
+   cent, which is under the threshold at which anyone can name a
+   gradient and over the one at which a large flat rectangle
+   starts reading as an empty div. */
 .prism-copy {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   order: 2;
   padding: clamp(1.25rem, 3.5vh, 2.25rem) clamp(1.25rem, 3vw, 3.25rem);
+  background:
+    radial-gradient(ellipse 90% 70% at 8% 0%, rgb(255 255 255 / 0.035), transparent 70%),
+    radial-gradient(ellipse 80% 55% at 12% 108%, rgb(201 173 124 / 0.055), transparent 72%);
 }
 @media (min-width: 1024px) {
   .prism-copy {
@@ -2270,30 +2279,93 @@ html.lenis body {
   letter-spacing: -0.024em;
 }
 
-/* MONO MEANS MEASUREMENT. The readout's KEY names an axis being
-   measured, so it is mono; its VALUE is a word, so it is the
-   sans. Both in mono — which an earlier build had — turns the
-   block into terminal output, which is the costume this site's
-   engineering voice is most likely to reach for and least
-   entitled to. */
-.prism-readout-k {
+/* ------------------------------------------------------------
+   THE FACE'S MARK
+
+   A drawn glyph and the face's name, where the "01 / 05" counter
+   used to be. The counter was the most prominent thing in the
+   copy block and the least useful — the pile growing underneath
+   the card already says where you are — and it was set in tabular
+   mono, which is the one register that reads as machine output on
+   a page selling a room.
+
+   The glyph is the only thing in the section drawn in cove at
+   full strength. That is deliberate: it is the single warm mark
+   on a dark card, and everything else on the card earns its
+   colour from the photograph beside it.
+   ------------------------------------------------------------ */
+.prism-mark {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.prism-mark-glyph {
+  flex: none;
+  color: var(--color-cove);
+}
+.prism-mark-word {
   font-family: var(--font-mono);
-  font-size: 0.5625rem;
-  letter-spacing: 0.22em;
+  font-size: 0.625rem;
+  font-weight: 400;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--color-fog);
+}
+
+/* ------------------------------------------------------------
+   THE READOUT
+
+   Four axes, each a glyph beside a value over its axis name.
+
+   NO RULE ABOVE THE CELLS. Four hairlines over four two-word
+   cells is a table's ghost: it divides a row that was never in
+   danger of being misread, and at 12% white on a dark card it is
+   exactly visible enough to read as an artefact rather than as a
+   decision. Cells are separated by their own glyphs and by space,
+   which is what separation is for.
+
+   MONO MEANS MEASUREMENT. The axis name is mono because it names
+   something being measured; the value is the sans, because
+   "Immersive" is a word. Both in mono — which an earlier build
+   had — turns the block into terminal output, the costume this
+   site's engineering voice is most likely to reach for and least
+   entitled to.
+   ------------------------------------------------------------ */
+/* The cell reverses in the paint only — see the note in
+   <PrismBand> for why the term still comes first in the DOM. The
+   left padding is the glyph's lane; the glyph itself is out of
+   the flow so one mark can sit beside two lines of text. */
+.prism-axis {
+  position: relative;
+  display: flex;
+  flex-direction: column-reverse;
+  padding-left: 1.75rem;
+}
+.prism-axis-glyph {
+  position: absolute;
+  top: 0.1875rem;
+  left: 0;
+  /* Optically aligned to the VALUE's cap height rather than to the
+     top of its line box, which sits the glyph a hair high on every
+     row and reads as four marks that all missed their baseline. */
+  color: rgb(201 173 124 / 0.85);
+}
+.prism-readout-k {
+  display: block;
+  margin-top: 0.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
   color: var(--color-mist);
 }
 .prism-readout-v {
   font-family: var(--font-sans);
   font-weight: 400;
-  font-size: 0.8125rem;
-  letter-spacing: -0.004em;
-  color: var(--color-bone);
-}
-
-.prism-band-word {
-  font-size: 0.5625rem;
-  letter-spacing: 0.22em;
+  font-size: 0.9375rem;
+  line-height: 1.2;
+  letter-spacing: -0.008em;
+  color: var(--color-paper);
 }
 
 /* ------------------------------------------------------------
