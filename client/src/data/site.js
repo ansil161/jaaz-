@@ -183,7 +183,61 @@ export const heroStages = [
   { id: 'real', label: 'The room, built' },
 ]
 
-/* --- 2. The Promise ------------------------------------------- */
+/* --- 2. The First Pause --------------------------------------- */
+/* The dark gallery between the hero and everything that argues.
+   Content only — every position, duration and volume lives in the
+   component, because those are choreography rather than copy.
+
+   The statement is the HERO'S headline, said again. That repetition
+   is the section: the hero shows you a finished room while saying
+   it, and here the room is gone and the sentence is alone in the
+   dark with nothing to look at. The six words that follow are the
+   site's own comfort axes, widened from three (picture, sound,
+   room) to the six things JAAZ actually signs off on — and they are
+   the spine of the engineering section that comes next.
+
+   `sound.files` names each file EXACTLY as it sits in
+   /public/audio. Nothing else in the section knows a filename. */
+export const firstPause = {
+  id: 'first-pause',
+  eyebrow: 'The JAAZ Approach',
+  /* Two lines, authored as two, because the break is deliberate and
+     must not be left to wrapping. `emphasis` is the one word in the
+     line that carries the weight. */
+  statement: [
+    { text: 'Entertainment without', emphasis: null },
+    { text: 'comfort is just ', emphasis: 'noise.' },
+  ],
+  /* One at a time, never a grid. `place` is where in the frame the
+     word lands — see PLACE in FirstPause.jsx. */
+  principles: [
+    { word: 'Picture.', place: 'center' },
+    { word: 'Sound.', place: 'right-high' },
+    { word: 'Acoustics.', place: 'left-low' },
+    { word: 'Comfort.', place: 'center-high' },
+    { word: 'Control.', place: 'left' },
+    { word: 'Calibration.', place: 'right-low' },
+  ],
+  payoff: ['Everything works', 'as one.'],
+  sound: {
+    on: 'Sound on',
+    off: 'Sound off',
+    /* Announced to screen readers only — the visible label is the
+       state, not the action, which is what a two-word control in a
+       dark room can afford to be. */
+    action: 'Toggle section sound',
+    files: {
+      pulse: 'mixkit-mysterious-bass-pulse-2298.wav',
+      hit: 'mixkit-short-bass-hit-2299.wav',
+      sub: 'djartmusic-sub-bass-boom-1-302682.mp3',
+      whoosh: 'dragon-studio-8d-whoosh-sfx-482877.mp3',
+      click: 'mixkit-select-click-1109.wav',
+      resonance: 'universfield-cinematic-low-hit-291095.mp3',
+    },
+  },
+}
+
+/* --- 3. The Promise ------------------------------------------- */
 export const promise = {
   label: 'The Promise',
   statement: ['Luxury without', 'comfort is', 'not luxury.'],

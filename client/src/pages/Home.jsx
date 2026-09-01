@@ -1,4 +1,5 @@
 import Hero from '../components/hero/Hero'
+import FirstPause from '../components/sections/FirstPause'
 import ThePromise from '../components/sections/Promise'
 import Brand from '../components/sections/Brand'
 import Projects from '../components/sections/Projects'
@@ -49,6 +50,15 @@ export default function Home() {
     <>
       {/* FEEL */}
       <Hero />
+
+      {/* — the cut to black —
+          The only section on the page with no image, no video and no
+          furniture of any kind. It exists to break the rhythm the
+          hero establishes before anything starts arguing, and it is
+          the one place on the site where sound is part of the
+          experience rather than absent from it. */}
+      <FirstPause />
+
       <ThePromise />
 
       {/* WHO — and the numbers behind it */}
