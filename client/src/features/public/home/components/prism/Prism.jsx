@@ -421,7 +421,12 @@ export default function Prism() {
     if (!el) return
 
     const img = el.querySelector('[data-room-img]')
-    const wash = el.querySelector('[data-wash]')
+    /* BOTH wash layers, written together. The one inside the
+       aperture and the one spilling out of it are the same light,
+       and two `querySelector` calls is the cheapest way to make
+       that structurally true rather than a thing a future edit
+       has to remember. */
+    const wash = el.querySelectorAll('[data-wash], [data-bleed]')
     const veil = el.querySelector('[data-veil]')
     const swaps = el.querySelectorAll('[data-swap]')
     const softs = el.querySelectorAll('[data-swap-soft]')
@@ -476,7 +481,7 @@ export default function Prism() {
       )
     }
 
-    if (wash) {
+    if (wash.length) {
       tl.set(
         wash,
         { '--wash-at': mode.wash.at, '--wash-tint': mode.wash.tint, '--wash-power': mode.wash.power },
@@ -628,6 +633,58 @@ export default function Prism() {
               </div>
             </div>
 
+            {/* ---- L3 · the claim ----
+
+                FIRST IN THE DOM, WHICH IS THE ENTIRE DEVICE. The
+                room paints after it and therefore over it, so
+                "One room." reads complete and "Different worlds."
+                runs behind the photograph and is cut by it. The
+                sentence does what it says.
+
+                It also costs no vertical space. That is not a
+                bonus, it is what makes a real display size
+                possible at all in a pinned one-viewport section:
+                the previous build put this claim in a 19% sidebar
+                and had to shrink the site's display voice to
+                3.3rem — the smallest on the page — to fit it,
+                which is why the section read as a wireframe with a
+                photograph in it. Set beside the room the type
+                cannot be big. Set behind it, it can.
+
+                The block is 46% wide against an aperture whose
+                left edge stands at 29%, and `.prism-claim`'s
+                clamp is tuned so the long line overruns that edge
+                by 14-22% of its own length at every window from
+                1024 to 2560 — enough to be unmistakably cut,
+                never enough to swallow a whole word. */}
+            <div
+              data-par="type"
+              className="order-1 shrink-0 lg:absolute lg:top-[12%] lg:left-0 lg:order-none lg:w-[46%]"
+            >
+              <div data-point="type">
+                <h2 className="prism-claim text-pure">
+                  {prism.heading.map((line, i) => (
+                    <span key={line} className="block">
+                      {i === 1 ? <em className="italic-display text-cove">{line}</em> : line}
+                    </span>
+                  ))}
+                </h2>
+                {/* THE SUPPORTING SENTENCE STANDS DOWN ON A SHORT
+                    WINDOW, and is never on a phone at all.
+                    Everything else here is load-bearing; one
+                    sentence of support is the block that can go
+                    when a short laptop leaves the field about
+                    370px of height. Declared as ONE custom variant
+                    rather than stacked inline, because Tailwind
+                    silently emits no rule at all for a stacked
+                    arbitrary media variant (see the note above it
+                    in site.css). */}
+                <p className="t-body prism-tall:block mt-[clamp(1rem,2.6vh,1.75rem)] hidden max-w-[30ch] text-fog">
+                  {prism.intro}
+                </p>
+              </div>
+            </div>
+
             {/* ---- L4 · the room ----
                 Placed before the markers in the DOM so the markers
                 and their hairlines paint over the aperture's edge
@@ -649,6 +706,29 @@ export default function Prism() {
               }}
               className="relative order-3 h-[clamp(15rem,52vh,30rem)] lg:absolute lg:top-[var(--f-t)] lg:right-[var(--f-r)] lg:bottom-[var(--f-b)] lg:left-[var(--f-l)] lg:order-none lg:h-auto"
             >
+              {/* THE LIGHT THE ROOM THROWS ONTO THE PAGE.
+
+                  First child, so it paints under the photograph,
+                  and inset NEGATIVELY so it escapes the aperture it
+                  belongs to — the whole point is that the light
+                  does not stop at the cut. It carries the same
+                  three wash properties as the layer inside the
+                  frame, written by the same effect, so the colour
+                  temperature outside the room can never disagree
+                  with the one inside it.
+
+                  This is the single thing that separates a
+                  photograph pasted onto black from an opening in a
+                  lit surface, and the first build did not have it.
+                  Same motif as the radial every closing CTA on
+                  this site already carries. */}
+              <div
+                data-bleed
+                aria-hidden="true"
+                style={REST_WASH}
+                className="prism-bleed pointer-events-none absolute -inset-[42%]"
+              />
+
               <div data-point="room" className="h-full w-full">
                 {/* THE APERTURE.
 
@@ -710,18 +790,36 @@ export default function Prism() {
                     style={{ opacity: REST.veil }}
                     className="absolute inset-0 bg-ink"
                   />
+
+                  {/* The falloff at the cut, drawn INSIDE the clip
+                      so it follows the chamfers exactly. What sets
+                      the photograph into the page rather than on
+                      top of it. */}
+                  <div aria-hidden="true" className="prism-inset absolute inset-0" />
                 </div>
 
                 {/* The hairline that traces the cut. Its own SVG,
                     overlaid exactly on the frame box in a 0-100
                     viewBox, so its points and the clip-path above
-                    are literally the same numbers. */}
+                    are literally the same numbers.
+
+                    The stroke is a gradient rather than a flat
+                    value: an edge lit evenly all the way round is
+                    a diagram's outline, and this one is meant to
+                    be catching the room's own light. */}
                 <svg
                   aria-hidden="true"
                   viewBox="0 0 100 100"
                   preserveAspectRatio="none"
                   className="prism-outline pointer-events-none absolute inset-0 h-full w-full"
                 >
+                  <defs>
+                    <linearGradient id="prism-edge" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stopColor="rgb(255 255 255 / 0.42)" />
+                      <stop offset="45%" stopColor="rgb(255 255 255 / 0.16)" />
+                      <stop offset="100%" stopColor="rgb(255 255 255 / 0.05)" />
+                    </linearGradient>
+                  </defs>
                   <polygon data-outline vectorEffect="non-scaling-stroke" />
                 </svg>
               </div>
@@ -744,40 +842,26 @@ export default function Prism() {
               </div>
             </div>
 
-            {/* ---- L3 · the claim ---- */}
-            <div
-              data-par="type"
-              className="order-1 shrink-0 lg:absolute lg:inset-y-0 lg:left-0 lg:order-none lg:flex lg:w-[19%] lg:flex-col lg:justify-center"
-            >
-              <div data-point="type">
-                <h2 className="prism-heading text-pure">
-                  {prism.heading.map((line, i) => (
-                    <span key={line} className="block">
-                      {i === 2 ? <em className="italic-display text-cove">{line}</em> : line}
-                    </span>
-                  ))}
-                </h2>
-                {/* THE SUPPORTING SENTENCE STANDS DOWN ON A SHORT
-                    WINDOW, and is never on a phone at all.
-                    Everything else in this column is load-bearing;
-                    one sentence of support is the block that can go
-                    when a 1366x768 laptop leaves the field about
-                    440px of height. Same reasoning as the
-                    `stage-tall` gate <Possibilities> uses — and
-                    declared as ONE custom variant rather than
-                    stacked inline, because Tailwind silently emits
-                    no rule at all for a stacked arbitrary media
-                    variant (see the note above it in site.css). */}
-                <p className="t-body prism-tall:block mt-[clamp(0.875rem,2.2vh,1.5rem)] hidden max-w-[46ch] text-fog lg:max-w-none">
-                  {prism.intro}
-                </p>
-              </div>
-            </div>
+            {/* ---- L5 · the reading panel ----
 
-            {/* ---- L5 · the reading panel ---- */}
+                HUNG FROM THE APERTURE'S TOP EDGE, not centred in
+                the field. Centred, it floated: its first line
+                landed on no edge in the composition and the block
+                read as a column that had been dropped in beside
+                the picture. Sharing the frame's own top inset —
+                the same `--f-t` the photograph is placed from —
+                gives the reading column and the room one line to
+                start from, which is the whole difference between
+                three elements in a row and a composition.
+
+                It also removes the collision the centred version
+                had on a short window, where a panel taller than
+                its field grew in both directions and put its last
+                readout row on the index rail. */}
             <div
               data-par="panel"
-              className="order-4 shrink-0 lg:absolute lg:inset-y-0 lg:right-0 lg:order-none lg:flex lg:w-[19%] lg:flex-col lg:justify-center"
+              style={{ '--f-t': `${FRAME.t}%` }}
+              className="order-4 shrink-0 lg:absolute lg:top-[var(--f-t)] lg:right-0 lg:order-none lg:w-[19%]"
             >
               <div data-point="panel">
                 <PrismPanel

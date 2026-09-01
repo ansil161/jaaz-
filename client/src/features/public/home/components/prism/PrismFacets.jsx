@@ -81,8 +81,15 @@ export default function PrismFacets({ modes, index, onSelect, className = '' }) 
               <span className="prism-node" />
 
               <span className="prism-face-type max-lg:contents">
-                <span className="prism-face-n t-num">{mode.n}</span>
-                <span className="prism-face-w t-label max-lg:hidden">{mode.word}</span>
+                {/* The name is set in the DISPLAY SERIF, not in
+                    10px mono. These five words are the section's
+                    subject; set as labels they were the least
+                    important-looking thing in a composition built
+                    entirely around them. The number keeps the mono,
+                    where mono means what it means everywhere else
+                    on this site: a measurement. */}
+                <span className="prism-face-n">{mode.n}</span>
+                <span className="prism-face-w max-lg:hidden">{mode.word}</span>
                 {/* The fine line extension. Grows from the side the
                     label reads towards, so it always travels away
                     from the room rather than back into it. */}

@@ -67,10 +67,16 @@ export const prism = {
   id: 'snap',
   chapter: 'The Snap',
 
-  /* Three lines, hard-broken, and the break is the point: the eye
-     reads "One room." as a finished sentence before it is told
-     there is more than one of them. */
-  heading: ['One room.', 'Different', 'worlds.'],
+  /* TWO LINES, HARD-BROKEN, AND THE BREAK IS LOAD-BEARING TWICE.
+
+     The eye reads "One room." as a finished sentence before it is
+     told there is more than one of them. And the second line has
+     to be LONG — long enough to run past the aperture's left edge
+     and be cut by the photograph, which is the composition's one
+     device (see the claim block in Prism.jsx). Broken into three
+     lines, as it was, no line reaches the picture and the device
+     silently does not happen. */
+  heading: ['One room.', 'Different worlds.'],
 
   /* One supporting sentence, and only one. The composition is
      doing the arguing; a paragraph here would be the section
@@ -84,30 +90,48 @@ export const prism = {
 
   /* ---- The room ----
 
-     THE STILL AND THE FALLBACK ARE THE SAME ROOM, and on this
-     section that is not tidiness, it is the headline. Everywhere
-     else on the site a `<Plate>` slot and its stock fallback are
-     allowed to be two different pictures of the same IDEA,
-     because nothing is claiming they are one place. Here the
-     entire argument is "one room", so a fallback that showed a
-     different lounge would make the section false for every
-     visitor who ever saw it before the render landed — and that
-     is the state the site has shipped in for months.
+     THE PICTURE HAS TO BE ABLE TO DO ALL FIVE THINGS, and that is
+     the whole of how it was chosen.
 
-     `theatre/base` is the pipeline's own plate. `theatre` in
-     site.js is the photograph it was built from: tiered
-     recliners, a screen wall, warm cove light. Dark, exposed for
-     the dark, and therefore able to survive being re-lit five
-     ways — which a daylit interior cannot, at any grade.
+     This slot held `theatre/base` — the flagship dedicated
+     cinema, and a genuinely beautiful plate. It was the wrong
+     photograph for this section and no grade could have fixed it:
+     it is four rows of FIXED TIERED RECLINERS facing a screen.
+     That room can WATCH. It cannot host anybody, there is nowhere
+     to play, and nobody is going to describe it as somewhere to
+     escape to. So the headline said one room becomes five worlds
+     and the evidence underneath it showed a room that can only be
+     one, which is the kind of contradiction a visitor feels
+     without being able to name.
+
+     `living/base` is the media lounge, and it can hold every
+     face: a large screen with in-wall speakers, a deep modular
+     sofa AND separate lounge chairs, a low table between them,
+     cove light, and a full-height glass wall onto a lit terrace.
+     WATCH and LISTEN are the screen and the speakers; HOST is the
+     chairs and the terrace; PLAY is the same screen with the
+     lights up; ESCAPE is all of it turned down to the lamp. It is
+     also a JAAZ pipeline render rather than a stock interior,
+     which is better provenance than the section had before.
+
+     THE FALLBACK IS NOT THE SAME ROOM, and this is the one place
+     on the site where that is worth saying out loud rather than
+     quietly resolving. `living/base` is in the manifest, so
+     `hasStill()` is true and the fallback below is unreachable
+     today; it exists for the day the plate is regenerated or
+     renamed. There is no stock frame of THIS room, so the choice
+     is between a stand-in of the same kind — `livingAlt`, a dark
+     media lounge whose sofa already faces a blank wall — and one
+     that contradicts four of the five faces. The stand-in wins.
 
      Requested at 4:5 because the aperture is a portrait-leaning
      architectural cut, and asking the CDN for the crop the frame
      actually shows is the difference between a composed room and
      a 16:9 frame with both ends thrown away. */
   room: {
-    still: 'theatre/base',
-    photo: img('theatre', 2000, '4:5'),
-    alt: 'A JAAZ private entertainment room, seating facing the screen wall under low warm light',
+    still: 'living/base',
+    photo: img('livingAlt', 2000, '4:5'),
+    alt: 'A JAAZ media lounge: a large screen, a deep sofa and lounge chairs, opening onto a lit terrace',
   },
 
   /* ---- The five faces ----
@@ -124,7 +148,32 @@ export const prism = {
      Chamfers are kept between 3% and 13%. Past that the aperture
      stops reading as an architectural cut and starts reading as a
      gemstone, which is the one thing this section is named after
-     and must never look like. */
+     and must never look like.
+
+     ALL FIVE ARE TUNED AGAINST THIS PLATE, AND ONLY THIS PLATE.
+     They were first written for `theatre/base`, a dedicated
+     cinema exposed for the dark, where WATCH at brightness 0.96
+     was already a black room. `living/base` is a media lounge
+     with cove light, a lit terrace and a glass wall: at the same
+     numbers WATCH read as a brightly lit living room captioned
+     "the room disappears", which is the caption calling the
+     photograph a liar. A grade is a relationship to one
+     photograph and does not survive being carried to another.
+
+     DARKNESS COMES FROM `brightness`, NOT FROM `veil`. Both make
+     a picture darker and they are not equivalent: flat black over
+     the top crushes the whole frame towards grey and takes the
+     lit terrace down with everything else, where dropping the
+     exposure keeps the contrast between the lamp, the screen and
+     the dark around them — which is what a room at 0.6 fL
+     actually looks like. The veil is left for the last few per
+     cent on the two faces that genuinely go black.
+
+     The range is wide on purpose: 0.46 at ESCAPE against 1.14 at
+     HOST is nearly two and a half stops between the darkest and
+     brightest face of the same room. A section whose entire claim
+     is that one room becomes five worlds cannot make that claim
+     inside a quarter of a stop. */
   modes: [
     {
       key: 'watch',
@@ -138,8 +187,8 @@ export const prism = {
         ['Screen', 'Active'],
         ['Ambience', 'Dark'],
       ],
-      grade: { brightness: 0.96, contrast: 1.16, saturate: 0.88 },
-      wash: { at: '50% 30%', tint: '198, 176, 138', power: 0.3 },
+      grade: { brightness: 0.58, contrast: 1.26, saturate: 0.72 },
+      wash: { at: '62% 40%', tint: '176, 190, 208', power: 0.26 },
       veil: 0.3,
       facet: { tl: 3, tr: 12, br: 4, bl: 9 },
       plate: null,
@@ -156,9 +205,9 @@ export const prism = {
         ['Screen', 'Fast'],
         ['Ambience', 'Charged'],
       ],
-      grade: { brightness: 1.06, contrast: 1.2, saturate: 1.04 },
-      wash: { at: '68% 44%', tint: '150, 178, 208', power: 0.4 },
-      veil: 0.12,
+      grade: { brightness: 0.88, contrast: 1.24, saturate: 1.1 },
+      wash: { at: '66% 46%', tint: '150, 178, 208', power: 0.36 },
+      veil: 0.1,
       facet: { tl: 11, tr: 4, br: 11, bl: 3 },
       plate: null,
     },
@@ -174,9 +223,9 @@ export const prism = {
         ['Screen', 'Resting'],
         ['Ambience', 'Warm'],
       ],
-      grade: { brightness: 0.92, contrast: 1.04, saturate: 0.72 },
-      wash: { at: '26% 60%', tint: '214, 168, 116', power: 0.32 },
-      veil: 0.24,
+      grade: { brightness: 0.7, contrast: 1.06, saturate: 0.74 },
+      wash: { at: '24% 56%', tint: '214, 168, 116', power: 0.32 },
+      veil: 0.2,
       facet: { tl: 5, tr: 10, br: 3, bl: 12 },
       plate: null,
     },
@@ -192,9 +241,9 @@ export const prism = {
         ['Screen', 'Ambient'],
         ['Ambience', 'Social'],
       ],
-      grade: { brightness: 1.12, contrast: 1.0, saturate: 1.0 },
-      wash: { at: '50% 76%', tint: '236, 214, 178', power: 0.48 },
-      veil: 0.04,
+      grade: { brightness: 1.14, contrast: 0.98, saturate: 1.04 },
+      wash: { at: '50% 74%', tint: '236, 214, 178', power: 0.44 },
+      veil: 0.0,
       facet: { tl: 9, tr: 3, br: 12, bl: 5 },
       plate: null,
     },
@@ -210,9 +259,9 @@ export const prism = {
         ['Screen', 'Quiet'],
         ['Ambience', 'Intimate'],
       ],
-      grade: { brightness: 0.86, contrast: 1.08, saturate: 0.6 },
-      wash: { at: '80% 66%', tint: '186, 146, 104', power: 0.22 },
-      veil: 0.4,
+      grade: { brightness: 0.46, contrast: 1.14, saturate: 0.52 },
+      wash: { at: '78% 62%', tint: '196, 152, 104', power: 0.22 },
+      veil: 0.34,
       facet: { tl: 3, tr: 13, br: 7, bl: 7 },
       plate: null,
     },

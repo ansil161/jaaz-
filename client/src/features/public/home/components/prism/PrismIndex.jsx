@@ -130,17 +130,19 @@ export default function PrismIndex({
               >
                 {mode.n}
               </span>
-              {/* THE TRACKING COMES OFF ON A PHONE, and it is the
-                  only thing that makes five cells fit. `.t-label`
-                  sets 0.24em, which is right everywhere else on
-                  this site and is what breaks here: five columns
-                  across a 390px screen leave about 66px a cell, and
-                  "ESCAPE" at 0.55rem plus 0.24em of tracking
-                  measures more than that — so the two longest
-                  labels wrap, and only on the narrowest phones,
-                  which is the kind of break that ships. */}
+              {/* THE NAME IS THE DISPLAY SERIF HERE TOO, for the
+                  same reason it is on the markers around the room:
+                  this rail is an index of five rooms, and an index
+                  sets names in the voice the names are written in.
+                  Mono tracked at 0.24em also does not fit — five
+                  cells across a 390px screen leave about 66px
+                  each, and "ESCAPE" tracked that far measures more
+                  than that, so the two longest labels wrapped on
+                  the narrowest phones only, which is the kind of
+                  break that ships. The serif fits at every width
+                  without being tuned to survive. */}
               <span
-                className={`t-label text-[0.5rem] tracking-[0.1em] transition-colors duration-700 sm:text-[0.5625rem] sm:tracking-[0.2em] ${
+                className={`prism-index-w ${
                   active ? 'text-pure' : 'text-fog group-hover:text-bone'
                 }`}
               >

@@ -55,7 +55,7 @@ import { prismModeCount } from '@/features/public/data/prism'
    ============================================================ */
 
 /** The room's aperture, as a box in field percentages. */
-export const FRAME = { l: 29, r: 71, t: 12, b: 88 }
+export const FRAME = { l: 29, r: 71, t: 9, b: 88 }
 
 /**
  * The five faces.
@@ -111,10 +111,10 @@ export const FACES = [
   {
     key: 'watch',
     x: 38.0,
-    y: 5.0,
+    y: 3.5,
     side: 'right',
     flow: 'row',
-    link: { x: 38.0, y: 12.0 },
+    link: { x: 38.0, y: 9.0 },
     arc: { x: 8, y: 66 },
   },
   {
@@ -123,7 +123,7 @@ export const FACES = [
     y: 21.0,
     side: 'right',
     flow: 'stack',
-    link: { x: 71.0, y: 17.0 },
+    link: { x: 71.0, y: 14.0 },
     arc: { x: 29.5, y: 26 },
   },
   {
