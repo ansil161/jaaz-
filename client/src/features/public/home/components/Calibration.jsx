@@ -521,19 +521,8 @@ export default function Calibration() {
             says anything else. */}
         <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2 border-b border-[var(--rule)] pb-5">
           <span className="t-label flex items-center gap-3 text-ink/60">
-            {/* The chapter mark is OPTIONAL. Only <LightsDown> is
-                numbered under the restructured running order — the
-                numbers no longer run in reading order, and a set
-                that skips is worse than none. A section without one
-                prints its name alone, and the rule that separated
-                them goes with the number rather than hanging off
-                the front of the label. */}
-            {D.chapter && (
-              <>
-                {D.chapter}
-                <span className="block h-px w-8 bg-ink/25" aria-hidden="true" />
-              </>
-            )}
+            {D.chapter}
+            <span className="block h-px w-8 bg-ink/25" aria-hidden="true" />
             {D.label}
           </span>
           <span className="text-[0.8125rem] tabular-nums text-ink/60">{SCALE_NOTE}</span>
@@ -759,17 +748,6 @@ export default function Calibration() {
             ))}
           </div>
         </div>
-
-        {/* THE CREED. One line, under the evidence and before the
-            close, because it is the sentence the whole section
-            exists to earn: everything above it is the measurement,
-            and this is what the measurement is FOR. Set at reading
-            size rather than at display size — it is a statement of
-            principle, not a headline, and blowing it up would make
-            it a slogan. */}
-        <p className="mt-16 max-w-[46ch] text-[1.25rem] leading-[1.5] text-ink sm:mt-20 sm:text-[1.45rem]">
-          {D.creed}
-        </p>
 
         {/* ---------- The close ---------- */}
         <div className="mt-20 grid gap-7 border-t border-[var(--rule)] pt-14 sm:mt-28 lg:grid-cols-[1.22fr_1fr] lg:items-end lg:gap-20 lg:pt-20">

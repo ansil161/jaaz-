@@ -118,12 +118,8 @@ export default function Snap() {
             whole page. */}
         <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2 border-b border-[var(--rule)] pb-5">
           <span className="t-label flex items-center gap-3 text-ink/60">
-            {D.chapter && (
-              <>
-                {D.chapter}
-                <span className="block h-px w-8 bg-ink/25" aria-hidden="true" />
-              </>
-            )}
+            {D.chapter}
+            <span className="block h-px w-8 bg-ink/25" aria-hidden="true" />
             {D.label}
           </span>
           <span className="text-[0.8125rem] tabular-nums text-ink/60">
