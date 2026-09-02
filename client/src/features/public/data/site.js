@@ -584,96 +584,91 @@ export const spaces = {
 }
 
 /* --- Chapter 03: Calibration ---------------------------------- */
-/* The engineering chapter, and the only section on the site that
-   argues rather than shows. It is staged on ONE PHOTOGRAPH of a
-   JAAZ room with the house lights down; every figure it prints is
-   derived, at module load, from the two plans below.
+/* THE SECTION IS AN ARGUMENT, SO THE VISITOR IS HANDED THE SWITCH.
 
-   TWO PLANS, ONE PHYSICS. `asBuilt` is the room in the picture —
-   speakers at the screen edges, the seating block on the acoustic
-   axis, both rows inside the coverage window. `asFound` is the
-   same brief laid out the way rooms are usually laid out: front
-   channels pushed into the corners of the screen wall, the block a
-   little off centre, the front row pulled too close to the screen.
-   The section shows what each one measures, at the same seven
-   chairs, through the same function.
+   An earlier build ran this as a three-and-a-half-viewport pinned
+   scrub: a wash crossed a photograph, seven mono ticks counted up
+   on hairline drop-lines, and the layout solved itself while the
+   reader held still. It measured well and read as an engineering
+   drawing — 11px monospace, 1px rules, a spec sheet in the corner
+   and a row of seat numerals along the bottom. Precision drawn as
+   linework instead of as material.
 
-   BOTH SETS ARE LABELLED ON SCREEN — `layoutFound` / `layoutBuilt`
-   — because the photograph never changes. The picture is always
-   the JAAZ room; the first set of numbers is what the conventional
-   layout of it would measure, and saying so is the difference
-   between a comparison and a lie.
+   What replaced it keeps every number and throws away the
+   drawing. There is one control — CONVENTIONAL LAYOUT / JAAZ
+   LAYOUT — and the visitor works it. Seven chairs carry their own
+   value on the photograph; flipping the switch moves all seven at
+   once, and the argument lands in a gesture rather than over four
+   screens of scrolling.
 
-   Nothing is typed by hand, the two figures in prose included:
-   `foundFigure` and `builtFigure` are templates the component
-   fills from the model. Move a chair 200 mm here and every value,
-   every pool of light and both sentences move with it.
-
-   TWO COORDINATE SYSTEMS, AND THEY DO DIFFERENT JOBS.
-
-   `x` / `y` are METRES in the real room — origin at the screen
-   wall, x from the acoustic centre — and only the acoustics read
-   them.
-
-   `mark` is a PERCENTAGE POSITION IN THE PHOTOGRAPH, so the light
-   that lands on each chair lands on the chair that chair actually
-   is. `s` scales its pool: a chair further from the camera catches
-   a smaller one, and a single size for all seven is the fastest
-   way to make light in a room look like an overlay stuck to the
-   glass. The two are independent on purpose — the plate can be
-   re-cropped, or replaced with JAAZ's own photography, by editing
-   `mark` alone and leaving the acoustics untouched.
-
-   SEVEN CHAIRS, THREE IN FRONT AND FOUR BEHIND, because that is
-   the room in the photograph. The two seat lists are
-   index-matched: chair 03 as found is chair 03 as built. */
+   COPY IS SENTENCES, NOT FIELDS. `seatSentence` and `spreadNote`
+   are templates with `{placeholders}`; the component fills them
+   from the geometry below and sets the figures at display size
+   inline. Nothing here is typed by hand, so the prose cannot
+   drift away from the plans it describes. */
 export const calibration = {
   id: 'calibration',
   chapter: 'Ch. 03',
   label: 'Calibration',
 
-  /* The title card, and its turn. The whole section is the second
-     line earning the first. */
+  /* The claim, in two halves. The first is set back; the second is
+     what the section spends its length earning. */
   title: ['You may never', 'see the difference.'],
   titleTurn: ['But you will', 'always feel it.'],
+  lead: 'One microphone, seven chairs, no averages. Every seat in this room was measured — pick one and read what it actually gets.',
 
-  /* The scroll story, stage by stage. */
-  silence: 'A room can look perfect.',
-  question: ['Does every seat', 'feel the same?'],
-  measure: 'One microphone. Every chair. No averages.',
-  found: 'The room is working. It is not balanced.',
-  change: ['So the room is laid out', 'against the measurement.'],
-  changeSub:
-    'Front channels in to the screen edges. The block back on the axis. Both rows moved into the window.',
+  /* The one control, and what each side of it means in plain
+     words rather than in a legend. */
+  layouts: [
+    {
+      key: 'found',
+      name: 'Conventional layout',
+      note: 'What a room this size would normally be given.',
+    },
+    {
+      key: 'built',
+      name: 'JAAZ layout',
+      note: 'What the measurement asked for instead.',
+    },
+  ],
+  rows: ['Front row', 'Back row'],
+  seatWord: 'Seat',
+  pick: 'Move across the room to read any chair. Figures are dB.',
+
+  /* Two layouts on one photograph is honest only while the picture
+     says so, in the same size type as everything else near it. */
+  plateNote:
+    'One photograph, two layouts. The room is a JAAZ room; the figures are what each layout measures in a space this size.',
+
+  /* The selected chair, as a sentence rather than a readout. Every
+     figure in it is computed from the plans below. */
+  seatSentence:
+    'Sound reaches it in {ms} ms. It measures {db} dB against the room average, and the screen fills {view}° of the view — {window}.',
+  viewIn: 'inside the window the trade works to',
+  viewOut: 'outside the window the trade works to',
+
+  /* The verdict on the whole room, which is the only figure that
+     settles the argument. */
+  spreadLabel: 'Best chair to worst',
+  /* Two readings of the same measurement, so they have to be the
+     same sentence. Anything else is the comparison being weighted
+     by how it is worded rather than by what was measured. */
+  spreadNote: {
+    found: 'The worst chair sits {b} dB off the room average.',
+    built: 'Not one chair sits more than {b} dB off the room average.',
+  },
+
+  /* The close. */
   resolve: ['Every seat.', 'The same intention.'],
   resolveSub:
     'Picture, sound and comfort are tuned for the people in the room — not just the equipment inside it.',
-  hint: 'Move across the room',
-
-  /* Which layout the numbers on the picture belong to. */
-  layoutFound: 'Conventional layout',
-  layoutBuilt: 'JAAZ layout',
-  unit: 'dB · against the room average',
-
-  /* Both figures are templates, not statements. The component
-     fills them from the two plans below, so the copy cannot drift
-     away from the geometry it is describing. */
-  foundFigure: '{a} dB between the best chair and the worst.',
-  builtFigure: '{a} dB — and no chair more than {b} dB off the room average.',
-  probe: ['Arrival', 'Level', 'Picture'],
-  viewIn: 'in window',
-  viewOut: 'outside window',
-  /* Read out top-right, in order, as the pin runs. */
-  stages: ['Silence', 'Question', 'Measure', 'Layout', 'Balance'],
 
   /* Speed of sound at 20 °C. It is printed in the section, so it
      lives here. */
   speedOfSound: 343,
   /* The picture window every chair has to land inside — 30° to 40°
      of horizontal viewing angle is the industry's own range, and
-     the probe prints where each chair falls in it. The
-     conventional layout's front row lands at 50°, which is the
-     same layout failing the picture as well as the sound. */
+     the report prints where each chair falls in it. */
   viewWindow: [30, 40],
   room: { w: 6.4, d: 8.4 },
   screenWidth: 4.2,

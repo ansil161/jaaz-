@@ -398,6 +398,29 @@ html.lenis body {
     letter-spacing: 0.02em;
   }
 
+  /* A measured figure set INSIDE a sentence, at display size.
+     Calibration prints "Sound reaches it in 18.9 ms" with the
+     18.9 three times the size of the words either side of it —
+     the reading of a spec sheet without the spec sheet.
+
+     `line-height: 0` is the whole trick. An inline run this much
+     larger than its paragraph would otherwise drag its own line
+     box open and leave one gappy line in an otherwise even
+     column; contributing no leading of its own, it sits in the
+     paragraph's rhythm and the paragraph carries the space for
+     it — which is why anything using this class needs leading of
+     around 2, and looks broken without it. */
+  .cal-figure {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 2.1em;
+    line-height: 0;
+    letter-spacing: -0.015em;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-pure);
+    padding-inline: 0.04em;
+  }
+
   .italic-display {
     font-style: italic;
   }

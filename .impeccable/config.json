@@ -29,6 +29,15 @@
         ],
         "createdAt": "2026-08-31T07:27:51.451Z",
         "reason": "Same pre-existing rule already ignored for this file as client/src/styles/site.css; the scanner now emits the path relative to client/ so the existing entry no longer matches. Blueprint surface, the rule's own sanctioned exception: .grid-blueprint is used on exactly one element, ProcessTimeline.jsx:287, a construction-sequence timeline for a company that builds rooms from drawings. Untouched by the footer work; flagged only because editing site.css triggers a full-file scan."
+      },
+      {
+        "rule": "codex-grid-background",
+        "value": "*",
+        "files": [
+          "src/styles/site.css"
+        ],
+        "createdAt": "2026-09-01T12:09:34.610Z",
+        "reason": "Same pre-existing .grid-blueprint rule (committed in 5e09125, used on exactly one element: ProcessTimeline.jsx, a construction-sequence timeline for a company that builds rooms from drawings). It is the rule's own named carve-out for a literal blueprint surface, and it was not touched by this session's work. Re-added because the earlier entry this session was scoped to 'client/src/styles/site.css' while the scanner emits paths relative to client/ ('src/styles/site.css'), so it never matched; and the existing correct-path entry is keyed to value 'grid-blueprint' while the finding now reports no value pair."
       }
     ]
   }

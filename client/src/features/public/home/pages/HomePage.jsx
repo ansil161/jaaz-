@@ -1,5 +1,4 @@
 import Hero from '@/features/public/home/components/Hero'
-import ThePromise from '@/features/public/home/components/Promise'
 import Brand from '@/features/public/home/components/Brand'
 import Possibilities from '@/features/public/home/components/Possibilities'
 import LightsDown from '@/features/public/home/components/LightsDown'
@@ -18,11 +17,11 @@ import Footer from '@/features/public/layouts/Footer'
    sequence that makes that page feel like a film rather than a
    brochure — carrying JAAZ's own argument through it:
 
-     FEEL      Hero, Promise
+     FEEL      Hero
      WHO       Brand + the three verified numbers
      PROPOSAL  Possibilities, before any further claims are made
      — breath —
-     WHAT      Spaces, then Tonight — the rooms, then the nights
+     WHAT      Spaces, then the Prism — the rooms, then the nights
      — breath —
      HOW       Craft, Transform
      TRUST     Testimonials
@@ -37,8 +36,14 @@ import Footer from '@/features/public/layouts/Footer'
    2. NO MORE THAN TWO TYPOGRAPHIC SECTIONS IN A ROW. Every
       third slot is a full-bleed frame — the two chapter pins
       (<LightsDown>, <Calibration>), plus Spaces and Transform,
-      which carry their own images. A page this long that reads as one continuous
-      column of set type is a page nobody reaches the end of.
+      which carry their own images. A page this long that reads as
+      one continuous column of set type is a page nobody reaches the
+      end of.
+
+      The rule survives the loss of <ThePromise>: the run is now
+      Hero, Brand, Possibilities, then <LightsDown> — two in a row
+      and then a frame — and Possibilities carries three
+      photographs of its own besides.
 
    The order here IS the argument. Reordering these is a content
    decision, not a layout one.
@@ -49,9 +54,13 @@ export default function Home() {
     <>
       {/* FEEL */}
       <Hero />
-      <ThePromise />
 
-      {/* WHO — and the numbers behind it */}
+      {/* WHO — and the numbers behind it.
+          The Hero used to hand over to <ThePromise>, a five-act
+          typographic statement on a pinned stage. It was removed at
+          ansil's request; the component and its `promise` block in
+          data/site.js both still exist, so putting it back is one
+          import and one tag. */}
       <Brand />
 
       {/* WHAT IT COULD BE — placed before the rest of the claims,
