@@ -330,10 +330,28 @@ export const transform = {
   },
 }
 
-/* --- 4. Bring the Big Screen Home ----------------------------- */
+/* --- Slot 13: Why JAAZ ---------------------------------------- */
+/* THIS USED TO BE THE PAGE'S SECOND SECTION AND IT WAS WORTH
+   LESS THERE.
+
+   Headed "Bring the big screen home", it opened the page as a
+   general statement of what the company does — which is the one
+   thing a visitor on their second screen has no reason to
+   believe yet, and the one thing every builder's site says.
+
+   It now closes the argument instead. By the time anyone reaches
+   it they have read a per-seat calibration, six engineering
+   pillars and a room they dragged from shell to finished, and
+   the question in their head has changed from "what do you do"
+   to "who does this". The heading answers that question
+   literally, and the three numbers underneath it are the only
+   figures JAAZ has actually supplied. */
 export const brand = {
-  label: 'Who We Are',
-  heading: ['Bring the', 'big screen', 'home.'],
+  label: 'Why JAAZ',
+  /* Three claims, hard-broken, because they are three claims and
+     not one sentence: one accountable team, one intention running
+     through the whole room, one thing it is all for. */
+  heading: ['One team.', 'One vision.', 'One experience.'],
   body: [
     'JAAZ designs and builds private entertainment spaces — from dedicated cinema rooms to living rooms that quietly outperform them.',
     'We work as a single team across design, acoustics, joinery, electronics and calibration, so responsibility for the finished room never gets divided.',

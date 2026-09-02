@@ -1,168 +1,215 @@
 import Hero from '@/features/public/home/components/Hero'
-import Brand from '@/features/public/home/components/Brand'
+/* Aliased. The component's file is Promise.jsx and the section is
+   still "The Promise" in the data; binding that name at module
+   scope here would shadow the global `Promise` for the whole
+   file, which is a trap waiting for the first `await` anyone
+   adds. */
+import Philosophy from '@/features/public/home/components/Promise'
 import Possibilities from '@/features/public/home/components/Possibilities'
 import LightsDown from '@/features/public/home/components/LightsDown'
+import Spaces from '@/features/public/home/components/Spaces'
+import Snap from '@/features/public/home/components/Snap'
+import Prism from '@/features/public/home/components/prism/Prism'
 import Calibration from '@/features/public/home/components/Calibration'
 import Engineering from '@/features/public/home/components/Engineering'
+import Transform from '@/features/public/home/components/Transform'
 import Comfort from '@/features/public/home/components/Comfort'
 import Feeling from '@/features/public/home/components/Feeling'
-import Spaces from '@/features/public/home/components/Spaces'
-import Prism from '@/features/public/home/components/prism/Prism'
-import Craft from '@/features/public/home/components/Craft'
-import Transform from '@/features/public/home/components/Transform'
+import Brand from '@/features/public/home/components/Brand'
 import Testimonials from '@/features/public/home/components/Testimonials'
 import Footer from '@/features/public/layouts/Footer'
 
 /* ============================================================
    HOME
 
-   The running order follows the reference build's spine — the
-   sequence that makes that page feel like a film rather than a
-   brochure — carrying JAAZ's own argument through it:
+   Sixteen slots, in this order, and the order IS the argument.
+   Reordering them is a content decision, not a layout one.
 
-     FEEL      Hero
-     WHO       Brand + the three verified numbers
-     PROPOSAL  Possibilities, before any further claims are made
-     — breath —
-     WHAT      Spaces, then the Prism — the rooms, then the nights
-     — breath —
-     HOW       Craft, Transform
-     TRUST     Testimonials
+      01  HERO                 The room awakens
+      02  THE PHILOSOPHY       Entertainment without comfort
+                               is just noise
+      03  POSSIBILITIES        Imagine the space
+      04  LIGHTS DOWN          — breath —
+      05  SPACES               What we bring alive
+      06  THE SNAP        ★    One room. Different worlds.
+      07  THE PRISM            What's tonight?
+      08  CALIBRATION          Measured, not eyeballed
+      09  THE JAAZ COMFORT     Six engineering pillars
+          SYSTEM
+      10  EMPTY ROOM TO        Drag it yourself
+          SHOWTIME
+      11  COMFORT              Stay longer
+      12  FEELING              What do you want to feel?
+      13  WHY JAAZ             One team, one vision
+      14  CLIENT STORIES       In their rooms
+      15  FINAL CTA            Let's build a room worth staying in
+      16  FOOTER
 
-   Two structural rules the order encodes:
+   The shape of it: FEEL (01) · BELIEVE (02-03) · SEE (04-07) ·
+   TRUST THE ENGINEERING (08-10) · WANT IT (11-12) · TRUST THE
+   FIRM (13-14) · ASK (15).
 
-   1. NOTHING IS ASKED UNTIL EVERYTHING IS SHOWN. The page carries
-      no closing CTA section — the hero's button is the only ask,
-      offered early to the small number of people who have already
-      decided.
+   ------------------------------------------------------------
+   FOUR THINGS THE ORDER ENCODES
 
-   2. NO MORE THAN TWO TYPOGRAPHIC SECTIONS IN A ROW. Every
-      third slot breaks the column — <LightsDown> and Spaces and
-      Transform with full-bleed frames, and <Calibration> with the
-      one thing on this page that is not black at all: it is
-      printed on paper, edge to edge. A page this long that reads
-      as one continuous column of set type is a page nobody
-      reaches the end of.
+   1. THE ASK COMES LAST, AND ONLY ONCE. Slots 01-14 ask for
+      nothing. The hero's button is there for the small number of
+      people who have already decided, and slot 15 — which lives
+      inside <Footer> — is the page's one real invitation. A page
+      that asks on every screen is a page that has not earned an
+      answer on any of them.
 
-      The rule survives the loss of <ThePromise>: the run is now
-      Hero, Brand, Possibilities, then <LightsDown> — two in a row
-      and then a frame — and Possibilities carries three
-      photographs of its own besides.
+   2. NO MORE THAN TWO TYPOGRAPHIC SECTIONS IN A ROW. Every third
+      slot breaks the column: <LightsDown>, <Snap> and <Transform>
+      are full-bleed frames, <Spaces> and <Prism> carry
+      photographs, and <Calibration> is the one thing on this page
+      that is not black at all — it is printed on paper, edge to
+      edge. A page this long that reads as one continuous column
+      of set type is a page nobody reaches the end of.
 
-   The order here IS the argument. Reordering these is a content
-   decision, not a layout one.
+   3. PROOF IS SANDWICHED BETWEEN DESIRE. 08-10 are the hardest,
+      most technical run on the site, and they sit where they can
+      afford to be: after four slots of showing what a room feels
+      like, and before two that turn the proof back into wanting
+      one. Leading with the measurement would be a spec sheet;
+      ending with it would be a page that stops at the argument.
+
+   4. THE TWO TRUST SECTIONS ARE AT THE END, NOT THE START. <Brand>
+      — "one team, one vision" and the three verified numbers —
+      used to open the page at slot 02. It is worth far more here:
+      a visitor who has just read a per-seat calibration and six
+      engineering pillars has a reason to care who did it. A
+      visitor on their second screen does not.
+
+   ------------------------------------------------------------
+   WHAT IS NOT ON THIS PAGE, AND WHY
+
+   <Craft> — the five build stages — came off at slot 10, which
+   is now <Transform> alone. The component and its `craft` block
+   in data/site.js both still exist; putting it back is one import
+   and one tag.
+
+   <FirstPause>, <Journal> and <Technology> are likewise built,
+   unlinked and intact.
    ============================================================ */
 
 export default function Home() {
   return (
     <>
-      {/* FEEL */}
+      {/* 01 · FEEL. The only slot that asks for anything. */}
       <Hero />
 
-      {/* WHO — and the numbers behind it.
-          The Hero used to hand over to <ThePromise>, a five-act
-          typographic statement on a pinned stage. It was removed at
-          ansil's request; the component and its `promise` block in
-          data/site.js both still exist, so putting it back is one
-          import and one tag. */}
-      <Brand />
+      {/* 02 · THE PHILOSOPHY. Reinstated at ansil's request as the
+          page's second beat. It is the thesis — comfort is the
+          product, not the equipment list — made as a five-act
+          typographic pin rather than as a paragraph, because the
+          line is meant to be heard one beat at a time. It had been
+          removed; the structure asked for it back, and this is the
+          slot it was always written for. */}
+      <Philosophy />
 
-      {/* WHAT IT COULD BE — placed before the rest of the claims,
-          not after. This slot used to hold a portfolio rail; it holds
-          a proposal instead, because JAAZ does not yet have its own
-          photography and a portfolio built out of stock interiors is
-          a portfolio that is lying at the exact point where a visitor
-          is deciding whether to trust the claim above it. Everything
-          in it is disclosed as conceptual / reference material. */}
+      {/* 03 · WHAT IT COULD BE — placed before the rest of the
+          claims, not after. This slot used to hold a portfolio
+          rail; it holds a proposal instead, because JAAZ does not
+          yet have its own photography and a portfolio built out of
+          stock interiors is a portfolio that is lying at the exact
+          point where a visitor is deciding whether to trust the
+          claim above it. Everything in it is disclosed as
+          conceptual / reference material. */}
       <Possibilities />
 
-      {/* — breath — */}
+      {/* 04 · — breath — */}
       <LightsDown />
 
-      {/* WHAT WE BUILD */}
+      {/* 05 · WHAT WE BUILD */}
       <Spaces />
 
-      {/* WHAT IT IS FOR — the rooms, then what happens inside them.
-          Placed immediately after <Spaces> because the two are one
-          argument in two halves: Spaces names the rooms, the Prism
-          shows one of them being five different evenings without
-          moving.
+      {/* 06 · THE SNAP ★ — the page's one filmed moment, and the
+          only section that shows a room CHANGE rather than
+          describing one.
 
-          This slot has held the same claim three ways. <Tonight>
-          made it by ENUMERATION — six nights, six photographs —
-          which is the weakest form of it, because six pictures of
-          six rooms is exactly what a visitor already expects a
-          builder's site to contain. <Snap> made it by
-          STORYTELLING, and put the five evenings in the last 40%
-          of a 3.4-viewport pin most people never finished.
+          It has been here before and it failed: the first build
+          ran 3.4 viewports of pin and put the change in the last
+          40% of it, so it was replaced by <Prism>, twice. The
+          correction is in two numbers rather than in a comment —
+          the pin is 1.9 viewports and the snap lands at 0.44 of
+          it. See Snap.jsx.
 
-          The Prism makes it STRUCTURALLY: one photograph at the
-          centre of a composition, five faces of it around the
-          edge, and the whole idea legible on arrival. It is still
-          the page's only section the visitor drives rather than
-          scrolls past — the index at its foot moves the scroll, so
-          the choice is genuinely theirs. Worth spending at the
-          point where they have just been told what can be built
-          and have not yet been told how. */}
+          It renders correctly with no footage on disk, grading its
+          own still, and swaps to the frame sequence the moment one
+          lands in the manifest. */}
+      <Snap />
+
+      {/* 07 · WHAT IT IS FOR — the rooms and the change, then the
+          choosing. Placed immediately after <Snap> because the two
+          are one argument in two halves: the Snap shows that the
+          room becomes something else, the Prism lets you pick
+          which. It is the page's only section the visitor drives
+          rather than scrolls past.
+
+          It answered to `#snap` through three rewrites and gives
+          the name back here, because <Snap> exists again directly
+          above it and two sections cannot share an address. */}
       <Prism />
 
-      {/* PROOF — the one section that argues rather than shows.
-          It sits here, after the rooms and before the craft, because
-          it is the hinge between them: everything above it is what a
-          JAAZ room feels like, everything below it is how one is
-          built, and this is the section that earns the right to move
-          from the first to the second.
+      {/* 08 · PROOF — the one section that argues rather than
+          shows. It sits here, after the rooms and before the
+          engineering, because it is the hinge between them:
+          everything above is what a JAAZ room feels like,
+          everything below is how one is built.
 
           It is also the page's only LIGHT section — full-bleed
-          paper, hard edges top and bottom — which is what keeps
-          the two-typographic-sections-in-a-row rule intact across
-          the join without a photograph. The tonal break is doing
-          the same job a full-bleed frame does, and doing it in the
-          register the argument needs: this is the point where the
-          page stops showing rooms and hands over the measurement,
-          and it hands over BOTH layouts at once rather than
-          hiding one behind a control. */}
+          paper, hard edges top and bottom — which keeps the
+          two-typographic-sections-in-a-row rule intact across the
+          join without a photograph, and it hands over BOTH
+          layouts at once rather than hiding one behind a
+          control. */}
       <Calibration />
 
-      {/* PROOF, WIDENED — Calibration proves ONE discipline with a
-          real measurement; this names all six and shows that each
-          one decides the next. It goes after, not before, because
-          "here is how far we take one of these" earns the right to
-          say "and there are six" far better than the reverse.
-
-          It is also the only typographic section in this run, which
-          is what keeps the two-in-a-row rule intact: Calibration is
-          the paper section, Engineering is set type on black, Craft
-          carries photographs again. */}
+      {/* 09 · PROOF, WIDENED — Calibration proves ONE discipline
+          with a real measurement; this names all six pillars and
+          shows that each one decides the next. It goes after, not
+          before, because "here is how far we take one of these"
+          earns the right to say "and there are six" far better
+          than the reverse. */}
       <Engineering />
 
-      {/* HOW IT IS BUILT */}
-      <Craft />
+      {/* 10 · FROM EMPTY ROOM TO SHOWTIME. The transformation, and
+          the visitor drags it themselves — the seam between the
+          bare civil shell and the finished room. It is the last
+          thing on the page the visitor operates. */}
       <Transform />
 
-      {/* DESIRE — the two sections that turn proof back into a
-          reason to want the room.
+      {/* 11-12 · DESIRE — the two sections that turn proof back
+          into a reason to want the room.
 
           <Comfort> is the page's slow beat, and deliberately has
-          nothing to operate: it follows two sections in a row that
-          hand the visitor a control (<Calibration>'s chair,
-          <Transform>'s seam) and precedes a third, so a page that
-          never stops offering interactions would start reading as a
-          demo reel. This one is looked at.
+          nothing to operate: it follows three sections in a row
+          that hand the visitor a control (<Prism>'s stack,
+          <Calibration>'s chair, <Transform>'s seam) and precedes a
+          fourth, so a page that never stops offering interactions
+          would start reading as a demo reel. This one is looked
+          at.
 
-          <Feeling> is the last thing before the testimonials for a
-          reason. It is the only section on the page that starts
+          <Feeling> is the only section on the page that starts
           from the VISITOR rather than from the room, and it is
-          worth the most at the point where someone has read the
-          whole argument and is ready to put themselves inside one
-          of these rooms. It still asks for nothing — the hero's
-          button remains the page's only ask. */}
+          worth the most here — after the whole argument, with
+          someone ready to put themselves inside one of these
+          rooms. It still asks for nothing. */}
       <Comfort />
       <Feeling />
 
-      {/* TRUST */}
+      {/* 13-14 · TRUST. Who did it, then what the people they did
+          it for say about it — in that order, because a quote from
+          a stranger means more once you know whose work it is
+          praising. */}
+      <Brand />
       <Testimonials />
 
+      {/* 15-16 · THE ASK, and the directory. Both live inside
+          <Footer>: the closing CTA panel is slot 15 and opens
+          every page on the site, so it is authored once there
+          rather than duplicated here. */}
       <Footer />
     </>
   )
