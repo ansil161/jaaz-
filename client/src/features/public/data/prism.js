@@ -90,16 +90,22 @@ import { img } from './site'
    ============================================================ */
 
 export const prism = {
-  /* The anchor stays `snap`, and so does the chapter mark. The
-     interaction has changed three times; the address has not, and
-     a homepage id is a public surface. */
-  id: 'snap',
-  chapter: 'The Snap',
+  /* THE ANCHOR MOVED, ONCE, ON PURPOSE. This section answered to
+     `#snap` through three rewrites, on the principle that a
+     homepage id is a public surface. It gives the name back here
+     because <Snap> now exists again as its own section directly
+     above, and two sections cannot share an address — an anchor
+     that lands on the wrong one is worse than an anchor that
+     changed. `/#snap` now reaches the frame sequence, which is
+     what anyone who saved that link was looking at. */
+  id: 'prism',
+  chapter: 'Ch. 03',
 
-  /* Two lines, hard-broken. The eye reads "One room." as a
-     finished sentence before it is told there is more than one of
-     them. */
-  heading: ['One room.', 'Different worlds.'],
+  /* The question the five faces answer. "One room. Different
+     worlds." went back to <Snap> with the sequence it was written
+     for; what is left here is the CHOOSING, and a chooser should
+     be headed by the question it asks. */
+  heading: ['What’s', 'tonight?'],
 
   /* One supporting sentence, and only one. The stack is doing the
      arguing; a paragraph here would be the section explaining a

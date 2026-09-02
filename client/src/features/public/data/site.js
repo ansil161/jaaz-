@@ -537,7 +537,7 @@ export const lightsDown = {
   alt: 'A projector beam cutting through the haze of a dark private cinema',
 }
 
-/* --- Chapter 02: Spaces --------------------------------------- */
+/* --- Spaces (no chapter mark of its own) ---------------------- */
 /* Six rooms, traversed laterally rather than dissolved between —
    the section is a camera moving through a plan, so every room
    carries what a room schedule would carry: a clear internal
@@ -637,7 +637,72 @@ export const spaces = {
   ],
 }
 
-/* --- Chapter 03: Calibration ---------------------------------- */
+/* --- Chapter 02: The Snap ------------------------------------- */
+/* THE PAGE'S ONE FILMED MOMENT.
+
+   Everything else on this homepage argues in stills, type or
+   drawings. This is the section that shows a room CHANGE, in one
+   unbroken shot, scrubbed off the scroll — the claim that a JAAZ
+   room is not one room but several, made by watching it happen
+   rather than by being told.
+
+   IT HAS BEEN HERE BEFORE AND IT FAILED ONCE. The first build of
+   this idea ran 3.4 viewports of pinned scroll and put the pay-off
+   — the actual change — in the last 40% of it, which most visitors
+   never reached. It was replaced by <Prism>, twice. The lesson is
+   written into the numbers below rather than into a comment
+   nobody reads: `peak` is 0.44, so the snap lands BEFORE the
+   halfway point of a pin that is only two viewports long. A
+   visitor who gives this section one flick of the wheel has
+   already seen the thing it exists for.
+
+   `sequence` is a slot in `frames-manifest.json`, not a path. Until
+   real frames land the section grades its own still instead —
+   see Snap.jsx — and the swap costs no code change. That is the
+   whole point of the frames pipeline: the scene is designed,
+   reviewable and shippable before a frame has been rendered.
+
+   THE FRAMES ARE A FILMED CLIP, CUT UP. 120-180 numbered stills
+   rather than an mp4, because an H.264 seeks to its nearest
+   keyframe and the one frame this section is built around — the
+   blowout at contact — is precisely the frame a browser would
+   refuse to land on. See utils/frames.js. */
+export const snap = {
+  id: 'snap',
+  chapter: 'Ch. 02',
+  label: 'The Snap',
+
+  /* Two lines, hard-broken. The eye reads "One room." as a
+     finished sentence before it is told there is more than one of
+     them. This line came back here from <Prism> with the sequence
+     it was written for. */
+  heading: ['One room.', 'Different worlds.'],
+  intro:
+    'The same walls, the same chairs, the same screen. What changes is everything the room is doing with them.',
+
+  /* The two ends of the shot, named. They cross AT the snap, so
+     the caption under the frame is always describing the room the
+     visitor is currently looking at. */
+  before: { label: 'Before', line: 'A room with the lights on.' },
+  after: { label: 'After', line: 'A cinema, in one gesture.' },
+
+  /* Where the change happens, as a fraction of the pin. Load
+     bearing — see the note above. */
+  peak: 0.44,
+
+  /* The frame sequence, by manifest slot. Null-safe: `sequence()`
+     returns no urls for a slot that is missing or still flagged
+     `placeholder`, and the section draws its still instead. */
+  sequence: 'theatre/snap',
+
+  /* The still. It is the section's poster, its reduced-motion
+     fallback and its no-frames fallback, all three — so it has to
+     be a frame that can carry the whole idea on its own. */
+  poster: img('theatre', 2400, '16:9'),
+  posterAlt: 'A JAAZ private cinema, the moment the room changes',
+}
+
+/* --- Chapter 04: Calibration ---------------------------------- */
 /* THE SECTION IS AN ARGUMENT, SO THE VISITOR IS HANDED THE SWITCH.
 
    TWO BUILDS ARE BURIED UNDER THIS ONE, AND BOTH FAILED THE SAME
@@ -678,7 +743,7 @@ export const spaces = {
    with the photograph. */
 export const calibration = {
   id: 'calibration',
-  chapter: 'Ch. 03',
+  chapter: 'Ch. 04',
   label: 'Calibration',
 
   /* The claim, in two halves. The first is set back; the second is
@@ -1076,7 +1141,7 @@ export const footer = {
   ],
 }
 
-/* --- Chapter 04: Engineering ----------------------------------- */
+/* --- Chapter 05: The JAAZ Comfort System ------------------------ */
 /* "Engineered. Not assembled." — the six disciplines a room has to
    resolve, each carried by ONE figure at display size.
 
@@ -1102,8 +1167,12 @@ export const footer = {
    on their own, in order, and they chain. */
 export const engineering = {
   id: 'engineering',
-  chapter: 'Ch. 04',
-  label: 'Engineering',
+  chapter: 'Ch. 05',
+  /* Named as a SYSTEM rather than as a discipline. Six pillars
+     that each decide the next is not "engineering" in the abstract
+     — it is the thing JAAZ sells, and the label is the only place
+     on the page it gets called by its own name. */
+  label: 'The JAAZ Comfort System',
   heading: ['Engineered.', 'Not assembled.'],
   intro:
     'A room is not the sum of what is installed in it. Six things have to agree before any of them is ordered — and each one decides the next.',
@@ -1169,7 +1238,7 @@ export const engineering = {
   closing: { pre: '', turn: 'Measured', post: ', not eyeballed.' },
 }
 
-/* --- Chapter 05: Comfort --------------------------------------- */
+/* --- Chapter 06: Comfort --------------------------------------- */
 /* "Stay longer." The slow section, deliberately — it follows
    Engineering, and the two are meant to feel different in the body
    and not only to read differently.
@@ -1192,7 +1261,7 @@ export const engineering = {
    where that would be spotted immediately. */
 export const comfort = {
   id: 'comfort',
-  chapter: 'Ch. 05',
+  chapter: 'Ch. 06',
   label: 'Comfort',
   heading: ['Stay', 'longer.'],
 
@@ -1240,7 +1309,7 @@ export const comfort = {
   },
 }
 
-/* --- Chapter 06: What do you want to feel? --------------------- */
+/* --- Chapter 07: What do you want to feel? --------------------- */
 /* The experience selector. Six feelings; press one and the room
    answers.
 
@@ -1265,7 +1334,7 @@ export const comfort = {
    words that these are reference images. */
 export const feelings = {
   id: 'feeling',
-  chapter: 'Ch. 06',
+  chapter: 'Ch. 07',
   label: 'The Brief',
   heading: ['What do you', 'want to feel?'],
   intro:
