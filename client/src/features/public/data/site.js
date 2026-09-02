@@ -656,35 +656,31 @@ export const spaces = {
 }
 
 /* --- Chapter 02: The Snap ------------------------------------- */
-/* THE PAGE'S ONE FILMED MOMENT.
+/* ONE ROOM, SHOWN AS SEVERAL. NOTHING HIDDEN.
 
-   Everything else on this homepage argues in stills, type or
-   drawings. This is the section that shows a room CHANGE, in one
-   unbroken shot, scrubbed off the scroll — the claim that a JAAZ
-   room is not one room but several, made by watching it happen
-   rather than by being told.
+   The claim is that a JAAZ room is not one room. The honest way
+   to make it is to put every version of that room on the page at
+   once and let someone look from one to the next — not to hide
+   them behind a control, and not to perform the change as a film.
 
-   IT HAS BEEN HERE BEFORE AND IT FAILED ONCE. The first build of
-   this idea ran 3.4 viewports of pinned scroll and put the pay-off
-   — the actual change — in the last 40% of it, which most visitors
-   never reached. It was replaced by <Prism>, twice. The lesson is
-   written into the numbers below rather than into a comment
-   nobody reads: `peak` is 0.44, so the snap lands BEFORE the
-   halfway point of a pin that is only two viewports long. A
-   visitor who gives this section one flick of the wheel has
-   already seen the thing it exists for.
+   THIS SECTION HAS BEEN BUILT AS A FILM TWICE AND FAILED BOTH
+   TIMES. The first build ran 3.4 viewports of pinned scroll with
+   a drawn hand and a masked wipe, and put the pay-off in the last
+   40% of a pin most visitors never finished. The second, written
+   the same day as this one, was a scrubbed frame sequence with a
+   blowout at contact — and ansil ruled the whole register out
+   before it ever shipped: no pinned or scroll-jacked sections, no
+   near-black screens, no film-style motion, no display-serif
+   drama filling a screen. It is printed on paper instead, like
+   Calibration, and it simply shows the four rooms.
 
-   `sequence` is a slot in `frames-manifest.json`, not a path. Until
-   real frames land the section grades its own still instead —
-   see Snap.jsx — and the swap costs no code change. That is the
-   whole point of the frames pipeline: the scene is designed,
-   reviewable and shippable before a frame has been rendered.
-
-   THE FRAMES ARE A FILMED CLIP, CUT UP. 120-180 numbered stills
-   rather than an mp4, because an H.264 seeks to its nearest
-   keyframe and the one frame this section is built around — the
-   blowout at contact — is precisely the frame a browser would
-   refuse to land on. See utils/frames.js. */
+   THE PHOTOGRAPHS ARE THE SECTION. Four frames of THE SAME room,
+   which is the one thing the verified stock pool cannot supply —
+   every plate in it is a different property, and four different
+   rooms under a heading that says "one room" would make the
+   section lie. `render` names the asset each slot is waiting for;
+   `image` is the interim plate and is disclosed as reference in
+   `note` until the renders land. Nothing here pretends. */
 export const snap = {
   id: 'snap',
   chapter: 'Ch. 02',
@@ -692,32 +688,53 @@ export const snap = {
 
   /* Two lines, hard-broken. The eye reads "One room." as a
      finished sentence before it is told there is more than one of
-     them. This line came back here from <Prism> with the sequence
-     it was written for. */
+     them. This line came back here from <Prism>. */
   heading: ['One room.', 'Different worlds.'],
   intro:
-    'The same walls, the same chairs, the same screen. What changes is everything the room is doing with them.',
+    'The same walls, the same chairs, the same screen. What changes is everything the room is doing with them — and none of it is a different room.',
 
-  /* The two ends of the shot, named. They cross AT the snap, so
-     the caption under the frame is always describing the room the
-     visitor is currently looking at. */
-  before: { label: 'Before', line: 'A room with the lights on.' },
-  after: { label: 'After', line: 'A cinema, in one gesture.' },
+  /* Shown under the set, in the same size type as the captions,
+     for exactly as long as the plates are stand-ins. */
+  note: 'Reference imagery. The four frames above are placeholders until the room is photographed in each state.',
 
-  /* Where the change happens, as a fraction of the pin. Load
-     bearing — see the note above. */
-  peak: 0.44,
-
-  /* The frame sequence, by manifest slot. Null-safe: `sequence()`
-     returns no urls for a slot that is missing or still flagged
-     `placeholder`, and the section draws its still instead. */
-  sequence: 'theatre/snap',
-
-  /* The still. It is the section's poster, its reduced-motion
-     fallback and its no-frames fallback, all three — so it has to
-     be a frame that can carry the whole idea on its own. */
-  poster: img('theatre', 2400, '16:9'),
-  posterAlt: 'A JAAZ private cinema, the moment the room changes',
+  /* THE FOUR STATES. Four and not six: the point is that the room
+     has more than one life, and four makes it without turning the
+     set into a catalogue. <Prism> is where the full range gets
+     chosen from — this section only has to be true. */
+  worlds: [
+    {
+      n: '01',
+      name: 'Cinema',
+      line: 'Lights to zero. The screen is the only source in the room.',
+      render: 'snap/cinema',
+      image: img('theatre', 1600, '4:3'),
+      alt: 'The room with the house lights down and the screen lit',
+    },
+    {
+      n: '02',
+      name: 'The match',
+      line: 'Brighter, wider, and loud enough to shout over.',
+      render: 'snap/match',
+      image: img('livingAlt', 1400, '4:5'),
+      alt: 'The same room set up for live sport',
+    },
+    {
+      n: '03',
+      name: 'Gathering',
+      line: 'The screen steps back. The room is for the people in it.',
+      render: 'snap/gathering',
+      image: img('bar', 1400, '4:5'),
+      alt: 'The same room with the seating opened up for company',
+    },
+    {
+      n: '04',
+      name: 'Everyday',
+      line: 'Nothing on show. A room you would sit in with the lights on.',
+      render: 'snap/everyday',
+      image: img('fluted', 1600, '4:3'),
+      alt: 'The same room in daylight with everything put away',
+    },
+  ],
 }
 
 /* --- Chapter 04: Calibration ---------------------------------- */

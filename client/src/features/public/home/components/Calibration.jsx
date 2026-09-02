@@ -513,7 +513,7 @@ export default function Calibration() {
       ref={root}
       id={D.id}
       aria-label={D.titleTurn.join(' ')}
-      className="cal-sheet on-paper py-24 text-ink sm:py-32 lg:py-40"
+      className="sheet on-paper py-24 text-ink sm:py-32 lg:py-40"
     >
       <div className="shell-wide">
         {/* ---------- The masthead ----------

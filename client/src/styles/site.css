@@ -422,16 +422,15 @@ html.lenis body {
   }
 
   /* ============================================================
-     CALIBRATION — THE SHEET
+     THE SHEET — the site's light ground
 
-     Chapter 03 is the one LIGHT section on the homepage, and the
-     tonal break is the argument: everything around it is a room
-     being shown, this is the measurement being handed over. A
-     comparison is read on paper, so the section is printed on
-     some — full bleed, hard edges top and bottom, no floating
+     `.sheet` was written for Calibration and is now shared:
+     ansil has ruled the near-black cinematic register out for
+     every NEW section, so this is the surface those sections are
+     built on. Full bleed, hard edges top and bottom, no floating
      panel and no card.
 
-     `.cal-sheet` is a MATERIAL, not a background colour. The
+     `.sheet` is a MATERIAL, not a background colour. The
      stock is not flat: a vertical gradient runs the page from a
      lit top edge to a shaded foot, a broad highlight sits where
      the room's own warm light would fall on it, and the `::before`
@@ -449,7 +448,7 @@ html.lenis body {
      grain: the site's global selection is white-on-black, which
      inverts to an unreadable smear on a light ground.
      ============================================================ */
-  .cal-sheet {
+  .sheet {
     --cal-figure-ink: var(--color-ink);
     position: relative;
     isolation: isolate;
@@ -457,7 +456,7 @@ html.lenis body {
       radial-gradient(64% 34% at 50% -2%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0) 68%),
       linear-gradient(180deg, #f7f5f1 0%, #f2f0ea 44%, #eae7e0 100%);
   }
-  .cal-sheet::before {
+  .sheet::before {
     content: '';
     position: absolute;
     inset: 0;
@@ -467,7 +466,7 @@ html.lenis body {
     mix-blend-mode: multiply;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
   }
-  .cal-sheet ::selection {
+  .sheet ::selection {
     background: #16161a;
     color: #f4f2ee;
   }
