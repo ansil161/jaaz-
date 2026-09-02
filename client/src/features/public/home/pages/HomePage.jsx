@@ -39,9 +39,10 @@ import Footer from '@/features/public/layouts/Footer'
    2. NO MORE THAN TWO TYPOGRAPHIC SECTIONS IN A ROW. Every
       third slot breaks the column — <LightsDown> and Spaces and
       Transform with full-bleed frames, and <Calibration> with the
-      one thing on this page that is not black at all: a sheet of
-      paper. A page this long that reads as one continuous column
-      of set type is a page nobody reaches the end of.
+      one thing on this page that is not black at all: it is
+      printed on paper, edge to edge. A page this long that reads
+      as one continuous column of set type is a page nobody
+      reaches the end of.
 
       The rule survives the loss of <ThePromise>: the run is now
       Hero, Brand, Possibilities, then <LightsDown> — two in a row
@@ -112,13 +113,15 @@ export default function Home() {
           built, and this is the section that earns the right to move
           from the first to the second.
 
-          It is also the page's only LIGHT section — a paper sheet
-          inset into the black — which is what keeps the
-          two-typographic-sections-in-a-row rule intact across the
-          join without a photograph. The tonal break is doing the
-          same job a full-bleed frame does, and doing it in the
+          It is also the page's only LIGHT section — full-bleed
+          paper, hard edges top and bottom — which is what keeps
+          the two-typographic-sections-in-a-row rule intact across
+          the join without a photograph. The tonal break is doing
+          the same job a full-bleed frame does, and doing it in the
           register the argument needs: this is the point where the
-          page stops showing rooms and hands over the measurement. */}
+          page stops showing rooms and hands over the measurement,
+          and it hands over BOTH layouts at once rather than
+          hiding one behind a control. */}
       <Calibration />
 
       {/* PROOF, WIDENED — Calibration proves ONE discipline with a
@@ -129,7 +132,7 @@ export default function Home() {
 
           It is also the only typographic section in this run, which
           is what keeps the two-in-a-row rule intact: Calibration is
-          the paper sheet, Engineering is set type on black, Craft
+          the paper section, Engineering is set type on black, Craft
           carries photographs again. */}
       <Engineering />
 

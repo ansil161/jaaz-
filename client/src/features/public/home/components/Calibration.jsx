@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { calibration as D } from '@/features/public/data/site'
 import {
   useGsapScope,
@@ -15,40 +15,25 @@ import {
    and the only one printed on paper.
 
    WHAT THIS REPLACED, AND WHY.
-   The previous build laid the argument over a photograph of the
-   room: seven figures set on the plate, a pool of light on the
-   chair being read, the controls in type underneath. It was a
-   real improvement on the pinned engineering drawing before it,
-   and it still had two faults that no amount of tuning fixed.
+   Three builds are buried under this one. The first ran the
+   argument as a pinned scrub over a photograph and read as an
+   engineering drawing. The second kept the photograph and set the
+   figures on it — better, but the plan being argued about was
+   never actually visible, so the visitor had to take the geometry
+   on trust. The third drew the plan and put it on paper, and
+   still hid half the case behind a switch: one layout at a time,
+   with the other held in the reader's head.
 
-     1. A private cinema photographed with the house lights down
-        is the darkest ground on the site, and this is the one
-        section whose job is to be READ. Every figure on it needed
-        a veil under it to survive, and a veil over a room this
-        expensive is a tax paid on the photography.
-     2. THE PLAN WAS NEVER VISIBLE. The section's whole claim is
-        that one seating layout measures better than another — and
-        the visitor was shown neither layout. They were shown a
-        photograph of a third room and asked to take the geometry
-        on trust. The argument had no evidence in it.
+   THIS BUILD HIDES NOTHING. Both rooms are drawn side by side,
+   both verdicts are on the page at once, and there is no control
+   to work out — the comparison is simply there. The only thing
+   left to operate is WHICH CHAIR, and a chair is read in both
+   rooms at the same time. That is the whole interface: point at a
+   chair, or pick it from the list, and every figure about it
+   appears twice.
 
-   So the photograph is gone and the PLAN IS DRAWN. `data/site.js`
-   holds two layouts as metres in one coordinate system whose
-   origin is the centre of the screen wall, and the drawing's
-   viewBox IS that system — a chair cannot appear anywhere except
-   where it was measured, because there is no second set of
-   coordinates to drift. Throwing the switch moves the room: seven
-   chairs slide, the front three speakers pull in, every figure
-   recounts, and the verdict rewrites itself.
-
-   IT IS SET ON PAPER. One warm sheet inset into the black page. A
-   measurement report is a document, and the tonal break is the
-   point — the page stops being a film for the length of one
-   section and hands the evidence over. See `.cal-paper` in
-   site.css for why the sheet is a material rather than a card.
-
-   THE NUMBERS ARE UNCHANGED AND STILL COMPUTED. `measure()` runs
-   one identical model over both layouts:
+   The measurements are unchanged and still computed. `measure()`
+   runs one identical model over both layouts:
 
      level    direct field, three front channels power-summed at
               inverse square, expressed against the mean of all
@@ -58,32 +43,32 @@ import {
      picture  horizontal viewing angle at the chair, against the
               30-40 degree window the trade already works to
 
-   Nothing is typed by hand, the figures in the prose included.
+   Nothing is typed by hand, the figures in the prose included —
+   and because BOTH layouts print the same sentence with different
+   numbers in it, the two readings can be compared word for word.
+   That parallel is the argument; it is why the reading is two
+   sentences and not a stats table.
 
    INK DENSITY IS THE ARGUMENT, WHICH IS WHY IT IS NOT A CHART.
    A chair's pad is printed at a weight set by how close it sits
    to the room average: off the average it is a faint impression,
-   on it the ink is fully laid down. Seven pale chairs going solid
-   together as they slide into place makes the case before a
-   figure has been read, and it costs no axis, no legend and no
-   linework. The FIGURES never fade with it — each one holds a
-   readable weight in the list beside the plan, so nothing here is
-   encoded in contrast alone.
+   on it the ink is fully laid down. With both plans on the page
+   the left one reads patchy and the right one solid before a
+   single figure has been read, and it costs no axis, no legend
+   and no linework. The FIGURES never fade with it — every value
+   holds a readable weight in the comparison list, so nothing here
+   is encoded in contrast alone.
 
-   VALUES ARE WRITTEN TO THE DOM, NOT HELD IN STATE. Crossing
-   between layouts animates seven positions, three speakers, seven
-   readings, three figures in a sentence and the verdict together;
-   driving that through React state would re-render the subtree
-   sixty times a second for nothing. `blend` is the single source
-   of truth — 0 is the conventional layout, 1 is ours — and
-   `apply()` is a pure function of it, so no value can be left
-   stranded mid-cross by an interrupted tween.
-
-   THE PLAN IS NOT THE KEYBOARD ROUTE. Pointing at a drawing is
-   the natural way to pick a chair and a poor way to reach one
-   without a pointer, so the seven real buttons are the value list
-   under it — where the figures already are, where focus is
-   visible, and where the accessible name has somewhere to live.
+   THE ONE AUTHORED MOMENT IS THE CORRECTION ITSELF. On first
+   scroll-in the JAAZ drawing is holding the conventional
+   arrangement, and it resolves: seven chairs slide, the front
+   three speakers pull in, the ink comes up and the verdict counts
+   down. It plays once, needs no interaction, and it is the reason
+   the two drawings read as one room decided twice rather than as
+   two unrelated pictures. The markup renders the TRUE positions,
+   and the tween drives them back to the conventional ones before
+   running forward — so with no JavaScript, or under reduced
+   motion, the right-hand plan is simply correct.
    ============================================================ */
 
 const RAD = 180 / Math.PI
@@ -126,30 +111,38 @@ const SEATS = BUILT.length
 const spreadOf = (m) => Math.max(...m.map((s) => s.db)) - Math.min(...m.map((s) => s.db))
 const worstOf = (m) => Math.max(...m.map((s) => Math.abs(s.db)))
 
-const SPREAD = { found: spreadOf(FOUND), built: spreadOf(BUILT) }
-
 const fill = (tpl, v) => tpl.replace(/\{(\w)\}/g, (_, k) => v[k])
-const SPREAD_NOTE = {
-  found: fill(D.spreadNote.found, { b: worstOf(FOUND).toFixed(1) }),
-  built: fill(D.spreadNote.built, { b: worstOf(BUILT).toFixed(1) }),
-}
+
+/* The two rooms, assembled once from the copy and the geometry so
+   that everything on the page — both columns, both sets of
+   figures, both verdicts and both sentences — is rendered by
+   mapping over ONE array. A third layout would need no new
+   markup, which is the test of whether a comparison is built as a
+   comparison or as two hard-coded halves. */
+const LAYOUTS = D.layouts.map((l, i) => {
+  const src = i === 0 ? D.asFound : D.asBuilt
+  const seats = i === 0 ? FOUND : BUILT
+  return {
+    ...l,
+    speakers: src.speakers,
+    seats,
+    spread: spreadOf(seats),
+    verdict: fill(D.spreadNote[l.key], { b: worstOf(seats).toFixed(1) }),
+  }
+})
+
 const SCALE_NOTE = fill(D.planScale, {
   w: D.room.w.toFixed(2),
   d: D.room.d.toFixed(2),
   s: D.screenWidth.toFixed(2),
 })
 
-/* Which row a chair is in, and the chairs in each row.
-
-   Derived from the JAAZ layout rather than written down twice:
-   its two rows are the only two distinct depths in `asBuilt`. The
-   conventional layout splits three and four the same way, so one
-   grouping serves both — and if a future layout did not, this is
-   the line that would have to say so, rather than a hand-typed
-   list quietly disagreeing with the drawing. */
+/* Which row a chair is in. Derived from the JAAZ layout rather
+   than written down twice: its two rows are the only two distinct
+   depths in `asBuilt`, and the conventional layout splits three
+   and four the same way, so one grouping serves both. */
 const DEPTHS = [...new Set(BUILT.map((s) => s.y))].sort((a, b) => a - b)
 const ROW = BUILT.map((s) => DEPTHS.indexOf(s.y))
-const ROWS = DEPTHS.map((_, r) => BUILT.map((_, i) => i).filter((i) => ROW[i] === r))
 
 /* A signed decibel, tabular. Exactly zero prints as a plus-minus
    rather than a bare 0.0 — it is a tolerance, not a nothing. */
@@ -174,12 +167,14 @@ const figureInk = (db) => `rgba(0, 0, 0, ${(0.58 + 0.34 * density(db)).toFixed(3
 
 const inWindow = (deg) => deg >= D.viewWindow[0] && deg <= D.viewWindow[1]
 
-/* ---------- The drawing's coordinate system ----------
+/* ---------- The drawings' coordinate system ----------
    The viewBox IS the room's own plan in metres, origin at the
-   centre of the screen wall, +y running back into the room. The
-   margins are the only invented numbers here: a little air in
-   front of the screen wall for the screen itself, a little behind
-   the back wall so the sheet does not clip the room. */
+   centre of the screen wall, +y running back into the room. Both
+   drawings use it unchanged, which is what makes them comparable:
+   a chair two metres further back is two metres further back on
+   the page, in both. The margins are the only invented numbers —
+   a little air in front of the screen wall for the screen itself,
+   a little behind the back wall so the sheet does not clip it. */
 const VB = { x: -3.5, y: -0.34, w: 7, h: 9.02 }
 const FLOOR = { x: -D.room.w / 2, y: 0, width: D.room.w, height: D.room.d }
 
@@ -189,16 +184,13 @@ const FLOOR = { x: -D.room.w / 2, y: 0, width: D.room.w, height: D.room.d }
 const PAD = { w: 1.04, h: 0.68, r: 0.15 }
 const SPK = { w: 0.38, h: 0.26, r: 0.07 }
 
-/* Which chair a point in the plan belongs to. A true plan is a
-   map, so plain nearest-mark is the right test — unlike over the
-   photograph, where the chairs ran diagonally through the middle
-   third of the frame and the vertical term had to be squashed
-   before a tap meant anything. */
-const nearest = (pos, x, y) => {
+/* Which chair a point in a plan belongs to. A true plan is a map,
+   so plain nearest-mark is the right test here. */
+const nearest = (seats, x, y) => {
   let best = 0
   let bestD = Infinity
   for (let i = 0; i < SEATS; i += 1) {
-    const d = (pos[i].x - x) ** 2 + (pos[i].y - y) ** 2
+    const d = (seats[i].x - x) ** 2 + (seats[i].y - y) ** 2
     if (d < bestD) {
       bestD = d
       best = i
@@ -211,592 +203,564 @@ const nearest = (pos, x, y) => {
    set at display size inline; `{window}` is prose. Keeping the
    copy whole in `data/site.js` rather than as four fragments is
    the difference between a sentence someone can edit and a
-   template only this file understands. */
+   template only this file understands — and it is the same
+   sentence in both columns, which is the point.
+
+   Rendered straight from React rather than written into the DOM
+   by hand: with the switch gone there is no sixty-frames-a-second
+   interpolation to keep out of the reconciler, and a re-render on
+   a click is exactly what React is for. */
 const FIGURES = { '{ms}': 'ms', '{db}': 'db', '{view}': 'view' }
 const SENTENCE = D.seatSentence.split(/(\{\w+\})/)
 
-/* The chair the section opens on: middle of the front row, which
-   is the seat anyone imagines themselves in. Its conventional-
-   layout figures are printed as the markup's own children so the
-   sentence is whole in the HTML and never flashes an empty line
-   while the first effect runs. React leaves them alone after
-   that: the JSX children never change, so reconciliation never
-   overwrites what `apply` has written into the same nodes. */
-const OPENS_ON = 1
-const FIRST = {
-  ms: FOUND[OPENS_ON].ms.toFixed(1),
-  db: fmtDb(FOUND[OPENS_ON].db),
-  view: FOUND[OPENS_ON].view.toFixed(0),
-  window: inWindow(FOUND[OPENS_ON].view) ? D.viewIn : D.viewOut,
+function Reading({ seat }) {
+  const v = { ms: seat.ms.toFixed(1), db: fmtDb(seat.db), view: seat.view.toFixed(0) }
+  return SENTENCE.map((part, i) => {
+    if (part === '{window}') {
+      return <span key={`w${i}`}>{inWindow(seat.view) ? D.viewIn : D.viewOut}</span>
+    }
+    const key = FIGURES[part]
+    if (key) {
+      return (
+        <span key={`f${i}`} className="cal-figure">
+          {v[key]}
+        </span>
+      )
+    }
+    return <span key={`t${i}`}>{part}</span>
+  })
+}
+
+/* ---------- One room, drawn ----------
+   Nothing here is a hairline. The room is an impression pressed
+   into the sheet, the screen is a solid bar with the light it
+   throws falling back down it, and a chair is a shape with a
+   weight — never an outline with a number on a leader line.
+
+   `uid` namespaces the gradients. SVG `<defs>` ids are global to
+   the document, so two plans sharing one id would silently make
+   the second drawing paint with the first one's fills. */
+function RoomPlan({
+  uid,
+  seats,
+  speakers,
+  active,
+  boxRef,
+  onPointerMove,
+  onPointerDown,
+  onPointerLeave,
+  setSeatRef,
+  setPadRef,
+  setRestRef,
+  setSpkRef,
+}) {
+  return (
+    <div
+      data-plan
+      ref={boxRef}
+      onPointerMove={onPointerMove}
+      onPointerDown={onPointerDown}
+      onPointerLeave={onPointerLeave}
+      className="relative w-full cursor-pointer touch-manipulation select-none"
+      style={{ aspectRatio: `${VB.w} / ${VB.h}` }}
+    >
+      <svg
+        viewBox={`${VB.x} ${VB.y} ${VB.w} ${VB.h}`}
+        className="absolute inset-0 h-full w-full"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <defs>
+          <linearGradient id={`${uid}-floor`} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="rgb(24,24,28)" stopOpacity="0.075" />
+            <stop offset="100%" stopColor="rgb(24,24,28)" stopOpacity="0.022" />
+          </linearGradient>
+          <radialGradient id={`${uid}-throw`} cx="0.5" cy="0" r="0.86">
+            <stop offset="0%" stopColor="#c9ad7c" stopOpacity="0.36" />
+            <stop offset="52%" stopColor="#c9ad7c" stopOpacity="0.12" />
+            <stop offset="100%" stopColor="#c9ad7c" stopOpacity="0" />
+          </radialGradient>
+          <radialGradient id={`${uid}-pool`} cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0%" stopColor="#c9ad7c" stopOpacity="0.55" />
+            <stop offset="55%" stopColor="#c9ad7c" stopOpacity="0.2" />
+            <stop offset="100%" stopColor="#c9ad7c" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+
+        <rect {...FLOOR} fill={`url(#${uid}-floor)`} />
+        <rect {...FLOOR} fill={`url(#${uid}-throw)`} />
+
+        <rect
+          x={-D.screenWidth / 2}
+          y={-0.19}
+          width={D.screenWidth}
+          height={0.17}
+          rx={0.05}
+          fill="#141418"
+        />
+
+        {/* The three front channels. They move between the layouts
+            too — a drawing that claimed only the chairs had changed
+            would be showing less than was measured. */}
+        {speakers.map((sp, i) => (
+          <g
+            key={sp.id}
+            ref={setSpkRef ? (el) => setSpkRef(i, el) : undefined}
+            style={{ transform: `translate(${sp.x}px, ${sp.y}px)` }}
+          >
+            <rect
+              x={-SPK.w / 2}
+              y={-SPK.h / 2}
+              width={SPK.w}
+              height={SPK.h}
+              rx={SPK.r}
+              fill="rgba(19,19,22,0.82)"
+            />
+          </g>
+        ))}
+
+        {seats.map((s, i) => (
+          <g
+            key={s.n}
+            ref={setSeatRef ? (el) => setSeatRef(i, el) : undefined}
+            style={{ transform: `translate(${s.x}px, ${s.y}px)` }}
+          >
+            <ellipse
+              className="cal-seat-pool"
+              cx={0}
+              cy={0.06}
+              rx={1.18}
+              ry={0.94}
+              fill={`url(#${uid}-pool)`}
+              opacity={i === active ? 1 : 0}
+            />
+            <rect
+              ref={setPadRef ? (el) => setPadRef(i, el) : undefined}
+              x={-PAD.w / 2}
+              y={-PAD.h / 2}
+              width={PAD.w}
+              height={PAD.h}
+              rx={PAD.r}
+              fill={padInk(s.db)}
+            />
+            <rect
+              ref={setRestRef ? (el) => setRestRef(i, el) : undefined}
+              x={-PAD.w / 2}
+              y={PAD.h / 2 - 0.03}
+              width={PAD.w}
+              height={0.2}
+              rx={0.09}
+              fill={padInk(s.db)}
+            />
+            {/* The chair being read is the one the room's own light
+                is on. Opacity is the only thing selection changes,
+                which is what lets it be a transition rather than
+                another value a tween has to write. */}
+            <rect
+              className="cal-seat-warm"
+              x={-PAD.w / 2}
+              y={-PAD.h / 2}
+              width={PAD.w}
+              height={PAD.h + 0.17}
+              rx={PAD.r}
+              fill="#c9ad7c"
+              opacity={i === active ? 1 : 0}
+            />
+          </g>
+        ))}
+      </svg>
+    </div>
+  )
 }
 
 export default function Calibration() {
-  const [reduced] = useState(() => prefersReducedMotion())
-  const [layout, setLayout] = useState(D.layouts[0].key)
-  const [seat, setSeat] = useState(OPENS_ON)
+  const [seat, setSeat] = useState(1)
   const [hover, setHover] = useState(null)
 
   /* What is being read right now: a hover is a preview and never
      outlives the pointer, a click or a focus commits. */
   const active = hover ?? seat
-  const activeSeat = BUILT[active]
-  const layoutIdx = D.layouts.findIndex((l) => l.key === layout)
 
-  const planRef = useRef(null)
-  const seatRefs = useRef([])
-  const padRefs = useRef([])
-  const restRefs = useRef([])
-  const spkRefs = useRef([])
-  const valRefs = useRef([])
-  const figRefs = useRef({})
-  const spreadRef = useRef(null)
-  const spreadNoteRef = useRef(null)
+  const planBoxes = useRef([])
 
-  /* 0 = the conventional layout, 1 = ours. Everything drawn and
-     everything printed is a pure function of this and `active`. */
-  const blend = useRef(0)
+  /* Only the JAAZ drawing is written to. The conventional one is
+     already showing the arrangement everything resolves FROM, so
+     it never moves. */
+  const jaazSeats = useRef([])
+  const jaazPads = useRef([])
+  const jaazRests = useRef([])
+  const jaazSpk = useRef([])
+  const jaazSpread = useRef(null)
 
-  /* Where the seven chairs are RIGHT NOW, in plan metres. Kept as
-     a ref rather than recomputed on every pointer move so that
-     hit-testing mid-cross hits the chair the visitor can see, not
-     the one the layout is on its way to. */
-  const live = useRef(D.asFound.seats.map((s) => ({ x: s.x, y: s.y })))
-
-  const readAt = useCallback((i) => {
-    const t = blend.current
-    return {
-      db: lerp(FOUND[i].db, BUILT[i].db, t),
-      ms: lerp(FOUND[i].ms, BUILT[i].ms, t),
-      view: lerp(FOUND[i].view, BUILT[i].view, t),
-    }
-  }, [])
-
-  const apply = useCallback(() => {
-    const t = blend.current
-
-    for (let i = 0; i < SEATS; i += 1) {
-      const x = lerp(FOUND[i].x, BUILT[i].x, t)
-      const y = lerp(FOUND[i].y, BUILT[i].y, t)
-      live.current[i].x = x
-      live.current[i].y = y
-
-      const g = seatRefs.current[i]
-      if (g) g.style.transform = `translate(${x}px, ${y}px)`
-
-      const { db } = readAt(i)
-      const ink = padInk(db)
-      if (padRefs.current[i]) padRefs.current[i].setAttribute('fill', ink)
-      if (restRefs.current[i]) restRefs.current[i].setAttribute('fill', ink)
-
-      const val = valRefs.current[i]
-      if (val) {
-        val.textContent = fmtDb(db)
-        val.style.color = i === active ? 'var(--color-ink)' : figureInk(db)
-      }
-    }
-
-    for (let i = 0; i < spkRefs.current.length; i += 1) {
-      const g = spkRefs.current[i]
-      if (!g) continue
-      const a = D.asFound.speakers[i]
-      const b = D.asBuilt.speakers[i]
-      g.style.transform = `translate(${lerp(a.x, b.x, t)}px, ${lerp(a.y, b.y, t)}px)`
-    }
-
-    const v = readAt(active)
-    const f = figRefs.current
-    if (f.ms) f.ms.textContent = v.ms.toFixed(1)
-    if (f.db) f.db.textContent = fmtDb(v.db)
-    if (f.view) f.view.textContent = v.view.toFixed(0)
-    if (f.window) f.window.textContent = inWindow(v.view) ? D.viewIn : D.viewOut
-
-    const spread = lerp(SPREAD.found, SPREAD.built, t)
-    if (spreadRef.current) spreadRef.current.textContent = spread.toFixed(1)
-    if (spreadNoteRef.current) {
-      spreadNoteRef.current.textContent = t >= 0.5 ? SPREAD_NOTE.built : SPREAD_NOTE.found
-    }
-  }, [active, readAt])
-
-  /* `apply` changes identity with the chair being read, so the
-     crossing tween reads it through a ref: restarting a one-second
-     interpolation every time the pointer moves to the next chair
-     would stall the cross halfway and leave the room drawn in a
-     layout that is no longer selected. */
-  const applyRef = useRef(apply)
-  useEffect(() => {
-    applyRef.current = apply
-    apply()
-  }, [apply])
-
-  /* THE ONE AUTHORED MOMENT. Seven chairs, three speakers, seven
-     readings, three figures in a sentence and the verdict all
-     cross together, eased in and out so the room reads as SETTLING
-     rather than as a spreadsheet recalculating. */
-  useEffect(() => {
-    const to = layout === 'built' ? 1 : 0
-    if (reduced) {
-      blend.current = to
-      applyRef.current()
-      return undefined
-    }
-    const proxy = { v: blend.current }
-    const tween = gsap.to(proxy, {
-      v: to,
-      duration: 1.05,
-      ease: 'power3.inOut',
-      onUpdate: () => {
-        blend.current = proxy.v
-        applyRef.current()
-      },
-    })
-    return () => tween.kill()
-  }, [layout, reduced])
-
-  /* ---------- Pointing at the room ----------
-     The whole plan is the target, not seven small pads. A mouse
+  /* ---------- Pointing at a room ----------
+     The whole drawing is the target, not seven small pads. A mouse
      previews on move and commits on press; a finger only ever
      commits, because a touch "hover" is a tap that has not
-     finished and previewing it makes the reading flicker under
-     the thumb. */
-  const seatFromEvent = useCallback((e) => {
-    const box = planRef.current
+     finished and previewing it makes the reading flicker under the
+     thumb. */
+  const seatFromEvent = useCallback((e, which) => {
+    const box = planBoxes.current[which]
     if (!box) return 0
     const r = box.getBoundingClientRect()
     return nearest(
-      live.current,
+      LAYOUTS[which].seats,
       VB.x + ((e.clientX - r.left) / r.width) * VB.w,
       VB.y + ((e.clientY - r.top) / r.height) * VB.h,
     )
   }, [])
 
-  const onMove = useCallback(
-    (e) => {
-      if (e.pointerType !== 'mouse') return
-      setHover(seatFromEvent(e))
-    },
-    [seatFromEvent],
-  )
-
-  const onDown = useCallback(
-    (e) => {
-      setSeat(seatFromEvent(e))
-      setHover(null)
-    },
-    [seatFromEvent],
-  )
-
   const onLeave = useCallback(() => setHover(null), [])
 
-  /* Left and right walk the room. Seven tab stops is already more
-     than a keyboard user should have to spend on one figure, and
-     arrowing between chairs is what the list looks like it does. */
+  /* Up and down walk the room, because the list they walk is
+     vertical. ONE tab stop, not seven: the chair being read is the
+     only tabbable row and the arrows move between them, which is
+     the pattern a radio group already uses and the one a keyboard
+     visitor expects from a list of alternatives. */
   const onKey = useCallback((e) => {
-    const step = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0
+    const step =
+      e.key === 'ArrowDown' || e.key === 'ArrowRight'
+        ? 1
+        : e.key === 'ArrowUp' || e.key === 'ArrowLeft'
+          ? -1
+          : 0
     if (!step) return
     e.preventDefault()
-    const i = Number(e.currentTarget.dataset.seat)
-    const next = (i + step + SEATS) % SEATS
+    const next = (Number(e.currentTarget.dataset.seat) + step + SEATS) % SEATS
     setSeat(next)
-    valRefs.current[next]?.closest('button')?.focus()
+    e.currentTarget.parentElement?.querySelector(`[data-seat="${next}"]`)?.focus()
   }, [])
 
-  /* Each block is triggered by ITSELF. One `revealBlock` over every
-     [data-rise] in the section would hand all of them the first one
-     as their trigger, and the closing statement would have played
-     out two screens before anyone reached it. */
   const root = useGsapScope((scope) => {
-    revealBlock(scope.querySelector('[data-panel]'), { start: 'top 92%', y: 40 })
-    revealLines(scope.querySelector('[data-title]'), { start: 'top 86%' })
+    revealLines(scope.querySelector('[data-title]'), { start: 'top 84%' })
     revealLines(scope.querySelector('[data-close]'), { start: 'top 84%' })
-    revealBlock(scope.querySelector('[data-rise="lead"]'), { start: 'top 86%', y: 20 })
+    revealBlock(scope.querySelector('[data-rise="lead"]'), { start: 'top 84%', y: 20 })
+    revealBlock(scope.querySelectorAll('[data-rise="room"]'), {
+      start: 'top 88%',
+      y: 34,
+      stagger: 0.12,
+      trigger: scope.querySelector('[data-rooms]'),
+    })
+    revealBlock(scope.querySelector('[data-rise="list"]'), { start: 'top 88%', y: 24 })
+    revealBlock(scope.querySelector('[data-rise="read"]'), { start: 'top 88%', y: 24 })
     revealBlock(scope.querySelector('[data-rise="close"]'), { start: 'top 84%', y: 20 })
 
-    /* The room is DRAWN, once, from the screen wall backwards —
-       the order a plan is actually read in. It is the only
-       entrance in the section that is not the site's standard
-       rise, because the thing arriving is not a block of type.
-       GSAP writes the INNER group of each chair; `apply` writes
-       the outer one, so the two never touch the same transform. */
+    /* THE CORRECTION. The JAAZ room resolves out of the
+       conventional arrangement, once, on arrival: chairs travel,
+       speakers pull in, ink comes up, verdict counts down. The
+       markup already holds the finished state, so this drives it
+       back to `t = 0` and then runs forward — which is why there
+       is nothing to undo when JavaScript never arrives. */
     if (prefersReducedMotion()) return
-    const inner = (g) => g?.firstChild
-    const marks = [
-      ...spkRefs.current.filter(Boolean).map(inner),
-      ...seatRefs.current.filter(Boolean).map(inner),
-    ].filter(Boolean)
-    gsap.from(marks, {
-      opacity: 0,
-      scale: 0.7,
-      transformOrigin: 'center',
-      duration: 0.85,
-      stagger: 0.055,
-      ease: 'jaz',
-      scrollTrigger: { trigger: scope.querySelector('[data-plan]'), start: 'top 84%', once: true },
+    const write = (t) => {
+      for (let i = 0; i < SEATS; i += 1) {
+        const g = jaazSeats.current[i]
+        if (g) {
+          const x = lerp(FOUND[i].x, BUILT[i].x, t)
+          const y = lerp(FOUND[i].y, BUILT[i].y, t)
+          g.style.transform = `translate(${x}px, ${y}px)`
+        }
+        const ink = padInk(lerp(FOUND[i].db, BUILT[i].db, t))
+        jaazPads.current[i]?.setAttribute('fill', ink)
+        jaazRests.current[i]?.setAttribute('fill', ink)
+      }
+      for (let i = 0; i < jaazSpk.current.length; i += 1) {
+        const g = jaazSpk.current[i]
+        if (!g) continue
+        const a = D.asFound.speakers[i]
+        const b = D.asBuilt.speakers[i]
+        g.style.transform = `translate(${lerp(a.x, b.x, t)}px, ${lerp(a.y, b.y, t)}px)`
+      }
+      if (jaazSpread.current) {
+        jaazSpread.current.textContent = lerp(LAYOUTS[0].spread, LAYOUTS[1].spread, t).toFixed(1)
+      }
+    }
+    write(0)
+    const proxy = { t: 0 }
+    gsap.to(proxy, {
+      t: 1,
+      duration: 1.4,
+      delay: 0.3,
+      ease: 'power3.inOut',
+      onUpdate: () => write(proxy.t),
+      scrollTrigger: { trigger: scope.querySelector('[data-rooms]'), start: 'top 74%', once: true },
     })
   }, [])
 
-  const sentence = useMemo(
-    () =>
-      SENTENCE.map((part, i) => {
-        if (part === '{window}') {
-          return (
-            <span
-              key={`w${i}`}
-              ref={(el) => {
-                figRefs.current.window = el
-              }}
-            >
-              {FIRST.window}
-            </span>
-          )
-        }
-        const key = FIGURES[part]
-        if (key) {
-          return (
-            <span
-              key={`f${i}`}
-              className="cal-figure"
-              ref={(el) => {
-                figRefs.current[key] = el
-              }}
-            >
-              {FIRST[key]}
-            </span>
-          )
-        }
-        return <span key={`t${i}`}>{part}</span>
-      }),
-    [],
-  )
+  /* The rule between the two columns, and the gutter it sits in.
+
+     The gutter is PADDING ON BOTH COLUMNS rather than a grid gap,
+     and that is not a style preference. With `gap-x` plus padding
+     on the second column only, the two tracks are equal but the
+     two CONTENT boxes are not — the right-hand drawing came out
+     17px narrower than the left one at 390px, which in a
+     comparison of two scaled plans is not a cosmetic difference,
+     it is a false one. Equal padding either side of the rule
+     keeps both rooms drawn at exactly the same scale.
+
+     The rule runs at every width for the drawings, and only from
+     `lg` for the two sentences — see the note on the pair. */
+  const roomRule = (li) =>
+    li === 0
+      ? 'pr-4 sm:pr-7 lg:pr-12 xl:pr-20'
+      : 'border-l border-[var(--rule)] pl-4 sm:pl-7 lg:pl-12 xl:pl-20'
+  const readRule = (li) =>
+    li === 0
+      ? 'lg:pr-12 xl:pr-20'
+      : 'lg:border-l lg:border-[var(--rule)] lg:pl-12 xl:pl-20'
 
   return (
     <section
       ref={root}
       id={D.id}
       aria-label={D.titleTurn.join(' ')}
-      className="relative bg-ink py-20 sm:py-28 lg:py-32"
+      className="cal-sheet on-paper py-24 text-ink sm:py-32 lg:py-40"
     >
-      {/* The bounce. A sheet this size on a black page throws light
-          back onto it, and the section reads as lit rather than as
-          pasted on once it does. */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-[10%] bottom-[10%]"
-        style={{
-          background:
-            'radial-gradient(54% 50% at 50% 50%, rgba(201,173,124,0.11) 0%, rgba(201,173,124,0.032) 46%, rgba(0,0,0,0) 76%)',
-        }}
-      />
+      <div className="shell-wide">
+        {/* ---------- The masthead ----------
+            A report says what it is and what it measured before it
+            says anything else. */}
+        <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2 border-b border-[var(--rule)] pb-5">
+          <span className="t-label flex items-center gap-3 text-ink/60">
+            {D.chapter}
+            <span className="block h-px w-8 bg-ink/25" aria-hidden="true" />
+            {D.label}
+          </span>
+          <span className="text-[0.8125rem] tabular-nums text-ink/60">{SCALE_NOTE}</span>
+        </div>
 
-      <div className="shell-wide relative">
+        <div className="mt-10 grid gap-7 sm:mt-14 lg:grid-cols-[1.22fr_1fr] lg:items-end lg:gap-20">
+          <h2 data-title className="t-chapter text-balance">
+            <span className="block text-ink/50">{D.title.join(' ')}</span>
+            <span className="block text-ink">{D.titleTurn.join(' ')}</span>
+          </h2>
+          <p data-rise="lead" className="t-sub max-w-[46ch] text-ink/70 lg:pb-2">
+            {D.lead}
+          </p>
+        </div>
+
+        {/* ---------- The two rooms ----------
+            No switch, no tabs, no before-and-after handle. Both
+            drawings are simply on the page, at the same scale, with
+            their verdicts under them — so the comparison costs the
+            visitor nothing at all.
+
+            THE PAIR NEVER STACKS. `grid-cols-2` carries no
+            breakpoint, because a phone that puts one room above the
+            other has not made the layout responsive, it has deleted
+            the design: a comparison you have to scroll between is a
+            comparison you have to remember. Everything inside the
+            column steps down instead — the name, the note, the
+            verdict — so that at 390px the two drawings are 160px
+            wide and still say the only thing they have to say, that
+            one room is scattered and pale and the other is tight
+            and solid. The two SENTENCES do stack, because a
+            sentence at 160px is not a sentence.
+
+            The columns are equal in weight because the reader is
+            being asked to judge, not to be steered: the JAAZ room
+            wins on the figures printed under it, or it does not
+            win. */}
         <div
-          data-panel
-          className="cal-paper on-paper px-[clamp(1.35rem,3.6vw,4.5rem)] py-[clamp(2.25rem,4vw,4.25rem)] text-ink"
+          data-rooms
+          className="mt-14 grid grid-cols-2 sm:mt-20"
         >
-          {/* ---------- The masthead ----------
-              A report says what it is and what it measured before
-              it says anything else. */}
-          <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2 border-b border-[var(--rule)] pb-5">
-            <span className="t-label flex items-center gap-3 text-ink/60">
-              {D.chapter}
-              <span className="block h-px w-8 bg-ink/25" aria-hidden="true" />
-              {D.label}
-            </span>
-            <span className="text-[0.8125rem] tabular-nums text-ink/60">{SCALE_NOTE}</span>
-          </div>
-
-          <div className="mt-9 grid gap-7 sm:mt-12 lg:grid-cols-[1.22fr_1fr] lg:items-end lg:gap-20">
-            <h2 data-title className="t-chapter text-balance">
-              <span className="block text-ink/50">{D.title.join(' ')}</span>
-              <span className="block text-ink">{D.titleTurn.join(' ')}</span>
-            </h2>
-            <p data-rise="lead" className="t-sub max-w-[44ch] text-ink/70 lg:pb-2">
-              {D.lead}
-            </p>
-          </div>
-
-          {/* ---------- The evidence ----------
-              Left: the control, and the room it moves. Right: the
-              chair being read, then all seven, then the verdict.
-              That is the order the argument is made in. */}
-          <div className="mt-12 grid gap-x-16 gap-y-14 sm:mt-16 lg:mt-20 lg:grid-cols-[minmax(16rem,0.6fr)_minmax(0,1fr)] xl:gap-x-24">
-            <div>
-              {/* THE SWITCH IS TWO WORDS. A segmented pill is the
-                  right control in a settings panel and the wrong
-                  one on a page set in Instrument Serif: it arrives
-                  with its own visual language and wins. Two names,
-                  the live one in full ink over a warm rule that
-                  slides between them, is the same control in this
-                  page's voice. */}
-              <div className="flex flex-wrap items-baseline gap-x-8 gap-y-3">
-                {D.layouts.map((l, i) => (
-                  <button
-                    key={l.key}
-                    type="button"
-                    aria-pressed={i === layoutIdx}
-                    onClick={() => setLayout(l.key)}
-                    className={`relative cursor-pointer pb-2.5 text-[0.9375rem] transition-colors duration-300 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-ink sm:text-base ${
-                      i === layoutIdx ? 'text-ink' : 'text-ink/55 hover:text-ink/85'
-                    }`}
-                  >
-                    {l.name}
-                    <span
-                      aria-hidden="true"
-                      className={`absolute inset-x-0 bottom-0 h-[2px] origin-left bg-cove transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ${
-                        i === layoutIdx ? 'scale-x-100' : 'scale-x-0'
-                      }`}
-                    />
-                  </button>
-                ))}
-              </div>
-              <p className="mt-5 max-w-[34ch] text-[0.9375rem] leading-relaxed text-ink/70">
-                {D.layouts[layoutIdx].note}
+          {LAYOUTS.map((l, li) => (
+            <div key={l.key} data-rise="room" className={roomRule(li)}>
+              <h3 className="font-display text-[1.0625rem] leading-[1.1] text-ink sm:text-[1.45rem] lg:text-[clamp(1.5rem,2.2vw,2.1rem)] lg:leading-none">
+                {l.name}
+              </h3>
+              {/* Two lines' worth of room whether the sentence
+                  needs them or not. Without it the shorter note
+                  pulls its drawing 24px higher than the one beside
+                  it, and two plans that do not share a baseline
+                  stop being a comparison. */}
+              <p className="mt-2.5 max-w-[34ch] text-[0.8125rem] leading-relaxed text-ink/70 sm:text-[0.9375rem] lg:min-h-[3.05rem]">
+                {l.note}
               </p>
 
-              {/* ---------- The plan ----------
-                  Nothing here is a hairline. The room is an
-                  impression pressed into the sheet, the screen is a
-                  solid bar with the light it throws falling back
-                  down the room, and a chair is a shape with a
-                  weight — never an outline with a number on a
-                  leader line. */}
-              <p className="mt-11 text-[0.8125rem] text-ink/60">{D.planScreen}</p>
-              <div
-                data-plan
-                ref={planRef}
-                onPointerMove={onMove}
-                onPointerDown={onDown}
-                onPointerLeave={onLeave}
-                className="relative mt-3 w-full max-w-[23rem] cursor-pointer touch-manipulation select-none lg:max-w-none"
-                style={{ aspectRatio: `${VB.w} / ${VB.h}` }}
-              >
-                <svg
-                  viewBox={`${VB.x} ${VB.y} ${VB.w} ${VB.h}`}
-                  className="absolute inset-0 h-full w-full"
-                  aria-hidden="true"
-                  focusable="false"
-                >
-                  <defs>
-                    <linearGradient id="cal-floor" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="rgb(24,24,28)" stopOpacity="0.075" />
-                      <stop offset="100%" stopColor="rgb(24,24,28)" stopOpacity="0.022" />
-                    </linearGradient>
-                    <radialGradient id="cal-throw" cx="0.5" cy="0" r="0.86">
-                      <stop offset="0%" stopColor="#c9ad7c" stopOpacity="0.36" />
-                      <stop offset="52%" stopColor="#c9ad7c" stopOpacity="0.12" />
-                      <stop offset="100%" stopColor="#c9ad7c" stopOpacity="0" />
-                    </radialGradient>
-                    <radialGradient id="cal-pool" cx="0.5" cy="0.5" r="0.5">
-                      <stop offset="0%" stopColor="#c9ad7c" stopOpacity="0.55" />
-                      <stop offset="55%" stopColor="#c9ad7c" stopOpacity="0.2" />
-                      <stop offset="100%" stopColor="#c9ad7c" stopOpacity="0" />
-                    </radialGradient>
-                  </defs>
-
-                  {/* The room, as an impression in the stock, and
-                      the light off the screen falling into it. */}
-                  <rect {...FLOOR} fill="url(#cal-floor)" />
-                  <rect {...FLOOR} fill="url(#cal-throw)" />
-
-                  <rect
-                    x={-D.screenWidth / 2}
-                    y={-0.19}
-                    width={D.screenWidth}
-                    height={0.17}
-                    rx={0.05}
-                    fill="#141418"
-                  />
-
-                  {/* The three front channels. They move too — the
-                      JAAZ layout pulls them in, and a drawing that
-                      claimed only the chairs had changed would be
-                      showing less than was measured. */}
-                  {D.asFound.speakers.map((sp, i) => (
-                    <g
-                      key={sp.id}
-                      ref={(el) => {
-                        spkRefs.current[i] = el
-                      }}
-                      style={{ transform: `translate(${sp.x}px, ${sp.y}px)` }}
-                    >
-                      <g>
-                        <rect
-                          x={-SPK.w / 2}
-                          y={-SPK.h / 2}
-                          width={SPK.w}
-                          height={SPK.h}
-                          rx={SPK.r}
-                          fill="rgba(19,19,22,0.82)"
-                        />
-                      </g>
-                    </g>
-                  ))}
-
-                  {/* The chairs. The outer group is POSITION and is
-                      written every frame by `apply`; the inner one
-                      is the entrance, so GSAP and the blend tween
-                      never write the same transform. */}
-                  {BUILT.map((s, i) => (
-                    <g
-                      key={s.n}
-                      ref={(el) => {
-                        seatRefs.current[i] = el
-                      }}
-                      style={{ transform: `translate(${FOUND[i].x}px, ${FOUND[i].y}px)` }}
-                    >
-                      <g>
-                        <ellipse
-                          className="cal-seat-pool"
-                          cx={0}
-                          cy={0.06}
-                          rx={1.18}
-                          ry={0.94}
-                          fill="url(#cal-pool)"
-                          opacity={i === active ? 1 : 0}
-                        />
-                        <rect
-                          ref={(el) => {
-                            padRefs.current[i] = el
-                          }}
-                          x={-PAD.w / 2}
-                          y={-PAD.h / 2}
-                          width={PAD.w}
-                          height={PAD.h}
-                          rx={PAD.r}
-                          fill={padInk(FOUND[i].db)}
-                        />
-                        <rect
-                          ref={(el) => {
-                            restRefs.current[i] = el
-                          }}
-                          x={-PAD.w / 2}
-                          y={PAD.h / 2 - 0.03}
-                          width={PAD.w}
-                          height={0.2}
-                          rx={0.09}
-                          fill={padInk(FOUND[i].db)}
-                        />
-                        {/* The chair being read is the one the
-                            room's own light is on. Opacity is the
-                            only thing selection changes, which is
-                            what lets it be a transition rather than
-                            another value the tween has to write. */}
-                        <rect
-                          className="cal-seat-warm"
-                          x={-PAD.w / 2}
-                          y={-PAD.h / 2}
-                          width={PAD.w}
-                          height={PAD.h + 0.17}
-                          rx={PAD.r}
-                          fill="#c9ad7c"
-                          opacity={i === active ? 1 : 0}
-                        />
-                      </g>
-                    </g>
-                  ))}
-                </svg>
+              <div className="mt-5 w-full max-w-[24rem] sm:mt-8 lg:mt-10">
+                <RoomPlan
+                  uid={`cal-${l.key}`}
+                  seats={l.seats}
+                  speakers={l.speakers}
+                  active={active}
+                  boxRef={(el) => {
+                    planBoxes.current[li] = el
+                  }}
+                  onPointerMove={(e) => {
+                    if (e.pointerType === 'mouse') setHover(seatFromEvent(e, li))
+                  }}
+                  onPointerDown={(e) => {
+                    setSeat(seatFromEvent(e, li))
+                    setHover(null)
+                  }}
+                  onPointerLeave={onLeave}
+                  setSeatRef={
+                    li === 1
+                      ? (i, el) => {
+                          jaazSeats.current[i] = el
+                        }
+                      : undefined
+                  }
+                  setPadRef={
+                    li === 1
+                      ? (i, el) => {
+                          jaazPads.current[i] = el
+                        }
+                      : undefined
+                  }
+                  setRestRef={
+                    li === 1
+                      ? (i, el) => {
+                          jaazRests.current[i] = el
+                        }
+                      : undefined
+                  }
+                  setSpkRef={
+                    li === 1
+                      ? (i, el) => {
+                          jaazSpk.current[i] = el
+                        }
+                      : undefined
+                  }
+                />
               </div>
 
-              <p className="mt-6 max-w-[36ch] text-[0.8125rem] leading-relaxed text-ink/65">
-                {D.planNote}
+              {/* The verdict on this room. It is the only figure
+                  that settles the argument, so it is the biggest
+                  thing in the column, and the two of them sit on
+                  the same baseline across the pair. */}
+              <p className="mt-6 text-[0.75rem] text-ink/60 sm:mt-9 sm:text-[0.8125rem]">
+                {D.spreadLabel}
+              </p>
+              <p className="mt-1.5 font-display text-[clamp(2.75rem,11vw,6rem)] leading-[0.84] tabular-nums text-ink sm:mt-2">
+                <span ref={li === 1 ? jaazSpread : undefined}>{l.spread.toFixed(1)}</span>
+                <span className="ml-2 align-baseline text-[0.22em] text-ink/60 sm:ml-3">dB</span>
+              </p>
+              <p className="mt-3 max-w-[34ch] text-[0.8125rem] leading-relaxed text-ink/75 sm:mt-4 sm:text-[1rem]">
+                {l.verdict}
               </p>
             </div>
+          ))}
+        </div>
 
-            {/* ---------- The reading ---------- */}
-            <div>
-              <p className="text-[0.8125rem] text-ink/60">
-                {D.seatWord} {activeSeat.n} · {D.rows[ROW[active]]}
-              </p>
-              <p className="mt-5 max-w-[46ch] text-[1.0625rem] leading-[2.15] text-ink/80 sm:text-[1.125rem]">
-                {sentence}
-              </p>
+        <p className="mt-10 max-w-[64ch] text-[0.8125rem] leading-relaxed text-ink/65 sm:mt-12">
+          {D.planNote}
+        </p>
 
-              {/* ---------- Every chair ----------
-                  The seven real buttons. They sit where the seven
-                  figures already are, laid out in the two rows the
-                  plan is in, so the list and the drawing are one
-                  object read two ways. */}
-              <p className="mt-12 text-[0.8125rem] text-ink/60">{D.valuesLabel}</p>
-              <div className="mt-3 border-t border-[var(--rule)]">
-                {ROWS.map((row, r) => (
-                  <div
-                    key={D.rows[r]}
-                    className="flex flex-wrap items-baseline gap-x-1 gap-y-1 border-b border-[var(--rule)] py-3"
-                  >
-                    <span className="w-[4.5rem] shrink-0 text-[0.8125rem] text-ink/60 sm:w-[5.25rem]">
-                      {D.rows[r]}
-                    </span>
-                    {row.map((i) => (
-                      <button
-                        key={BUILT[i].n}
-                        type="button"
-                        data-seat={i}
-                        aria-pressed={i === seat}
-                        aria-label={`${D.seatWord} ${BUILT[i].n}, ${D.rows[r]}`}
-                        onClick={() => setSeat(i)}
-                        onFocus={() => setSeat(i)}
-                        onKeyDown={onKey}
-                        onPointerEnter={(e) => {
-                          if (e.pointerType === 'mouse') setHover(i)
-                        }}
-                        onPointerLeave={onLeave}
-                        className="relative cursor-pointer px-1.5 py-1 text-[0.9375rem] tabular-nums focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-2 focus-visible:outline-ink sm:px-3 sm:text-base"
-                      >
-                        <span
-                          ref={(el) => {
-                            valRefs.current[i] = el
-                          }}
-                          style={{
-                            color: i === active ? 'var(--color-ink)' : figureInk(FOUND[i].db),
-                          }}
-                        >
-                          {fmtDb(FOUND[i].db)}
-                        </span>
-                        <span
-                          aria-hidden="true"
-                          className={`absolute inset-x-1 bottom-0 h-[2px] origin-center bg-cove transition-transform duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ${
-                            i === active ? 'scale-x-100' : 'scale-x-0'
-                          }`}
-                        />
-                      </button>
-                    ))}
-                  </div>
-                ))}
-              </div>
-              <p className="mt-4 text-[0.8125rem] text-ink/65">{D.pick}</p>
+        {/* ---------- Every chair, twice ----------
+            The comparison list. It is the evidence and the control
+            at the same time: seven rows, each one a chair, each one
+            carrying what that chair gets in BOTH rooms, and picking
+            one lights it in both drawings above.
 
-              {/* The verdict on the whole room, which is the only
-                  figure that settles the argument. */}
-              <p className="mt-12 text-[0.8125rem] text-ink/60 sm:mt-14">{D.spreadLabel}</p>
-              <p className="mt-2 font-display text-[clamp(4rem,8vw,7.5rem)] leading-[0.82] tabular-nums text-ink">
-                <span ref={spreadRef}>{SPREAD.found.toFixed(1)}</span>
-                <span className="ml-3 align-baseline text-[0.22em] text-ink/60">dB</span>
-              </p>
-              <p
-                ref={spreadNoteRef}
-                className="mt-5 max-w-[36ch] text-[1rem] leading-relaxed text-ink/75"
-              >
-                {SPREAD_NOTE.found}
-              </p>
-            </div>
+            Rows rather than two separate lists because the question
+            a visitor actually has is "what happens to MY chair",
+            and on one line that question has one answer. */}
+        <div data-rise="list" className="mt-16 max-w-[64rem] sm:mt-24">
+          <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">
+            <p className="text-[0.8125rem] text-ink/60">{D.valuesLabel}</p>
+            <p className="text-[0.8125rem] text-ink/60">{D.pick}</p>
           </div>
 
-          {/* ---------- The close ----------
-              Inside the panel, not after it. The sheet is the
-              document, and a document ends with its own conclusion;
-              putting the resolve back on black would make the panel
-              an illustration of a point made somewhere else. */}
-          <div className="mt-16 grid gap-7 border-t border-[var(--rule)] pt-12 sm:mt-20 lg:grid-cols-[1.22fr_1fr] lg:items-end lg:gap-20 lg:pt-16">
-            <p data-close className="t-chapter text-ink">
-              {D.resolve.map((line) => (
-                <span key={line} className="block">
-                  {line}
+          <div className="mt-5 border-t border-[var(--rule)]">
+            <div
+              aria-hidden="true"
+              className="grid grid-cols-[1fr_5rem_5rem] gap-x-3 border-b border-[var(--rule)] py-2.5 text-[0.75rem] text-ink/60 sm:grid-cols-[1fr_8rem_8rem] sm:gap-x-4"
+            >
+              <span />
+              {LAYOUTS.map((l) => (
+                <span key={l.key} className="pr-2 text-right">
+                  {l.short}
                 </span>
               ))}
-            </p>
-            <p data-rise="close" className="t-sub max-w-[46ch] text-ink/70 lg:pb-2">
-              {D.resolveSub}
-            </p>
+            </div>
+            {BUILT.map((s, i) => (
+              <button
+                key={s.n}
+                type="button"
+                data-seat={i}
+                tabIndex={i === seat ? 0 : -1}
+                aria-pressed={i === seat}
+                aria-label={`${D.seatWord} ${s.n}, ${D.rows[ROW[i]]}. ${LAYOUTS[0].short} ${fmtDb(FOUND[i].db)} dB, ${LAYOUTS[1].short} ${fmtDb(BUILT[i].db)} dB.`}
+                onClick={() => setSeat(i)}
+                onFocus={() => setSeat(i)}
+                onKeyDown={onKey}
+                onPointerEnter={(e) => {
+                  if (e.pointerType === 'mouse') setHover(i)
+                }}
+                onPointerLeave={onLeave}
+                className={`grid w-full cursor-pointer grid-cols-[1fr_5rem_5rem] items-baseline gap-x-3 border-b border-[var(--rule)] py-3 text-left transition-colors duration-200 focus-visible:outline focus-visible:-outline-offset-1 focus-visible:outline-ink sm:grid-cols-[1fr_8rem_8rem] sm:gap-x-4 ${
+                  i === active ? 'bg-ink/[0.045]' : 'hover:bg-ink/[0.022]'
+                }`}
+              >
+                <span className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5 pl-2 text-[0.9375rem]">
+                  <span
+                    aria-hidden="true"
+                    className={`inline-block h-1.5 w-1.5 shrink-0 self-center rounded-full transition-colors duration-200 ${
+                      i === active ? 'bg-cove' : 'bg-transparent'
+                    }`}
+                  />
+                  <span className={i === active ? 'text-ink' : 'text-ink/75'}>
+                    {D.seatWord} {s.n}
+                  </span>
+                  <span className="text-[0.8125rem] text-ink/60">{D.rows[ROW[i]]}</span>
+                </span>
+                <span
+                  className="pr-2 text-right text-[0.9375rem] tabular-nums sm:text-base"
+                  style={{ color: figureInk(FOUND[i].db) }}
+                >
+                  {fmtDb(FOUND[i].db)}
+                </span>
+                <span
+                  className="pr-2 text-right text-[0.9375rem] tabular-nums sm:text-base"
+                  style={{ color: figureInk(BUILT[i].db) }}
+                >
+                  {fmtDb(BUILT[i].db)}
+                </span>
+              </button>
+            ))}
           </div>
+        </div>
+
+        {/* ---------- The same chair, in both rooms ----------
+            One sentence per room, and it is the SAME sentence. Only
+            the numbers inside it differ, so the two can be read
+            against each other word for word — which is a thing a
+            table of figures cannot do, and the reason this is not
+            one. */}
+        <div data-rise="read" className="mt-16 sm:mt-20">
+          <p className="text-[0.8125rem] text-ink/60">
+            {D.seatReadLabel} — {D.seatWord} {BUILT[active].n} · {D.rows[ROW[active]]}
+          </p>
+          <div className="mt-6 grid gap-y-10 lg:grid-cols-2">
+            {LAYOUTS.map((l, li) => (
+              <div key={l.key} className={readRule(li)}>
+                <p className="text-[0.8125rem] text-ink/60">{l.name}</p>
+                <p
+                  className={`mt-4 max-w-[46ch] text-[1.0625rem] leading-[2.15] sm:text-[1.125rem] ${
+                    li === 1 ? 'text-ink/85' : 'text-ink/70'
+                  }`}
+                >
+                  <Reading seat={l.seats[active]} />
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ---------- The close ---------- */}
+        <div className="mt-20 grid gap-7 border-t border-[var(--rule)] pt-14 sm:mt-28 lg:grid-cols-[1.22fr_1fr] lg:items-end lg:gap-20 lg:pt-20">
+          <p data-close className="t-chapter text-ink">
+            {D.resolve.map((line) => (
+              <span key={line} className="block">
+                {line}
+              </span>
+            ))}
+          </p>
+          <p data-rise="close" className="t-sub max-w-[46ch] text-ink/70 lg:pb-2">
+            {D.resolveSub}
+          </p>
         </div>
       </div>
     </section>

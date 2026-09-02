@@ -651,14 +651,17 @@ export const spaces = {
    actually visible — the visitor had to take the geometry on
    trust.
 
-   This build removes the photograph and draws the plan. Two
-   layouts, one control, and the room itself rearranges when the
-   control is thrown: seven chairs slide, the front three speakers
-   pull in, and every figure recounts. It is set on PAPER — one
-   light panel inset into a black page — because a measurement
-   report is a document, and a document is read on paper. That
-   tonal break is the point: the page stops being a film for the
-   length of one section and hands over the evidence.
+   The third build drew the plan and put it on paper, but it still
+   hid half the argument behind a switch: you could see one layout
+   at a time and had to hold the other in your head.
+
+   THIS BUILD HIDES NOTHING. Both rooms are drawn side by side,
+   both verdicts are on screen at once, and there is no control to
+   work out — the comparison is simply there. What is left to
+   operate is one thing only: which CHAIR you are reading, and it
+   is read in both rooms at the same time. The whole section is
+   set on paper, full bleed, which is the plainest and friendliest
+   ground the site has.
 
    COPY IS SENTENCES, NOT FIELDS. `seatSentence` and `spreadNote`
    are templates with `{placeholders}`; the component fills them
@@ -682,35 +685,40 @@ export const calibration = {
      what the section spends its length earning. */
   title: ['You may never', 'see the difference.'],
   titleTurn: ['But you will', 'always feel it.'],
-  lead: 'One microphone, seven chairs, no averages. Every seat in this room was measured — pick one and read what it actually gets.',
+  lead: 'One microphone, seven chairs, no averages. Both rooms below are the same space measured twice — pick any chair and read what each layout actually gives it.',
 
-  /* The one control, and what each side of it means in plain
-     words rather than in a legend. */
+  /* The two rooms, side by side. `name` heads each column and
+     `short` heads its figures where a column is one word wide.
+     `note` is what that layout MEANS in plain words — it replaces
+     the legend a drawing would otherwise need. */
   layouts: [
     {
       key: 'found',
       name: 'Conventional layout',
+      short: 'Conventional',
       note: 'What a room this size would normally be given.',
     },
     {
       key: 'built',
       name: 'JAAZ layout',
+      short: 'JAAZ',
       note: 'What the measurement asked for instead.',
     },
   ],
   rows: ['Front row', 'Back row'],
   seatWord: 'Seat',
-  pick: 'Move across the plan, or pick a chair below it.',
+  pick: 'Pick any chair below, or point at one in either room.',
 
-  /* The plan's own captions. `planScale` is a template — the
+  /* The drawings' own captions. `planScale` is a template — the
      component fills it from `room` and `screenWidth` below, so the
-     dimensions printed under the drawing are the dimensions the
-     drawing was built from. */
-  planScreen: 'Screen',
+     dimensions printed on the sheet are the dimensions the plans
+     were built from. `planNote` is the only legend either drawing
+     gets, and it is a sentence rather than a key. */
   planScale: 'Drawn to scale · {w} × {d} m · {s} m screen',
   planNote:
-    'Both layouts are drawn in the same room. Throwing the switch moves the seating and the front three speakers — nothing else about the space changes.',
+    'The same room at the same scale, drawn twice: screen at the top, seven chairs in two rows. Only the seating and the front three speakers differ.',
   valuesLabel: 'Every chair, against the room average',
+  seatReadLabel: 'The same chair, in both rooms',
 
   /* The selected chair, as a sentence rather than a readout. Every
      figure in it is computed from the plans below. */

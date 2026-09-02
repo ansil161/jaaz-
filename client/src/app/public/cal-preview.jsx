@@ -13,12 +13,14 @@ import Calibration from '@/features/public/home/components/Calibration'
    of the rest of the homepage in the way. (The same harness
    `promise-preview.jsx` used before it was retired.)
 
-   It earns its place beyond first review. The scene is four
-   acts across three and a half viewports of scroll, and finding
-   the two frames at the peak by scrolling past eleven other
-   sections every time is how tuning stops happening. This entry
-   is dev-only — `vite.config.js` lists three build inputs and
-   this is not one of them, so it never ships.
+   It earns its place beyond first review. The section is the
+   page's only light ground, it holds two scaled drawings that
+   have to stay aligned to the pixel, and its one authored moment
+   fires ONCE on scroll-in — so checking it means arriving at it
+   fresh, which past eleven other sections is how tuning stops
+   happening. This entry is dev-only — `vite.config.js` lists
+   three build inputs and this is not one of them, so it never
+   ships.
    ============================================================ */
 
 document.documentElement.classList.remove('no-js')
