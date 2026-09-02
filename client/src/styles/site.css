@@ -2429,7 +2429,12 @@ html.lenis body {
 .eng-figure {
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: clamp(2.75rem, 5.6vw, 4.75rem);
+  /* Sized to HOLD ITS COLUMN, not merely to be large. The figure
+     sits alone in a four-of-twelve column with the discipline's
+     copy starting six columns over, and at the first size tried
+     (4.75rem ceiling) it read as a caption stranded in a wide
+     empty margin rather than as the other half of the row. */
+  font-size: clamp(3rem, 6.6vw, 5.75rem);
   line-height: 0.94;
   letter-spacing: -0.02em;
   /* Tabular, so the six figures share one vertical edge down the
@@ -2480,12 +2485,20 @@ html.lenis body {
   opacity: 1;
 }
 
-/* The light is the one thing in this section that is decoration
-   rather than information — every figure is legible without it — so
-   it stands down entirely when motion is not wanted. */
+/* Reduced motion keeps the light and loses the TRAVEL. What a
+   visitor asked not to have is a warm pool sliding down a column of
+   figures as they scroll, not warmth itself — so every pool comes up
+   at a low fixed level, none of them transitions, and the section
+   reads as a warmly lit ledger instead of a lit row inside an unlit
+   one. Deleting the light outright would have answered a request
+   about motion by removing a colour. */
 @media (prefers-reduced-motion: reduce) {
   .eng-pool {
-    display: none;
+    opacity: 0.55;
+    transition: none;
+  }
+  .eng-row[data-live='true'] .eng-pool {
+    opacity: 0.55;
   }
 }
 

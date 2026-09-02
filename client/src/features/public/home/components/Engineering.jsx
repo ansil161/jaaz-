@@ -95,7 +95,17 @@ export default function Engineering() {
     <section
       ref={root}
       id={engineering.id}
-      className="relative bg-ink py-24 sm:py-32 lg:py-40"
+      /* `overflow-x-clip` is load-bearing on a phone. The pool behind
+         each figure is 150% of its own column and centred on it —
+         inside a four-of-twelve column that is comfortably contained,
+         but on a single-column layout the column IS the page, so six
+         pools were each hanging 65px off both edges and taking the
+         document's scroll width to 448px against a 390px viewport.
+         `clip` rather than `hidden`: it creates no scroll container,
+         so nothing inside can be scrolled or focused into a
+         half-shown state, and the light is cut only where it was
+         leaving the page anyway. */
+      className="relative overflow-x-clip bg-ink py-24 sm:py-32 lg:py-40"
     >
       <div className="shell-wide">
         {/* ---- The claim ---- */}

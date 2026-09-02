@@ -196,7 +196,16 @@ export default function Feeling() {
   const state = STATES[active]
 
   return (
-    <section id={feelings.id} className="relative bg-ink py-24 sm:py-32 lg:py-40">
+    <section
+      id={feelings.id}
+      /* `overflow-x-clip` for the same reason Engineering carries it:
+         the bloom behind the stage is offset out past the frame's
+         left edge, which on a single-column phone layout is also the
+         page's left edge. Clipped rather than hidden — it creates no
+         scroll container, so nothing inside can be scrolled or
+         focused into a half-shown state. */
+      className="relative overflow-x-clip bg-ink py-24 sm:py-32 lg:py-40"
+    >
       <div className="shell-wide">
         {/* ---- The question ---- */}
         <header className="lg:grid lg:grid-cols-12 lg:gap-x-12">

@@ -58,31 +58,47 @@ export default function Comfort() {
           <span className="text-mist">{comfort.label}</span>
         </span>
 
-        <Lines
-          as="h2"
-          className="t-display mt-8 max-w-[8ch] leading-[1.02] text-bone lg:mt-10"
-          stagger={0.12}
-        >
-          {comfort.heading.map((line, i) => (
-            <span key={line} className="block">
-              {i === 1 ? <em className="italic-display text-cove">{line}</em> : line}
-            </span>
-          ))}
-        </Lines>
+        {/* TWO WORDS AND A SENTENCE, SIDE BY SIDE. Stacked, this
+            opening left the right two thirds of a laptop screen
+            empty for the whole height of the viewport — which is not
+            the same thing as generous, because there is nothing over
+            there for the space to be generous TO. Set against the
+            statement it becomes an asymmetric spread: a very short
+            headline holding one column, a long sentence holding the
+            other, and both landing on the same baseline. */}
+        <div className="mt-8 lg:mt-10 lg:grid lg:grid-cols-12 lg:items-end lg:gap-x-12">
+          <Lines
+            as="h2"
+            className="t-display max-w-[8ch] leading-[1.02] text-bone lg:col-span-5"
+            stagger={0.12}
+          >
+            {comfort.heading.map((line, i) => (
+              <span key={line} className="block">
+                {i === 1 ? <em className="italic-display text-cove">{line}</em> : line}
+              </span>
+            ))}
+          </Lines>
 
-        {/* The supporting idea, and the only place in the section
-            that gets the scrubbed word-by-word treatment. It resolves
-            slowly BECAUSE it is the sentence the photographs below
-            are evidence for — reserved language, used once. */}
-        <ScrubText
-          as="p"
-          className="t-heading mt-10 max-w-[24ch] text-bone lg:mt-14"
-          dim={0.14}
-          start="top 78%"
-          end="top 34%"
-        >
-          {comfort.statement}
-        </ScrubText>
+          {/* The supporting idea, and the only place in the section
+              that gets the scrubbed word-by-word treatment. It
+              resolves slowly BECAUSE it is the sentence the
+              photographs below are evidence for — reserved language,
+              used once.
+
+              `pb` on the large step only: the display face sits well
+              above its own descenders, so a statement aligned to the
+              raw box of the headline beside it reads as sitting
+              slightly low. */}
+          <ScrubText
+            as="p"
+            className="t-heading mt-10 max-w-[26ch] text-bone lg:col-span-6 lg:col-start-7 lg:mt-0 lg:pb-[0.18em]"
+            dim={0.14}
+            start="top 82%"
+            end="top 42%"
+          >
+            {comfort.statement}
+          </ScrubText>
+        </div>
       </header>
 
       {/* ---- Beat one: the chairs ----
