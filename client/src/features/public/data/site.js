@@ -717,7 +717,8 @@ export const snap = {
 
   /* Two lines, hard-broken. The eye reads "One room." as a
      finished sentence before it is told there is more than one of
-     them. This line came back here from <Prism>. */
+     them. This line came back here from <Prism>, the section <Scene>
+     replaced. */
   heading: ['One room.', 'Different worlds.'],
   intro:
     'The same walls, the same chairs, the same screen. What changes is everything the room is doing with them — and none of it is a different room.',
@@ -728,7 +729,7 @@ export const snap = {
 
   /* THE FOUR STATES. Four and not six: the point is that the room
      has more than one life, and four makes it without turning the
-     set into a catalogue. <Prism> is where the full range gets
+     set into a catalogue. <Scene> is where the full range gets
      chosen from — this section only has to be true. */
   worlds: [
     {
@@ -1522,16 +1523,24 @@ export const comfort = {
 /* Six feelings, each answered by the kind of room that delivers
    it.
 
-   IT IS BUILT ON THE PRISM'S BAND STACK, at ansil's instruction
+   IT IS BUILT ON THE `.band-*` STACK, at ansil's instruction
    (2026-09-02). It used to be a press-driven selector — six words
    at display size with a warm rule sliding between them — and the
    note that used to live here argued at length that it must NOT be
-   a second Prism, on the grounds that Prism is about the room and
-   this is about the visitor. That distinction is real and it is
-   carried by the COPY, which is in the second person throughout;
-   it did not need a second interaction model to carry it as well.
-   One stacking mechanism used twice on a page reads as a system.
-   Two different ones read as two people having worked on it.
+   a second <Prism>, on the grounds that Prism was about the room
+   and this is about the visitor. That distinction is real and it
+   is carried by the COPY, which is in the second person
+   throughout; it did not need a second interaction model to carry
+   it as well. One stacking mechanism used twice on a page reads as
+   a system. Two different ones read as two people having worked
+   on it.
+
+   PRISM CAME OFF THE PAGE LATER THE SAME DAY, replaced by <Scene>
+   at slot 07, so this is now the homepage's only stack and the
+   pairing that motivated the rebuild is gone. Nothing about this
+   section changed; whether a lone stack is still the right
+   mechanism for it is a question for ansil rather than one this
+   note can settle.
 
    WHAT THE SHAPE COSTS AND WHAT IT BUYS. A stack is scrolled, not
    pressed, so the visitor no longer chooses — they are shown all

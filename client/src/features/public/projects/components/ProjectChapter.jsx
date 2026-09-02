@@ -1,6 +1,5 @@
 import ProjectFrame from './ProjectFrame'
 import Words from '@/features/public/components/Words'
-import { Link } from '@/features/public/router/PageTransition'
 import { useGsapScope, gsap, prefersReducedMotion } from '@/lib/animation/useGsap'
 
 /* ============================================================
@@ -79,7 +78,6 @@ export default function ProjectChapter({ project, index, total }) {
      is generated rather than made. With no filter on, the two are the
      same number anyway. */
   const num = String(index + 1).padStart(2, '0')
-  const to = `/projects/${slug}`
 
   const open = story.find((s) => s.kind === 'open') ?? story[0]
   const rest = story.filter((s) => s !== open)
@@ -155,11 +153,7 @@ export default function ProjectChapter({ project, index, total }) {
     >
       {/* ---------- ACT ONE — the opening plate ---------- */}
       <div data-open className="relative">
-        <Link
-          to={to}
-          aria-label={`${flatTitle} — ${category}, ${location}`}
-          className="group focus-ring block"
-        >
+        <div className="block">
           <ProjectFrame
             src={open.src}
             srcSet={open.srcSet}
@@ -187,7 +181,7 @@ export default function ProjectChapter({ project, index, total }) {
               }}
             />
           </ProjectFrame>
-        </Link>
+        </div>
 
         {/* The numeral. Outside the clipped frame, so the clip never
             takes a bite out of it as the plate opens.
@@ -297,17 +291,6 @@ export default function ProjectChapter({ project, index, total }) {
                 </li>
               ))}
             </ul>
-
-            <Link
-              to={to}
-              className="group focus-ring mt-10 inline-flex items-center gap-3 border-b border-white/20 pb-2 transition-colors duration-500 hover:border-white/60"
-            >
-              <span className="t-label text-bone">View project</span>
-              <Arrow
-                size={11}
-                className="text-bone transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1"
-              />
-            </Link>
           </div>
         </div>
 

@@ -36,8 +36,8 @@ import { useGsapScope, gsap, revealLines, revealBlock, prefersReducedMotion } fr
    is a comparison you have to remember. Four states of one room,
    all on the page, is the whole argument delivered in one look.
 
-   It is also what keeps this section distinct from <Prism>
-   immediately below it. Prism is the CHOOSER — "what's tonight?"
+   It is also what keeps this section distinct from <Scene>
+   immediately below it. Scene is the CHOOSER — "choose the moment"
    — and it earns an interaction. This one only has to be true,
    so it has nothing to click.
 

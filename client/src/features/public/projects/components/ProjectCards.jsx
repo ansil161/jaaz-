@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link } from '@/features/public/router/PageTransition'
 import { prefersReducedMotion } from '@/lib/animation/useGsap'
 
 /* ============================================================
@@ -131,10 +130,9 @@ export default function ProjectCards({ items, resetKey }) {
                 transition: TRANSITION,
               }}
             >
-              <Link
-                to={`/projects/${p.slug}`}
+              <div
                 aria-label={`${p.flatTitle} — ${p.category}, ${p.location}`}
-                className="focus-ring group grid gap-y-8 py-[7vh] min-[860px]:grid-cols-2 min-[860px]:items-center min-[860px]:gap-x-14 lg:gap-x-20"
+                className="group grid gap-y-8 py-[7vh] min-[860px]:grid-cols-2 min-[860px]:items-center min-[860px]:gap-x-14 lg:gap-x-20"
               >
                 {/* ---- Media. First in the source on every row. ---- */}
                 <div className={`${mediaOrder} aspect-[4/3] overflow-hidden rounded-2xl`}>
@@ -190,7 +188,7 @@ export default function ProjectCards({ items, resetKey }) {
 
                   <p className="t-num mt-7 text-xs text-ash">{p.year}</p>
                 </div>
-              </Link>
+              </div>
             </article>
 
             {/* Between rows only. A rule under the last row would be

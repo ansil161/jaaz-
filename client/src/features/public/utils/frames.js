@@ -26,7 +26,7 @@ import manifest from '@/features/public/data/frames-manifest.json'
    component change at all.
 
    NOTHING IMPORTS THIS TODAY. The homepage section that was going
-   to (a scrubbed hand gesture) has been replaced by <Prism>,
+   to (a scrubbed hand gesture) has been replaced twice over,
    which is a composition and needs no sequence at all. The file
    stays for `theatre/walkthrough`, which is still a placeholder
    entry in the manifest and is the house walkthrough's asset, not

@@ -6,7 +6,11 @@ import { solutionsIndex } from '@/features/public/data/solutions'
 /* ============================================================
    SOLUTIONS — THE CATALOGUE
 
-   CATALOGUE  the headline, then all nine as cards: a
+   OVERTURE   the argument, pinned. Three statements scrubbed
+              word by word, the last one on a sheet of paper
+              that opens out of the black — then the rest of
+              that sentence, off the axis, as the pin releases.
+   CATALOGUE  all nine as cards: a
               photograph, what it touches, what band it costs
               in, and a way into its own page.
    CTA        the consultation, which is what the page is for.

@@ -15,7 +15,7 @@ import Feeling from '@/features/public/home/components/Feeling'
    page, with nothing else mounted.
 
    IT EXISTS BECAUSE THE HOMEPAGE CANNOT BE DRIVEN THROUGH THE
-   BROWSER MCP. With the hero's scene, <Prism> and <Calibration>
+   BROWSER MCP. With the hero's scene, <Scene> and <Calibration>
    all mounted, `Runtime.evaluate` on `/` times out — with or
    without the section under review present, so it is the page
    and not the new code. A document carrying three unpinned
@@ -46,7 +46,7 @@ import Feeling from '@/features/public/home/components/Feeling'
 
 document.documentElement.classList.remove('no-js')
 
-/* The scrub handles, for the same reason prism-preview.jsx exposes
+/* The scrub handles, for the same reason scene-preview.jsx exposes
    them: setting a scroll position and calling `__ST.update()` by
    hand runs every trigger against the real playhead without needing
    a frame the hidden tab will not give us. */

@@ -1,3 +1,4 @@
+import Overture from '@/features/public/solutions/components/Overture'
 import { solutions, solutionsIndex } from '@/features/public/data/solutions'
 import { Link } from '@/features/public/router/PageTransition'
 import { Lines, Rise } from '@/features/public/components/Motion'
@@ -34,10 +35,12 @@ import { Lines, Rise } from '@/features/public/components/Motion'
    catalogue. Nine identical shells around nine restatements of
    the same fact is the thing worth refusing.
 
-   THE HERO CARRIES NO PHOTOGRAPH
+   THE OPENING CARRIES NO PHOTOGRAPH
    Deliberately. There are nine below it, and a tenth at the top
    would be the only one on the page that is not a solution —
    competing with the grid it is supposed to introduce.
+   <Overture> is type on a black stage and one sheet of paper for
+   the same reason: this page's picture is the grid.
    ============================================================ */
 
 function Arrow({ size = 14, className = '' }) {
@@ -61,33 +64,30 @@ function Arrow({ size = 14, className = '' }) {
 }
 
 export default function Catalogue() {
-  const { headline, sub, meta, statement, lens, index } = solutionsIndex
+  const { meta, statement, overture, lens, index } = solutionsIndex
+  const { coda } = overture
 
   return (
     <>
-      {/* ---- The opening. Type on ink, one soft wash, no plate. ---- */}
-      <section className="relative overflow-hidden bg-ink pt-40 pb-20 sm:pt-48 sm:pb-24">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              'radial-gradient(72% 52% at 50% 0%, rgba(201, 173, 124, 0.13) 0%, rgba(201, 173, 124, 0.04) 42%, transparent 70%)',
-          }}
-        />
+      {/* ---- The opening ----
+          Three statements, pinned and scrubbed, the third of them on
+          paper. See <Overture> for why it replaced the headline block
+          that used to stand here. ---- */}
+      <Overture />
 
-        <div className="shell-wide relative">
-          <Lines as="h1" className="t-hero max-w-[15ch] text-bone" stagger={0.1}>
-            {headline.map((line) => (
-              <span key={line} className="block">
-                {line}
-              </span>
-            ))}
-          </Lines>
-
-          <div className="mt-14 grid gap-10 lg:grid-cols-12 lg:gap-8">
-            <Lines as="p" className="t-sub max-w-[46ch] text-fog lg:col-span-5">
-              {sub}
+      {/* ---- What the pin releases into ----
+          The rest of that opening sentence, and the two lines of the
+          hero the overture did not take. It is deliberately quiet and
+          deliberately NOT centred: the stage above it is the only
+          thing on this page set on the axis, and the moment a second
+          block joins it there, the first one stops being a title card
+          and starts being a layout. This is back on the left rule,
+          which is where the page proper begins. ---- */}
+      <section className="relative bg-ink pt-24 pb-20 sm:pt-32 sm:pb-24">
+        <div className="shell-wide">
+          <div className="grid gap-10 lg:grid-cols-12 lg:gap-8">
+            <Lines as="p" className="t-sub max-w-[42ch] text-fog lg:col-span-5">
+              {coda}
             </Lines>
             <Lines as="p" className="t-body max-w-[50ch] text-mist lg:col-span-5 lg:col-start-7">
               {statement}

@@ -2329,54 +2329,80 @@ html.lenis body {
 }
 
 /* ============================================================
-   SIGNATURE — THE PRISM
+   THE STACKED BAND
 
-   Five wide bands, one per atmosphere of one room, that stack
-   and slide over one another. The mechanism is `position:
-   sticky` and nothing else; <Prism> adds a recede on the covered
-   card and would be removable without breaking anything here.
+   Wide cards, one per item, that STACK: each sticks under the
+   header while the next slides up and covers it. The card you
+   are leaving is still there, directly beneath the one arriving,
+   for the whole length of the transition.
+
+   ------------------------------------------------------------
+   IT IS `.band-*` BECAUSE IT WAS `.prism-*`, AND THE RENAME WAS
+   OWED
+
+   These rules were written for <Prism> and shared by <Feeling>,
+   which carried a note saying the prefix was "a historical fact
+   about where the system was written and not a claim about who
+   may use it", and that it would be renamed in one pass the day
+   a third section took the band.
+
+   What happened instead was that <Prism> came off the homepage
+   (2026-09-02, replaced by <Scene> below), leaving a forty-rule
+   layout system named after a component that no longer exists —
+   the same trap from the other end. So it was renamed in one
+   pass, and <Feeling> is now its only consumer.
+
+   SIX RULES DID NOT COME ACROSS. `.prism-wash`, `.prism-veil`
+   and the `@property --wash-power` they read were the Prism's
+   one-photograph-graded-five-ways machinery, and `.prism-axis`,
+   `.prism-axis-glyph` and `.prism-readout-k` were its four-axis
+   readout. <Feeling> uses none of them — its six bands are six
+   different rooms at full exposure, and its readout prints facts
+   rather than axes. Anything that needs a graded plate again
+   should look at `.scene-*` below, which does it on one element.
 
    ------------------------------------------------------------
    HOW THE STACK WORKS, IN THREE DECLARATIONS
 
-     .prism-slot   height = card height x --dwell. This is the
-                   SCROLL DISTANCE a face gets. It is a normal
-                   block in the flow, so five of them simply make
-                   the section five slots tall.
+     .band-slot  height = card height x --dwell. This is the
+                 SCROLL DISTANCE an item gets. It is a normal
+                 block in the flow, so six of them simply make
+                 the section six slots tall.
 
-     .prism-card   `position: sticky; top: --prism-top`. It sticks
-                   the moment its slot's top passes the header and
-                   stays until its slot's bottom does — which is
-                   exactly the extra height the dwell bought.
+     .band-card  `position: sticky; top: --band-top`. It sticks
+                 the moment its slot's top passes the header and
+                 stays until its slot's bottom does — which is
+                 exactly the extra height the dwell bought.
 
-     z-index       ascends with the index, set inline in the JSX.
-                   Without it a later card slides UNDER the one it
-                   should be covering.
+     z-index     ascends with the index, set inline in the JSX.
+                 Without it a later card slides UNDER the one it
+                 should be covering.
 
    There is no measured height, no pin, no scrub and no
-   ResizeObserver anywhere in this. That is the point: the version
-   this replaced needed all four.
+   ResizeObserver anywhere in this. That is the point: the
+   version this replaced needed all four.
+
+   THE SLOT AND THE CARD CANNOT BE ONE ELEMENT. A transform on a
+   `position: sticky` box re-bases the containing block it sticks
+   within, so the stick point drifts by however far the card has
+   been scaled and the whole pile slides out of register. Two
+   elements, one job each, and the transform composes.
 
    ------------------------------------------------------------
-   `--prism-top` IS A MEASUREMENT, NOT A ROUND NUMBER
+   `--band-top` IS A MEASUREMENT, NOT A ROUND NUMBER
 
    The cards stick UNDER the site's header, which is a solid bar
-   on the homepage: `py-4` around an `h-9` mark measures 68px on a
-   phone, and `py-5` around `h-10` measures 85.5px above `sm` —
-   not the 80 the arithmetic gives, because the mark's line box is
-   taller than the image. A card stuck any higher than that has
-   its first line permanently under an opaque bar, and it looks
-   correct in every preview harness because the bar is not there.
+   on the homepage: `py-4` around an `h-9` mark measures 68px on
+   a phone, and `py-5` around `h-10` measures 85.5px above `sm` —
+   not the 80 the arithmetic gives, because the mark's line box
+   is taller than the image. A card stuck any higher than that
+   has its first line permanently under an opaque bar, and it
+   looks correct in every preview harness because the bar is not
+   there.
    ============================================================ */
 
-@property --wash-power {
-  syntax: '<number>';
-  inherits: false;
-  initial-value: 0.3;
-}
-
-.prism-scene {
-  --prism-top: 4.75rem;
+.band-section {
+  --band-top: 4.75rem;
   /* A BAND, NOT A PANEL. At `--app-h - 9rem` capped at 40rem the
      cards were nearly two thirds of a tall window each, and five
      of them plus a dwell made the section 5.4 viewports of a
@@ -2384,15 +2410,15 @@ html.lenis body {
      read as wide horizontal bands — which is the proportion the
      reference this is built to actually uses — and the section
      comes in at about 4.2. */
-  --prism-h: clamp(22rem, calc(var(--app-h) - 11rem), 34rem);
+  --band-h: clamp(22rem, calc(var(--app-h) - 11rem), 34rem);
 }
 @media (min-width: 640px) {
-  .prism-scene {
-    --prism-top: 6rem;
+  .band-section {
+    --band-top: 6rem;
   }
 }
 
-.prism-stack {
+.band-stack {
   position: relative;
   padding-inline: var(--gutter);
   /* Room under the last card so it is not butted against whatever
@@ -2402,9 +2428,9 @@ html.lenis body {
   padding-bottom: clamp(3rem, 8vh, 6rem);
 }
 
-.prism-slot {
+.band-slot {
   position: relative;
-  height: calc(var(--prism-h) * var(--dwell, 1.3));
+  height: calc(var(--band-h) * var(--dwell, 1.3));
   margin-inline: auto;
   max-width: 108rem;
 }
@@ -2418,15 +2444,15 @@ html.lenis body {
    sticks, and all five bands scroll past as ordinary blocks with a
    third of a card of empty page between them. Nothing errors and
    the section looks like a list. */
-.prism-band {
+.band {
   display: block;
   height: 100%;
 }
 
-.prism-card {
+.band-card {
   position: sticky;
-  top: var(--prism-top);
-  height: var(--prism-h);
+  top: var(--band-top);
+  height: var(--band-h);
   overflow: hidden;
   border-radius: clamp(0.75rem, 1.1vw, 1.25rem);
   /* OPAQUE, AND NOT NEGOTIABLE. A stacked card with any
@@ -2452,7 +2478,7 @@ html.lenis body {
    45% column on a phone is four words a line. */
 /* THE PICTURE GETS THE FLEXIBLE ROW, NOT THE COPY.
 
-   `.prism-shot`'s only child is absolutely positioned, so the
+   `.band-shot`'s only child is absolutely positioned, so the
    element has NO intrinsic height — an `auto` row resolves it to
    zero and the phone gets a card containing the copy and a large
    empty rectangle where the room should be. It is the kind of
@@ -2462,13 +2488,13 @@ html.lenis body {
    So the picture takes `1fr` and the copy takes `auto`: the room
    fills whatever the card has left after four short lines, which
    is also the right hierarchy for a phone. */
-.prism-card-grid {
+.band-card-grid {
   display: grid;
   height: 100%;
   grid-template-rows: minmax(0, 1fr) auto;
 }
 @media (min-width: 1024px) {
-  .prism-card-grid {
+  .band-card-grid {
     grid-template-rows: none;
     grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
   }
@@ -2479,7 +2505,7 @@ html.lenis body {
    cent, which is under the threshold at which anyone can name a
    gradient and over the one at which a large flat rectangle
    starts reading as an empty div. */
-.prism-copy {
+.band-copy {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -2491,13 +2517,13 @@ html.lenis body {
     radial-gradient(ellipse 80% 55% at 12% 108%, rgb(201 173 124 / 0.055), transparent 72%);
 }
 @media (min-width: 1024px) {
-  .prism-copy {
+  .band-copy {
     order: 0;
     padding-block: clamp(2rem, 5vh, 3.5rem);
   }
 }
 
-.prism-shot {
+.band-shot {
   position: relative;
   order: 1;
   overflow: hidden;
@@ -2505,7 +2531,7 @@ html.lenis body {
   margin: 0;
 }
 @media (min-width: 1024px) {
-  .prism-shot {
+  .band-shot {
     order: 0;
   }
 }
@@ -2514,7 +2540,7 @@ html.lenis body {
    per face — a transform rather than a `background-size` so the
    five framings cost one composited layer each instead of five
    decoded copies. */
-.prism-plate {
+.band-plate {
   position: absolute;
   inset: 0;
   height: 100%;
@@ -2537,26 +2563,6 @@ html.lenis body {
    produce the same pixels — and one of them does not ask the
    compositor for a blended layer on each of five stacked cards.
    ------------------------------------------------------------ */
-.prism-wash {
-  --wash-at: 50% 40%;
-  --wash-tint: 198, 176, 138;
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(
-    ellipse 74% 66% at var(--wash-at),
-    rgba(var(--wash-tint), var(--wash-power)) 0%,
-    rgba(var(--wash-tint), calc(var(--wash-power) * 0.32)) 44%,
-    rgba(0, 0, 0, 0) 78%
-  );
-}
-
-.prism-veil {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: var(--color-ink);
-}
 
 /* A SHORT falloff at the picture's inner edge — an edge with a
    shadow on it, not a blend.
@@ -2570,7 +2576,7 @@ html.lenis body {
    been badly lit. Ten per cent is enough to stop the photograph's
    own left edge cutting hard against the panel, and short enough
    that the join still reads as a join. */
-.prism-shot::after {
+.band-shot::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -2583,7 +2589,7 @@ html.lenis body {
   );
 }
 @media (max-width: 1023px) {
-  .prism-shot::after {
+  .band-shot::after {
     background: linear-gradient(to bottom, rgb(11 11 12 / 0) 55%, rgb(11 11 12 / 0.9) 100%);
   }
 }
@@ -2596,7 +2602,7 @@ html.lenis body {
    height is a function of the WINDOW HEIGHT — the same reasoning
    that gives `.t-cinema` and `.t-chapter` their `min()` terms.
    ------------------------------------------------------------ */
-.prism-claim {
+.band-claim {
   font-family: var(--font-display);
   font-size: clamp(2.3rem, min(5.4vw, 9vh), 5.4rem);
   line-height: 0.96;
@@ -2609,7 +2615,7 @@ html.lenis body {
    step below the claim: the claim is the section's argument and
    this is one instance of it, and a caption set at the same size
    as the thing it captions is two headlines arguing. */
-.prism-lockup {
+.band-lockup {
   font-family: var(--font-display);
   font-size: clamp(1.9rem, min(3.1vw, 6vh), 3.4rem);
   line-height: 0.98;
@@ -2631,16 +2637,16 @@ html.lenis body {
    on a dark card, and everything else on the card earns its
    colour from the photograph beside it.
    ------------------------------------------------------------ */
-.prism-mark {
+.band-mark {
   display: flex;
   align-items: center;
   gap: 0.75rem;
 }
-.prism-mark-glyph {
+.band-mark-glyph {
   flex: none;
   color: var(--color-cove);
 }
-.prism-mark-word {
+.band-mark-word {
   font-family: var(--font-mono);
   font-size: 0.625rem;
   font-weight: 400;
@@ -2672,31 +2678,7 @@ html.lenis body {
    <PrismBand> for why the term still comes first in the DOM. The
    left padding is the glyph's lane; the glyph itself is out of
    the flow so one mark can sit beside two lines of text. */
-.prism-axis {
-  position: relative;
-  display: flex;
-  flex-direction: column-reverse;
-  padding-left: 1.75rem;
-}
-.prism-axis-glyph {
-  position: absolute;
-  top: 0.1875rem;
-  left: 0;
-  /* Optically aligned to the VALUE's cap height rather than to the
-     top of its line box, which sits the glyph a hair high on every
-     row and reads as four marks that all missed their baseline. */
-  color: rgb(201 173 124 / 0.85);
-}
-.prism-readout-k {
-  display: block;
-  margin-top: 0.25rem;
-  font-family: var(--font-mono);
-  font-size: 0.5rem;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: var(--color-mist);
-}
-.prism-readout-v {
+.band-readout-v {
   font-family: var(--font-sans);
   font-weight: 400;
   font-size: 0.9375rem;
@@ -2710,7 +2692,7 @@ html.lenis body {
    PLACE THE SECOND SECTION DIFFERS.
 
    Everything above is used unchanged by both <Prism> and
-   <Feeling>. The `prism-` prefix is a historical fact about where
+   <Feeling>. The `band-` prefix is a historical fact about where
    the system was written, not a claim about who may use it — see
    the note at the top of FeelingBand.jsx. A third consumer is the
    point at which the prefix gets renamed across all three in one
@@ -2773,15 +2755,811 @@ html.lenis body {
    overlapping anything.
    ------------------------------------------------------------ */
 @media (prefers-reduced-motion: reduce) {
-  .prism-slot {
+  .band-slot {
     height: auto;
   }
-  .prism-slot + .prism-slot {
+  .band-slot + .band-slot {
     margin-top: clamp(1rem, 2.5vh, 1.75rem);
   }
-  .prism-card {
+  .band-card {
     position: relative;
     top: auto;
+  }
+}
+
+/* ============================================================
+   SIGNATURE — THE SCENE EXPERIENCE MODULE
+
+   "Choose the moment. We'll set the scene."
+
+   One room in one photograph, five evenings, and a panel of five
+   device states that arrive one after another when a scene is
+   pressed. Built to the JAAZ Scene Experience concept document;
+   the content and the cascade timings live in data/scene.js and
+   the machine lives in components/scene/Scene.jsx.
+
+   ------------------------------------------------------------
+   NINE NUMBERS DRIVE THE WHOLE PICTURE, AND THEY LIVE ON ONE
+   ELEMENT
+
+   `.scene-stage` carries `--scene-brightness`, `--scene-contrast`,
+   `--scene-saturate`, `--scene-wash-at`, `--scene-wash-tint`,
+   `--scene-wash-power`, `--scene-veil`, `--scene-x`, `--scene-y`
+   and `--scene-zoom`. The photograph, the light signature, the
+   veil and the crop all read them off that one ancestor, so a
+   scene change is ONE tween target rather than four kept in sync
+   by hand.
+
+   THE GRADE IS RE-DECLARED ON `.scene-plate`, AND IT HAS TO BE.
+   `.plate` declares its own `--plate-*` defaults, and an
+   element's own declaration beats an inherited one — so setting
+   `--plate-brightness` on the stage would be silently ignored,
+   which is the exact trap documented over `.plate` itself. The
+   three lines in `.scene-plate` that read `var(--scene-*)` are
+   the bridge, and deleting them makes the section stop grading
+   with no error anywhere.
+
+   `--scene-x`, `--scene-y` and `--scene-zoom` are PLAIN NUMBERS
+   multiplied back into units here. GSAP interpolates a number
+   and cannot interpolate the string "70% 46%", so the crop is
+   carried as three numbers and assembled in the stylesheet.
+   ============================================================ */
+
+.scene-module {
+  padding-block: clamp(5rem, 13vh, 9.5rem) clamp(4rem, 10vh, 7rem);
+}
+
+/* THE CLAIM. Its own step, one notch under `.t-display`: this
+   headline sits above a composition whose height is a function of
+   the window as much as of its width, and a headline sized off
+   viewport width alone runs into the picture on a short laptop.
+   Same reasoning that gives `.t-cinema` and `.t-chapter` their
+   `min()` terms. */
+.scene-claim {
+  font-family: var(--font-display);
+  font-size: clamp(2.15rem, min(5vw, 8.4vh), 4.9rem);
+  line-height: 0.98;
+  letter-spacing: -0.026em;
+}
+
+.scene-head {
+  padding-bottom: clamp(2.25rem, 6vh, 4rem);
+}
+
+/* ------------------------------------------------------------
+   THE COMPOSITION (§4)
+
+   Large visual, information panel beside it. ONE SURFACE, not
+   two: the picture and the panel are inside a single frame with
+   one hairline around it, because the document's reference holds
+   them as one object and because two separately-outlined boxes
+   side by side is the card grid this site does not build.
+
+   The picture takes the larger share. It is the subject; the
+   panel is four short blocks and does not need half a screen.
+
+   Below `lg` the panel goes under the picture, full width, and
+   the scene selector sits directly beneath both — so the reading
+   order at every width is: the room, what the room is doing,
+   what to ask it for.
+   ------------------------------------------------------------ */
+.scene-composition {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  overflow: hidden;
+  border-radius: clamp(0.75rem, 1.1vw, 1.25rem);
+  background: var(--color-ink-3);
+  /* `inset` so the hairline follows the radius without a border
+     eating into the grid inside; the lift is what separates the
+     frame from the black page behind it. */
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.08),
+    0 2.5rem 5rem -2.5rem rgb(0 0 0 / 0.9);
+}
+@media (min-width: 1024px) {
+  .scene-composition {
+    grid-template-columns: minmax(0, 1.44fr) minmax(0, 0.56fr);
+  }
+}
+
+/* ------------------------------------------------------------
+   THE ROOM
+
+   Nothing is placed on this element except things that could have
+   been LIT in the room. No label, chip, pill, badge, tick strip
+   or translucent panel — every readable thing in this section
+   lives in the column beside the picture. That is a standing rule
+   on this site and it is the rule the page has been corrected on.
+   ------------------------------------------------------------ */
+.scene-stage {
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  /* Taller than the plate's native 16:9 on a phone, where the
+     picture is the only thing on screen and a 16:9 strip under a
+     headline reads as a banner rather than as a room. */
+  aspect-ratio: 4 / 3;
+}
+@media (min-width: 640px) {
+  .scene-stage {
+    aspect-ratio: 16 / 9;
+  }
+}
+@media (min-width: 1024px) {
+  .scene-stage {
+    /* Slightly taller than 16:9 so the picture and a panel of
+       five rows plus a headline reach the same bottom edge
+       without the panel having to invent space. */
+    aspect-ratio: 16 / 10;
+    min-height: clamp(24rem, calc(var(--app-h) - 16rem), 34rem);
+  }
+}
+
+/* The one photograph. `scale` is the crop's zoom — a transform
+   rather than a `background-size`, so five framings cost one
+   composited layer instead of five decoded copies.
+
+   `max-width: none` because Tailwind's preflight caps every image
+   at `max-width: 100%`, which silently clamps a plate the moment
+   it is scaled past 1. */
+.scene-plate {
+  --plate-brightness: var(--scene-brightness, 1);
+  --plate-contrast: var(--scene-contrast, 1);
+  --plate-saturate: var(--scene-saturate, 1);
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: calc(var(--scene-x, 50) * 1%) calc(var(--scene-y, 50) * 1%);
+  transform: scale(var(--scene-zoom, 1));
+  transform-origin: center;
+}
+
+/* THE LIGHT SIGNATURE. An off-centre wash whose position, colour
+   temperature and power belong to the scene — the only thing over
+   the room that changes when the room does, other than its own
+   exposure.
+
+   Composited normally rather than `mix-blend-mode: screen`.
+   Screen is the technically correct operator for added light and
+   it is the wrong choice here: the room is exposed for the dark,
+   so a warm radial screened over it and the same radial at alpha
+   produce the same pixels — and one of them asks the compositor
+   for a blended layer on every frame of a 1.5-second tween. */
+.scene-wash {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 74% 66% at var(--scene-wash-at, 50% 40%),
+    rgba(var(--scene-wash-tint, 198, 176, 138), var(--scene-wash-power, 0.3)) 0%,
+    rgba(var(--scene-wash-tint, 198, 176, 138), calc(var(--scene-wash-power, 0.3) * 0.32)) 44%,
+    rgba(0, 0, 0, 0) 78%
+  );
+}
+
+/* Flat dark, for the two evenings that genuinely go black.
+   Everything else is done with exposure, and the two are not
+   equivalent: black over the top crushes the whole frame towards
+   grey and takes the lit terrace down with it, where dropping the
+   exposure keeps the contrast between the lamp, the screen and
+   the dark around them — which is what a room at 0.6 fL actually
+   looks like. */
+.scene-veil {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--color-ink);
+  opacity: var(--scene-veil, 0);
+}
+
+/* A SHORT falloff where the picture meets the panel — an edge
+   with a shadow on it, not a blend. Ten per cent is enough to
+   stop the photograph cutting hard against the panel and short
+   enough that the join still reads as a join; run across a third
+   of the frame it dissolves two materials into one that has been
+   badly lit. Below `lg` the panel is underneath, so the falloff
+   turns with it. */
+.scene-edge {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgb(11 11 12 / 0) 62%, rgb(11 11 12 / 0.92) 100%);
+}
+@media (min-width: 1024px) {
+  .scene-edge {
+    background: linear-gradient(
+      to left,
+      rgb(11 11 12 / 0.72) 0%,
+      rgb(11 11 12 / 0.2) 5%,
+      rgb(11 11 12 / 0) 11%
+    );
+  }
+}
+
+/* ------------------------------------------------------------
+   THE INFORMATION PANEL (§8)
+
+   "Information, not a dashboard." Four blocks — the scene's name
+   and copy, the five states, the status line — with the space
+   between them doing the dividing. No rules between the rows: on
+   a dark surface at 12% white a hairline over a two-word cell is
+   exactly visible enough to read as an artefact rather than as a
+   decision, and five of them turn an editorial readout into a
+   table.
+
+   The panel carries a shallow lift out of its top corner and a
+   warm floor under the readout — about three per cent, which is
+   under the threshold at which anyone can name a gradient and
+   over the one at which a large flat rectangle starts reading as
+   an empty div.
+   ------------------------------------------------------------ */
+.scene-panel {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 4vh, 2.5rem);
+  padding: clamp(1.5rem, 4vw, 2.75rem);
+  background:
+    radial-gradient(ellipse 90% 60% at 92% 0%, rgb(255 255 255 / 0.035), transparent 70%),
+    radial-gradient(ellipse 85% 55% at 88% 108%, rgb(201 173 124 / 0.06), transparent 72%);
+}
+@media (min-width: 1024px) {
+  .scene-panel {
+    justify-content: space-between;
+    padding-block: clamp(1.75rem, 4.5vh, 3rem);
+  }
+}
+
+/* The scene's one emotional line. Display face, one step under
+   the section's claim: the claim is the argument and this is one
+   instance of it, and an instance set at the same size as the
+   argument is two headlines competing. */
+.scene-line {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, min(2.1vw, 3.4vh), 2.15rem);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+}
+
+/* ---- The five states ----
+   The VALUE leads and the channel name sits under it. "Closed" is
+   the interesting word; "Curtains" is only the question it
+   answers, and a question set larger than its answer is a form,
+   not a specification. */
+.scene-rows {
+  display: grid;
+  gap: clamp(0.875rem, 2.2vh, 1.25rem);
+}
+
+.scene-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.25rem;
+}
+
+/* The glyph is positioned out of the flow into its own lane so
+   one mark can sit beside a label of any length without the five
+   labels losing their shared left edge. It lives INSIDE the `dt`:
+   a `div` inside a `dl` may contain `dt` and `dd` elements and
+   nothing else, so an `<svg>` sitting beside them is invalid —
+   the kind of invalid no browser complains about and every
+   validator does. It is also simply correct there, because the
+   mark is a pictogram OF the channel. */
+.scene-row-k {
+  position: relative;
+  padding-left: 1.75rem;
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 0.5625rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--color-mist);
+}
+.scene-row-glyph {
+  position: absolute;
+  /* Optically aligned to the label's cap height rather than to the
+     top of its line box, which sits every mark a hair high and
+     reads as five glyphs that all missed their baseline. */
+  top: -0.3125rem;
+  left: 0;
+  color: rgb(201 173 124 / 0.85);
+}
+
+.scene-row-v {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: clamp(0.9375rem, 1.05vw, 1.0625rem);
+  line-height: 1.2;
+  letter-spacing: -0.008em;
+  color: var(--color-paper);
+  text-align: right;
+}
+/* The span the cascade animates. Separate from the cell so the
+   glyph, the label and the manual mark stay still while only the
+   value arrives. */
+.scene-row-value {
+  display: inline-block;
+}
+
+/* One warm dot, and the only thing on the panel that says a human
+   overruled the scene. Small enough to be a mark rather than a
+   badge — the moment it gains a border or a background it is a
+   status chip, which is the thing this section refuses. */
+.scene-row-manual {
+  flex: none;
+  width: 0.3125rem;
+  height: 0.3125rem;
+  border-radius: 50%;
+  background: var(--color-cove);
+}
+
+/* ---- The status line (§8) ---- */
+.scene-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-top: clamp(0.75rem, 2vh, 1.25rem);
+  border-top: 1px solid rgb(255 255 255 / 0.07);
+}
+
+.scene-state {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-fog);
+}
+
+/* The one indicator on the page that BREATHES. It is on for a
+   second and a half per selection and steady the rest of the
+   time, which is the whole of its job: a dot that pulses forever
+   is a page that never finishes loading. */
+.scene-dot {
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 50%;
+  background: var(--color-cove);
+  transition: box-shadow 600ms var(--ease-out-quint);
+}
+.scene-dot.is-setting {
+  animation: scene-pulse 1s ease-in-out infinite;
+}
+.scene-dot.is-ready {
+  box-shadow: 0 0 0 4px rgb(201 173 124 / 0.14);
+}
+@keyframes scene-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.scene-count {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  font-size: 0.6875rem;
+  color: var(--color-fog);
+}
+/* The arrow the document draws beside the counter, built as the
+   control it looks like rather than as an ornament. A drawn arrow
+   next to "01 / 05" promises a next; one that does nothing is a
+   small lie in the middle of a section about things responding. */
+.scene-next {
+  padding: 0.25rem 0.375rem;
+  margin-right: -0.375rem;
+  font-size: 0.875rem;
+  line-height: 1;
+  color: var(--color-mist);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  transition:
+    color 320ms var(--ease-out-quint),
+    transform 420ms var(--ease-out-expo);
+}
+.scene-next:hover {
+  color: var(--color-cove);
+  transform: translateX(3px);
+}
+
+/* ------------------------------------------------------------
+   THE SCENE SELECTOR (§9)
+
+   Five words in the display face and one warm rule that slides
+   between them. The document asks for "small monochrome line
+   icons or typography"; this is the typography answer, and the
+   rule sliding is what makes a selection read as a move from one
+   word to another rather than as two separate states toggling.
+
+   The vertical padding is the hit area. Five words with no
+   padding are five 30px targets separated by nothing, which is a
+   control that works with a mouse and fights a thumb.
+   ------------------------------------------------------------ */
+.scene-controls {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.75rem, 4vh, 2.75rem);
+  padding-top: clamp(2rem, 5vh, 3.25rem);
+}
+@media (min-width: 1024px) {
+  .scene-controls {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 3rem;
+  }
+}
+
+.scene-nav {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 clamp(1.5rem, 3.2vw, 3rem);
+}
+
+.scene-word {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.35rem, 2.4vw, 2.1rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  padding-block: 0.34em;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  transition: color 420ms var(--ease-out-quint);
+}
+
+/* Two pixels, not one. A single-pixel rule under a 2rem serif
+   reads as a border left on by accident; at two it reads as a
+   mark somebody made. GSAP writes `x`, `y` and `width` from the
+   chosen word's own measured box, so nothing here assumes
+   anything about how the row wraps. */
+.scene-rail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: var(--color-cove);
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, width;
+}
+
+/* ---- The secondary action (§10) ----
+   Deliberately quieter than any of the five words beside it. The
+   document's whole argument is that the visitor should not have
+   to operate anything, so the control that lets them cannot be
+   the loudest thing in the section. */
+.scene-adjust-toggle {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+}
+@media (min-width: 1024px) {
+  .scene-adjust-toggle {
+    align-items: flex-end;
+    text-align: right;
+  }
+}
+
+.scene-adjust-cue {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  letter-spacing: -0.003em;
+  color: var(--color-ash);
+  transition: color 420ms var(--ease-out-quint);
+}
+.scene-adjust-toggle:hover .scene-adjust-cue {
+  color: var(--color-mist);
+}
+
+.scene-adjust-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding-bottom: 0.375rem;
+  border-bottom: 1px solid rgb(201 173 124 / 0.35);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--color-bone);
+  transition:
+    color 320ms var(--ease-out-quint),
+    border-color 320ms var(--ease-out-quint);
+}
+.scene-adjust-toggle:hover .scene-adjust-label {
+  color: var(--color-pure);
+  border-bottom-color: var(--color-cove);
+}
+
+/* A quarter turn, not a flip. The arrow points along the page
+   when the drawer is closed and down into it when it is open,
+   which is the only thing the mark has to say. */
+.scene-caret {
+  display: inline-block;
+  color: var(--color-cove);
+  transition: transform 520ms var(--ease-out-expo);
+}
+.scene-caret.is-open {
+  transform: rotate(90deg);
+}
+
+/* ------------------------------------------------------------
+   THE MANUAL DRAWER (§10)
+
+   `grid-template-rows: 0fr -> 1fr` — the whole opening mechanism,
+   with no measurement, no ResizeObserver and no height cached
+   from a width that has since changed. The inner element needs
+   `min-height: 0` and `overflow: hidden` or the row cannot go
+   below its content's intrinsic height and the drawer never
+   closes.
+
+   In a browser that cannot animate the row track the drawer still
+   OPENS AND CLOSES correctly — it simply does it instantly, which
+   is the right thing to degrade to.
+   ------------------------------------------------------------ */
+.scene-drawer {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 620ms var(--ease-out-expo);
+}
+.scene-drawer.is-open {
+  grid-template-rows: 1fr;
+}
+.scene-drawer-inner {
+  min-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 380ms var(--ease-out-quint);
+}
+.scene-drawer.is-open .scene-drawer-inner {
+  opacity: 1;
+  transition-delay: 160ms;
+}
+
+/* Five lanes on a wide screen, and the lights lane is the widest
+   because a slider is the only control here that needs travel.
+   Two lanes on a tablet, one on a phone — a 100-step track in a
+   140px column is a control nobody can land on. */
+.scene-adjust {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1.75rem, 4vh, 2.5rem) clamp(1.5rem, 3vw, 2.75rem);
+  margin-top: clamp(2rem, 5vh, 3rem);
+  padding-top: clamp(1.75rem, 4vh, 2.5rem);
+  border-top: 1px solid rgb(255 255 255 / 0.08);
+}
+@media (min-width: 640px) {
+  .scene-adjust {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1180px) {
+  .scene-adjust {
+    grid-template-columns: 1.5fr 1fr 1.2fr 1fr 1.2fr;
+  }
+}
+
+.scene-ctrl {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.scene-ctrl-k {
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--color-mist);
+}
+
+/* The value, at display size. It is the loudest thing in its
+   control because it is the ANSWER; the operators either side of
+   it are only how you change it. */
+.scene-figure {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.6rem, 2.2vw, 2.1rem);
+  line-height: 1;
+  letter-spacing: -0.018em;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-pure);
+}
+
+/* ---- The lights track ----
+   A native range input wearing the site's own line work, so the
+   drag, the keyboard, the touch target and the accessibility are
+   the platform's and not a reimplementation of them.
+
+   `--fill` is written by React from the value, and the filled
+   half of the track is a hard gradient stop rather than a second
+   element layered over it — one property, and no second box to
+   keep in register with the thumb at every width. */
+.scene-track {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 1.25rem;
+  margin: 0.5rem 0 0;
+  background: transparent;
+  cursor: pointer;
+}
+.scene-track::-webkit-slider-runnable-track {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    var(--color-cove) 0 calc(var(--fill, 0) * 100%),
+    rgb(255 255 255 / 0.18) calc(var(--fill, 0) * 100%) 100%
+  );
+}
+.scene-track::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 10px;
+  height: 10px;
+  margin-top: -4.5px;
+  border-radius: 50%;
+  background: var(--color-cove);
+  /* The halo is the hit affordance. A 10px dot is a mark; the
+     ring around it is what says the mark can be taken hold of,
+     and it grows rather than the dot growing — a thumb that
+     changes size under the finger reads as the value jumping. */
+  box-shadow: 0 0 0 5px rgb(201 173 124 / 0.14);
+  transition: box-shadow 320ms var(--ease-out-quint);
+}
+.scene-track:hover::-webkit-slider-thumb,
+.scene-track:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 9px rgb(201 173 124 / 0.22);
+}
+.scene-track::-moz-range-track {
+  height: 1px;
+  background: rgb(255 255 255 / 0.18);
+}
+.scene-track::-moz-range-progress {
+  height: 1px;
+  background: var(--color-cove);
+}
+.scene-track::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-cove);
+  box-shadow: 0 0 0 5px rgb(201 173 124 / 0.14);
+}
+
+/* ---- Minus, figure, plus ---- */
+.scene-stepper {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.75rem, 1.4vw, 1.25rem);
+}
+.scene-step {
+  width: 1.75rem;
+  height: 1.75rem;
+  display: grid;
+  place-items: center;
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--color-mist);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  transition: color 280ms var(--ease-out-quint);
+}
+.scene-step:hover:not(:disabled) {
+  color: var(--color-cove);
+}
+/* Dimmed rather than hidden. A control that disappears at the end
+   of its range takes the layout with it and the two remaining
+   elements re-centre, which reads as the panel twitching. */
+.scene-step:disabled {
+  color: var(--color-smoke);
+  cursor: default;
+}
+
+/* ---- Three words, one chosen ----
+   The scene selector's idiom one size down, which is what makes
+   the two read as one interface at two levels rather than as two
+   different interfaces. No pill and no segmented track. */
+.scene-choice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 clamp(0.875rem, 1.6vw, 1.375rem);
+}
+.scene-opt {
+  position: relative;
+  padding: 0.5rem 0 0.4375rem;
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 0.9375rem;
+  letter-spacing: -0.005em;
+  color: var(--color-ash);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  transition: color 320ms var(--ease-out-quint);
+}
+.scene-opt:hover {
+  color: var(--color-fog);
+}
+.scene-opt.is-on {
+  color: var(--color-paper);
+}
+.scene-opt.is-on::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--color-cove);
+}
+
+/* §13, said once, after the demonstration rather than before it.
+   Small, wide-set and centred on nothing — it is a caption for
+   the whole section and belongs to none of the parts. */
+.scene-coda {
+  margin-top: clamp(2.5rem, 6vh, 4rem);
+  max-width: 46ch;
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  letter-spacing: 0.005em;
+  color: var(--color-ash);
+}
+
+/* ------------------------------------------------------------
+   REDUCED MOTION
+
+   The section keeps everything it does and stops performing it.
+   The cascade becomes an instant state change (handled in
+   Scene.jsx), the drawer opens without a transition, and the
+   status dot holds steady instead of breathing. Nothing is
+   hidden and nothing is explained away — the cascade is a way of
+   PRESENTING five states that are already in the document, so
+   taking it away costs the presentation and none of the content.
+   ------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  .scene-drawer,
+  .scene-drawer-inner,
+  .scene-caret,
+  .scene-next,
+  .scene-adjust-cue,
+  .scene-adjust-label {
+    transition: none;
+  }
+  .scene-dot.is-setting {
+    animation: none;
+    opacity: 0.6;
   }
 }
 

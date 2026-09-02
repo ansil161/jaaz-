@@ -44,6 +44,45 @@ export const solutionsIndex = {
   statement:
     'Some of these cost more than a car. One of them is an afternoon of work and a better pair of speakers. All nine are built by the same team, to the same measurement standard, and handed over on one button.',
   meta: 'Kochi · India & the Gulf',
+
+  /* ============================================================
+     THE OVERTURE — the pinned opening.
+
+     Three statements, one at a time, on one stage. Every word is
+     already on screen before it is lit, at a fifth of its weight,
+     and the scroll is what brings it up — so the reader is not
+     waiting for type to arrive, they are watching a sentence be
+     said. Scroll back and it un-says itself.
+
+     WHY THREE AND WHY THESE THREE
+     They are an argument in the shape the page needs:
+
+       01  THE OFFER      what this page is. Nine of them.
+       02  THE ASSUMPTION the answer everyone arrives with.
+       03  THE CORRECTION and why it is usually the wrong one.
+
+     The third is the only one that matters, which is why it is
+     the only one that happens in the light: acts one and two are
+     bone on ink, and the third opens a sheet of paper out of the
+     black and is set in ink on it. The tonal inversion IS the
+     turn. Nothing else in the section changes colour.
+
+     The words are lifted verbatim out of `sub` below — the
+     opening was already written, it had just never been staged.
+     `coda` is the rest of that same sentence, and it lands after
+     the pin releases rather than on the sheet, because the sheet
+     holds a correction and a correction with a subordinate clause
+     hanging off it is no longer a correction.
+     ============================================================ */
+  overture: {
+    label: 'The catalogue',
+    acts: [
+      'Nine ways to build the room you want.',
+      'A dedicated cinema is one answer.',
+      'Most people need a system, not a room.',
+    ],
+    coda: 'So every one of these is quoted, engineered and signed off on its own.',
+  },
   image: img('theatre', 2400, '16:9'),
   imageAlt: 'A finished JAAZ private cinema with the house lights down',
 

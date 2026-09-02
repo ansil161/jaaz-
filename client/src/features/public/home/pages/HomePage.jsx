@@ -9,7 +9,7 @@ import Possibilities from '@/features/public/home/components/Possibilities'
 import LightsDown from '@/features/public/home/components/LightsDown'
 import Spaces from '@/features/public/home/components/Spaces'
 import Snap from '@/features/public/home/components/Snap'
-import Prism from '@/features/public/home/components/prism/Prism'
+import Scene from '@/features/public/home/components/scene/Scene'
 import Calibration from '@/features/public/home/components/Calibration'
 import Transform from '@/features/public/home/components/Transform'
 import Comfort from '@/features/public/home/components/Comfort'
@@ -31,7 +31,7 @@ import Footer from '@/features/public/layouts/Footer'
       04  LIGHTS DOWN          — breath —
       05  SPACES               What we bring alive
       06  THE SNAP        ★    One room. Different worlds.
-      07  THE PRISM            What's tonight?
+      07  THE SCENE       ★    Choose the moment
       08  CALIBRATION     ★    The room engineers itself
       09  EMPTY ROOM TO        Drag it yourself
           SHOWTIME
@@ -58,7 +58,7 @@ import Footer from '@/features/public/layouts/Footer'
 
    2. NO MORE THAN TWO TYPOGRAPHIC SECTIONS IN A ROW. Every third
       slot breaks the column: <LightsDown> and <Transform> are
-      full-bleed frames, <Spaces> and <Prism> carry photographs,
+      full-bleed frames, <Spaces> and <Scene> carry photographs,
       and <Snap> and <Calibration> break it hardest of all by not
       being black — both are printed on paper, edge to edge. A
       page this long that reads as one continuous column of set
@@ -152,8 +152,9 @@ export default function Home() {
           IT IS NOT A FILM, AND IT HAS BEEN BUILT AS ONE TWICE.
           The first version ran 3.4 viewports of pinned scroll and
           put the pay-off in the last 40% of it, so it was
-          replaced by <Prism>. The second was a scrubbed frame
-          sequence with a blowout at contact, and ansil ruled the
+          replaced by <Prism>, itself since replaced by <Scene>.
+          The second was a scrubbed frame sequence with a blowout
+          at contact, and ansil ruled the
           whole register out before it shipped — no pinned or
           scroll-jacked sections, no near-black screens, no
           film-style motion, no display-serif drama filling a
@@ -164,7 +165,7 @@ export default function Home() {
           operate, for the same reason <Calibration> shows both
           layouts side by side: a comparison you have to work is a
           comparison you have to remember. That is also what keeps
-          it distinct from <Prism> directly below, which IS the
+          it distinct from <Scene> directly below, which IS the
           chooser and earns its interaction.
 
           THE FOUR PHOTOGRAPHS DO NOT EXIST YET. The verified pool
@@ -174,17 +175,37 @@ export default function Home() {
           disclosure line under them until the renders land. */}
       <Snap />
 
-      {/* 07 · WHAT IT IS FOR — the rooms and the change, then the
-          choosing. Placed immediately after <Snap> because the two
-          are one argument in two halves: the Snap shows that the
-          room becomes something else, the Prism lets you pick
-          which. It is the page's only section the visitor drives
-          rather than scrolls past.
+      {/* 07 · THE SCENE ★ — what the room is FOR, chosen by the
+          visitor and then assembled in front of them.
 
-          It answered to `#snap` through three rewrites and gives
-          the name back here, because <Snap> exists again directly
-          above it and two sections cannot share an address. */}
-      <Prism />
+          Placed immediately after <Snap> because the two are one
+          argument in two halves: the Snap shows that the room
+          becomes something else, and this is where you pick which
+          — movie night, match night, music, a party, goodnight —
+          and watch five subsystems arrive over a second and a
+          half in the order a real room would do them.
+
+          IT REPLACED <Prism> (2026-09-02, built to the JAAZ Scene
+          Experience concept document). Prism made the same claim
+          by SCROLLING: five stacked bands, one atmosphere each, in
+          a fixed order, with nothing to choose. This section makes
+          it by being OPERATED, which is what the claim needs — a
+          page arguing that the homeowner never has to control
+          anything has to have a touch in it, or it is only saying
+          so. The five grades survived the rebuild; the mechanism
+          did not.
+
+          The address moved with it: `#prism` named a stack of
+          bands that no longer exists, and this slot now answers to
+          `#scene`. (`#snap` went back to <Snap> above at the
+          previous rewrite.)
+
+          IT IS THE PAGE'S SECOND SIGNATURE and it is deliberately
+          NOT built like the first. <Calibration> pins and scrubs;
+          this does not move the page at all. Two pinned sections
+          three slots apart would make the homepage feel like it
+          has stopped belonging to the person scrolling it. */}
+      <Scene />
 
       {/* 08 · PROOF ★ — the one section that argues rather than
           shows, and the only one the visitor watches HAPPEN. It
@@ -222,7 +243,7 @@ export default function Home() {
 
           <Comfort> is the page's slow beat, and deliberately has
           nothing to operate: it follows three sections in a row
-          that hand the visitor a control (<Prism>'s stack,
+          that hand the visitor a control (<Scene>'s selector,
           <Calibration>'s chair, <Transform>'s seam) and precedes a
           fourth, so a page that never stops offering interactions
           would start reading as a demo reel. This one is looked

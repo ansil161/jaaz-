@@ -17,10 +17,8 @@ import Contact from '@/features/public/contact/pages/ContactPage'
 import Solutions from '@/features/public/solutions/pages/SolutionsPage'
 import Rooms from '@/features/public/experience/pages/ExperiencePage'
 import Projects from '@/features/public/projects/pages/ProjectsPage'
-import ProjectDetail from '@/features/public/projects/pages/ProjectDetailPage'
 import SolutionDetail from '@/features/public/solutions/pages/SolutionDetailPage'
 
-import { projectBySlug } from '@/features/public/data/projects'
 import { getSolution } from '@/features/public/data/solutions'
 
 /* The walkthrough carries three.js and its addons — roughly 800KB before
@@ -40,8 +38,8 @@ import { getSolution } from '@/features/public/data/solutions'
    untouched.
 
    `data/tonight.js` is GONE, and anything half-written against it has to be
-   repointed: the homepage section it fed was replaced by <Prism>, whose
-   content lives in data/prism.js. */
+   repointed: the homepage section it fed was replaced by <Prism> and
+   then by <Scene>, whose content lives in data/scene.js. */
 const House = lazy(() => import('@/features/public/house/pages/HousePage'))
 
 const ROUTES = {
@@ -112,33 +110,7 @@ const ROUTES = {
   },
 }
 
-/* Every project is a page, and there are six of them today and more later, so
-   they are matched rather than listed. The title and description are built
-   from the project's own data for the same reason the static table has them
-   at all: a client-side route change does not update the tab or the meta
-   description on its own, and six pages all reading "Projects — JAAZ" is the
-   version of this that looks fine in the browser and wrong in a search
-   result. */
-function resolveProject(path) {
-  const [, section, slug, ...rest] = path.split('/')
-  if (section !== 'projects' || !slug || rest.length) return null
-
-  const project = projectBySlug(slug)
-  if (!project) return null
-
-  return {
-    component: ProjectDetail,
-    title: `${project.flatTitle} — ${project.category}, ${project.location} — JAAZ`,
-    description: project.summary,
-  }
-}
-
-/* Same reasoning as resolveProject, one catalogue over. The nine solutions
-   each carry a full specification, a fit list and a gallery, and none of it
-   had anywhere to live: /solutions/<slug> was never routed, so the index's
-   only way onward was the contact form. A visitor who wants to know what is
-   IN a solution before asking for a survey now has a page to read, and a
-   place to link someone to. */
+/* Resolve /solutions/:slug route */
 function resolveSolution(path) {
   const [, section, slug, ...rest] = path.split('/')
   if (section !== 'solutions' || !slug || rest.length) return null
@@ -155,9 +127,6 @@ function resolveSolution(path) {
 
 export function resolveRoute(path) {
   if (ROUTES[path]) return ROUTES[path]
-
-  const project = resolveProject(path)
-  if (project) return project
 
   const solution = resolveSolution(path)
   if (solution) return solution

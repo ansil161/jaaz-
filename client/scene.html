@@ -38,18 +38,20 @@
   <body>
     <div id="root"></div>
     <!--
-      /prism.html?reduced=1 forces the reduced-motion branch.
+      /scene.html?reduced=1 forces the reduced-motion branch.
 
       Two reasons this lives here rather than in the module. It has to
       run BEFORE any module evaluates, because `prefersReducedMotion()`
       is read during the component's first layout effect. And it is the
-      only way to QA a pinned section through the browser MCP at all:
+      only way to QA this section through the browser MCP at all:
       screenshotting puts the tab at `visibilityState: hidden`, which
-      stops rAF, which stops GSAP's ticker, which strands every scrubbed
-      timeline. The reduced-motion branch needs no ticker, so it is the
-      one path that screenshots honestly — and because <Prism> is a
-      composition rather than a sequence, that branch shows the whole
-      section rather than a degraded version of it.
+      stops rAF, which stops GSAP's ticker, which strands the
+      1.5-second cascade halfway through a state it was never meant to
+      hold. The reduced-motion branch needs no ticker, so it is the one
+      path that screenshots honestly — and because <Scene> is a
+      composition with a cascade rather than a cascade with a
+      composition, that branch shows the whole section rather than a
+      degraded version of it.
 
       Dev-only — this file is not among the build inputs in
       vite.config.js and never ships.
@@ -63,6 +65,6 @@
             : real(q)
       }
     </script>
-    <script type="module" src="/src/app/public/prism-preview.jsx"></script>
+    <script type="module" src="/src/app/public/scene-preview.jsx"></script>
   </body>
 </html>

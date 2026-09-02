@@ -12,7 +12,7 @@
    competition) would have been quicker and would have said
    nothing this site has not already said better.
 
-   Drawn to the same specification as `prism/prismIcons.jsx`: a
+   Drawn to the same specification as `scene/sceneIcons.jsx`: a
    24-unit box, 1.25 stroke, square caps and mitred joins, no
    fills. The two sets deliberately do not share a `base` object —
    see the note in that file for why. A third set is the point at
