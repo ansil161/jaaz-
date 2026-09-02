@@ -32,7 +32,7 @@ import Footer from '@/features/public/layouts/Footer'
       05  SPACES               What we bring alive
       06  THE SNAP        ★    One room. Different worlds.
       07  THE PRISM            What's tonight?
-      08  CALIBRATION          Measured, not eyeballed
+      08  CALIBRATION     ★    The room engineers itself
       09  EMPTY ROOM TO        Drag it yourself
           SHOWTIME
       10  COMFORT              Stay longer
@@ -186,18 +186,29 @@ export default function Home() {
           above it and two sections cannot share an address. */}
       <Prism />
 
-      {/* 08 · PROOF — the one section that argues rather than
-          shows. It sits here, after the rooms and before the
-          transformation, because it is the hinge between them:
-          everything above is what a JAAZ room feels like,
-          everything below is how one is built.
+      {/* 08 · PROOF ★ — the one section that argues rather than
+          shows, and the only one the visitor watches HAPPEN. It
+          sits here, after the rooms and before the transformation,
+          because it is the hinge between them: everything above is
+          what a JAAZ room feels like, everything below is how one
+          is built.
 
-          It is also the page's only LIGHT section — full-bleed
-          paper, hard edges top and bottom — which keeps the
-          two-typographic-sections-in-a-row rule intact across the
-          join without a photograph, and it hands over BOTH
-          layouts at once rather than hiding one behind a
-          control. */}
+          Rebuilt 2026-09-02 as a pinned instrument. The statement
+          lands in the dark, the dark is lifted off a sheet of
+          engineering paper, and one scrubbed master timeline then
+          runs the work — scan, detect, expose, correct, compare,
+          verify — before handing the room over to be interrogated
+          chair by chair. It is the page's longest slot by scroll
+          (a 440% pin) and its only light one, and it earns both:
+          this is where the site stops asserting and starts
+          proving.
+
+          Two things it owns that nothing else on this page does,
+          so neither should be copied without a reason of its own:
+          a PIN with a scrub, and a full-bleed light ground. The
+          tonal break is what keeps the two-typographic-sections-
+          in-a-row rule intact across the join without a
+          photograph. */}
       <Calibration />
 
       {/* 09 · FROM EMPTY ROOM TO SHOWTIME. The transformation, and

@@ -471,24 +471,266 @@ html.lenis body {
     color: #f4f2ee;
   }
 
-  /* The chair pads in the two plans. On the JAAZ drawing the fill
-     is written per frame while the room resolves out of the
-     conventional arrangement, so it must NOT carry a transition —
-     the reveal tween is already interpolating it sixty times a
-     second and a transition on top would smear a value that is
-     already smooth. The warm overlay that marks the chair being
-     read is a second shape whose opacity is the only thing that
-     changes on selection, which is what makes that one
-     transitionable. */
-  .cal-seat-warm {
-    transition: opacity 340ms var(--ease-out-expo);
+  /* ============================================================
+     CHAPTER 04 — THE CALIBRATION INSTRUMENT
+
+     A palette and a type register that exist for ONE section, and
+     are scoped to it. They are deliberately not `@theme` tokens:
+     the site's ink is #000 on #F4F2EE and this is #111 on
+     #E9E4D8, which is a drawing surface rather than a page, and
+     promoting these to globals would quietly re-grade every light
+     section on the site.
+
+     CONTRAST, AND WHERE THE BRIEF'S PALETTE HAD TO BEND. The
+     specified secondary ink (#77736B) measures 3.70:1 on this
+     stock — fine for a stroke, a fail for 11px type. So it is
+     split: `--lab-line` keeps the specified value and is used for
+     LINEWORK only, and `--lab-ink-2` is a deeper cut of the same
+     hue at 5.3:1 for every word set in it. The signal (#C8924A)
+     measures 2.2:1 and is therefore never used for text at all —
+     only for marks, locators and the reference-window contour,
+     which is what "used sparingly as an engineering locator"
+     should mean anyway.
+
+     THE THREE VOICES. Figures are Instrument Serif, because a
+     measurement set in the house display face is what keeps this
+     a JAAZ page rather than an instrument panel. Annotation is
+     JetBrains Mono, because that is what a drawing annotates in.
+     Prose is Inter. An engineering publication is exactly these
+     three and nothing else.
+     ============================================================ */
+  .cal-lab {
+    --lab-paper: #e9e4d8;
+    --lab-ink: #111111;
+    --lab-ink-2: #5f5c55;
+    --lab-line: #77736b;
+    --lab-grid: #c8c1b4;
+    --lab-signal: #c8924a;
+    --rule: rgba(17, 17, 17, 0.16);
   }
-  .cal-seat-pool {
-    transition: opacity 420ms var(--ease-out-expo);
+
+  /* The stock. Same construction as `.sheet` — a lit top edge, a
+     shaded foot and a noise tile multiplied over both — mixed to
+     the warmer, greyer paper an engineering drawing is printed
+     on. */
+  .cal-paper {
+    position: relative;
+    isolation: isolate;
+    background:
+      radial-gradient(70% 38% at 50% -4%, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0) 66%),
+      linear-gradient(180deg, #efeade 0%, #e9e4d8 46%, #e2dccf 100%);
+  }
+  /* NO `mix-blend-mode` HERE, unlike `.sheet`. This grain covers a
+     100vh PINNED stage, and a blended full-stage layer forces the
+     compositor to re-blend the whole thing every time anything
+     under it changes — which, during a scrubbed timeline, is every
+     frame. At this opacity a plain overlay is visually the same
+     tile and costs nothing. */
+  .cal-paper::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.5;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E");
+  }
+  .cal-lab ::selection {
+    background: #111111;
+    color: #e9e4d8;
+  }
+
+  /* --- Annotation. The drawing's own voice. --- */
+  .cal-micro,
+  .cal-tick,
+  .cal-tag,
+  .cal-state,
+  .cal-num {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    text-transform: uppercase;
+  }
+  .cal-micro {
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    line-height: 1.5;
+    color: var(--lab-ink-2);
+  }
+  .cal-state {
+    font-size: 0.75rem;
+    letter-spacing: 0.24em;
+    color: var(--lab-ink);
+  }
+  .cal-tick {
+    font-size: 0.625rem;
+    letter-spacing: 0.16em;
+    color: var(--lab-ink-2);
+  }
+  .cal-num {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--lab-ink-2);
+  }
+  /* A reading printed on the plan. The rule on its inner edge is
+     the leader — a drawing connects a note to its subject with a
+     stub, not with a card. */
+  /* A reading printed on the plan. NO BOX. The first pass gave
+     each tag a tinted panel with a hairline round it, which is a
+     chip — ten of them over a drawing is the app-chrome failure
+     this section has already been rebuilt away from once. What
+     keeps type legible over a contour field instead is a halo of
+     the paper itself, which is what a real drawing does when it
+     breaks a line to let a note through. */
+  .cal-tag {
+    font-size: 0.5625rem;
+    letter-spacing: 0.08em;
+    line-height: 1;
+    color: var(--lab-ink);
+    text-shadow:
+      0 0 3px #e9e4d8,
+      0 0 3px #e9e4d8,
+      0 0 6px #e9e4d8;
+  }
+  .cal-tag b {
+    font-weight: 500;
+    color: #9a6f2f;
+    margin-inline-end: 0.35em;
+  }
+  @media (min-width: 640px) {
+    .cal-tag {
+      font-size: 0.625rem;
+    }
+  }
+
+  /* --- Prose and headings. --- */
+  .cal-label {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 0.9375rem;
+    letter-spacing: -0.004em;
+    color: var(--lab-ink);
+  }
+  /* A note, as opposed to an annotation. Tracked uppercase mono is
+     right for a label of three words and wrong for a sentence of
+     twenty — at 11px across a 600px measure it stops being read
+     and starts being skipped. */
+  .cal-note {
+    font-family: var(--font-sans);
+    font-weight: 300;
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    color: var(--lab-ink-2);
+  }
+  .cal-read {
+    font-family: var(--font-sans);
+    font-weight: 300;
+    font-size: 1.0625rem;
+    line-height: 1.72;
+    color: color-mix(in srgb, var(--lab-ink) 82%, transparent);
+  }
+
+  /* --- Figures. The house display face, set as measurements. --- */
+  .cal-figure-xl,
+  .cal-figure-lg,
+  .cal-figure-sm {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    color: var(--lab-ink);
+    line-height: 0.88;
+  }
+  .cal-figure-xl {
+    font-size: clamp(2.75rem, 6.5vw, 4.5rem);
+  }
+  .cal-figure-lg {
+    font-size: clamp(1.5rem, 2.4vw, 2rem);
+  }
+  .cal-figure-sm {
+    font-size: 1.0625rem;
+  }
+  .cal-unit {
+    font-family: var(--font-mono);
+    font-size: 0.26em;
+    letter-spacing: 0.14em;
+    margin-inline-start: 0.5em;
+    color: var(--lab-ink-2);
+    text-transform: uppercase;
+  }
+  /* The figure the calibrated one replaced. Struck, because a
+     superseded measurement is struck on a drawing and never
+     quietly deleted. */
+  .cal-was {
+    font-family: var(--font-mono);
+    font-size: 0.3em;
+    letter-spacing: 0.12em;
+    margin-inline-start: 0.9em;
+    color: var(--lab-ink-2);
+    text-decoration: line-through;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+    opacity: 0.75;
+  }
+
+  /* --- The seat response matrix. ---
+     A row is a number line, not a button. The hollow mark is the
+     conventional reading, the solid one is the calibrated
+     reading, and the tie between them is the correction. */
+  .cal-row {
+    transition: background-color 200ms var(--ease-out-expo);
+  }
+  .cal-row:hover,
+  .cal-row.is-on {
+    background-color: rgba(17, 17, 17, 0.045);
+  }
+  .cal-row:focus-visible {
+    outline: 1px solid var(--lab-ink);
+    outline-offset: -1px;
+  }
+  .cal-mark,
+  .cal-mark-ghost {
+    width: 0.5rem;
+    height: 0.5rem;
+    margin-left: -0.25rem;
+    margin-top: -0.25rem;
+    border-radius: 999px;
+    transition: transform 260ms var(--ease-out-expo);
+  }
+  .cal-mark {
+    background: var(--lab-ink);
+  }
+  .cal-row.is-on .cal-mark {
+    background: var(--lab-signal);
+    transform: scale(1.35);
+  }
+  .cal-mark-ghost {
+    background: transparent;
+    box-shadow: inset 0 0 0 1px var(--lab-line);
+    opacity: 0.7;
+  }
+  .cal-tie {
+    background: repeating-linear-gradient(
+      to right,
+      var(--lab-line) 0 2px,
+      transparent 2px 5px
+    );
+    opacity: 0.65;
+  }
+
+  /* --- Overlays that follow a selection rather than a scrub. --- */
+  .cal-fade {
+    transition: opacity 320ms var(--ease-out-expo);
+  }
+  .cal-path-line {
+    transition:
+      x2 320ms var(--ease-out-expo),
+      y2 320ms var(--ease-out-expo);
   }
   @media (prefers-reduced-motion: reduce) {
-    .cal-seat-warm,
-    .cal-seat-pool {
+    .cal-row,
+    .cal-mark,
+    .cal-mark-ghost,
+    .cal-fade,
+    .cal-path-line {
       transition: none;
     }
   }

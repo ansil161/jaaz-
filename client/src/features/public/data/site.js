@@ -788,75 +788,125 @@ export const snap = {
    with the photograph. */
 export const calibration = {
   id: 'calibration',
-  label: 'Calibration',
-
-  /* The claim, in two halves. The first is set back; the second is
-     what the section spends its length earning. */
-  title: ['You may never', 'see the difference.'],
-  titleTurn: ['But you will', 'always feel it.'],
-  lead: 'One microphone, seven chairs, no averages. Both rooms below are the same space measured twice — pick any chair and read what each layout actually gives it.',
-
   /* The line the whole section exists to earn, printed under the
      verdict rather than over the drawings. It is the shortest
      statement of the difference between installing equipment and
      engineering a room. */
   creed: 'The room isn’t calibrated for the sofa. It’s calibrated for the people sitting in it.',
 
-  /* The two rooms, side by side. `name` heads each column and
-     `short` heads its figures where a column is one word wide.
-     `note` is what that layout MEANS in plain words — it replaces
-     the legend a drawing would otherwise need. */
-  layouts: [
-    {
-      key: 'found',
-      name: 'Conventional layout',
-      short: 'Conventional',
-      note: 'What a room this size would normally be given.',
-    },
-    {
-      key: 'built',
-      name: 'JAAZ layout',
-      short: 'JAAZ',
-      note: 'What the measurement asked for instead.',
-    },
-  ],
-  rows: ['Front row', 'Back row'],
-  seatWord: 'Seat',
-  pick: 'Pick any chair below, or point at one in either room.',
-
-  /* The drawings' own captions. `planScale` is a template — the
-     component fills it from `room` and `screenWidth` below, so the
-     dimensions printed on the sheet are the dimensions the plans
-     were built from. `planNote` is the only legend either drawing
-     gets, and it is a sentence rather than a key. */
-  planScale: 'Drawn to scale · {w} × {d} m · {s} m screen',
-  planNote:
-    'The same room at the same scale, drawn twice: screen at the top, seven chairs in two rows. Only the seating and the front three speakers differ.',
-  valuesLabel: 'Every chair, against the room average',
-  seatReadLabel: 'The same chair, in both rooms',
-
-  /* The selected chair, as a sentence rather than a readout. Every
-     figure in it is computed from the plans below. */
-  seatSentence:
-    'Sound reaches it in {ms} ms. It measures {db} dB against the room average, and the screen fills {view}° of the view — {window}.',
-  viewIn: 'inside the window the trade works to',
-  viewOut: 'outside the window the trade works to',
-
-  /* The verdict on the whole room, which is the only figure that
-     settles the argument. */
-  spreadLabel: 'Best chair to worst',
-  /* Two readings of the same measurement, so they have to be the
-     same sentence. Anything else is the comparison being weighted
-     by how it is worded rather than by what was measured. */
-  spreadNote: {
-    found: 'The worst chair sits {b} dB off the room average.',
-    built: 'Not one chair sits more than {b} dB off the room average.',
-  },
-
   /* The close. */
   resolve: ['Every seat.', 'The same intention.'],
-  resolveSub:
-    'Picture, sound and comfort are tuned for the people in the room — not just the equipment inside it.',
+  /* ---------- THE CALIBRATION INSTRUMENT ----------
+     Chapter 04 is a scroll-driven engineering demonstration, and
+     everything it says is here. `model.js` derives every FIGURE
+     from the geometry at the foot of this block; this is the
+     language wrapped round them, and the two never meet except
+     through the `{placeholder}` templates below.
+
+     THE SECTION SAYS "MODELLED", NEVER "MEASURED IN THIS ROOM".
+     The field on the plan and the numbers in the margin come from
+     a first-order direct-field model of the three front channels,
+     which is the right instrument for the question being asked —
+     what separates a good chair from a bad one at this scale is
+     path length. `contourNote` says so on the sheet, in the same
+     size type as everything near it, because a drawing this
+     confident has to be honest about what it is. */
+  lab: {
+    chapter: 'Ch. 04',
+    protocol: 'Calibration protocol',
+
+    /* The claim, in two halves, and the reason the section opens
+       in the dark: it is the one sentence that has to land before
+       a single line is drawn. */
+    statement: [
+      ['Calibration is not', 'about the best seat.'],
+      ['It’s about', 'every seat.'],
+    ],
+    statementNote:
+      'A room can be tuned until one chair is perfect. Every other chair then pays for it. What follows is the same room engineered the other way — scroll to run it.',
+
+    /* The seven phases, each announced by the instrument itself
+       rather than by a heading. `code` is the state; `lines` are
+       what the instrument is doing while it is in that state, and
+       they appear and clear as the phase runs. */
+    phases: {
+      room: { code: 'Room', lines: ['Plan loaded', 'Conventional placement'] },
+      scan: { code: 'Scan', lines: ['Scan active', 'Room analysis', 'Seat response detection'] },
+      expose: { code: 'Detect', lines: ['Uncontrolled acoustic distribution'] },
+      correct: {
+        code: 'Correct',
+        lines: [
+          'Repositioning',
+          'Phase alignment',
+          'Listener distance',
+          'Viewing correction',
+          'Reference window',
+        ],
+      },
+      ghost: { code: 'Compare', lines: ['Ghost memory', 'Conventional placement retained'] },
+      verify: { code: 'Verify', lines: ['Reference uniformity'] },
+    },
+
+    /* The contour levels, in dB against the room's own average.
+       Chosen for the seating half of the plan rather than for the
+       whole room: below 3 m the field is climbing towards the
+       cabinets and any level set bunches there. `band` is the one
+       contour pair a visitor has to read — the reference window
+       every chair has to land inside. */
+    levels: [-3, -2, 0, 2, 4, 7, 11, 16],
+    band: 1,
+
+    fieldLabel: 'Direct field · dB against room average',
+    bandLabel: 'Reference window · ±1 dB',
+    contourNote:
+      'The contours are the modelled direct field of the three front channels, in dB against the room average; the two warmer lines are the ±1 dB reference window every chair has to land inside. It is a design tool and the same model that produces every figure on this sheet — not a measurement of your room. That one is taken on site.',
+
+    /* The margin readouts. `varianceLabel` heads the figure that
+       recalculates all the way through the correction. */
+    varianceLabel: 'Maximum seat variance',
+    scanLabel: 'Seat response',
+    ghostLabel: 'Conventional placement',
+    calibratedLabel: 'Calibrated placement',
+
+    /* The verdict, as an engineering publication sets it: three
+       figures, each with what it was and what it became. */
+    verdictTitle: 'Reference uniformity',
+    metrics: [
+      { key: 'variance', label: 'Maximum seat variance', short: 'Seat variance', unit: 'dB' },
+      { key: 'arrival', label: 'Arrival consistency', short: 'Arrival', unit: 'ms', pm: true },
+      { key: 'view', label: 'Viewing window, all seven', short: 'Viewing', unit: '°' },
+    ],
+    wasLabel: 'Conventional',
+    nowLabel: 'Calibrated',
+
+    /* The instrument the visitor is left holding. Each row is a
+       chair and each track is that chair's reading: the hollow
+       mark is where a conventional layout puts it, the solid one
+       is where calibration does, and the centre line is the room
+       average. Seven markers closing on the middle is the whole
+       argument, drawn without a chart. */
+    /* The two words the model needs to name a chair. They live in
+       `lab` rather than at the top of the block because the
+       instrument is the only thing on the site that names one. */
+    seatWord: 'Seat',
+    rows: ['Front row', 'Back row'],
+
+    matrixLabel: 'Seat response matrix',
+    matrixNote: 'Hollow mark, conventional. Solid mark, calibrated. Centre line, room average.',
+    matrixHint: 'Point at a chair, or arrow through them.',
+    readLabels: {
+      arrival: 'Arrival from centre',
+      balance: 'Against room average',
+      view: 'Screen fills',
+      move: 'Correction',
+    },
+
+    /* Filled by `model.js` from the geometry — never typed. */
+    explain:
+      'In a conventional layout this chair sits {a} dB off the room average. Calibration brings it to {b} dB, moving it {d} m to hold {v}° of the screen.',
+    insideNote:
+      'Conventional placement puts {from} of the seven chairs inside the ±1 dB reference window. Calibration puts {to} inside it.',
+  },
 
   /* Speed of sound at 20 °C. It is printed in the section, so it
      lives here. */
