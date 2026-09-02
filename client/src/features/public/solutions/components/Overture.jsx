@@ -10,14 +10,20 @@ import { useGsapScope, gsap, SplitText, prefersReducedMotion } from '@/lib/anima
    sheet of paper that opens out of the black.
 
    WHAT THE MOTION IS
-   Every word of a statement is on screen before it is lit, at a
-   fifth of its weight, and scrolling brings it up left to right
-   with about two words mid-fade at any frame. That last part is
-   the whole effect: one word at a time is a teleprompter, all of
-   them at once is a fade-in, and two-and-a-bit is the rate a
-   sentence is actually read at. Scroll back up and the sentence
+   A statement is WRITTEN by the scroll. Every word holds its
+   final box from the first frame and starts at nothing, and
+   scrolling brings them up left to right with a trail of three
+   or four still mid-fade behind the head of the sentence — solid,
+   then grey, then gone. That trail is the whole effect: one word
+   at a time is a teleprompter, all of them at once is a fade-in,
+   and a running edge with a falloff behind it is what a sentence
+   looks like while it is being said. Scroll back up and it
    un-says itself, which is the difference between a scrubbed
    statement and a triggered one.
+
+   Nothing is pre-drawn. See DIM below for why the dim-floor
+   version of this — the whole sentence sitting there in grey,
+   lighting up — is a different and worse effect.
 
    Nothing moves. No word rises, nothing parallaxes, nothing
    scales. <Promise> has the note on why per-word travel on
@@ -86,15 +92,30 @@ const ACTS = [
    still moving is the frame this section cannot have. */
 const SHEET_AT = 0.66
 
-/* Unlit weight. Not the same number on both stocks: 0.2 of bone on
-   ink lands near #333, and 0.26 of ink on paper lands near #bcb8b2 —
-   which is the same PERCEIVED "not yet" on two opposite grounds.
-   Matching the numbers instead of the appearance would leave the
-   sheet's unlit words nearly black and give the turn away early. */
-const DIM_ON_INK = 0.2
-const DIM_ON_PAPER = 0.26
+/* An unread word is not there.
+
+   The obvious build — and the first one written here — lays the whole
+   sentence out at a dim floor and lights it up. It is the wrong
+   effect, and the difference is the whole point: ghost text lets you
+   read the end of the sentence before the beginning has been said, so
+   the scroll is decorating something you have already finished. At
+   zero, the statement is being WRITTEN, and the only thing you can
+   read is the part that has arrived.
+
+   The layout is still the finished sentence's — every word occupies
+   its final box from the first frame, invisible. Nothing re-centres,
+   nothing reflows, no line jumps when it gains a word. That is what
+   separates this from a typewriter. */
+const DIM = 0
 
 /* How many words are mid-fade at any frame.
+
+   This is the number that carries the effect, and it is high on
+   purpose. At 1 the words tick on like a counter. At 4 there is a
+   TRAIL: the head of the sentence is solid, and three or four words
+   behind it fall away through grey to nothing — which is what a
+   sentence looks like while it is being said, and which no amount of
+   easing on a one-word-at-a-time reveal will produce.
 
    GSAP's total for a staggered tween is `duration + each * (n - 1)`.
    Pinning that to `span` and asking for OVERLAP words in flight:
@@ -105,7 +126,7 @@ const DIM_ON_PAPER = 0.26
    so `each` falls out of the word count, and a four-word statement
    and a nine-word one read at the same rate over the same distance
    instead of the short one being over before you started. */
-const OVERLAP = 2.4
+const OVERLAP = 4
 
 function ramp(count, span) {
   const each = span / (count - 1 + OVERLAP)
@@ -135,13 +156,11 @@ export default function Overture() {
       mm.add({ wide: '(min-width: 768px)', narrow: '(max-width: 767px)' }, (ctx) => {
         const { wide } = ctx.conditions
 
-        const dim = (i) => (i === 2 ? DIM_ON_PAPER : DIM_ON_INK)
-
         /* The opening frame, written out rather than left to the
            markup — see the refresh note at the top of the file. */
         gsap.set(acts, { autoAlpha: 0 })
         gsap.set(acts[0], { autoAlpha: 1 })
-        splits.forEach((s, i) => gsap.set(s.words, { opacity: dim(i) }))
+        splits.forEach((s) => gsap.set(s.words, { opacity: DIM }))
         gsap.set(sheet, { scaleY: 0, transformOrigin: '50% 50%' })
         gsap.set(field, { opacity: 0.55, xPercent: -6 })
 
@@ -177,7 +196,7 @@ export default function Overture() {
 
           tl.fromTo(
             words,
-            { opacity: dim(i) },
+            { opacity: DIM },
             {
               opacity: 1,
               duration: r.duration,
