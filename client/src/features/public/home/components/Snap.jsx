@@ -130,7 +130,7 @@ export default function Snap() {
         {/* The heading shares its row with the paragraph rather
             than owning a screen of its own — see the note at the
             top of this file about display-serif drama. */}
-        <div className="mt-10 grid gap-7 sm:mt-14 lg:grid-cols-[1.15fr_1fr] lg:items-end lg:gap-20">
+        <div className="mt-10 grid gap-7 sm:mt-14 lg:grid-cols-[1.22fr_1fr] lg:items-end lg:gap-20">
           <h2 data-title className="t-chapter text-balance">
             <span className="block text-ink/50">{D.heading[0]}</span>
             <span className="block text-ink">{D.heading[1]}</span>
