@@ -11,7 +11,6 @@ import Spaces from '@/features/public/home/components/Spaces'
 import Snap from '@/features/public/home/components/Snap'
 import Prism from '@/features/public/home/components/prism/Prism'
 import Calibration from '@/features/public/home/components/Calibration'
-import Engineering from '@/features/public/home/components/Engineering'
 import Transform from '@/features/public/home/components/Transform'
 import Comfort from '@/features/public/home/components/Comfort'
 import Feeling from '@/features/public/home/components/Feeling'
@@ -22,7 +21,7 @@ import Footer from '@/features/public/layouts/Footer'
 /* ============================================================
    HOME
 
-   Sixteen slots, in this order, and the order IS the argument.
+   Fifteen slots, in this order, and the order IS the argument.
    Reordering them is a content decision, not a layout one.
 
       01  HERO                 The room awakens
@@ -34,27 +33,25 @@ import Footer from '@/features/public/layouts/Footer'
       06  THE SNAP        ★    One room. Different worlds.
       07  THE PRISM            What's tonight?
       08  CALIBRATION          Measured, not eyeballed
-      09  THE JAAZ COMFORT     Six engineering pillars
-          SYSTEM
-      10  EMPTY ROOM TO        Drag it yourself
+      09  EMPTY ROOM TO        Drag it yourself
           SHOWTIME
-      11  COMFORT              Stay longer
-      12  FEELING              What do you want to feel?
-      13  WHY JAAZ             One team, one vision
-      14  CLIENT STORIES       In their rooms
-      15  FINAL CTA            Let's build a room worth staying in
-      16  FOOTER
+      10  COMFORT              Stay longer
+      11  FEELING              What do you want to feel?
+      12  WHY JAAZ             One team, one vision
+      13  CLIENT STORIES       In their rooms
+      14  FINAL CTA            Let's build a room worth staying in
+      15  FOOTER
 
    The shape of it: FEEL (01) · BELIEVE (02-03) · SEE (04-07) ·
-   TRUST THE ENGINEERING (08-10) · WANT IT (11-12) · TRUST THE
-   FIRM (13-14) · ASK (15).
+   TRUST THE ENGINEERING (08-09) · WANT IT (10-11) · TRUST THE
+   FIRM (12-13) · ASK (14).
 
    ------------------------------------------------------------
    FOUR THINGS THE ORDER ENCODES
 
-   1. THE ASK COMES LAST, AND ONLY ONCE. Slots 01-14 ask for
+   1. THE ASK COMES LAST, AND ONLY ONCE. Slots 01-13 ask for
       nothing. The hero's button is there for the small number of
-      people who have already decided, and slot 15 — which lives
+      people who have already decided, and slot 14 — which lives
       inside <Footer> — is the page's one real invitation. A page
       that asks on every screen is a page that has not earned an
       answer on any of them.
@@ -76,19 +73,30 @@ import Footer from '@/features/public/layouts/Footer'
       alternating in a way nobody planned. Decide the target
       rhythm before the next section is rebuilt, not after.
 
-   3. PROOF IS SANDWICHED BETWEEN DESIRE. 08-10 are the hardest,
+   3. PROOF IS SANDWICHED BETWEEN DESIRE. 08-09 are the hardest,
       most technical run on the site, and they sit where they can
       afford to be: after four slots of showing what a room feels
       like, and before two that turn the proof back into wanting
       one. Leading with the measurement would be a spec sheet;
       ending with it would be a page that stops at the argument.
 
+      THE RUN IS NOW TWO SLOTS, NOT THREE. <Engineering> came off
+      at ansil's request (2026-09-02) and it was the WIDENING half
+      of the proof — Calibration takes one discipline all the way
+      down, and Engineering was what said "and there are six of
+      these, each deciding the next". What is left is one
+      discipline proved and one room transformed, which is a
+      narrower claim than the page used to make. If the six
+      pillars are wanted back anywhere, this is the seam they came
+      out of.
+
    4. THE TWO TRUST SECTIONS ARE AT THE END, NOT THE START. <Brand>
       — "one team, one vision" and the three verified numbers —
       used to open the page at slot 02. It is worth far more here:
-      a visitor who has just read a per-seat calibration and six
-      engineering pillars has a reason to care who did it. A
-      visitor on their second screen does not.
+      a visitor who has just read a per-seat calibration and
+      dragged a room from bare shell to finished has a reason to
+      care who did it. A visitor on their second screen does
+      not.
 
    ------------------------------------------------------------
    WHAT IS NOT ON THIS PAGE, AND WHY
@@ -98,8 +106,14 @@ import Footer from '@/features/public/layouts/Footer'
    in data/site.js both still exist; putting it back is one import
    and one tag.
 
-   <FirstPause>, <Journal> and <Technology> are likewise built,
-   unlinked and intact.
+   <Engineering> — "The JAAZ Approach", the six pillars — came
+   off at slot 09 on 2026-09-02 at ansil's request. The component
+   and the `engineering` block in data/site.js both still exist
+   and /chapters.html still renders it, so putting it back is one
+   import and one tag.
+
+   <FirstPause>, <Craft>, <Journal> and <Technology> are likewise
+   built, unlinked and intact.
    ============================================================ */
 
 export default function Home() {
@@ -174,7 +188,7 @@ export default function Home() {
 
       {/* 08 · PROOF — the one section that argues rather than
           shows. It sits here, after the rooms and before the
-          engineering, because it is the hinge between them:
+          transformation, because it is the hinge between them:
           everything above is what a JAAZ room feels like,
           everything below is how one is built.
 
@@ -186,21 +200,13 @@ export default function Home() {
           control. */}
       <Calibration />
 
-      {/* 09 · PROOF, WIDENED — Calibration proves ONE discipline
-          with a real measurement; this names all six pillars and
-          shows that each one decides the next. It goes after, not
-          before, because "here is how far we take one of these"
-          earns the right to say "and there are six" far better
-          than the reverse. */}
-      <Engineering />
-
-      {/* 10 · FROM EMPTY ROOM TO SHOWTIME. The transformation, and
+      {/* 09 · FROM EMPTY ROOM TO SHOWTIME. The transformation, and
           the visitor drags it themselves — the seam between the
           bare civil shell and the finished room. It is the last
           thing on the page the visitor operates. */}
       <Transform />
 
-      {/* 11-12 · DESIRE — the two sections that turn proof back
+      {/* 10-11 · DESIRE — the two sections that turn proof back
           into a reason to want the room.
 
           <Comfort> is the page's slow beat, and deliberately has
@@ -219,14 +225,14 @@ export default function Home() {
       <Comfort />
       <Feeling />
 
-      {/* 13-14 · TRUST. Who did it, then what the people they did
+      {/* 12-13 · TRUST. Who did it, then what the people they did
           it for say about it — in that order, because a quote from
           a stranger means more once you know whose work it is
           praising. */}
       <Brand />
       <Testimonials />
 
-      {/* 15-16 · THE ASK, and the directory. Both live inside
+      {/* 14-15 · THE ASK, and the directory. Both live inside
           <Footer>: the closing CTA panel is slot 15 and opens
           every page on the site, so it is authored once there
           rather than duplicated here. */}
