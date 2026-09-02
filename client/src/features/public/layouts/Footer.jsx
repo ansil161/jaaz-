@@ -398,6 +398,18 @@ export default function Footer({ cta = footer.cta }) {
                   </CardAction>
                 )}
               </Rise>
+
+              {/* The response expectation, under the action rather
+                  than inside the paragraph above it. Tinted from the
+                  panel's own hue for the same reason `body` is. */}
+              {cta.note && (
+                <p
+                  className="mt-5 text-[0.8125rem]"
+                  style={{ color: 'color-mix(in srgb, var(--color-ink) 62%, var(--color-cove))' }}
+                >
+                  {cta.note}
+                </p>
+              )}
             </div>
 
             {/* The photograph. `min-h` rather than an aspect ratio

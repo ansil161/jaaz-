@@ -112,8 +112,12 @@ export default function Engineering() {
         <header className="lg:grid lg:grid-cols-12 lg:gap-x-10">
           <div className="lg:col-span-7">
             <span className="t-label flex items-center gap-3 text-fog">
-              {engineering.chapter}
-              <span className="block h-px w-10 bg-white/20" aria-hidden="true" />
+              {engineering.chapter && (
+                <>
+                  {engineering.chapter}
+                  <span className="block h-px w-10 bg-white/20" aria-hidden="true" />
+                </>
+              )}
               <span className="text-mist">{engineering.label}</span>
             </span>
 

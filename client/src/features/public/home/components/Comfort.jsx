@@ -53,8 +53,12 @@ export default function Comfort() {
       {/* ---- The claim ---- */}
       <header className="shell-wide">
         <span className="t-label flex items-center gap-3 text-fog">
-          {comfort.chapter}
-          <span className="block h-px w-10 bg-white/20" aria-hidden="true" />
+          {comfort.chapter && (
+            <>
+              {comfort.chapter}
+              <span className="block h-px w-10 bg-white/20" aria-hidden="true" />
+            </>
+          )}
           <span className="text-mist">{comfort.label}</span>
         </span>
 

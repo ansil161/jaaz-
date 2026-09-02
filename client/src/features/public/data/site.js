@@ -126,7 +126,7 @@ export const navIdlePlate = 'comfortRoom'
 /* --- 1. Hero -------------------------------------------------- */
 export const hero = {
   headline: ['Entertainment without', 'comfort is just', 'noise.'],
-  sub: 'JAAZ builds private cinemas where picture, sound and seating are engineered as one experience.',
+  sub: 'JAAZ builds private entertainment spaces where picture, sound, acoustics, comfort and control are engineered as one experience.',
   cta: 'Book a Consultation',
   scrollHint: 'Scroll to bring the room to life',
 }
@@ -482,7 +482,7 @@ export const possibilities = {
     },
     {
       n: '05',
-      label: 'Gaming',
+      label: 'Gaming Den',
       title: 'Low Latency',
       line: 'Precision at every frame.',
       body: 'A 120 Hz path from console to screen, positional audio placed to the seat rather than to the room, and light that takes its cue from the game.',
@@ -539,6 +539,17 @@ export const possibilities = {
    null for the same reason — see the note there. With no clip the
    still is projected on its own and nothing else changes. Same
    encoding requirement applies (`-g 1`). */
+/* THE ONLY NUMBERED CHAPTER LEFT ON THE PAGE.
+
+   Six sections used to carry Ch. 01-Ch. 07 marks in reading
+   order. Under the restructured running order they no longer form
+   a contiguous run — <Engineering> moved from ninth to second,
+   <Calibration> sits four slots after this one — and a set of
+   numbers that skips and doubles back is worse than no numbers at
+   all. Every other section keeps its NAME and drops its number.
+   This one keeps both, because "Chapter 01: Lights Down" is the
+   page's one deliberate change of register and the mark is what
+   announces it. */
 export const lightsDown = {
   id: 'lights-down',
   chapter: 'Ch. 01',
@@ -683,8 +694,7 @@ export const spaces = {
    `note` until the renders land. Nothing here pretends. */
 export const snap = {
   id: 'snap',
-  chapter: 'Ch. 02',
-  label: 'The Snap',
+  label: 'One room',
 
   /* Two lines, hard-broken. The eye reads "One room." as a
      finished sentence before it is told there is more than one of
@@ -778,7 +788,6 @@ export const snap = {
    with the photograph. */
 export const calibration = {
   id: 'calibration',
-  chapter: 'Ch. 04',
   label: 'Calibration',
 
   /* The claim, in two halves. The first is set back; the second is
@@ -786,6 +795,12 @@ export const calibration = {
   title: ['You may never', 'see the difference.'],
   titleTurn: ['But you will', 'always feel it.'],
   lead: 'One microphone, seven chairs, no averages. Both rooms below are the same space measured twice — pick any chair and read what each layout actually gives it.',
+
+  /* The line the whole section exists to earn, printed under the
+     verdict rather than over the drawings. It is the shortest
+     statement of the difference between installing equipment and
+     engineering a room. */
+  creed: 'The room isn’t calibrated for the sofa. It’s calibrated for the people sitting in it.',
 
   /* The two rooms, side by side. `name` heads each column and
      `short` heads its figures where a column is one word wide.
@@ -927,6 +942,76 @@ export const craft = {
   ],
 }
 
+/* --- Slot 12: Our Process ------------------------------------- */
+/* THE SIX STEPS `method` HAS ALWAYS POINTED AT.
+
+   data/about.js has said "our delivery process has six steps" since
+   it was written, and named the five habits that run inside them —
+   but the six steps themselves were never authored anywhere. This
+   is them, and About's `method` intro is now true.
+
+   IT REUSES <ProcessTimeline> RATHER THAN A NEW COMPONENT. That
+   component already takes label/heading/intro/steps/finale as
+   props precisely so two pages can run the same measured curve
+   with different copy; a second hand-copied version would start
+   identical and drift on the first change to either page. See the
+   note at the top of ProcessTimeline.jsx.
+
+   WHY IT SITS AT SLOT 12 AND NOT EARLIER. A process diagram shown
+   before someone wants the room is a schedule for a thing they
+   have not decided to buy. Shown here — after the engineering,
+   the range and the team — it answers the only question left
+   before "how do I start", which is "what does this actually
+   involve of me". It removes friction; it does not create
+   interest. */
+export const process = {
+  id: 'process',
+  label: 'Our Process',
+  heading: ['From idea', 'to handover.'],
+  intro:
+    'Six steps, in this order, on every room we build. Nothing is skipped and nothing is left to the trade that turns up next.',
+  steps: [
+    {
+      n: '01',
+      title: 'Consultation',
+      body: 'We start with you, not the room: how you watch, who watches with you, and what the space is expected to do on an ordinary Tuesday as well as on the night it is shown off.',
+    },
+    {
+      n: '02',
+      title: 'Site Study',
+      body: 'The room is measured and assessed — dimensions, structure, power, ventilation, neighbouring rooms and what the walls are actually made of. Constraints are found now rather than on site later.',
+    },
+    {
+      n: '03',
+      title: 'Design',
+      body: 'The room, the systems and the experience are engineered together in full 3D. Sightlines, screen size, riser heights, seat spacing and acoustic treatment are agreed on screen before anything is built.',
+    },
+    {
+      n: '04',
+      title: 'Installation',
+      body: 'One team builds and integrates every element — joinery, acoustics, electronics, lighting and control — so there is no seam between trades for a problem to fall into.',
+    },
+    {
+      n: '05',
+      title: 'Calibration',
+      body: 'Picture and sound are measured, corrected and measured again, seat by seat, until the instruments and your ears are telling the same story.',
+    },
+    {
+      n: '06',
+      title: 'Handover',
+      body: 'The room is delivered finished and documented, with the calibration report, one interface that works on the first press, and a team that stays with the room afterwards.',
+    },
+  ],
+  /* The plate the curve runs into. Not a seventh step — the state
+     the room is finally in. */
+  finale: {
+    badge: 'Six steps, one team',
+    lead: 'Delivered by the people who',
+    em: 'drew it',
+    body: 'The person accountable for how the room sounds is the person who decided where the wall goes. That is the whole reason the six steps hold together.',
+  },
+}
+
 /* --- 7. Technology & Brands ----------------------------------- */
 export const technology = {
   label: 'Technology',
@@ -1063,8 +1148,8 @@ export const footer = {
      and inventing a new claim to fill it would have been the one
      unforgivable way to fill it. */
   cta: {
-    heading: ['Let’s build a room', 'worth staying in.'],
-    body: 'Tell us the room, the budget band and how you want to use it. One reply within a working day.',
+    heading: ['Design your private', 'entertainment world.'],
+    body: 'Tell us about your room, your lifestyle and what you want it to become.',
     /* The backlit fluted lounge, not the flagship cinema. The
        headline is about a room worth STAYING in, and the cinema
        plate is already the hero's dissolve target and section
@@ -1077,7 +1162,13 @@ export const footer = {
       src: img('fluted', 1400, '5:4'),
       alt: 'A low-lit lounge with a backlit fluted wall behind the seating',
     },
-    primary: { label: 'Discuss your project', to: '/contact#consultation' },
+    /* The response expectation. It used to be the tail of `body`
+       ("One reply within a working day"), which buried a
+       commitment inside a sentence about the room. On its own,
+       under the buttons, it is the last thing read before the
+       click and the only promise the page makes about itself. */
+    note: 'Response within 1 business day.',
+    primary: { label: 'Book a Consultation', to: '/contact#consultation' },
     /* Was "or call +91 98470 00000" — the trailing half of a
        sentence, which is what a text footnote under a button can
        be and what a button beside one cannot. */
@@ -1202,15 +1293,21 @@ export const footer = {
    on their own, in order, and they chain. */
 export const engineering = {
   id: 'engineering',
-  chapter: 'Ch. 05',
-  /* Named as a SYSTEM rather than as a discipline. Six pillars
-     that each decide the next is not "engineering" in the abstract
-     — it is the thing JAAZ sells, and the label is the only place
-     on the page it gets called by its own name. */
-  label: 'The JAAZ Comfort System',
-  heading: ['Engineered.', 'Not assembled.'],
+  /* NO CHAPTER NUMBER ANY MORE. This section moved from ninth on
+     the page to second, and the numbered marks can no longer run
+     in order across the running order — see the note on
+     `lightsDown`. It keeps its name and loses its number. */
+  label: 'The JAAZ Approach',
+  /* The claim the six pillars are evidence for, and the reason
+     this section now opens the argument instead of closing it:
+     a visitor is told what JAAZ BELIEVES before they are shown
+     anything else. "Engineered. Not assembled." was the right
+     line ninth on the page, where it answered a room that had
+     already been shown; second, it answers a question nobody has
+     asked yet. */
+  heading: ['Everything', 'works as one.'],
   intro:
-    'A room is not the sum of what is installed in it. Six things have to agree before any of them is ordered — and each one decides the next.',
+    'Picture, sound, acoustics, comfort, control and calibration. Six things have to agree before any of them is ordered — and each one decides the next.',
 
   items: [
     {
@@ -1270,7 +1367,16 @@ export const engineering = {
      string, because every display line on this site turns exactly
      one word warm and the component should not have to know which
      word that is. Copy stays here; typography stays there. */
-  closing: { pre: '', turn: 'Measured', post: ', not eyeballed.' },
+  /* The close. "Measured, not eyeballed." moved to <Calibration>,
+     which is where a measurement is actually shown; this section
+     no longer has one to point at. What it ends on instead is the
+     idea the six pillars exist to prove — that the work is in the
+     joins, not in the parts. */
+  closing: {
+    pre: 'We don’t engineer individual components. We engineer the ',
+    turn: 'experience',
+    post: ' between them.',
+  },
 }
 
 /* --- Chapter 06: Comfort --------------------------------------- */
@@ -1296,7 +1402,6 @@ export const engineering = {
    where that would be spotted immediately. */
 export const comfort = {
   id: 'comfort',
-  chapter: 'Ch. 06',
   label: 'Comfort',
   heading: ['Stay', 'longer.'],
 
