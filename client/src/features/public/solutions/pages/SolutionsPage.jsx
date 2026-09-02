@@ -1,7 +1,5 @@
 import Catalogue from '@/features/public/solutions/components/Catalogue'
-import ClosingCta from '@/features/public/components/ClosingCta'
 import Footer from '@/features/public/layouts/Footer'
-import { solutionsIndex } from '@/features/public/data/solutions'
 
 /* ============================================================
    SOLUTIONS — THE CATALOGUE
@@ -32,13 +30,6 @@ export default function Solutions() {
   return (
     <>
       <Catalogue />
-
-      <ClosingCta
-        heading={solutionsIndex.cta.heading}
-        body={solutionsIndex.cta.body}
-        primary={{ label: solutionsIndex.cta.action, to: '/contact' }}
-        reassurance={solutionsIndex.cta.reassurance}
-      />
 
       <Footer />
     </>

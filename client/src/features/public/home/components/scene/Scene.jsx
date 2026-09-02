@@ -411,8 +411,16 @@ export default function Scene() {
               <Plate
                 slot={scene.room.still}
                 alt={scene.room.alt}
-                sizes="(min-width: 1024px) 62vw, 100vw"
-                priority={false}
+                /* THE STAGE IS 62vw AND THE PICTURE INSIDE IT IS
+                   NOT. Four of the five scenes scale the image up
+                   to frame the room where that evening happens,
+                   as far as 1.2 — so a `sizes` of 62vw asks the
+                   CDN for a file that is right for the frame and
+                   a fifth short for the pixels actually drawn.
+                   The number here is the widest case, because a
+                   `sizes` that is correct on average is soft on
+                   the scenes people look at longest. */
+                sizes="(min-width: 1024px) 75vw, 120vw"
                 className="plate scene-plate"
               />
             ) : (

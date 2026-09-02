@@ -62,7 +62,12 @@ const A = scene.adjust
 export default function SceneAdjust({ open, room, onChange }) {
   return (
     <div className={`scene-drawer ${open ? 'is-open' : ''}`}>
-      <div id="scene-adjust" inert={open ? undefined : ''} className="scene-drawer-inner">
+      {/* `inert={!open}` as a real boolean, not `''`. React 19
+          reflects the attribute from the boolean; an empty string
+          is the React 18 idiom and React 19 warns that it will be
+          treated as FALSE — which would leave a closed drawer
+          fully tabbable, silently. */}
+      <div id="scene-adjust" inert={!open} className="scene-drawer-inner">
         <div className="scene-adjust">
           {/* ---- Lights ---- */}
           <Control label={A.lights.label}>
