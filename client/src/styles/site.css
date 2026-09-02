@@ -417,8 +417,93 @@ html.lenis body {
     line-height: 0;
     letter-spacing: -0.015em;
     font-variant-numeric: tabular-nums;
-    color: var(--color-pure);
+    color: var(--cal-figure-ink, var(--color-pure));
     padding-inline: 0.04em;
+  }
+
+  /* ============================================================
+     CALIBRATION — THE PAPER PANEL
+
+     Chapter 03 is the one section on the homepage set on paper,
+     and the tonal break is the argument: everything around it is
+     a room being shown, this is the measurement being handed
+     over. A document is read on paper, so it is printed on some.
+
+     `.cal-paper` is a MATERIAL, not a card. Three things make it
+     one and all three are load bearing:
+
+       1. The stock is not flat. A vertical gradient runs the
+          sheet from a lit top edge to a shaded foot, and a broad
+          highlight sits where the page's own warm light would
+          fall on it. A single `background: #f4f2ee` reads as a
+          div; this reads as something lying on the page.
+       2. It is LIT, not shadowed. Against pure black a dark
+          shadow is invisible, so the lift comes from the warm
+          bounce a real sheet would throw — a wide, low-opacity
+          cove halo — plus a one-pixel inset highlight along the
+          top edge where the light lands first.
+       3. Grain. The `::before` is a fractal-noise tile
+          multiplied over the sheet at very low opacity. It is
+          the difference between paper and white.
+
+     `--cal-figure-ink` re-points `.cal-figure` — the display-size
+     numerals set inside a sentence — from white to ink for the
+     length of this panel. The class is shared with nothing else
+     yet, but it is written as a variable rather than a second
+     selector so a paper panel anywhere else inherits correctly.
+
+     ::selection is themed here for the same reason the panel has
+     grain: the site's global selection is white-on-black, which
+     inverts to an unreadable smear on a light surface.
+     ============================================================ */
+  .cal-paper {
+    --cal-figure-ink: var(--color-ink);
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background:
+      radial-gradient(78% 46% at 16% -4%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0) 62%),
+      linear-gradient(178deg, #f8f6f2 0%, #f2f0ea 46%, #e9e6de 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.9),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.06),
+      0 34px 90px -46px rgba(201, 173, 124, 0.55),
+      0 4px 44px -28px rgba(201, 173, 124, 0.4);
+  }
+  .cal-paper::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.55;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+  }
+  .cal-paper ::selection {
+    background: #16161a;
+    color: #f4f2ee;
+  }
+
+  /* The chair pads in the plan. Fill is written per frame by the
+     component (it encodes how close that chair sits to the room
+     average), so it must NOT carry a transition — the blend tween
+     is already interpolating it sixty times a second and a
+     transition on top would smear a value that is already smooth.
+     The warm overlay that marks the chair being read is a second
+     shape whose opacity is the only thing that changes on
+     selection, which is what makes that one transitionable. */
+  .cal-seat-warm {
+    transition: opacity 380ms var(--ease-out-expo);
+  }
+  .cal-seat-pool {
+    transition: opacity 460ms var(--ease-out-expo);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cal-seat-warm,
+    .cal-seat-pool {
+      transition: none;
+    }
   }
 
   .italic-display {

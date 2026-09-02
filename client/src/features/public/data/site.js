@@ -640,26 +640,39 @@ export const spaces = {
 /* --- Chapter 03: Calibration ---------------------------------- */
 /* THE SECTION IS AN ARGUMENT, SO THE VISITOR IS HANDED THE SWITCH.
 
-   An earlier build ran this as a three-and-a-half-viewport pinned
-   scrub: a wash crossed a photograph, seven mono ticks counted up
-   on hairline drop-lines, and the layout solved itself while the
-   reader held still. It measured well and read as an engineering
-   drawing — 11px monospace, 1px rules, a spec sheet in the corner
-   and a row of seat numerals along the bottom. Precision drawn as
-   linework instead of as material.
+   TWO BUILDS ARE BURIED UNDER THIS ONE, AND BOTH FAILED THE SAME
+   WAY. The first ran the argument as a three-and-a-half-viewport
+   pinned scrub over a photograph — mono ticks on hairline
+   drop-lines, a legend, a row of seat numerals. An engineering
+   drawing. The second kept the photograph and put the seven
+   figures on top of it: better, but a dark room photographed at
+   f/2 is the wrong ground for the one section on the site whose
+   job is to be READ, and the plan being argued about was never
+   actually visible — the visitor had to take the geometry on
+   trust.
 
-   What replaced it keeps every number and throws away the
-   drawing. There is one control — CONVENTIONAL LAYOUT / JAAZ
-   LAYOUT — and the visitor works it. Seven chairs carry their own
-   value on the photograph; flipping the switch moves all seven at
-   once, and the argument lands in a gesture rather than over four
-   screens of scrolling.
+   This build removes the photograph and draws the plan. Two
+   layouts, one control, and the room itself rearranges when the
+   control is thrown: seven chairs slide, the front three speakers
+   pull in, and every figure recounts. It is set on PAPER — one
+   light panel inset into a black page — because a measurement
+   report is a document, and a document is read on paper. That
+   tonal break is the point: the page stops being a film for the
+   length of one section and hands over the evidence.
 
    COPY IS SENTENCES, NOT FIELDS. `seatSentence` and `spreadNote`
    are templates with `{placeholders}`; the component fills them
    from the geometry below and sets the figures at display size
    inline. Nothing here is typed by hand, so the prose cannot
-   drift away from the plans it describes. */
+   drift away from the plans it describes.
+
+   THE PLAN IS DRAWN FROM THESE COORDINATES, NOT TRACED. `asFound`
+   and `asBuilt` are metres in one coordinate system whose origin
+   is the centre of the screen wall; the drawing's viewBox IS that
+   system, so a seat cannot be drawn anywhere except where it was
+   measured. There is no second set of screen positions to keep in
+   sync — the `mark` percentages the photograph needed are gone
+   with the photograph. */
 export const calibration = {
   id: 'calibration',
   chapter: 'Ch. 03',
@@ -687,12 +700,17 @@ export const calibration = {
   ],
   rows: ['Front row', 'Back row'],
   seatWord: 'Seat',
-  pick: 'Move across the room to read any chair. Figures are dB.',
+  pick: 'Move across the plan, or pick a chair below it.',
 
-  /* Two layouts on one photograph is honest only while the picture
-     says so, in the same size type as everything else near it. */
-  plateNote:
-    'One photograph, two layouts. The room is a JAAZ room; the figures are what each layout measures in a space this size.',
+  /* The plan's own captions. `planScale` is a template — the
+     component fills it from `room` and `screenWidth` below, so the
+     dimensions printed under the drawing are the dimensions the
+     drawing was built from. */
+  planScreen: 'Screen',
+  planScale: 'Drawn to scale · {w} × {d} m · {s} m screen',
+  planNote:
+    'Both layouts are drawn in the same room. Throwing the switch moves the seating and the front three speakers — nothing else about the space changes.',
+  valuesLabel: 'Every chair, against the room average',
 
   /* The selected chair, as a sentence rather than a readout. Every
      figure in it is computed from the plans below. */
@@ -727,9 +745,6 @@ export const calibration = {
   room: { w: 6.4, d: 8.4 },
   screenWidth: 4.2,
 
-  plate: img('theatre', 2600, '16:9'),
-  plateAlt: 'A JAAZ private cinema with the house lights down, seven recliners in two tiers',
-
   asFound: {
     speakers: [
       { id: 'L', x: -2.6, y: 0.45 },
@@ -754,13 +769,13 @@ export const calibration = {
       { id: 'R', x: 1.85, y: 0.55 },
     ],
     seats: [
-      { x: -1.5, y: 6.2, mark: { x: 37.1, y: 48.8, s: 1 } },
-      { x: 0, y: 6.2, mark: { x: 45.0, y: 46.2, s: 1 } },
-      { x: 1.5, y: 6.2, mark: { x: 53.6, y: 43.8, s: 1 } },
-      { x: -2.1, y: 7.15, mark: { x: 60.7, y: 42.4, s: 0.79 } },
-      { x: -0.7, y: 7.15, mark: { x: 66.3, y: 41.4, s: 0.79 } },
-      { x: 0.7, y: 7.15, mark: { x: 72.9, y: 39.7, s: 0.64 } },
-      { x: 2.1, y: 7.15, mark: { x: 80.2, y: 39.3, s: 0.64 } },
+      { x: -1.5, y: 6.2 },
+      { x: 0, y: 6.2 },
+      { x: 1.5, y: 6.2 },
+      { x: -2.1, y: 7.15 },
+      { x: -0.7, y: 7.15 },
+      { x: 0.7, y: 7.15 },
+      { x: 2.1, y: 7.15 },
     ],
   },
 }
