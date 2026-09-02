@@ -422,16 +422,25 @@ export const brand = {
 export const possibilities = {
   label: 'Possibilities',
   heading: ['What could your', 'room become?'],
-  intro:
-    'Five kinds of room, and eight ways they get pointed at something. What follows is direction, not a portfolio.',
   /* The disclosure, in two registers. `note` is the sentence in the
      header, where there is room to be plain about it. `badge` is the
      mono mark that stays on the stage for the whole sequence — small,
      hairline-ruled, never dismissed, because a disclosure that scrolls
      away is a disclosure that was written for the wrong reader. */
-  /* Short on purpose. It is set in mono at 11px, where a
-     three-line sentence stops reading as a note and starts reading
-     as small print somebody is hoping you will skip. */
+  /* THE DISCLOSURE, IN TWO PLACES, AND BOTH ARE LOAD BEARING.
+
+     `note` runs under the heading, ABOVE the photographs, because
+     a disclosure placed after the evidence was written for the
+     wrong reader. `badge` is the mark on each individual card,
+     and it exists because the header note is read once and a card
+     is what gets screenshotted, linked and scrolled back to.
+
+     THE MARK IS DATA, NOT MARKUP. Every item below carries
+     `reference: true` and the component prints the badge only for
+     the items that do. The day a room in this list is a
+     photograph of finished JAAZ work, deleting one line removes
+     its mark — and until that day, a card that is not marked is a
+     bug rather than a styling choice. */
   note: 'Conceptual and reference environments — the character a space can take, not photographs of JAAZ installations.',
   badge: 'Concept / Reference',
   /* Navigation, not an ask. The homepage deliberately carries no
@@ -449,6 +458,7 @@ export const possibilities = {
       meta: 'Dedicated room · 8–14 seats · full masking',
       image: img('theatre', 1600, '16:9'),
       alt: 'A dark private cinema with tiered recliners and a star-field ceiling',
+      reference: true,
     },
     {
       n: '02',
@@ -459,6 +469,7 @@ export const possibilities = {
       meta: 'Dedicated room · 0.0 lx ambient · black shell',
       image: img('atrium', 1600, '16:9'),
       alt: 'A near-black glazed interior with a single warm perforated screen glowing behind it',
+      reference: true,
     },
     {
       n: '03',
@@ -469,6 +480,7 @@ export const possibilities = {
       meta: 'Living system · concealed speakers · single remote',
       image: img('livingAlt', 1600, '16:9'),
       alt: 'A dark lounge with a long low sofa and two large framed artworks',
+      reference: true,
     },
     {
       n: '04',
@@ -479,16 +491,18 @@ export const possibilities = {
       meta: 'Open plan · multi-zone · steered coverage',
       image: img('modern', 1600, '16:9'),
       alt: 'A modern open-plan interior with a staircase, long table and full-height glazing',
+      reference: true,
     },
     {
       n: '05',
-      label: 'Gaming Den',
+      label: 'Gaming',
       title: 'Low Latency',
       line: 'Precision at every frame.',
       body: 'A 120 Hz path from console to screen, positional audio placed to the seat rather than to the room, and light that takes its cue from the game.',
       meta: 'Gaming room · 120 Hz · sub-frame latency',
       image: img('slatted', 1600, '16:9'),
       alt: 'A curved slatted room in cool grey with low seating',
+      reference: true,
     },
     {
       n: '06',
@@ -499,6 +513,7 @@ export const possibilities = {
       meta: 'Lounge · fluted timber · broadband absorption',
       image: img('fluted', 1600, '16:9'),
       alt: 'A fluted timber wall lit from above, with a low sofa and a stone table',
+      reference: true,
     },
     {
       n: '07',
@@ -509,6 +524,7 @@ export const possibilities = {
       meta: 'Bar & lounge · distributed audio · concealed screen',
       image: img('bar', 1600, '16:9'),
       alt: 'A warm home bar with backlit bottle shelves and a timber counter',
+      reference: true,
     },
     {
       n: '08',
@@ -519,6 +535,7 @@ export const possibilities = {
       meta: 'Terrace · weather-rated · dual calibration',
       image: img('fire', 1600, '16:9'),
       alt: 'An outdoor terrace at night with a fire pit in front of a large projection screen',
+      reference: true,
     },
   ],
 }
