@@ -2706,6 +2706,62 @@ html.lenis body {
 }
 
 /* ------------------------------------------------------------
+   THE BAND SYSTEM IS SHARED, AND THESE TWO RULES ARE THE ONLY
+   PLACE THE SECOND SECTION DIFFERS.
+
+   Everything above is used unchanged by both <Prism> and
+   <Feeling>. The `prism-` prefix is a historical fact about where
+   the system was written, not a claim about who may use it — see
+   the note at the top of FeelingBand.jsx. A third consumer is the
+   point at which the prefix gets renamed across all three in one
+   pass; duplicating forty rules so two identical cards can drift
+   apart independently is not separation of concerns.
+
+   `.feeling-readout` prints facts rather than axes. The Prism's
+   readout is four terms with four values because its faces are
+   one room measured on the same four axes; six different KINDS of
+   room are not comparable that way, so this one is a plain list
+   of what each room is specified by, at the value's own size.
+
+   `.feeling-credit` is the reference mark, sat on the foot of the
+   photograph rather than over the middle of it. Six stock
+   interiors on a page selling rooms have to say so where the
+   picture is and not only in a note above all six.
+   ------------------------------------------------------------ */
+/* `margin-block-start` IS LEFT ALONE ON PURPOSE. This rule is
+   unlayered and Tailwind's utilities live in `@layer utilities`,
+   so an unlayered `margin: 0` here silently beats the `mt-*` on
+   the element and the specification collapses against the
+   paragraph above it — which is exactly what it did on the first
+   pass. Reset only the two edges a `<ul>` actually needs reset. */
+.feeling-readout {
+  list-style: none;
+  margin-inline: 0;
+  margin-block-end: 0;
+  padding: 0;
+}
+
+.feeling-credit {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 1;
+  padding: 0.75rem clamp(1rem, 2.4vw, 2rem);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.62);
+  background: linear-gradient(to top, rgb(0 0 0 / 0.62), rgb(0 0 0 / 0));
+  text-wrap: balance;
+}
+@media (min-width: 1024px) {
+  .feeling-credit {
+    text-align: right;
+  }
+}
+
+/* ------------------------------------------------------------
    REDUCED MOTION: THE SAME FIVE BANDS, UNSTACKED
 
    The stack is a way of PRESENTING five things that are already

@@ -422,6 +422,8 @@ export const brand = {
 export const possibilities = {
   label: 'Possibilities',
   heading: ['What could your', 'room become?'],
+  intro:
+    'Five kinds of room, one card each. What follows is direction — the character a space can take — and not a portfolio.',
   /* The disclosure, in two registers. `note` is the sentence in the
      header, where there is room to be plain about it. `badge` is the
      mono mark that stays on the stage for the whole sequence — small,
@@ -1517,93 +1519,111 @@ export const comfort = {
 }
 
 /* --- Chapter 07: What do you want to feel? --------------------- */
-/* The experience selector. Six feelings; press one and the room
-   answers.
+/* Six feelings, each answered by the kind of room that delivers
+   it.
 
-   THE CONTROL IS SIX WORDS AT DISPLAY SIZE, and that is the whole
-   design. No pills, no tabs, no thumbnail strip, no 01/06 counter —
-   every one of those has been ruled out on this site by name, and
-   each is a piece of app chrome sitting on somebody's photograph.
-   The chosen word is white with a warm rule that SLIDES to it; the
-   rest are quiet. A visitor who has never seen the page knows what
-   to do with it without being told twice.
+   IT IS BUILT ON THE PRISM'S BAND STACK, at ansil's instruction
+   (2026-09-02). It used to be a press-driven selector — six words
+   at display size with a warm rule sliding between them — and the
+   note that used to live here argued at length that it must NOT be
+   a second Prism, on the grounds that Prism is about the room and
+   this is about the visitor. That distinction is real and it is
+   carried by the COPY, which is in the second person throughout;
+   it did not need a second interaction model to carry it as well.
+   One stacking mechanism used twice on a page reads as a system.
+   Two different ones read as two people having worked on it.
 
-   WHY IT IS NOT A SECOND PRISM. <Prism> shows one room becoming five
-   atmospheres — it is about the room. This is about the VISITOR: it
-   starts from what they want to feel and hands back the room that
-   does it. Different question, different answer, and the copy is in
-   the second person for exactly that reason.
+   WHAT THE SHAPE COSTS AND WHAT IT BUYS. A stack is scrolled, not
+   pressed, so the visitor no longer chooses — they are shown all
+   six in a fixed order. That is a real loss and it is the reason
+   the order below is not arbitrary: it runs from the most
+   enclosed room to the most open one, so scrolling the section is
+   itself the argument that these are one range rather than six
+   products.
 
-   IMAGES ARE VERIFIED SLOTS AND NOTHING IS CAPTIONED AS A JOB. There
-   is still no JAAZ photography, and no gaming photograph anywhere in
-   the verified set — `slatted` (curved slatted room, cool grey) is
-   the honest stand-in for COMPETITION, and `note` says in plain
-   words that these are reference images. */
+   `lockup` IS `line`, BROKEN. Every lockup below is the state's
+   own sentence split at the point it already breaks — no word is
+   added, dropped or reworded. The break is authored rather than
+   left to wrapping because a two-line display lockup that rewraps
+   at 1100px stops being a lockup.
+
+   IMAGES ARE VERIFIED SLOTS AND NOTHING IS CAPTIONED AS A JOB.
+   There is still no JAAZ photography, and no gaming photograph
+   anywhere in the verified set — `slatted` (curved slatted room,
+   cool grey) is the honest stand-in for COMPETITION, and `note`
+   says in plain words that these are reference images. They are
+   requested at 4:3 rather than 4:5 because a band crops
+   landscape; a portrait source in a wide frame throws away the
+   half of the room that makes it legible. */
 export const feelings = {
   id: 'feeling',
   chapter: 'Ch. 07',
   label: 'The Brief',
   heading: ['What do you', 'want to feel?'],
   intro:
-    'Every room on this page began as an answer to that question, not as a brand list. Pick the one that sounds like your evening.',
-  /* The instruction, in plain words, above the control — a control
-     nobody is told about is a control half of them miss. */
-  cue: 'Pick one',
+    'Every room on this page began as an answer to that question, not as a brand list. Six of them follow, from the most enclosed to the most open.',
+  /* THE DISCLOSURE IN TWO REGISTERS, as <Possibilities> does it.
+     `note` is the sentence, read once under the heading where
+     there is room to be plain. `stamp` is the mark on each
+     photograph — short, because a twelve-word sentence set across
+     the foot of a lit interior is neither readable nor a caption.
+     A picture that carries no stamp is a bug. */
   note: 'Reference images. JAAZ photography replaces these as rooms are handed over.',
+  stamp: 'Reference image',
 
   states: [
     {
       key: 'immersion',
       word: 'Immersion',
-      line: 'Disappear into it.',
+      lockup: ['Disappear', 'into it.'],
       body: 'A dedicated room with the door shut, the walls treated and the chairs placed where the sound actually is. Nothing in your eyeline that is not the picture.',
       meta: 'Dedicated cinema · treated walls · tiered seating',
-      plate: img('theatre', 1500, '4:5'),
+      plate: img('theatre', 1800, '4:3'),
       alt: 'A private cinema with tiered recliners and a warm cove-lit ceiling',
     },
     {
       key: 'escape',
       word: 'Escape',
-      line: 'One row. One film. Nobody else.',
+      lockup: ['One row. One film.', 'Nobody else.'],
       body: 'A small room built for two, where the lights fall to nothing and the phone stays outside. The smallest rooms are usually the most exactly specified ones.',
       meta: 'Compact room · full blackout · one scene',
-      plate: img('projection', 1500, '4:5'),
+      plate: img('projection', 1800, '4:3'),
       alt: 'A projector beam cutting through the haze of a darkened room',
     },
     {
       key: 'connection',
       word: 'Connection',
-      line: 'The room everyone ends up in.',
+      lockup: ['The room everyone', 'ends up in.'],
       body: 'A living space that performs like a cinema and still looks like a living space — speakers behind the finish, the screen gone when it is not wanted.',
       meta: 'Living cinema · concealed system · daily use',
-      plate: img('livingAlt', 1500, '4:5'),
+      plate: img('livingAlt', 1800, '4:3'),
       alt: 'A dark contemporary lounge with a large artwork and low seating',
     },
     {
       key: 'competition',
       word: 'Competition',
-      line: 'Fast enough to blame yourself.',
+      lockup: ['Fast enough to', 'blame yourself.'],
       body: 'A low-latency display, a chair you can sit in for a whole tournament, and acoustics that keep four people audible to each other over the game.',
       meta: 'Gaming room · low latency · multi-seat',
-      plate: img('slatted', 1500, '4:5'),
+      plate: img('slatted', 1800, '4:3'),
       alt: 'A curved slatted room with built-in seating',
     },
     {
       key: 'celebration',
       word: 'Celebration',
-      line: 'For the night that runs long.',
+      lockup: ['For the night', 'that runs long.'],
       body: 'A bar, a system that fills the room without shouting, and lighting scenes that move the evening on without anyone having to touch a panel.',
       meta: 'Bar · distributed audio · lighting scenes',
-      plate: img('bar', 1500, '4:5'),
+      plate: img('bar', 1800, '4:3'),
       alt: 'A warm timber home bar lit low',
     },
     {
       key: 'listen',
       word: 'Listen',
-      line: 'Two speakers, telling the truth.',
+      lockup: ['Two speakers,', 'telling the truth.'],
       body: 'A room built around one chair and a stereo pair, treated so the recording arrives without the walls editing it first. No screen, on purpose.',
       meta: 'Listening room · stereo pair · one chair',
-      plate: img('fluted', 1500, '4:5'),
+      plate: img('fluted', 1800, '4:3'),
       alt: 'A quiet listening space with soft textiles and a stone table',
     },
   ],
