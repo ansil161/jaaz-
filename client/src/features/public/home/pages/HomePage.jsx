@@ -3,6 +3,9 @@ import Brand from '@/features/public/home/components/Brand'
 import Possibilities from '@/features/public/home/components/Possibilities'
 import LightsDown from '@/features/public/home/components/LightsDown'
 import Calibration from '@/features/public/home/components/Calibration'
+import Engineering from '@/features/public/home/components/Engineering'
+import Comfort from '@/features/public/home/components/Comfort'
+import Feeling from '@/features/public/home/components/Feeling'
 import Spaces from '@/features/public/home/components/Spaces'
 import Prism from '@/features/public/home/components/prism/Prism'
 import Craft from '@/features/public/home/components/Craft'
@@ -112,9 +115,41 @@ export default function Home() {
           intact across the join. */}
       <Calibration />
 
+      {/* PROOF, WIDENED — Calibration proves ONE discipline with a
+          real measurement; this names all six and shows that each
+          one decides the next. It goes after, not before, because
+          "here is how far we take one of these" earns the right to
+          say "and there are six" far better than the reverse.
+
+          It is also the only typographic section in this run, which
+          is what keeps the two-in-a-row rule intact: Calibration is
+          a full-bleed frame, Engineering is set type, Craft carries
+          photographs again. */}
+      <Engineering />
+
       {/* HOW IT IS BUILT */}
       <Craft />
       <Transform />
+
+      {/* DESIRE — the two sections that turn proof back into a
+          reason to want the room.
+
+          <Comfort> is the page's slow beat, and deliberately has
+          nothing to operate: it follows two sections in a row that
+          hand the visitor a control (<Calibration>'s chair,
+          <Transform>'s seam) and precedes a third, so a page that
+          never stops offering interactions would start reading as a
+          demo reel. This one is looked at.
+
+          <Feeling> is the last thing before the testimonials for a
+          reason. It is the only section on the page that starts
+          from the VISITOR rather than from the room, and it is
+          worth the most at the point where someone has read the
+          whole argument and is ready to put themselves inside one
+          of these rooms. It still asks for nothing — the hero's
+          button remains the page's only ask. */}
+      <Comfort />
+      <Feeling />
 
       {/* TRUST */}
       <Testimonials />

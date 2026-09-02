@@ -1052,3 +1052,260 @@ export const footer = {
     { label: 'Terms of Use', href: '#' },
   ],
 }
+
+/* --- Chapter 04: Engineering ----------------------------------- */
+/* "Engineered. Not assembled." — the six disciplines a room has to
+   resolve, each carried by ONE figure at display size.
+
+   WHY FIGURES AND NOT DIAGRAMS. The brief for this section asked for
+   self-drawing speaker layouts and animated frequency plots. That is
+   the blueprint register this site has already ruled out once:
+   hairline rules, micro labels and drop-lines from a number to the
+   thing it annotates read as a technical dashboard, and the thing
+   being sold is a room people sit in. A figure set in Instrument
+   Serif at 5rem says "measured" more convincingly than a drawing of
+   a measurement does, and it survives a phone.
+
+   EVERY FIGURE IS A STANDARD OR A DESIGN TARGET, NOT A CLAIM ABOUT A
+   DELIVERED ROOM, and `note` is where it says which. The 30–40°
+   viewing window is the same one <Calibration> prints and works
+   inside; the 30° front pair is the mixing-stage geometry the
+   content itself was made on. Nothing in this block asserts a result
+   JAAZ has not been asked to stand behind.
+
+   `decides` is what makes the section an argument rather than a
+   list. An assembled room is six purchases; an engineered one is six
+   decisions, each of which moves the next. Read the `decides` lines
+   on their own, in order, and they chain. */
+export const engineering = {
+  id: 'engineering',
+  chapter: 'Ch. 04',
+  label: 'Engineering',
+  heading: ['Engineered.', 'Not assembled.'],
+  intro:
+    'A room is not the sum of what is installed in it. Six things have to agree before any of them is ordered — and each one decides the next.',
+
+  items: [
+    {
+      n: '01',
+      name: 'Picture',
+      figure: '37°',
+      note: 'of your view, filled',
+      body: 'Screen size is set by where the seats are, not by what fits the wall. Thirty to forty degrees of horizontal view is the window the trade works to; the number inside it is the one this room can actually hold.',
+      decides: 'Which fixes where the front row sits.',
+    },
+    {
+      n: '02',
+      name: 'Sound',
+      figure: '30°',
+      note: 'off centre, from the main chair',
+      body: 'Left and right sit thirty degrees off the centre line from the main chair, because that is the geometry the film was mixed on. Surrounds and heights are placed to the same rule rather than to the nearest joist.',
+      decides: 'Which fixes what the walls have to absorb.',
+    },
+    {
+      n: '03',
+      name: 'Acoustics',
+      figure: '0.3 s',
+      note: 'target decay, mid-band',
+      body: 'Absorption, diffusion and bass traps are designed into the wall build-up, not hung on it afterwards. What you hear should be the mix — not the room having an opinion about the mix.',
+      decides: 'Which fixes the depth of every wall.',
+    },
+    {
+      n: '04',
+      name: 'Comfort',
+      figure: '3 h',
+      note: 'the length we design for',
+      body: 'Seat pitch, riser height, back angle and where your head lands are specified around a three-hour film rather than a ten-minute demonstration. A room you leave early is a room that failed.',
+      decides: 'Which fixes the plan everything else is built on.',
+    },
+    {
+      n: '05',
+      name: 'Control',
+      figure: '1',
+      note: 'press to lights-down',
+      body: 'Media, lighting, masking, climate and blinds answer to one scene on one control. If the room has to be explained to a guest, it is not finished.',
+      decides: 'Which fixes what is wired, and to where.',
+    },
+    {
+      n: '06',
+      name: 'Calibration',
+      figure: '±1.5 dB',
+      note: 'the target, chair to chair',
+      body: 'Every seat is measured on its own and tuned on its own, and the room is signed off on the worst chair in it. An average hides exactly the seat somebody is going to be sitting in.',
+      decides: 'Which is the only step that can say the rest worked.',
+    },
+  ],
+
+  /* The close. Three words carrying the whole difference between the
+     two halves of the headline.
+
+     Split into `pre` / `turn` / `post` rather than left as one
+     string, because every display line on this site turns exactly
+     one word warm and the component should not have to know which
+     word that is. Copy stays here; typography stays there. */
+  closing: { pre: '', turn: 'Measured', post: ', not eyeballed.' },
+}
+
+/* --- Chapter 05: Comfort --------------------------------------- */
+/* "Stay longer." The slow section, deliberately — it follows
+   Engineering, and the two are meant to feel different in the body
+   and not only to read differently.
+
+   NO CONTROL, NO PICKER, NO SEQUENCE. <Calibration> is driven by a
+   chair you choose, <Transform> by a seam you drag, and <Feeling> by
+   a word you press. This one is looked at. Three plates, a great
+   deal of air, long parallax and short copy is the entire mechanism,
+   and the pacing IS the argument: a section about not noticing time
+   passing should not be hurrying you through itself.
+
+   PLATE SLOTS ARE CHOSEN AGAINST THE RENDERED PIXELS, not against
+   the comment beside the id in PLATES. `comfortRoom` is the flagship
+   cinema at a tighter crop — seating, warm cove. `fluted` is a tight
+   lounge vignette (cushions, vase, stone table, no screen in it),
+   which is why it carries the MATERIAL beat and not the seating one.
+   `terrace` is dusk seating outdoors and closes the section on the
+   hour after the film. `chair` is deliberately NOT used: it renders
+   as a bar/lobby rather than a recliner, and this is the one section
+   where that would be spotted immediately. */
+export const comfort = {
+  id: 'comfort',
+  chapter: 'Ch. 05',
+  label: 'Comfort',
+  heading: ['Stay', 'longer.'],
+
+  /* The supporting idea, and the only sentence in the section that
+     gets the scrubbed word-by-word treatment. It is the claim
+     everything below it is evidence for. */
+  statement:
+    'A great cinema shouldn’t impress you for ten minutes. It should make you forget how long you’ve been sitting there.',
+
+  beats: [
+    {
+      key: 'seating',
+      title: 'Seating',
+      body: 'Motorised recliners specified around a three-hour film: seat pitch, back angle, where your head lands, a tray that actually reaches, power at the arm.',
+      second: {
+        title: 'Sightlines',
+        body: 'Every row is raised until the screen clears the head in front of it. Nobody in this room is watching around somebody else.',
+      },
+      plate: img('comfortRoom', 1800, '4:5'),
+      alt: 'Tiered recliners in a private cinema under warm cove lighting',
+    },
+    {
+      key: 'material',
+      title: 'Materials',
+      body: 'Wool, leather and stone, chosen for how they behave in a dark room over three hours rather than for how they photograph in a showroom.',
+      second: {
+        title: 'Light',
+        body: 'Cove, step and star-field lighting on scenes: warm, low, enough to find your glass and never enough to touch the picture.',
+      },
+      plate: img('fluted', 2400, '16:9'),
+      alt: 'A lounge vignette in a dark interior — cushions, stone table, soft textiles',
+    },
+  ],
+
+  /* The close: the one comfort nobody specifies and everybody
+     notices, and then the hour after the film. */
+  close: {
+    title: 'And the air.',
+    body: 'Ventilation sized to hold temperature with a full room in it, and quiet enough that you never hear the thing holding it. It is the last comfort anyone specifies and the first one a guest notices.',
+    plate: img('terrace', 2400, '21:9'),
+    alt: 'A terrace at dusk with lounge seating, after the film',
+    /* Same `pre` / `turn` / `post` split as engineering.closing, and
+       for the same reason. */
+    line: { pre: 'The ', turn: 'third hour', post: ' is the test.' },
+  },
+}
+
+/* --- Chapter 06: What do you want to feel? --------------------- */
+/* The experience selector. Six feelings; press one and the room
+   answers.
+
+   THE CONTROL IS SIX WORDS AT DISPLAY SIZE, and that is the whole
+   design. No pills, no tabs, no thumbnail strip, no 01/06 counter —
+   every one of those has been ruled out on this site by name, and
+   each is a piece of app chrome sitting on somebody's photograph.
+   The chosen word is white with a warm rule that SLIDES to it; the
+   rest are quiet. A visitor who has never seen the page knows what
+   to do with it without being told twice.
+
+   WHY IT IS NOT A SECOND PRISM. <Prism> shows one room becoming five
+   atmospheres — it is about the room. This is about the VISITOR: it
+   starts from what they want to feel and hands back the room that
+   does it. Different question, different answer, and the copy is in
+   the second person for exactly that reason.
+
+   IMAGES ARE VERIFIED SLOTS AND NOTHING IS CAPTIONED AS A JOB. There
+   is still no JAAZ photography, and no gaming photograph anywhere in
+   the verified set — `slatted` (curved slatted room, cool grey) is
+   the honest stand-in for COMPETITION, and `note` says in plain
+   words that these are reference images. */
+export const feelings = {
+  id: 'feeling',
+  chapter: 'Ch. 06',
+  label: 'The Brief',
+  heading: ['What do you', 'want to feel?'],
+  intro:
+    'Every room on this page began as an answer to that question, not as a brand list. Pick the one that sounds like your evening.',
+  /* The instruction, in plain words, above the control — a control
+     nobody is told about is a control half of them miss. */
+  cue: 'Pick one',
+  note: 'Reference images. JAAZ photography replaces these as rooms are handed over.',
+
+  states: [
+    {
+      key: 'immersion',
+      word: 'Immersion',
+      line: 'Disappear into it.',
+      body: 'A dedicated room with the door shut, the walls treated and the chairs placed where the sound actually is. Nothing in your eyeline that is not the picture.',
+      meta: 'Dedicated cinema · treated walls · tiered seating',
+      plate: img('theatre', 1500, '4:5'),
+      alt: 'A private cinema with tiered recliners and a warm cove-lit ceiling',
+    },
+    {
+      key: 'escape',
+      word: 'Escape',
+      line: 'One row. One film. Nobody else.',
+      body: 'A small room built for two, where the lights fall to nothing and the phone stays outside. The smallest rooms are usually the most exactly specified ones.',
+      meta: 'Compact room · full blackout · one scene',
+      plate: img('projection', 1500, '4:5'),
+      alt: 'A projector beam cutting through the haze of a darkened room',
+    },
+    {
+      key: 'connection',
+      word: 'Connection',
+      line: 'The room everyone ends up in.',
+      body: 'A living space that performs like a cinema and still looks like a living space — speakers behind the finish, the screen gone when it is not wanted.',
+      meta: 'Living cinema · concealed system · daily use',
+      plate: img('livingAlt', 1500, '4:5'),
+      alt: 'A dark contemporary lounge with a large artwork and low seating',
+    },
+    {
+      key: 'competition',
+      word: 'Competition',
+      line: 'Fast enough to blame yourself.',
+      body: 'A low-latency display, a chair you can sit in for a whole tournament, and acoustics that keep four people audible to each other over the game.',
+      meta: 'Gaming room · low latency · multi-seat',
+      plate: img('slatted', 1500, '4:5'),
+      alt: 'A curved slatted room with built-in seating',
+    },
+    {
+      key: 'celebration',
+      word: 'Celebration',
+      line: 'For the night that runs long.',
+      body: 'A bar, a system that fills the room without shouting, and lighting scenes that move the evening on without anyone having to touch a panel.',
+      meta: 'Bar · distributed audio · lighting scenes',
+      plate: img('bar', 1500, '4:5'),
+      alt: 'A warm timber home bar lit low',
+    },
+    {
+      key: 'listen',
+      word: 'Listen',
+      line: 'Two speakers, telling the truth.',
+      body: 'A room built around one chair and a stereo pair, treated so the recording arrives without the walls editing it first. No screen, on purpose.',
+      meta: 'Listening room · stereo pair · one chair',
+      plate: img('fluted', 1500, '4:5'),
+      alt: 'A quiet listening space with soft textiles and a stone table',
+    },
+  ],
+}
