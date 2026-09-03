@@ -1,4 +1,5 @@
 import { story } from '@/features/public/data/about'
+import { Mark } from '@/features/public/components/Mark'
 import { Lines, Figure, ScrubText, Drift, Rise, Rule } from '@/features/public/components/Motion'
 import { SectionLabel } from '@/features/public/components/Editorial'
 
@@ -130,12 +131,15 @@ export default function Story() {
             stagger={0.12}
             y={26}
           >
-            {story.roof.items.map((item, i) => (
-              <li key={item} className="group">
-                <span className="t-label block text-ink/30">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                <span className="t-body mt-3 block text-ink">{item}</span>
+            {story.roof.items.map((item) => (
+              <li key={item.name} className="group">
+                {/* The five were numbered 01–05, which read as an order
+                    of operations. They are not one: they are five
+                    disciplines held at the same time, and the sentence
+                    above says so. A mark each removes the sequence the
+                    numerals were inventing. */}
+                <Mark name={item.icon} size={20} className="block text-ink/35" />
+                <span className="t-body mt-3 block text-ink">{item.name}</span>
                 <span
                   className="mt-3 block h-px w-full origin-left scale-x-0 bg-ink/40 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-x-100"
                   aria-hidden="true"

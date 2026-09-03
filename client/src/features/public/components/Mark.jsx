@@ -601,8 +601,6 @@ const MARKS = {
   ),
 }
 
-export const MARK_NAMES = Object.keys(MARKS)
-
 /** `<Mark name="ear" />`. An unknown key falls back to the aperture
     rather than throwing, so a data typo costs a glyph, not the page.
     `size` sets both axes; 18 is the size every glyph in this table

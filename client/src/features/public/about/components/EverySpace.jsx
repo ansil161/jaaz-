@@ -1,6 +1,7 @@
 import { everySpace } from '@/features/public/data/about'
 import { Lines, Figure, Drift } from '@/features/public/components/Motion'
 import { SectionLabel, ConfirmNote } from '@/features/public/components/Editorial'
+import { Mark } from '@/features/public/components/Mark'
 
 /* ============================================================
    ABOUT 05 — ONE BRAND. EVERY ENTERTAINMENT SPACE.
@@ -80,9 +81,23 @@ export default function EverySpace() {
                       className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"
                     />
 
-                    <span className="t-num absolute top-3.5 left-3.5 inline-flex items-center rounded-full border border-white/20 bg-black/35 px-2.5 py-1 text-[0.6rem] text-pure backdrop-blur-md sm:top-4 sm:left-4 sm:px-3 sm:py-1.5">
-                      {item.n}
-                    </span>
+                    {/* WAS A NUMBERED PILL. Two things were wrong with
+                        it and the swap fixes both: the numeral said
+                        "fifth of six" about a card the reader can see
+                        is fifth of six, and the bordered, blurred
+                        capsule it sat in was app chrome dropped onto
+                        someone's photograph — the one thing this site
+                        has ruled out on imagery.
+
+                        What is left could have been lit in the room:
+                        a drawn mark in white, no box, no rule, with a
+                        shadow doing the legibility work the panel used
+                        to do. */}
+                    <Mark
+                      name={item.icon}
+                      size={22}
+                      className="absolute top-4 left-4 text-pure [filter:drop-shadow(0_1px_6px_rgb(0_0_0/0.75))] sm:top-5 sm:left-5"
+                    />
 
                     {/* The corner mark. Nothing here is a link yet, so
                         it is decorative and hidden from the reader —

@@ -1,6 +1,7 @@
 import { people } from '@/features/public/data/about'
 import { Lines, Figure, Drift, Rule } from '@/features/public/components/Motion'
 import { SectionLabel } from '@/features/public/components/Editorial'
+import { Mark } from '@/features/public/components/Mark'
 
 /* ============================================================
    ABOUT 04 — DESIGNED AROUND PEOPLE
@@ -95,9 +96,22 @@ export default function HumanFactors() {
                         className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"
                       />
 
-                      <span className="t-num absolute top-4 left-4 inline-flex items-center rounded-full border border-white/20 bg-black/35 px-3 py-1.5 text-[0.625rem] text-pure backdrop-blur-md">
-                        {String(i + 1).padStart(2, '0')}
-                      </span>
+                      {/* An eye, an ear, a body — the three systems
+                          the section says are doing the experiencing,
+                          drawn on the frame that argues for each. The
+                          numeral it replaces said "02" over a
+                          photograph of a treated wall, which was true
+                          and told you nothing.
+
+                          No capsule around it: a bordered, blurred
+                          chip on a room photograph reads as a product
+                          demo screenshotted onto the picture. A shadow
+                          holds it against a bright frame instead. */}
+                      <Mark
+                        name={part.icon}
+                        size={22}
+                        className="absolute top-4 left-4 text-pure [filter:drop-shadow(0_1px_6px_rgb(0_0_0/0.75))]"
+                      />
 
                       <h3 className="absolute bottom-4 left-5 font-display text-[clamp(2rem,3.6vw,2.85rem)] leading-none text-pure">
                         {part.title}

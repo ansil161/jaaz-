@@ -1,4 +1,5 @@
 import { difference } from '@/features/public/data/about'
+import { Mark } from '@/features/public/components/Mark'
 import { Lines } from '@/features/public/components/Motion'
 import { SectionLabel } from '@/features/public/components/Editorial'
 import { useGsapScope, gsap, prefersReducedMotion } from '@/lib/animation/useGsap'
@@ -107,18 +108,25 @@ export default function Difference() {
           {/* --- The four swaps --- */}
           <div className="lg:col-span-7 lg:col-start-6">
             <ul className="space-y-16 sm:space-y-20">
-              {difference.pairs.map((pair, i) => (
+              {difference.pairs.map((pair) => (
                 <li
                   key={pair.to}
                   data-row
                   className="border-t border-white/10 pt-8 first:border-t-0 first:pt-0"
                 >
-                  {/* `block` matters: an inline-block wrapper after an
-                      inline span puts the number ON the same line as the
-                      word it labels, and the two collide. */}
-                  <span className="t-num block text-xs text-ash">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
+                  {/* The mark, where the ordinal used to be. A count
+                      told you this was the third of four swaps, which
+                      is the one thing the row already says by sitting
+                      third. The mark says what is being swapped IN —
+                      a body in a chair, a room as a volume, a pair of
+                      dividers, a handshake — so the argument is made
+                      once in the glyph before it is made again in the
+                      word underneath.
+
+                      `block` matters: an inline-block wrapper after an
+                      inline element puts the mark ON the same line as
+                      the word it labels, and the two collide. */}
+                  <Mark name={pair.icon} size={20} className="block text-ash" />
 
                   {/* The word being replaced. Outlined, then struck. */}
                   <div className="relative mt-4 inline-block">

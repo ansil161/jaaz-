@@ -18,4 +18,4 @@
    correctly in an editorial list, and they are one component.
    ============================================================ */
 
-export { Mark as Icon, MARK_NAMES } from '../../components/Mark'
+export { Mark as Icon } from '../../components/Mark'

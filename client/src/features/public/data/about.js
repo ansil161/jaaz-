@@ -97,7 +97,13 @@ export const story = {
      sentence's own, and it agrees with `aboutHero.disciplines`. */
   roof: {
     label: 'Under one roof',
-    items: ['Design', 'Acoustics', 'Joinery', 'Electronics', 'Calibration'],
+    items: [
+      { icon: 'cube', name: 'Design' },
+      { icon: 'decay', name: 'Acoustics' },
+      { icon: 'tools', name: 'Joinery' },
+      { icon: 'cable', name: 'Electronics' },
+      { icon: 'meter', name: 'Calibration' },
+    ],
   },
 
   /* NOT RENDERED, DELIBERATELY.

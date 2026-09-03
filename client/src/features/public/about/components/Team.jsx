@@ -1,6 +1,7 @@
 import { team } from '@/features/public/data/about'
 import { Lines, Rise } from '@/features/public/components/Motion'
 import { SectionLabel, ConfirmNote } from '@/features/public/components/Editorial'
+import { Mark } from '@/features/public/components/Mark'
 
 /* ============================================================
    ABOUT 08 — THE PEOPLE BEHIND THE EXPERIENCE
@@ -218,12 +219,10 @@ export default function Team() {
           selector="[data-discipline]"
           stagger={0.08}
         >
-          {team.disciplines.map((d, i) => (
+          {team.disciplines.map((d) => (
             <li key={d.title} data-discipline>
-              <div className="flex items-baseline gap-4">
-                <span className="t-num text-xs text-mist">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
+              <div className="flex items-center gap-4">
+                <Mark name={d.icon} size={19} className="shrink-0 text-mist" />
                 <h3 className="t-sub text-pure">{d.title}</h3>
               </div>
               <p className="t-body mt-2 max-w-xs text-fog sm:pl-9">{d.body}</p>

@@ -1,6 +1,7 @@
 import { obsessions } from '@/features/public/data/about'
 import { Lines, Figure, Rise, Drift } from '@/features/public/components/Motion'
 import { SectionLabel } from '@/features/public/components/Editorial'
+import { Mark } from '@/features/public/components/Mark'
 
 /* ============================================================
    ABOUT 07 — WHAT WE OBSESS OVER
@@ -50,8 +51,11 @@ export default function Obsessions() {
         >
           {obsessions.items.map((item) => (
             <li key={item.n} data-clause>
-              <div className="flex items-baseline gap-4">
-                <span className="t-num text-xs text-ink/40">{item.n}</span>
+              {/* items-center, not items-baseline: a drawn mark has no
+                  baseline to sit on, and aligning its box to the cap
+                  line of the heading is what actually looks level. */}
+              <div className="flex items-center gap-4">
+                <Mark name={item.icon} size={20} className="shrink-0 text-ink/45" />
                 <h3 className="t-heading text-ink">{item.title}</h3>
               </div>
               <p className="t-body mt-4 max-w-md text-ink/65 sm:pl-10">{item.body}</p>
