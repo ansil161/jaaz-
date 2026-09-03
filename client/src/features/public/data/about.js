@@ -54,21 +54,25 @@ export const difference = {
   pairs: [
     {
       from: 'Product',
+      icon: 'body',
       to: 'Experience',
       body: 'A specification sheet describes what a device can do in a laboratory. We start from what the room has to do for the person sitting in it, then work backwards to the hardware.',
     },
     {
       from: 'Room',
+      icon: 'room',
       to: 'Environment',
       body: 'Four walls are a container. Light, reflection, decay time, sightline, seat height and airflow are what you actually experience — and all of them are decided long before delivery day.',
     },
     {
       from: 'Installation',
+      icon: 'compass',
       to: 'Engineering',
       body: 'Installation ends when everything is mounted. Engineering ends when the measurements agree with what you hear, and both agree with what was promised.',
     },
     {
       from: 'Project',
+      icon: 'handshake',
       to: 'Relationship',
       body: 'Handover is not the finish line. Rooms are used, firmware moves, families change how they watch. We stay accountable for the room after the invoice is closed.',
     },
@@ -126,6 +130,7 @@ export const people = {
   parts: [
     {
       key: 'eyes',
+      icon: 'eye',
       title: 'Eyes',
       lede: 'Comfortable seeing, not just bright seeing.',
       body: 'Screen size is set from viewing distance, not from wall width. Ambient light is removed at the source rather than fought with lumens. Every surface in the field of view is dark and matte, so contrast is protected instead of being reclaimed in software.',
@@ -135,6 +140,7 @@ export const people = {
     },
     {
       key: 'ears',
+      icon: 'ear',
       title: 'Ears',
       lede: 'Sound you can sit inside for three hours.',
       body: 'Decay time is brought into range with absorption and diffusion built into the wall, not hung on it. Bass is treated as a room problem before it is treated as a speaker problem. The target is intelligibility at conversational level, not peak volume.',
@@ -144,6 +150,7 @@ export const people = {
     },
     {
       key: 'body',
+      icon: 'body',
       title: 'Body',
       lede: 'The part of the room nobody specifies, and everyone feels.',
       body: 'Seat pitch, recline angle, lumbar support and headrest height are chosen against a three-hour film, not a three-minute showroom sit. Riser heights, aisle lighting and airflow are designed so nobody has to move, squint or reach.',
@@ -173,6 +180,7 @@ export const everySpace = {
   items: [
     {
       n: '01',
+      icon: 'theatre',
       title: 'Private Theatre',
       note: 'The reference room.',
       /* Same room as the hero, requested at a different aspect so the
@@ -181,12 +189,14 @@ export const everySpace = {
     },
     {
       n: '02',
+      icon: 'sofa',
       title: 'Living Room',
       note: 'Cinema that disappears by day.',
       image: img('livingAlt', 1200, '3:4'),
     },
     {
       n: '03',
+      icon: 'controller',
       title: 'Gaming',
       note: 'Latency, response, immersion.',
       image: img('projection', 1200, '3:4'),
@@ -195,18 +205,21 @@ export const everySpace = {
       n: '04',
       /* Not `fire`: that slot is an outdoor patio with a television,
          a fire pit and two people in swimwear under purple LEDs. */
+      icon: 'fader',
       title: 'Party',
       note: 'Level without fatigue.',
       image: img('slatted', 1200, '3:4'),
     },
     {
       n: '05',
+      icon: 'glass',
       title: 'Bar',
       note: 'Warmth, texture, low light.',
       image: img('bar', 1200, '3:4'),
     },
     {
       n: '06',
+      icon: 'terrace',
       title: 'Terrace',
       note: 'Open air, controlled sound.',
       image: img('terrace', 1200, '3:4'),
@@ -225,26 +238,31 @@ export const method = {
   steps: [
     {
       n: '01',
+      icon: 'listen',
       title: 'Listen',
       body: 'Before a single measurement, we establish how you actually watch, listen and host — and who else uses the room when you are not in it.',
     },
     {
       n: '02',
+      icon: 'cube',
       title: 'Design',
       body: 'The room is resolved in full 3D — sightlines, screen size, riser heights, seat spacing — and agreed on screen before anything is built.',
     },
     {
       n: '03',
+      icon: 'layers',
       title: 'Engineer',
       body: 'Acoustics, structure, power, cooling and control are designed into the build-up, so the finished room hides its engineering completely.',
     },
     {
       n: '04',
+      icon: 'meter',
       title: 'Calibrate',
       body: 'Picture and sound are measured, corrected and measured again, until the instruments and your ears are telling the same story.',
     },
     {
       n: '05',
+      icon: 'care',
       title: 'Care',
       body: 'The room is supported after handover. Firmware moves, habits change, and a cinema that nobody maintains slowly stops being one.',
     },
@@ -268,21 +286,25 @@ export const obsessions = {
   items: [
     {
       n: '01',
+      icon: 'scales',
       title: 'Acoustic Honesty',
       body: 'We would rather report a measurement you do not want to hear than tune a room until the graph looks agreeable. If a target cannot be met in the space available, we say so before the contract, not after the calibration.',
     },
     {
       n: '02',
+      icon: 'eyeClosed',
       title: 'Invisible Engineering',
       body: 'Every absorber, trap, cable route, vent and mount is designed to be undetectable in the finished room. If you can see how the room works, we have not finished designing it.',
     },
     {
       n: '03',
+      icon: 'team',
       title: 'One Accountable Team',
       body: 'Design, acoustics, joinery, electronics and calibration are ours. There is no seam between trades for a problem to fall into, and no second number to call.',
     },
     {
       n: '04',
+      icon: 'care',
       title: 'Care After Installation',
       body: 'A private cinema is a system that ages. We stay with the room — updates, re-calibration, changes in how the family uses it — long after handover.',
     },
@@ -348,12 +370,12 @@ export const team = {
   note: null,
   confirm: false,
   disciplines: [
-    { title: 'Design', body: 'Spatial design, 3D resolution and sightline geometry.' },
-    { title: 'Acoustics', body: 'Room treatment design, modal control and measurement.' },
-    { title: 'Engineering', body: 'Structure, power, cooling, control and integration.' },
-    { title: 'Installation', body: 'Joinery, fabrication and on-site build.' },
-    { title: 'Calibration', body: 'Picture and sound alignment against measured targets.' },
-    { title: 'Care', body: 'Post-handover support, updates and re-calibration.' },
+    { icon: 'cube', title: 'Design', body: 'Spatial design, 3D resolution and sightline geometry.' },
+    { icon: 'decay', title: 'Acoustics', body: 'Room treatment design, modal control and measurement.' },
+    { icon: 'compass', title: 'Engineering', body: 'Structure, power, cooling, control and integration.' },
+    { icon: 'tools', title: 'Installation', body: 'Joinery, fabrication and on-site build.' },
+    { icon: 'meter', title: 'Calibration', body: 'Picture and sound alignment against measured targets.' },
+    { icon: 'care', title: 'Care', body: 'Post-handover support, updates and re-calibration.' },
   ],
 }
 

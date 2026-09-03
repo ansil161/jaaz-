@@ -193,6 +193,7 @@ export const solutions = [
      ============================================================ */
   {
     slug: 'private-home-theatre',
+    icon: 'theatre',
     n: '01',
     nav: 'Private Home Theatre',
     navNote: 'The full dedicated room',
@@ -215,13 +216,13 @@ export const solutions = [
       heading: ['Seven systems,', 'one handover.'],
       intro: 'Each of these is a trade that most projects buy separately, from people who never meet. Here they are specified against each other from the first drawing.',
       layers: [
-        { n: '01', title: 'Room & Acoustics', body: 'The shell is treated before a single speaker is chosen.', points: ['Sound isolation from the rest of the house', 'Absorption, diffusion and bass trapping', 'Room-mode analysis and correction'] },
-        { n: '02', title: 'Dolby Atmos Sound', body: 'A full object-based layout, including height channels.', points: ['Bed, surround and ceiling channels', 'Multi-subwoofer bass management', 'Per-seat time alignment and EQ'] },
-        { n: '03', title: 'Projection & Screen', body: 'Throw, gain and masking chosen for this room, not from a catalogue.', points: ['Projector matched to screen size and gain', 'Acoustically transparent screen where the layout needs it', 'Reference colour calibration'] },
-        { n: '04', title: 'Motorised Recliners', body: 'Tiered, powered and specified around the people using them.', points: ['Riser heights set from real sightlines', 'Powered headrest, lumbar and leg rest', 'Console storage, charging and per-seat control'] },
-        { n: '05', title: 'Star Ceiling', body: 'Fibre-optic points set out by hand, not on a grid.', points: ['Variable point density and brightness', 'Twinkle and shooting-star effects', 'Dims to nothing on the movie cue'] },
-        { n: '06', title: 'Ambient & Screen-Synced Lighting', body: 'Cove, step and wall light that answers to the picture.', points: ['Dimmable cove and aisle circuits', 'Colour-reactive wash behind the screen', 'Scene presets, never a bank of switches'] },
-        { n: '07', title: 'Full Automation', body: 'One button. The room does the rest.', points: ['Projector, AV, lighting, AC and blinds on one scene', 'Wall panel, remote and phone', 'Failure modes that leave you with light'] },
+        { n: '01', icon: 'absorption', title: 'Room & Acoustics', body: 'The shell is treated before a single speaker is chosen.', points: ['Sound isolation from the rest of the house', 'Absorption, diffusion and bass trapping', 'Room-mode analysis and correction'] },
+        { n: '02', icon: 'atmos', title: 'Dolby Atmos Sound', body: 'A full object-based layout, including height channels.', points: ['Bed, surround and ceiling channels', 'Multi-subwoofer bass management', 'Per-seat time alignment and EQ'] },
+        { n: '03', icon: 'projector', title: 'Projection & Screen', body: 'Throw, gain and masking chosen for this room, not from a catalogue.', points: ['Projector matched to screen size and gain', 'Acoustically transparent screen where the layout needs it', 'Reference colour calibration'] },
+        { n: '04', icon: 'seat', title: 'Motorised Recliners', body: 'Tiered, powered and specified around the people using them.', points: ['Riser heights set from real sightlines', 'Powered headrest, lumbar and leg rest', 'Console storage, charging and per-seat control'] },
+        { n: '05', icon: 'star', title: 'Star Ceiling', body: 'Fibre-optic points set out by hand, not on a grid.', points: ['Variable point density and brightness', 'Twinkle and shooting-star effects', 'Dims to nothing on the movie cue'] },
+        { n: '06', icon: 'cove', title: 'Ambient & Screen-Synced Lighting', body: 'Cove, step and wall light that answers to the picture.', points: ['Dimmable cove and aisle circuits', 'Colour-reactive wash behind the screen', 'Scene presets, never a bank of switches'] },
+        { n: '07', icon: 'scene', title: 'Full Automation', body: 'One button. The room does the rest.', points: ['Projector, AV, lighting, AC and blinds on one scene', 'Wall panel, remote and phone', 'Failure modes that leave you with light'] },
       ],
     },
     spec: {
@@ -281,6 +282,7 @@ export const solutions = [
      ============================================================ */
   {
     slug: 'living-room-theatre-upgrade',
+    icon: 'sofa',
     n: '02',
     nav: 'Living Room Theatre Upgrade',
     navNote: 'Cinema sound, no civil work',
@@ -303,12 +305,12 @@ export const solutions = [
       heading: ['Everything except', 'the demolition.'],
       intro: 'No false ceiling, no chased walls, no dust sheets for three weeks. The room is handed back the same week.',
       layers: [
-        { n: '01', title: 'AV Receiver or Soundbar Platform', body: 'The decision is made on the room, not on the brochure.', points: ['Full AV receiver where placement allows', 'High-end soundbar platform where it does not', 'HDMI 2.1 and eARC handled properly'] },
-        { n: '02', title: 'Front & Centre Speakers', body: 'Dialogue is the thing people actually notice.', points: ['Left, centre, right matched as a set', 'Centre aligned to the screen, not to the cabinet', 'On-wall, in-wall or free-standing to suit the room'] },
-        { n: '03', title: 'Surrounds', body: 'Placed for the seating you have, not for a diagram.', points: ['5.1 or 7.1, in-ceiling or on-wall', 'Height channels where the ceiling permits', 'Angles set from the sofa'] },
-        { n: '04', title: 'Subwoofer', body: 'One box, and where it goes decides whether it works.', points: ['Placement found by measurement, not by convenience', 'Crossover and phase set to the mains', 'Room-mode notch where the space demands it'] },
-        { n: '05', title: 'Clean Wiring', body: 'The part everyone forgets and everyone sees.', points: ['Skirting, cornice and cavity routes', 'No visible runs, no trailing looms', 'Labelled, documented, serviceable'] },
-        { n: '06', title: 'Calibrated Cinematic Sound', body: 'The last two hours are the ones that matter.', points: ['Measured response at the seating position', 'Level, distance and EQ per channel', 'Two presets: film and everyday'] },
+        { n: '01', icon: 'rack', title: 'AV Receiver or Soundbar Platform', body: 'The decision is made on the room, not on the brochure.', points: ['Full AV receiver where placement allows', 'High-end soundbar platform where it does not', 'HDMI 2.1 and eARC handled properly'] },
+        { n: '02', icon: 'dialogue', title: 'Front & Centre Speakers', body: 'Dialogue is the thing people actually notice.', points: ['Left, centre, right matched as a set', 'Centre aligned to the screen, not to the cabinet', 'On-wall, in-wall or free-standing to suit the room'] },
+        { n: '03', icon: 'speaker', title: 'Surrounds', body: 'Placed for the seating you have, not for a diagram.', points: ['5.1 or 7.1, in-ceiling or on-wall', 'Height channels where the ceiling permits', 'Angles set from the sofa'] },
+        { n: '04', icon: 'sub', title: 'Subwoofer', body: 'One box, and where it goes decides whether it works.', points: ['Placement found by measurement, not by convenience', 'Crossover and phase set to the mains', 'Room-mode notch where the space demands it'] },
+        { n: '05', icon: 'cable', title: 'Clean Wiring', body: 'The part everyone forgets and everyone sees.', points: ['Skirting, cornice and cavity routes', 'No visible runs, no trailing looms', 'Labelled, documented, serviceable'] },
+        { n: '06', icon: 'meter', title: 'Calibrated Cinematic Sound', body: 'The last two hours are the ones that matter.', points: ['Measured response at the seating position', 'Level, distance and EQ per channel', 'Two presets: film and everyday'] },
       ],
     },
     spec: {
@@ -368,6 +370,7 @@ export const solutions = [
      ============================================================ */
   {
     slug: 'home-automation-control',
+    icon: 'scene',
     n: '03',
     nav: 'Home Automation & Control',
     navNote: 'One button, one room',
@@ -390,12 +393,12 @@ export const solutions = [
       heading: ['Named states,', 'not a hundred switches.'],
       intro: 'A scene is a decision made once, at commissioning, so it never has to be made again at eight in the evening.',
       layers: [
-        { n: '01', title: 'Movie Mode', body: 'The one everything else is judged against.', points: ['Projector on, screen down, source selected', 'Cove to 8%, aisle lights on, star ceiling up', 'AC dropped two degrees and set to silent'] },
-        { n: '02', title: 'Party Mode', body: 'Bright, loud, and nobody touching the rack.', points: ['House lighting to a warm high level', 'Audio to the party preset and zones opened', 'Screen up, source on the playlist input'] },
-        { n: '03', title: 'Dinner & Lounge', body: 'The state a room spends most of its life in.', points: ['Low warm wash, accents on', 'Audio at conversation level', 'Screen and projector off and out of the way'] },
-        { n: '04', title: 'Climate', body: 'Comfort is a temperature as much as a chair.', points: ['AC on the scene, not on a separate remote', 'Fan curves set for a quiet room', 'Schedules for pre-cooling before a screening'] },
-        { n: '05', title: 'Seating', body: 'Recliners answer to the scene too.', points: ['All-seats-upright on Off', 'Per-seat control retained at the console', 'Powered headrest and leg rest presets'] },
-        { n: '06', title: 'Control Surfaces', body: 'Three ways in, and all three agree.', points: ['Engraved wall panel by the door', 'One handheld remote, backlit', 'Phone and tablet app for everything else'] },
+        { n: '01', icon: 'theatre', title: 'Movie Mode', body: 'The one everything else is judged against.', points: ['Projector on, screen down, source selected', 'Cove to 8%, aisle lights on, star ceiling up', 'AC dropped two degrees and set to silent'] },
+        { n: '02', icon: 'fader', title: 'Party Mode', body: 'Bright, loud, and nobody touching the rack.', points: ['House lighting to a warm high level', 'Audio to the party preset and zones opened', 'Screen up, source on the playlist input'] },
+        { n: '03', icon: 'glass', title: 'Dinner & Lounge', body: 'The state a room spends most of its life in.', points: ['Low warm wash, accents on', 'Audio at conversation level', 'Screen and projector off and out of the way'] },
+        { n: '04', icon: 'climate', title: 'Climate', body: 'Comfort is a temperature as much as a chair.', points: ['AC on the scene, not on a separate remote', 'Fan curves set for a quiet room', 'Schedules for pre-cooling before a screening'] },
+        { n: '05', icon: 'seat', title: 'Seating', body: 'Recliners answer to the scene too.', points: ['All-seats-upright on Off', 'Per-seat control retained at the console', 'Powered headrest and leg rest presets'] },
+        { n: '06', icon: 'remote', title: 'Control Surfaces', body: 'Three ways in, and all three agree.', points: ['Engraved wall panel by the door', 'One handheld remote, backlit', 'Phone and tablet app for everything else'] },
       ],
     },
     spec: {
@@ -454,6 +457,7 @@ export const solutions = [
      ============================================================ */
   {
     slug: 'acoustic-treatment',
+    icon: 'absorption',
     n: '04',
     nav: 'Acoustic Treatment & Room Engineering',
     navNote: 'When the room is the problem',
@@ -476,12 +480,12 @@ export const solutions = [
       heading: ['Measure.', 'Then treat.'],
       intro: 'Nothing is fitted before the room is measured, because treatment applied to the wrong surface is decoration with a technical name.',
       layers: [
-        { n: '01', title: 'Acoustic Analysis', body: 'The room tells us what it needs.', points: ['Impulse response and RT60 by octave band', 'Modal map and null locations', 'Noise floor and ingress survey'] },
-        { n: '02', title: 'Sound Isolation', body: 'Keeping it in is a different problem to making it sound good.', points: ['Decoupled stud and resilient channel', 'Mass layers and damped cavities', 'Door, threshold and service-penetration sealing'] },
-        { n: '03', title: 'Absorption', body: 'Placed at the reflections that actually reach the seat.', points: ['First-reflection points found by mirror trace', 'Broadband panels, not foam', 'Fabric, timber or fluted finishes'] },
-        { n: '04', title: 'Diffusion', body: 'A dead room is as wrong as a live one.', points: ['Rear-wall and ceiling diffusion', 'Slatted and sculpted timber elements', 'Balance set to keep the room alive at low levels'] },
-        { n: '05', title: 'Bass Optimisation', body: 'Where nearly all of the audible damage is.', points: ['Corner and pressure-zone bass trapping', 'Multi-sub placement and phase', 'Parametric correction below the transition frequency'] },
-        { n: '06', title: 'Reverberation Control', body: 'One target number, and we hit it.', points: ['Frequency-even decay, not just a short one', 'Speech intelligibility checked, not assumed', 'Before-and-after measurements handed over'] },
+        { n: '01', icon: 'mode', title: 'Acoustic Analysis', body: 'The room tells us what it needs.', points: ['Impulse response and RT60 by octave band', 'Modal map and null locations', 'Noise floor and ingress survey'] },
+        { n: '02', icon: 'isolation', title: 'Sound Isolation', body: 'Keeping it in is a different problem to making it sound good.', points: ['Decoupled stud and resilient channel', 'Mass layers and damped cavities', 'Door, threshold and service-penetration sealing'] },
+        { n: '03', icon: 'absorption', title: 'Absorption', body: 'Placed at the reflections that actually reach the seat.', points: ['First-reflection points found by mirror trace', 'Broadband panels, not foam', 'Fabric, timber or fluted finishes'] },
+        { n: '04', icon: 'diffusion', title: 'Diffusion', body: 'A dead room is as wrong as a live one.', points: ['Rear-wall and ceiling diffusion', 'Slatted and sculpted timber elements', 'Balance set to keep the room alive at low levels'] },
+        { n: '05', icon: 'sub', title: 'Bass Optimisation', body: 'Where nearly all of the audible damage is.', points: ['Corner and pressure-zone bass trapping', 'Multi-sub placement and phase', 'Parametric correction below the transition frequency'] },
+        { n: '06', icon: 'decay', title: 'Reverberation Control', body: 'One target number, and we hit it.', points: ['Frequency-even decay, not just a short one', 'Speech intelligibility checked, not assumed', 'Before-and-after measurements handed over'] },
       ],
     },
     spec: {
@@ -540,6 +544,7 @@ export const solutions = [
      ============================================================ */
   {
     slug: 'party-event-audio',
+    icon: 'fader',
     n: '05',
     nav: 'Party & Event Audio',
     navNote: 'When the room becomes the occasion',
@@ -562,12 +567,12 @@ export const solutions = [
       heading: ['Output, headroom,', 'and nothing to learn.'],
       intro: 'Specified for a full room, not a sweet spot, and set up so nobody needs to find the engineer.',
       layers: [
-        { n: '01', title: 'High-Output Speakers', body: 'Level with headroom left over.', points: ['Full-range cabinets sized to the floor area', 'Even coverage, no hot spot at the source', 'Distributed fills for adjoining spaces'] },
-        { n: '02', title: 'Subwoofers', body: 'The part people feel and remember.', points: ['Dedicated party subs, not the cinema sub', 'Placed for even low end across the floor', 'Limited to stay clean at maximum'] },
-        { n: '03', title: 'Karaoke Input', body: 'Wireless microphones that work at the far end of the room.', points: ['Two to four wireless handhelds', 'Feedback-controlled mic channel', 'Track playback with key and tempo control'] },
-        { n: '04', title: 'DJ Input', body: 'A guest can plug in in ten seconds.', points: ['Line, USB and Bluetooth inputs at a labelled point', 'Booth level independent of the house level', 'Handover-safe: no access to the calibration'] },
-        { n: '05', title: 'Lighting Tie-In', body: 'The lights come with it, on one preset.', points: ['Party scene on the same control surface', 'Colour wash and beat-reactive options', 'One press back to normal at the end of the night'] },
-        { n: '06', title: 'Easy Control', body: 'One dial that everyone understands.', points: ['Master level and one input selector', 'Presets: background, dancing, karaoke', 'Nothing that can break the calibrated presets'] },
+        { n: '01', icon: 'speaker', title: 'High-Output Speakers', body: 'Level with headroom left over.', points: ['Full-range cabinets sized to the floor area', 'Even coverage, no hot spot at the source', 'Distributed fills for adjoining spaces'] },
+        { n: '02', icon: 'sub', title: 'Subwoofers', body: 'The part people feel and remember.', points: ['Dedicated party subs, not the cinema sub', 'Placed for even low end across the floor', 'Limited to stay clean at maximum'] },
+        { n: '03', icon: 'mic', title: 'Karaoke Input', body: 'Wireless microphones that work at the far end of the room.', points: ['Two to four wireless handhelds', 'Feedback-controlled mic channel', 'Track playback with key and tempo control'] },
+        { n: '04', icon: 'fader', title: 'DJ Input', body: 'A guest can plug in in ten seconds.', points: ['Line, USB and Bluetooth inputs at a labelled point', 'Booth level independent of the house level', 'Handover-safe: no access to the calibration'] },
+        { n: '05', icon: 'cove', title: 'Lighting Tie-In', body: 'The lights come with it, on one preset.', points: ['Party scene on the same control surface', 'Colour wash and beat-reactive options', 'One press back to normal at the end of the night'] },
+        { n: '06', icon: 'remote', title: 'Easy Control', body: 'One dial that everyone understands.', points: ['Master level and one input selector', 'Presets: background, dancing, karaoke', 'Nothing that can break the calibrated presets'] },
       ],
     },
     spec: {
@@ -626,6 +631,7 @@ export const solutions = [
      ============================================================ */
   {
     slug: 'bar-lounge-audio',
+    icon: 'glass',
     n: '06',
     nav: 'Bar & Lounge Audio',
     navNote: 'Ambience, not spectacle',
@@ -648,12 +654,12 @@ export const solutions = [
       heading: ['Even, warm,', 'and out of sight.'],
       intro: 'Every choice here trades peak output for evenness. That is the correct trade for a room people talk in.',
       layers: [
-        { n: '01', title: 'Ceiling Speakers', body: 'The default, because they disappear completely.', points: ['Wide-dispersion drivers on a close grid', 'Trimless bezels, painted to the ceiling', 'Even coverage standing and seated'] },
-        { n: '02', title: 'Wall & Bookshelf', body: 'Where the ceiling is not available or not right.', points: ['Compact cabinets on shelving and joinery', 'Timber and fabric finishes to match the bar', 'Angled to the standing ear height'] },
-        { n: '03', title: 'Discreet Subwoofer', body: 'Weight without a box in the room.', points: ['In-cabinet or in-wall placement', 'Set low and flat, never demonstrative', 'Crossed over high enough to stay unnoticed'] },
-        { n: '04', title: 'Zoning', body: 'The counter, the seating and the cigar room are not one room.', points: ['Independent level per zone', 'Separate sources where wanted', 'One master mute at the bar'] },
-        { n: '05', title: 'Mood Presets', body: 'Named for the evening, not for the equipment.', points: ['Aperitif, Late, Cigar, Off', 'Level and tone shift together', 'Lighting joins the same preset'] },
-        { n: '06', title: 'Sources', body: 'Streaming that works without a laptop.', points: ['Built-in streaming, one app', 'Turntable and line inputs where wanted', 'Guest Bluetooth on a limited zone'] },
+        { n: '01', icon: 'ceilingSpeaker', title: 'Ceiling Speakers', body: 'The default, because they disappear completely.', points: ['Wide-dispersion drivers on a close grid', 'Trimless bezels, painted to the ceiling', 'Even coverage standing and seated'] },
+        { n: '02', icon: 'speaker', title: 'Wall & Bookshelf', body: 'Where the ceiling is not available or not right.', points: ['Compact cabinets on shelving and joinery', 'Timber and fabric finishes to match the bar', 'Angled to the standing ear height'] },
+        { n: '03', icon: 'sub', title: 'Discreet Subwoofer', body: 'Weight without a box in the room.', points: ['In-cabinet or in-wall placement', 'Set low and flat, never demonstrative', 'Crossed over high enough to stay unnoticed'] },
+        { n: '04', icon: 'zones', title: 'Zoning', body: 'The counter, the seating and the cigar room are not one room.', points: ['Independent level per zone', 'Separate sources where wanted', 'One master mute at the bar'] },
+        { n: '05', icon: 'scene', title: 'Mood Presets', body: 'Named for the evening, not for the equipment.', points: ['Aperitif, Late, Cigar, Off', 'Level and tone shift together', 'Lighting joins the same preset'] },
+        { n: '06', icon: 'stream', title: 'Sources', body: 'Streaming that works without a laptop.', points: ['Built-in streaming, one app', 'Turntable and line inputs where wanted', 'Guest Bluetooth on a limited zone'] },
       ],
     },
     spec: {
@@ -712,6 +718,7 @@ export const solutions = [
      ============================================================ */
   {
     slug: 'outdoor-terrace-sound',
+    icon: 'terrace',
     n: '07',
     nav: 'Outdoor / Terrace Sound',
     navNote: 'Weather is the specification',
@@ -734,12 +741,12 @@ export const solutions = [
       heading: ['Two approaches.', 'Both engineered.'],
       intro: 'Whether the hardware is exposed or concealed changes every decision after it, so it is the first thing we settle.',
       layers: [
-        { n: '01', title: 'Exposed, Weather-Protected', body: 'Hardware that lives outdoors permanently.', points: ['IP-rated enclosures, marine-grade fixings', 'UV-stable grilles and cabinets', 'Rated to the local monsoon, not to a lab'] },
-        { n: '02', title: 'Concealed Indoor-Terrace', body: 'The system stays inside the weather line and throws out.', points: ['Speakers in the soffit or reveal, out of the rain', 'Coverage modelled across the open area', 'Zero visible hardware on the terrace itself'] },
-        { n: '03', title: 'Coverage Without Walls', body: 'More sources, quieter each, is the whole trick.', points: ['Distributed layout instead of two big cabinets', 'Level even across seating and standing areas', 'Boundary level checked toward neighbours'] },
-        { n: '04', title: 'Low End Outdoors', body: 'The hardest part of any exposed system.', points: ['Weather-rated or interior-mounted subwoofer', 'Boundary reinforcement used deliberately', 'Curfew preset that drops the bass first'] },
-        { n: '05', title: 'Water & Drainage', body: 'The detail that decides the lifespan.', points: ['Drip loops, gland seals, drained back-boxes', 'No termination at the low point of any run', 'Conduit falls away from every enclosure'] },
-        { n: '06', title: 'Power & Protection', body: 'Electrics that are happy in a storm.', points: ['RCD-protected, weather-rated distribution', 'Surge protection at the amplifier', 'Amplifiers indoors wherever it is possible'] },
+        { n: '01', icon: 'shield', title: 'Exposed, Weather-Protected', body: 'Hardware that lives outdoors permanently.', points: ['IP-rated enclosures, marine-grade fixings', 'UV-stable grilles and cabinets', 'Rated to the local monsoon, not to a lab'] },
+        { n: '02', icon: 'terrace', title: 'Concealed Indoor-Terrace', body: 'The system stays inside the weather line and throws out.', points: ['Speakers in the soffit or reveal, out of the rain', 'Coverage modelled across the open area', 'Zero visible hardware on the terrace itself'] },
+        { n: '03', icon: 'zones', title: 'Coverage Without Walls', body: 'More sources, quieter each, is the whole trick.', points: ['Distributed layout instead of two big cabinets', 'Level even across seating and standing areas', 'Boundary level checked toward neighbours'] },
+        { n: '04', icon: 'sub', title: 'Low End Outdoors', body: 'The hardest part of any exposed system.', points: ['Weather-rated or interior-mounted subwoofer', 'Boundary reinforcement used deliberately', 'Curfew preset that drops the bass first'] },
+        { n: '05', icon: 'drain', title: 'Water & Drainage', body: 'The detail that decides the lifespan.', points: ['Drip loops, gland seals, drained back-boxes', 'No termination at the low point of any run', 'Conduit falls away from every enclosure'] },
+        { n: '06', icon: 'power', title: 'Power & Protection', body: 'Electrics that are happy in a storm.', points: ['RCD-protected, weather-rated distribution', 'Surge protection at the amplifier', 'Amplifiers indoors wherever it is possible'] },
       ],
     },
     spec: {
@@ -798,6 +805,7 @@ export const solutions = [
      ============================================================ */
   {
     slug: 'lighting-ambience-design',
+    icon: 'cove',
     n: '08',
     nav: 'Lighting & Ambience Design',
     navNote: 'The room moves with the story',
@@ -820,12 +828,12 @@ export const solutions = [
       heading: ['Layers of light,', 'never one switch.'],
       intro: 'Four or five separately dimmable layers is what makes a room capable of having moods at all. A single bright circuit can only be on or off.',
       layers: [
-        { n: '01', title: 'Cove Lighting', body: 'Indirect light off the ceiling perimeter.', points: ['Warm-dim strip, hidden detail', 'Continuous run, no visible dots or scallops', 'Dims smoothly to 1% without stepping'] },
-        { n: '02', title: 'Wall Washers', body: 'Architecture, lit deliberately.', points: ['Grazing light on fluted and slatted surfaces', 'Beam angles set on site, not on paper', 'Separate circuit from the cove'] },
-        { n: '03', title: 'Star Ceiling', body: 'Fibre-optic points, set out by hand.', points: ['Variable density and point brightness', 'Twinkle wheel and shooting-star effects', 'Optional constellations, laid out to a real sky'] },
-        { n: '04', title: 'Screen-Synced Colour', body: 'The wall behind the screen answers to the picture.', points: ['Colour sampled from the frame in real time', 'Response damped so it never flickers', 'Defeatable in one press for reference viewing'] },
-        { n: '05', title: 'Step & Aisle Light', body: 'The safety layer, and it should be beautiful.', points: ['Recessed marker or continuous nosing strip', 'On automatically when the room is dark', 'Level set to not lift the screen black'] },
-        { n: '06', title: 'Scenes', body: 'Layers only matter if they move together.', points: ['Movie, Interval, Party, Clean, Off', 'Fade times authored per scene', 'One control surface with the rest of the room'] },
+        { n: '01', icon: 'cove', title: 'Cove Lighting', body: 'Indirect light off the ceiling perimeter.', points: ['Warm-dim strip, hidden detail', 'Continuous run, no visible dots or scallops', 'Dims smoothly to 1% without stepping'] },
+        { n: '02', icon: 'light', title: 'Wall Washers', body: 'Architecture, lit deliberately.', points: ['Grazing light on fluted and slatted surfaces', 'Beam angles set on site, not on paper', 'Separate circuit from the cove'] },
+        { n: '03', icon: 'star', title: 'Star Ceiling', body: 'Fibre-optic points, set out by hand.', points: ['Variable density and point brightness', 'Twinkle wheel and shooting-star effects', 'Optional constellations, laid out to a real sky'] },
+        { n: '04', icon: 'screen', title: 'Screen-Synced Colour', body: 'The wall behind the screen answers to the picture.', points: ['Colour sampled from the frame in real time', 'Response damped so it never flickers', 'Defeatable in one press for reference viewing'] },
+        { n: '05', icon: 'riser', title: 'Step & Aisle Light', body: 'The safety layer, and it should be beautiful.', points: ['Recessed marker or continuous nosing strip', 'On automatically when the room is dark', 'Level set to not lift the screen black'] },
+        { n: '06', icon: 'scene', title: 'Scenes', body: 'Layers only matter if they move together.', points: ['Movie, Interval, Party, Clean, Off', 'Fade times authored per scene', 'One control surface with the rest of the room'] },
       ],
     },
     spec: {
@@ -884,6 +892,7 @@ export const solutions = [
      ============================================================ */
   {
     slug: 'premium-seating',
+    icon: 'seat',
     n: '09',
     nav: 'Premium Seating & Recliners',
     navNote: 'Seating on its own',
@@ -906,12 +915,12 @@ export const solutions = [
       heading: ['Every axis', 'that moves.'],
       intro: 'The brochure spec, itemised — because a "motorised recliner" ranges from two motors and a cupholder to what is described here.',
       layers: [
-        { n: '01', title: 'Powered Headrest', body: 'The adjustment that decides whether your neck lasts the film.', points: ['Independent motorised articulation', 'Set for the actual screen height in your room', 'Memory position per seat'] },
-        { n: '02', title: 'Lumbar Support', body: 'Powered, because the right amount changes through an evening.', points: ['Adjustable depth under power', 'Held through the full recline range', 'Tuned at handover, per person'] },
-        { n: '03', title: 'Leg Rest', body: 'Full extension, and it takes the weight.', points: ['Independent powered extension', 'Calf support through the range', 'Wall-hugging mechanism where space is tight'] },
-        { n: '04', title: 'Console & Storage', body: 'Everything you put down has somewhere to go.', points: ['Cooled or plain cupholders', 'Lidded storage and a device tray', 'USB-C and mains charging at the seat'] },
-        { n: '05', title: 'Upholstery', body: 'The finish decides how it ages, not how it looks.', points: ['Aniline and semi-aniline leather, or performance fabric', 'Contrast stitch, piping and perforation options', 'Cleanable specifications for family rooms'] },
-        { n: '06', title: 'Layout & Risers', body: 'A great chair in the wrong place is still the wrong seat.', points: ['Sightlines calculated per row', 'Riser heights and depths designed to suit', 'Power, data and control routed into every seat'] },
+        { n: '01', icon: 'body', title: 'Powered Headrest', body: 'The adjustment that decides whether your neck lasts the film.', points: ['Independent motorised articulation', 'Set for the actual screen height in your room', 'Memory position per seat'] },
+        { n: '02', icon: 'seat', title: 'Lumbar Support', body: 'Powered, because the right amount changes through an evening.', points: ['Adjustable depth under power', 'Held through the full recline range', 'Tuned at handover, per person'] },
+        { n: '03', icon: 'recline', title: 'Leg Rest', body: 'Full extension, and it takes the weight.', points: ['Independent powered extension', 'Calf support through the range', 'Wall-hugging mechanism where space is tight'] },
+        { n: '04', icon: 'storage', title: 'Console & Storage', body: 'Everything you put down has somewhere to go.', points: ['Cooled or plain cupholders', 'Lidded storage and a device tray', 'USB-C and mains charging at the seat'] },
+        { n: '05', icon: 'fabric', title: 'Upholstery', body: 'The finish decides how it ages, not how it looks.', points: ['Aniline and semi-aniline leather, or performance fabric', 'Contrast stitch, piping and perforation options', 'Cleanable specifications for family rooms'] },
+        { n: '06', icon: 'riser', title: 'Layout & Risers', body: 'A great chair in the wrong place is still the wrong seat.', points: ['Sightlines calculated per row', 'Riser heights and depths designed to suit', 'Power, data and control routed into every seat'] },
       ],
     },
     spec: {

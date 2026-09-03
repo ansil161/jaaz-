@@ -44,6 +44,7 @@ export const wizard = {
   steps: [
     {
       key: 'space',
+      icon: 'room',
       title: 'What are you building?',
       note: 'Tell us about your project. Choose one.',
       type: 'single',
@@ -61,6 +62,7 @@ export const wizard = {
     },
     {
       key: 'budget',
+      icon: 'scales',
       title: 'Estimated budget',
       note: 'A band, not a number. It decides what is honest to propose.',
       type: 'chip',
@@ -69,12 +71,14 @@ export const wizard = {
     },
     {
       key: 'details',
+      icon: 'report',
       title: 'Project details',
       note: null,
       type: 'compound',
       groups: [
         {
           n: '01',
+          icon: 'pin',
           title: 'Where the room is',
           kind: 'text',
           field: 'city',
@@ -82,6 +86,7 @@ export const wizard = {
         },
         {
           n: '02',
+          icon: 'calendar',
           title: 'Timeline',
           kind: 'chip',
           field: 'timeline',
@@ -89,6 +94,7 @@ export const wizard = {
         },
         {
           n: '03',
+          icon: 'listen',
           title: 'Tell us about your project',
           kind: 'textarea',
           field: 'message',
@@ -100,6 +106,7 @@ export const wizard = {
     },
     {
       key: 'contact',
+      icon: 'user',
       title: 'Your contact',
       note: null,
       type: 'contact',
@@ -135,6 +142,7 @@ export const wizard = {
     },
     {
       key: 'review',
+      icon: 'shield',
       title: 'Review & send',
       note: 'Everything below goes straight into an email to the studio — nothing is stored anywhere else.',
       type: 'review',

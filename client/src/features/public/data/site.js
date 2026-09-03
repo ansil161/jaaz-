@@ -454,6 +454,7 @@ export const possibilities = {
     {
       n: '01',
       label: 'Private Cinema',
+      icon: 'theatre',
       title: 'The Dedicated Room',
       line: 'Designed for the film, not the equipment.',
       body: 'Tiered seating, a masked 2.39:1 screen and a room whose acoustics were drawn before any of its finishes were chosen.',
@@ -465,6 +466,7 @@ export const possibilities = {
     {
       n: '02',
       label: 'Private Cinema',
+      icon: 'masking',
       title: 'The Dark Room',
       line: 'Nothing in the room competes with the screen.',
       body: 'Black architecture, no reflective surface left facing the picture, and one warm plane of light — the room disappears and the film does not.',
@@ -476,6 +478,7 @@ export const possibilities = {
     {
       n: '03',
       label: 'Living Cinema',
+      icon: 'sofa',
       title: 'The Room That Disappears',
       line: 'Performance without visual clutter.',
       body: 'Speakers behind the plaster, every cable buried, one control. It reads as a living room right up until the moment it does not.',
@@ -487,6 +490,7 @@ export const possibilities = {
     {
       n: '04',
       label: 'Living Cinema',
+      icon: 'openPlan',
       title: 'Open Plan',
       line: 'A system that has to hold a whole floor.',
       body: 'Sound designed for a space with no back wall, tuned so the sofa and the kitchen island are listening to the same mix.',
@@ -498,6 +502,7 @@ export const possibilities = {
     {
       n: '05',
       label: 'Gaming',
+      icon: 'controller',
       title: 'Low Latency',
       line: 'Precision at every frame.',
       body: 'A 120 Hz path from console to screen, positional audio placed to the seat rather than to the room, and light that takes its cue from the game.',
@@ -509,6 +514,7 @@ export const possibilities = {
     {
       n: '06',
       label: 'Lounge',
+      icon: 'absorption',
       title: 'Quiet Hours',
       line: 'Treatment that reads as joinery, not as foam.',
       body: 'Fluted timber and concealed absorption doing acoustic work in a room nobody would describe as a cinema.',
@@ -520,6 +526,7 @@ export const possibilities = {
     {
       n: '07',
       label: 'Lounge',
+      icon: 'glass',
       title: 'After the Credits',
       line: 'Entertainment beyond the credits.',
       body: 'Distributed audio tuned for conversation first, with a screen that only appears at the point somebody wants one.',
@@ -531,6 +538,7 @@ export const possibilities = {
     {
       n: '08',
       label: 'Outdoor',
+      icon: 'flame',
       title: 'Under Open Skies',
       line: 'Cinema under open skies.',
       body: 'A screen, a fire and seating arranged around both — weather-rated throughout, and calibrated twice: once for still air, once for the monsoon that arrives anyway.',
@@ -605,6 +613,7 @@ export const spaces = {
     {
       n: '01',
       meta: 'Dedicated room · 6-14 seats',
+      icon: 'theatre',
       title: 'Private Theatre',
       line: 'Immersion, engineered.',
       body: 'An intimate cinema designed entirely around the art of watching.',
@@ -615,6 +624,7 @@ export const spaces = {
     {
       n: '02',
       meta: 'Concealed system · Any room',
+      icon: 'sofa',
       title: 'Living Room',
       line: 'Nothing on show but the picture.',
       body: 'Cinema performance, seamlessly integrated into everyday living.',
@@ -625,6 +635,7 @@ export const spaces = {
     {
       n: '03',
       meta: 'Low latency · Positional audio',
+      icon: 'controller',
       title: 'Gaming Den',
       line: 'Latency you can measure. Never feel.',
       body: 'Performance, immersion and comfort — without compromise.',
@@ -647,6 +658,7 @@ export const spaces = {
     {
       n: '04',
       meta: 'Scaled output · Lighting scenes',
+      icon: 'fader',
       title: 'Party Lounge',
       line: 'Loud, without ever being harsh.',
       body: 'Built for the moments when the room becomes the occasion.',
@@ -665,6 +677,7 @@ export const spaces = {
     {
       n: '05',
       meta: 'Distributed audio · Warm & even',
+      icon: 'glass',
       title: 'Bar',
       line: 'Even at the far end of the counter.',
       body: 'Where entertainment meets effortless hospitality.',
@@ -675,6 +688,7 @@ export const spaces = {
     {
       n: '06',
       meta: 'Weather-rated · Open air',
+      icon: 'terrace',
       title: 'Terrace',
       line: 'Rated for the weather it will actually get.',
       body: 'Bring the experience outside.',
@@ -734,6 +748,7 @@ export const snap = {
   worlds: [
     {
       n: '01',
+      icon: 'theatre',
       name: 'Cinema',
       line: 'Lights to zero. The screen is the only source in the room.',
       render: 'snap/cinema',
@@ -742,6 +757,7 @@ export const snap = {
     },
     {
       n: '02',
+      icon: 'screen',
       name: 'The match',
       line: 'Brighter, wider, and loud enough to shout over.',
       render: 'snap/match',
@@ -750,6 +766,7 @@ export const snap = {
     },
     {
       n: '03',
+      icon: 'team',
       name: 'Gathering',
       line: 'The screen steps back. The room is for the people in it.',
       render: 'snap/gathering',
@@ -758,6 +775,7 @@ export const snap = {
     },
     {
       n: '04',
+      icon: 'sofa',
       name: 'Everyday',
       line: 'Nothing on show. A room you would sit in with the lights on.',
       render: 'snap/everyday',
@@ -1061,30 +1079,35 @@ export const craft = {
   items: [
     {
       n: '01',
+      icon: 'cube',
       title: '3D Design',
       body: 'The room is built in full 3D before it is built in brick. Sightlines, screen size, riser heights and seat spacing are proven on screen first.',
       image: img('modern', 1800, '3:2'),
     },
     {
       n: '02',
+      icon: 'absorption',
       title: 'Wall Acoustics',
       body: 'Fabric-wrapped absorbers, diffusers and bass traps designed into the wall build-up — invisible in the finished room, decisive in how it sounds.',
       image: img('fluted', 1800, '3:2'),
     },
     {
       n: '03',
+      icon: 'isolation',
       title: 'Acoustic Flooring',
       body: 'Decoupled floor construction that stops structure-borne bass from leaving the room and the rest of the house from entering it.',
       image: img('dining', 1800, '3:2'),
     },
     {
       n: '04',
+      icon: 'seat',
       title: 'Luxury Recliners',
       body: 'Motorised recliners in leather or fabric, with tray tables, lighting and per-seat power specified around a three-hour film.',
       image: img('chair', 1800, '3:2'),
     },
     {
       n: '05',
+      icon: 'star',
       title: 'Star-Light Ceilings',
       body: 'Fibre-optic star fields with twinkle wheels and shooting stars, mapped by hand so the ceiling reads as sky rather than as pattern.',
       image: img('theatre', 1800, '3:2'),
@@ -1123,31 +1146,37 @@ export const process = {
   steps: [
     {
       n: '01',
+      icon: 'listen',
       title: 'Consultation',
       body: 'We start with you, not the room: how you watch, who watches with you, and what the space is expected to do on an ordinary Tuesday as well as on the night it is shown off.',
     },
     {
       n: '02',
+      icon: 'measure',
       title: 'Site Study',
       body: 'The room is measured and assessed — dimensions, structure, power, ventilation, neighbouring rooms and what the walls are actually made of. Constraints are found now rather than on site later.',
     },
     {
       n: '03',
+      icon: 'cube',
       title: 'Design',
       body: 'The room, the systems and the experience are engineered together in full 3D. Sightlines, screen size, riser heights, seat spacing and acoustic treatment are agreed on screen before anything is built.',
     },
     {
       n: '04',
+      icon: 'tools',
       title: 'Installation',
       body: 'One team builds and integrates every element — joinery, acoustics, electronics, lighting and control — so there is no seam between trades for a problem to fall into.',
     },
     {
       n: '05',
+      icon: 'meter',
       title: 'Calibration',
       body: 'Picture and sound are measured, corrected and measured again, seat by seat, until the instruments and your ears are telling the same story.',
     },
     {
       n: '06',
+      icon: 'key',
       title: 'Handover',
       body: 'The room is delivered finished and documented, with the calibration report, one interface that works on the first press, and a team that stays with the room afterwards.',
     },
@@ -1462,6 +1491,7 @@ export const engineering = {
   items: [
     {
       n: '01',
+      icon: 'screen',
       name: 'Picture',
       figure: '37°',
       note: 'of your view, filled',
@@ -1470,6 +1500,7 @@ export const engineering = {
     },
     {
       n: '02',
+      icon: 'speaker',
       name: 'Sound',
       figure: '30°',
       note: 'off centre, from the main chair',
@@ -1478,6 +1509,7 @@ export const engineering = {
     },
     {
       n: '03',
+      icon: 'decay',
       name: 'Acoustics',
       figure: '0.3 s',
       note: 'target decay, mid-band',
@@ -1486,6 +1518,7 @@ export const engineering = {
     },
     {
       n: '04',
+      icon: 'seat',
       name: 'Comfort',
       figure: '3 h',
       note: 'the length we design for',
@@ -1494,6 +1527,7 @@ export const engineering = {
     },
     {
       n: '05',
+      icon: 'scene',
       name: 'Control',
       figure: '1',
       note: 'press to lights-down',
@@ -1502,6 +1536,7 @@ export const engineering = {
     },
     {
       n: '06',
+      icon: 'meter',
       name: 'Calibration',
       figure: '±1.5 dB',
       note: 'the target, chair to chair',

@@ -97,6 +97,7 @@ export const rooms = [
   {
     id: 'entrance',
     n: '01',
+    icon: 'key',
     label: 'Entrance',
     nav: 'Entrance',
     plan: { x: 330, y: 500, w: 290, h: 160 },
@@ -109,6 +110,7 @@ export const rooms = [
   {
     id: 'living',
     n: '02',
+    icon: 'sofa',
     label: 'Living Area',
     nav: 'Living',
     plan: { x: 40, y: 300, w: 520, h: 200 },
@@ -121,6 +123,7 @@ export const rooms = [
   {
     id: 'theatre',
     n: '03',
+    icon: 'theatre',
     label: 'Home Theatre',
     nav: 'Theatre',
     plan: { x: 40, y: 40, w: 340, h: 260 },
@@ -133,6 +136,7 @@ export const rooms = [
   {
     id: 'outdoor',
     n: '04',
+    icon: 'terrace',
     label: 'Outdoor Entertainment',
     nav: 'Outdoor',
     /* The plan names a space; the chapter names the experience.
@@ -151,6 +155,7 @@ export const rooms = [
   {
     id: 'gaming',
     n: '05',
+    icon: 'controller',
     label: 'Gaming Room',
     nav: 'Gaming',
     plan: { x: 640, y: 40, w: 260, h: 260 },
@@ -163,6 +168,7 @@ export const rooms = [
   {
     id: 'listening',
     n: '06',
+    icon: 'ear',
     label: 'Premium Audio',
     nav: 'Audio',
     plan: { x: 380, y: 40, w: 260, h: 260 },
@@ -189,6 +195,7 @@ export const rooms = [
   {
     id: 'control',
     n: '07',
+    icon: 'scene',
     label: 'Smart Home',
     nav: 'Control',
     plan: { x: 560, y: 300, w: 340, h: 200 },
@@ -201,6 +208,7 @@ export const rooms = [
   {
     id: 'gallery',
     n: '08',
+    icon: 'speaker',
     label: 'Product Experience',
     nav: 'Products',
     planLabel: 'Products',
@@ -214,6 +222,7 @@ export const rooms = [
   {
     id: 'materials',
     n: '09',
+    icon: 'fabric',
     label: 'Materials & Finishes',
     nav: 'Materials',
     planLabel: 'Materials',

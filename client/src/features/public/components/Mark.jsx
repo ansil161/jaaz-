@@ -260,6 +260,28 @@ const MARKS = {
       <path d="M4 19v2M21 19v2" />
     </>
   ),
+  /* The chair at full extension — the leg rest, not the seat. */
+  recline: (
+    <>
+      <path d="M3 8.5l7-3 3 7-7 3z" />
+      <path d="M3 15.5h14a2 2 0 0 1 2 2v3H3z" />
+      <path d="M21 12v8" />
+    </>
+  ),
+  /* The console beside the seat: a drawer, and what goes in it. */
+  storage: (
+    <>
+      <rect x="3.5" y="4.5" width="17" height="15" />
+      <path d="M3.5 12h17M10 8h4M10 15.5h4" />
+    </>
+  ),
+  /* Upholstery, acoustic fabric, anything woven. */
+  fabric: (
+    <>
+      <path d="M3.5 3.5h17v17h-17z" />
+      <path d="M8 3.5v17M13 3.5v17M3.5 9h17M3.5 15h17" />
+    </>
+  ),
   /* Riser: the tiers the sightline is set out on. */
   riser: (
     <>
@@ -356,6 +378,21 @@ const MARKS = {
     </>
   ),
   power: <path d="M13 2L5 13h6l-2 9 8-11h-6z" />,
+  /* The rack: sources, processing and amplification, stacked. */
+  rack: (
+    <>
+      <rect x="4" y="2.5" width="16" height="19" />
+      <path d="M4 9h16M4 15h16" />
+      <path d="M7 6h4M7 12h4M7 18h4M16 6h1M16 12h1M16 18h1" />
+    </>
+  ),
+  /* Water, and the fall that takes it away from the enclosure. */
+  drain: (
+    <>
+      <path d="M12 3c3 4 4.5 6 4.5 8a4.5 4.5 0 0 1-9 0c0-2 1.5-4 4.5-8z" />
+      <path d="M2 21h20M2 21l4-3M22 21l-4-3" />
+    </>
+  ),
   stream: (
     <>
       <path d="M4.5 9a10 10 0 0 1 15 0M7.5 12.5a6 6 0 0 1 9 0" />
