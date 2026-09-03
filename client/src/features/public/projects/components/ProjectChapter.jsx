@@ -1,6 +1,7 @@
 import ProjectFrame from './ProjectFrame'
 import Words from '@/features/public/components/Words'
 import { useGsapScope, gsap, prefersReducedMotion } from '@/lib/animation/useGsap'
+import { Mark } from '@/features/public/components/Mark'
 
 /* ============================================================
    PROJECT CHAPTER — one project's moment on the index.
@@ -68,7 +69,8 @@ function Arrow({ size = 12, className = '' }) {
 }
 
 export default function ProjectChapter({ project, index, total }) {
-  const { slug, title, flatTitle, location, category, year, summary, services, story } = project
+  const { slug, title, flatTitle, location, category, icon, year, summary, services, story } =
+    project
   const flip = index % 2 === 1
 
   /* The number is the project's POSITION IN WHAT IS ON SCREEN, not its
@@ -262,7 +264,10 @@ export default function ProjectChapter({ project, index, total }) {
               >
                 <span className="t-label text-fog">{location}</span>
                 <span className="h-px w-6 bg-white/25" aria-hidden="true" />
-                <span className="t-label text-mist">{category}</span>
+                <span className="t-label inline-flex items-center gap-2.5 text-mist">
+                  <Mark name={icon} size={16} />
+                  {category}
+                </span>
                 <span className="t-num text-xs text-mist">{year}</span>
               </div>
             </div>

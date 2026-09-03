@@ -2349,23 +2349,16 @@ html.lenis body {
    `color: transparent` failing open would delete the number.
    ============================================================ */
 @layer components {
+  /* THE GROUND NOTE ON A PROJECT ROW. It held an outlined "001"
+     and now holds the room's mark, drawn at the same size and the
+     same weight — the outline is the glyph's own stroke, so the
+     text-stroke fallback and its @supports guard are both gone.
+     `color` is what the stroke reads from. */
   .numeral-index {
-    font-family: var(--font-mono);
-    font-size: clamp(3rem, 6vw, 5rem);
-    font-weight: 400;
-    line-height: 0.82;
-    letter-spacing: -0.02em;
-    font-variant-numeric: tabular-nums;
+    width: clamp(3rem, 6vw, 5rem);
+    height: clamp(3rem, 6vw, 5rem);
     user-select: none;
-    /* The readable fallback. */
-    color: color-mix(in srgb, var(--color-cove) 28%, transparent);
-  }
-
-  @supports (-webkit-text-stroke: 1px black) {
-    .numeral-index {
-      color: transparent;
-      -webkit-text-stroke: 1px color-mix(in srgb, var(--color-cove) 55%, transparent);
-    }
+    color: color-mix(in srgb, var(--color-cove) 55%, transparent);
   }
 }
 

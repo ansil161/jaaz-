@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { prefersReducedMotion } from '@/lib/animation/useGsap'
+import { Mark } from '@/features/public/components/Mark'
 
 /* ============================================================
    THE WORK — alternating editorial rows.
@@ -110,7 +111,6 @@ export default function ProjectCards({ items, resetKey }) {
   return (
     <div ref={root} className="shell-wide">
       {items.map((p, i) => {
-        const num = String(i + 1).padStart(3, '0')
         const on = shown.has(i)
 
         /* Written as two whole literal class strings rather than one
@@ -152,13 +152,23 @@ export default function ProjectCards({ items, resetKey }) {
 
                 {/* ---- Text ---- */}
                 <div className={textOrder}>
-                  {/* The index, sitting behind the tag as a ground note.
-                      `aria-hidden` because the row already announces
-                      itself by name — a screen reader reading "001" before
-                      every project is noise, not position. */}
-                  <span aria-hidden="true" className="numeral-index block">
-                    {num}
-                  </span>
+                  {/* WAS "001", outlined, at display size. The row's
+                      ground note is now the room's own mark at the
+                      same weight and the same size — a theatre, a
+                      controller, a glass — so the largest quiet mark
+                      in the column says what kind of room this is
+                      instead of how far down the list it sits.
+
+                      Outlined, not filled, and at a stroke that lands
+                      near a pixel at this size: the numeral it
+                      replaces was drawn with `-webkit-text-stroke: 1px`
+                      and the mark has to sit at the same weight or
+                      the rhythm of the column changes. */}
+                  <Mark
+                    name={p.icon}
+                    strokeWidth={0.35}
+                    className="numeral-index block"
+                  />
 
                   <p className="t-label mt-4 text-cove/80">
                     {p.category}
