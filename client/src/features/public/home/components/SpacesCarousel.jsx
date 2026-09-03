@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { spaces } from '@/features/public/data/site'
+import { Mark } from '@/features/public/components/Mark'
 
 /* ============================================================
    SPACES — THE CARD CAROUSEL
@@ -199,9 +200,12 @@ export default function SpacesCarousel({ items = spaces.items }) {
 
                   {/* ---- Bottom: what it is ---- */}
                   <div className="p-6 sm:p-7">
-                    <h3 className="t-heading text-[clamp(1.35rem,2.2vw,2rem)] text-pure">
-                      {s.title}
-                    </h3>
+                    <div className="flex items-center gap-3.5">
+                      <Mark name={s.icon} size={21} className="shrink-0 text-cove" />
+                      <h3 className="t-heading text-[clamp(1.35rem,2.2vw,2rem)] text-pure">
+                        {s.title}
+                      </h3>
+                    </div>
                     <p className="t-sub mt-2 text-bone">{s.line}</p>
 
                     <p className="t-num mt-5 border-t border-white/[0.09] pt-4 text-[0.6875rem] leading-relaxed text-mist">
@@ -232,16 +236,25 @@ export default function SpacesCarousel({ items = spaces.items }) {
           minute would be noise. The cards are the content, and the
           inactive ones are hidden, so a screen reader gets the active
           room and nothing else. */}
+      {/* WAS SIX HAIRLINE TICKS. A strip of thin rules along the
+          bottom of a stage is the one carousel read-out this site has
+          ruled out by name, and it was doing the same job the ordinals
+          were doing everywhere else: reporting a position nobody had
+          asked for. Six marks say which ROOM you are on — the same six
+          marks that head the cards — and the one you are on is lit. */}
       <div
         aria-hidden="true"
-        className="mt-7 flex items-center gap-1.5"
+        className="mt-7 flex items-center gap-5"
         style={{ paddingInline: 'calc((100% - var(--card-w)) / 2)' }}
       >
         {items.map((s, i) => (
-          <span
+          <Mark
             key={s.n}
-            className="h-px flex-1 transition-colors duration-700"
-            style={{ background: i === active ? '#fff' : 'rgba(255,255,255,0.14)' }}
+            name={s.icon}
+            size={19}
+            className={`transition-opacity duration-700 ${
+              i === active ? 'text-pure opacity-100' : 'text-fog opacity-40'
+            }`}
           />
         ))}
       </div>

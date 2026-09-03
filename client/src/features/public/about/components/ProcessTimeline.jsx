@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Lines } from '@/features/public/components/Motion'
 import { useGsapScope, gsap, ScrollTrigger, prefersReducedMotion } from '@/lib/animation/useGsap'
+import { Mark } from '@/features/public/components/Mark'
 
 /* ============================================================
    PROCESS TIMELINE — the shared mechanism
@@ -248,9 +249,12 @@ export default function ProcessTimeline({ id, label, heading, intro, steps, fina
             {intro}
           </Lines>
         </div>
-        <p className="t-num mt-6 text-xs text-ink/40">
-          01 &mdash; {String(stepCount).padStart(2, '0')}
-        </p>
+        {/* The range read-out — "01 — 06" — is gone with the step
+            numerals it was counting. What a reader wanted from it was
+            HOW MANY, and the sentence in `intro` above already says
+            six (or five, on About). A second, quieter statement of the
+            same count in mono was the kind of line that gets added
+            because the layout has room for it. */}
 
         {/* --- The connected timeline --- */}
         <div
@@ -403,13 +407,21 @@ export default function ProcessTimeline({ id, label, heading, intro, steps, fina
                       <span className="block h-2 w-2 rounded-full bg-ink/20" />
                     </span>
 
-                    <div className="flex items-baseline gap-5">
-                      <span
-                        className="t-num font-['Instrument_Serif'] text-xl italic transition-colors duration-500"
+                    {/* The step mark, where the italic numeral was.
+                        The curve running through the cards is what
+                        carries the sequence — it always was — so the
+                        numeral was saying a second time what the line
+                        already said, and saying nothing about the
+                        step. A tape measure, a set of dividers, a pair
+                        of pliers, a meter, a key: read down the column
+                        and the delivery is legible before the copy. */}
+                    <div className="flex items-center gap-5">
+                      <Mark
+                        name={s.icon}
+                        size={22}
+                        className="shrink-0 transition-colors duration-500"
                         style={{ color: isActive ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.4)' }}
-                      >
-                        {s.n}
-                      </span>
+                      />
                       <h3
                         className="t-heading transition-colors duration-500"
                         style={{ color: isActive ? '#ffffff' : 'var(--color-ink)' }}

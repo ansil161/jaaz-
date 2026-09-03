@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { craft } from '@/features/public/data/site'
 import { Lines, Rule, Figure, Drift } from '@/features/public/components/Motion'
 import { useGsapScope, gsap, ScrollTrigger, prefersReducedMotion } from '@/lib/animation/useGsap'
+import { Mark } from '@/features/public/components/Mark'
 
 /* ============================================================
    06 — FROM SETUP TO SHOWTIME
@@ -116,7 +117,7 @@ export default function Craft() {
                     plates carry z-index 0..n, so an auto-z sibling would
                     be painted underneath all but the first of them. */}
                 <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex items-end justify-between bg-gradient-to-t from-ink/85 to-transparent p-6">
-                  <span className="t-num text-sm text-fog">{craft.items[active].n}</span>
+                  <Mark name={craft.items[active].icon} size={20} className="text-fog" />
                   <span className="t-label text-mist">{craft.items[active].title}</span>
                 </div>
               </div>
@@ -134,14 +135,18 @@ export default function Craft() {
                   onMouseEnter={() => setActive(i)}
                   className="border-t border-white/10 py-9 last:border-b sm:py-12"
                 >
-                  <div className="flex items-baseline gap-5 sm:gap-8">
-                    <Drift as="span" y={22} className="t-num block text-xs">
-                      <span
-                        className="transition-colors duration-500"
+                  {/* items-start, not items-baseline: the mark that
+                      replaced the ordinal has no baseline of its own,
+                      and a nudge down puts its box on the heading's
+                      cap line, which is what reads as aligned. */}
+                  <div className="flex items-start gap-5 sm:gap-8">
+                    <Drift as="span" y={22} className="block">
+                      <Mark
+                        name={item.icon}
+                        size={20}
+                        className="mt-1 transition-colors duration-500"
                         style={{ color: isActive ? '#fff' : '#55555b' }}
-                      >
-                        {item.n}
-                      </span>
+                      />
                     </Drift>
                     <div className="flex-1">
                       <h3

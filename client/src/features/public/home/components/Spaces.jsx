@@ -3,6 +3,7 @@ import { spaces } from '@/features/public/data/site'
 import { Lines } from '@/features/public/components/Motion'
 import { prefersReducedMotion } from '@/lib/animation/useGsap'
 import SpacesCarousel from './SpacesCarousel'
+import { Mark } from '@/features/public/components/Mark'
 
 /* ============================================================
    CHAPTER 02 — SPACES
@@ -35,8 +36,6 @@ import SpacesCarousel from './SpacesCarousel'
    request, and with it about five screens of homepage scroll.
    ============================================================ */
 
-const N = spaces.items.length
-
 export default function Spaces() {
   const [reduced] = useState(() => prefersReducedMotion())
 
@@ -66,10 +65,12 @@ export default function Spaces() {
                   className="plate absolute inset-0 [--plate-brightness:1.02] [--plate-contrast:1.06] [--plate-saturate:0.9]"
                 />
               </div>
-              <p className="t-num mt-5 text-[0.625rem] text-cove">
-                {s.n} <span className="text-fog/50">/ {String(N).padStart(2, '0')}</span>
-              </p>
-              <h3 className="t-heading mt-2 text-pure">{s.title}</h3>
+              {/* "01 / 06" told the reader which card of six they had
+                  reached — in a grid where all six are on screen at
+                  once. The mark says what the room is instead, which
+                  is the thing the position was standing in for. */}
+              <Mark name={s.icon} size={20} className="mt-5 text-cove" />
+              <h3 className="t-heading mt-3 text-pure">{s.title}</h3>
               <p className="t-sub mt-1.5 text-bone">{s.line}</p>
               <p className="t-num mt-4 text-[0.6875rem] leading-relaxed text-mist">
                 {s.meta}

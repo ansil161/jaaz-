@@ -2,6 +2,7 @@ import { useCallback, useRef, useState } from 'react'
 import { calibration as D } from '@/features/public/data/site'
 import { gsap, prefersReducedMotion, useGsapScope } from '@/lib/animation/useGsap'
 import Plan, { ROWS, SCREEN_FACE } from './calibration/Plan'
+import { Mark } from '@/features/public/components/Mark'
 import {
   CHAIR,
   INSIDE,
@@ -555,18 +556,18 @@ export default function Calibration() {
         </div>
 
         {/* ================= THE PROTOCOL =================
-            Four stages, numbered, because the order is the
+            Four stages, in order, because the order IS the
             protocol — a room that has not been scanned cannot have
             its angles optimised. The sheet's own state is printed
             at the end of the run, which is the last thing the load
             sequence does. */}
         <div className="mt-24 border-t border-[var(--lab-ink)] pt-8 sm:mt-32">
           <ol className="grid gap-x-10 gap-y-7 sm:grid-cols-2 lg:grid-cols-4">
-            {S.stages.map((stage, i) => (
-              <li key={stage} data-cal-stage className="cal-stage">
-                <span className="cal-stage-n">{String(i + 1).padStart(2, '0')}</span>
+            {S.stages.map((stage) => (
+              <li key={stage.name} data-cal-stage className="cal-stage">
+                <Mark name={stage.icon} size={17} className="cal-stage-n" />
                 <span aria-hidden="true" className="cal-stage-rule" />
-                <span className="cal-stage-name">{stage}</span>
+                <span className="cal-stage-name">{stage.name}</span>
               </li>
             ))}
           </ol>

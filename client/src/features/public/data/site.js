@@ -279,14 +279,17 @@ export const promise = {
      clear. */
   beats: [
     {
+      icon: 'eye',
       subject: 'A beautiful picture',
       answer: ['You shouldn’t have', 'to squint to enjoy it.'],
     },
     {
+      icon: 'ear',
       subject: 'Powerful sound',
       answer: ['Shouldn’t make you', 'want to turn it down.'],
     },
     {
+      icon: 'body',
       subject: 'A beautiful room',
       answer: ['Shouldn’t make you', 'want to leave it.'],
     },
@@ -919,13 +922,18 @@ export const calibration = {
     /* The four stages, printed along the foot of the sheet. This
        is a SEQUENCE — the order is the protocol, and a room that
        has not been scanned cannot have its angles optimised — so
-       the numerals carry information rather than decorating a
-       list. */
+       unlike the ordinals elsewhere on the site, the ORDER here is
+       load-bearing.
+
+       It survives the swap to marks: the four sit in a row with the
+       rule running between them, which is what said "in this order"
+       even when a numeral was printed. What the numeral could not
+       say, and the mark does, is which stage you are looking at. */
     stages: [
-      'Room scanned',
-      'Acoustics aligned',
-      'Viewing angles optimized',
-      'Final calibration',
+      { icon: 'measure', name: 'Room scanned' },
+      { icon: 'decay', name: 'Acoustics aligned' },
+      { icon: 'eye', name: 'Viewing angles optimized' },
+      { icon: 'meter', name: 'Final calibration' },
     ],
   },
 

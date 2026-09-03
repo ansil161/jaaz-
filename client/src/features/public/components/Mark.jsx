@@ -606,7 +606,7 @@ const MARKS = {
     `size` sets both axes; 18 is the size every glyph in this table
     was drawn against. Pass `title` only where the mark is the ONLY
     carrier of the meaning — next to a word, it must stay silent. */
-export function Mark({ name, className = '', size = 18, title }) {
+export function Mark({ name, className = '', size = 18, title, style }) {
   const glyph = MARKS[name] ?? MARKS.dot
   return (
     <svg
@@ -614,6 +614,7 @@ export function Mark({ name, className = '', size = 18, title }) {
       width={size}
       height={size}
       className={className}
+      style={style}
       role={title ? 'img' : undefined}
       aria-hidden={title ? undefined : true}
       aria-label={title}

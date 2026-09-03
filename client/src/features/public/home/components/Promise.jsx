@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { promise } from '@/features/public/data/site'
 import { useGsapScope, gsap, SplitText, prefersReducedMotion } from '@/lib/animation/useGsap'
+import { Mark } from '@/features/public/components/Mark'
 
 /* ============================================================
    02 — THE PROMISE
@@ -433,9 +434,13 @@ export default function Promise() {
           </h2>
 
           <ul className="mt-20 grid gap-x-10 gap-y-14 md:grid-cols-3">
-            {D.beats.map((beat, i) => (
+            {D.beats.map((beat) => (
               <li key={beat.subject}>
-                <span className="t-label text-ash">{String(i + 1).padStart(2, '0')}</span>
+                {/* An eye, an ear, a body. The three beats ARE the
+                    three systems doing the experiencing — the ordinal
+                    over each one was the only thing on this section
+                    that did not say so. */}
+                <Mark name={beat.icon} size={22} className="mx-auto text-ash" />
                 <p className="t-heading italic-display mt-4 text-mist">{beat.subject}</p>
                 <div className="mx-auto mt-6 h-px w-10 bg-pure opacity-20" aria-hidden="true" />
                 <p className="t-heading mx-auto mt-6 max-w-[16ch] text-bone">
@@ -567,14 +572,14 @@ export default function Promise() {
             </div>
 
             {/* ---- ACTS 02-04 · the three beats ---- */}
-            {D.beats.map((beat, i) => (
+            {D.beats.map((beat) => (
               <div
                 key={beat.subject}
                 data-act="beat"
                 className="self-center [grid-area:1/1]"
                 style={{ visibility: 'hidden' }}
               >
-                <span className="t-label block text-ash">{String(i + 1).padStart(2, '0')}</span>
+                <Mark name={beat.icon} size={22} className="mx-auto text-ash" />
                 <p data-subject className="t-heading italic-display mt-4 text-mist sm:mt-5">
                   <Mask>{beat.subject}</Mask>
                 </p>

@@ -1,5 +1,6 @@
 import { snap as D } from '@/features/public/data/site'
 import { useGsapScope, gsap, revealLines, revealBlock, prefersReducedMotion } from '@/lib/animation/useGsap'
+import { Mark } from '@/features/public/components/Mark'
 
 /* ============================================================
    CHAPTER 02 — THE SNAP
@@ -165,8 +166,8 @@ export default function Snap() {
               {/* Plain type under the frame. No box, no rule, no
                   hover card — the caption belongs to the picture,
                   not to a container drawn around both. */}
-              <figcaption className="mt-5 flex items-baseline gap-4">
-                <span className="t-num shrink-0 text-[0.8125rem] text-ink/45">{w.n}</span>
+              <figcaption className="mt-5 flex items-start gap-4">
+                <Mark name={w.icon} size={20} className="mt-0.5 shrink-0 text-ink/45" />
                 <span>
                   <span className="block font-display text-[clamp(1.35rem,2vw,1.85rem)] leading-none text-ink">
                     {w.name}
