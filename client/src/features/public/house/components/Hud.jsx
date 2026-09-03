@@ -1,4 +1,5 @@
 /* ============================================================
+import { Mark } from '@/features/public/components/Mark'
    HUD — the smallest interface a house can carry
 
    Four things, each anchored to an edge so the middle of the
@@ -46,8 +47,17 @@ export default function Hud({ beat, rail, activeRail, count, index, onJump, prog
                   }`}
                   style={SHADOW}
                 >
-                  <span className={on ? 'text-cove' : 'text-white/30'}>{r.n}</span>
-                  <span className="ml-2">{r.label}</span>
+                  {/* The rail read "01 Home, 02 Theatre, 03 Outdoor".
+                      The numerals were counting rooms in a house the
+                      visitor is walking through, which is not how
+                      anyone holds a house in their head. The mark is
+                      the room. */}
+                  <Mark
+                    name={r.icon}
+                    size={15}
+                    className={`inline-block align-[-0.2em] ${on ? 'text-cove' : 'text-white/30'}`}
+                  />
+                  <span className="ml-2.5">{r.label}</span>
                 </button>
               </li>
             )

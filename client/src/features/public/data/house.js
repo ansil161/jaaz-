@@ -594,17 +594,16 @@ export const beats = [
    its own row — the visitor wants to know they are in the
    theatre, not which of its four schemes is on screen. */
 const RAIL = [
-  { id: 'arrival', label: 'Home', match: ['Arrival', 'Living', 'Corridor'] },
-  { id: 'theatre', label: 'Theatre', match: ['Home Theatre', 'Design', 'Screen', 'Speakers', 'Materials'] },
-  { id: 'outdoor', label: 'Outdoor', match: ['Outdoor', 'Day to Night'] },
-  { id: 'gaming', label: 'Gaming', match: ['Gaming'] },
-  { id: 'audio', label: 'Audio', match: ['Audio'] },
-  { id: 'smart', label: 'Smart Home', match: ['Smart Home', 'The House'] },
+  { id: 'arrival', icon: 'home', label: 'Home', match: ['Arrival', 'Living', 'Corridor'] },
+  { id: 'theatre', icon: 'theatre', label: 'Theatre', match: ['Home Theatre', 'Design', 'Screen', 'Speakers', 'Materials'] },
+  { id: 'outdoor', icon: 'terrace', label: 'Outdoor', match: ['Outdoor', 'Day to Night'] },
+  { id: 'gaming', icon: 'controller', label: 'Gaming', match: ['Gaming'] },
+  { id: 'audio', icon: 'ear', label: 'Audio', match: ['Audio'] },
+  { id: 'smart', icon: 'scene', label: 'Smart Home', match: ['Smart Home', 'The House'] },
 ]
 
 export const rail = RAIL.map((r, i) => ({
   ...r,
-  n: String(i + 1).padStart(2, '0'),
   /* Where the rail jumps to: the first beat whose chapter belongs
      to this room. Derived, so a re-cut route cannot leave the
      navigation pointing at a beat that no longer exists. */
