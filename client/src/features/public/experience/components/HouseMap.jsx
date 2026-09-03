@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { gsap, prefersReducedMotion, ScrollTrigger } from '@/lib/animation/useGsap'
 import { plan, roomPlate, rooms } from '@/features/public/data/experience'
 import Plate from '@/features/public/components/Plate'
+import { Mark } from '@/features/public/components/Mark'
 
 /* ============================================================
    THE HOUSE — an architectural drawing you can walk into
@@ -261,17 +262,21 @@ export default function HouseMap({ activeId, onSelect, className = '' }) {
                 className="pointer-events-none"
                 style={{ opacity: 0 }}
               >
-                <text
-                  x={c.x}
-                  y={c.y - 10}
-                  textAnchor="middle"
-                  className="font-mono transition-[fill] duration-500"
-                  fill={on ? '#c9ad7c' : 'rgba(255,255,255,0.5)'}
-                  fontSize="20"
-                  letterSpacing="2"
+                {/* The room's mark, where the plan number was. An
+                    architect's drawing carries a key because a plan
+                    is read at a glance and a numeral has to be looked
+                    up; a speaker, a chair, a controller does not.
+
+                    A nested <svg> is valid inside an <svg>, so the
+                    mark is dropped in under a translate and takes its
+                    stroke from `color` on the group. */}
+                <g
+                  transform={`translate(${c.x - 13}, ${c.y - 40})`}
+                  style={{ color: on ? '#c9ad7c' : 'rgba(255,255,255,0.5)' }}
+                  className="transition-[color] duration-500"
                 >
-                  {room.n}
-                </text>
+                  <Mark name={room.icon} size={26} strokeWidth={1} />
+                </g>
                 <text
                   x={c.x}
                   y={c.y + 18}
@@ -304,9 +309,9 @@ export default function HouseMap({ activeId, onSelect, className = '' }) {
           />
         </div>
 
-        <p className="t-label mt-5 text-[0.55rem] text-ash">
-          <span className="text-cove">{shown.n}</span>
-          <span className="mx-3 inline-block h-px w-6 translate-y-[-0.2em] bg-white/20" />
+        <p className="t-label mt-5 flex items-center text-[0.55rem] text-ash">
+          <Mark name={shown.icon} size={16} className="text-cove" />
+          <span className="mx-3 inline-block h-px w-6 bg-white/20" />
           {shown.label}
         </p>
 

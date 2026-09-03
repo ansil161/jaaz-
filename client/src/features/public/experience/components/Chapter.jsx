@@ -1,4 +1,5 @@
 import { Lines, Rise } from '@/features/public/components/Motion'
+import { Mark } from '@/features/public/components/Mark'
 
 /* ============================================================
    CHAPTER — the shell every room is built in
@@ -80,9 +81,14 @@ export default function Chapter({
   const header = (
     <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
       <div className="min-w-0">
-        <p className="t-label text-[0.55rem] text-ash">
-          <span className="text-cove">{room.n}</span>
-          <span className="mx-3 inline-block h-px w-8 translate-y-[-0.2em] bg-white/20" />
+        {/* The chapter used to open on the room's plan number,
+            keyed to the same number on the drawing. The key is
+            better as a mark: it says WHICH ROOM on both, and on the
+            plan it says it without the reader having to hold "06"
+            in their head on the way down the page. */}
+        <p className="t-label flex items-center text-[0.55rem] text-ash">
+          <Mark name={room.icon} size={17} className="text-cove" />
+          <span className="mx-3 inline-block h-px w-8 bg-white/20" />
           {room.label}
         </p>
 

@@ -89,10 +89,13 @@ export const threshold = {
    every wall, door opening and label anchor is set in one grid.
    HouseMap scales it; nothing else needs to know it exists.
 
-   `n` is the number printed on the plan and repeated at the head
-   of that room's chapter. It earns its place because the drawing
-   and the chapter have to be keyed to each other — the visitor
-   reads 03 on the plan and finds 03 on the room. */
+   `icon` is the mark drawn on the plan and repeated at the head of
+   that room's chapter. The drawing and the chapter have to be keyed
+   to each other, and a mark keys them better than the number that
+   used to do it: the visitor recognises the chair on the plan
+   instead of looking up what 03 was. `n` is kept because the room
+   order is authored here and several places sort on it — it is no
+   longer printed anywhere. */
 export const rooms = [
   {
     id: 'entrance',

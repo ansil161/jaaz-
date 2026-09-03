@@ -51,10 +51,12 @@ const EMPTY = {
 
 function ProgressRail({ step }) {
   return (
+    /* The "02 / 05" that led this rail is gone. Five bars, two of
+       them filled, already say two of five — printing it as well was
+       the same fact twice, and it was the fact the visitor cared
+       about least. Which step they are ON is now said once, by the
+       mark beside the step's own title below. */
     <div className="flex items-center gap-2">
-      <span className="t-num shrink-0 text-xs text-ink/40">
-        {String(step + 1).padStart(2, '0')} / {String(STEPS.length).padStart(2, '0')}
-      </span>
       <div className="flex flex-1 gap-1.5">
         {STEPS.map((s, i) => (
           <span key={s.key} className="h-[3px] flex-1 overflow-hidden rounded-full bg-ink/10">
@@ -211,8 +213,10 @@ export default function Wizard() {
           </div>
 
           <div className="mt-7">
-            <span className="t-num text-xs text-ink/35">{String(step + 1).padStart(2, '0')}</span>
-            <h3 className="t-sub mt-2 text-[1.4rem] text-ink sm:text-[1.6rem]">{current.title}</h3>
+            <div className="flex items-center gap-3.5">
+              <Icon name={current.icon} size={20} className="shrink-0 text-ink/45" />
+              <h3 className="t-sub text-[1.4rem] text-ink sm:text-[1.6rem]">{current.title}</h3>
+            </div>
             {current.note && <p className="t-body mt-2.5 max-w-sm text-sm text-ink/55">{current.note}</p>}
           </div>
 
@@ -249,8 +253,8 @@ export default function Wizard() {
               <div className="space-y-7">
                 {current.groups.map((g) => (
                   <div key={g.field} className="border-t border-ink/10 pt-6 first:border-t-0 first:pt-0">
-                    <div className="flex items-baseline gap-3">
-                      <span className="t-num text-xs text-ink/30">{g.n}</span>
+                    <div className="flex items-center gap-3">
+                      <Icon name={g.icon} size={16} className="shrink-0 text-ink/40" />
                       <span className="t-label text-ink/60">{g.title}</span>
                     </div>
                     <div className="mt-4">
