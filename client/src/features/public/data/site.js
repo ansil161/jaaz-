@@ -831,6 +831,86 @@ export const calibration = {
      path length. `contourNote` says so on the sheet, in the same
      size type as everything near it, because a drawing this
      confident has to be honest about what it is. */
+  /* ---------- THE SHEET ----------
+     The redesign (2026-09-02) drops the pinned conventional-vs-
+     calibrated demonstration and prints ONE room: a single
+     top-down CAD plan of the finished theatre, interrogated seat
+     by seat. `lab` below still holds the model's language and the
+     honesty note; everything the sheet itself sets is here.
+
+     THE TITLE BLOCK IS A TITLE BLOCK, NOT AN EYEBROW. A drawing
+     carries its sheet number, its subject and its state along the
+     top edge, and that is a convention with four hundred years
+     behind it — not a kicker over a heading. It is separated from
+     the headline by the full band of white a real sheet leaves. */
+  sheet: {
+    title: 'Calibration',
+    standfirst: 'Every seat is measured. Every angle is considered.',
+
+    /* The title block. `state` is the sheet's own status line and
+       is the last thing the load sequence prints. */
+    room: 'Room 04',
+    discipline: 'Acoustic + optical',
+    state: 'Calibration complete',
+    scale: 'Plan · 1:50 · metres',
+
+    /* The argument, in the margin, where a drawing puts its
+       general notes. */
+    noteLabel: 'Reference axis',
+    note: ['Precision is not an adjustment made at the end.', 'It is designed into the room from the beginning.'],
+
+    /* Every word that appears ON the plan. They are here rather
+       than in the component because a drawing's annotation IS
+       copy — it is the only writing on the sheet a visitor reads
+       at the same time as the geometry. */
+    marks: {
+      screen: 'Screen',
+      optical: 'Optical axis',
+      reference: 'Reference axis',
+      field: 'Acoustic field',
+      treatment: 'Treatment zone',
+      absorption: 'Absorption',
+      diffusion: 'Diffusion',
+      trap: 'Bass trap',
+      point: 'Measurement point',
+      view: 'Viewing angle',
+      spl: 'SPL response',
+      rowA: 'Row A',
+      rowB: 'Row B',
+    },
+
+    /* The readout. `keys` are the five rows of the panel, in the
+       order an engineer reads them: what the eye gets, how far
+       away it is, when the sound arrives, how loud, and the
+       verdict. Every value is derived in model.js. */
+    readoutHint: 'Select a seat',
+    readout: [
+      { key: 'view', label: 'View angle', unit: '°' },
+      { key: 'dist', label: 'Screen dist.', unit: 'm' },
+      { key: 'ms', label: 'Audio arrival', unit: 'ms' },
+      /* "SPL response", not "Response": the figure is a sound
+         pressure level against the room average, and the drawing
+         should say which of the four things on this schedule it
+         is. */
+      { key: 'db', label: 'SPL response', unit: 'dB' },
+    ],
+    statusLabel: 'Status',
+    statusOk: 'Optimized',
+    statusNear: 'In tolerance',
+
+    /* The four stages, printed along the foot of the sheet. This
+       is a SEQUENCE — the order is the protocol, and a room that
+       has not been scanned cannot have its angles optimised — so
+       the numerals carry information rather than decorating a
+       list. */
+    stages: [
+      'Room scanned',
+      'Acoustics aligned',
+      'Viewing angles optimized',
+      'Final calibration',
+    ],
+  },
+
   lab: {
     chapter: 'Ch. 04',
     protocol: 'Calibration protocol',

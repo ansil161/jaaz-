@@ -73,6 +73,11 @@ const measure = ({ speakers, seats }) => {
       db: level[i] - mean,
       ms: (dist(centre, seat) / D.speedOfSound) * 1000,
       view: 2 * Math.atan(D.screenWidth / 2 / seat.y) * RAD,
+      /* Straight-line distance from the chair to the CENTRE of the
+         screen, which is what "screen distance" means for a chair
+         that is not on the axis. The screen hangs on the front
+         wall, so that point is the origin. */
+      dist: Math.hypot(seat.x, seat.y),
     })),
   }
 }
@@ -89,14 +94,6 @@ export const SEAT_COUNT = BUILT.seats.length
 const DEPTHS = [...new Set(BUILT.seats.map((s) => s.y))].sort((a, b) => a - b)
 const ROW = BUILT.seats.map((s) => DEPTHS.indexOf(s.y))
 
-const spreadOf = (m) => Math.max(...m.map((s) => s.db)) - Math.min(...m.map((s) => s.db))
-const worstOf = (m) => Math.max(...m.map((s) => Math.abs(s.db)))
-const arrivalSpreadOf = (m) => {
-  const mean = m.reduce((a, s) => a + s.ms, 0) / m.length
-  return Math.max(...m.map((s) => Math.abs(s.ms - mean)))
-}
-const viewRangeOf = (m) => [Math.min(...m.map((s) => s.view)), Math.max(...m.map((s) => s.view))]
-
 /* ---------- Formatting ----------
    Exactly zero prints as a plus-minus rather than a bare 0.0 —
    it is a tolerance, not a nothing. */
@@ -112,6 +109,13 @@ export const fill = (tpl, v) => tpl.replace(/\{(\w+)\}/g, (_, k) => v[k])
    One row per chair, carrying both of its lives. Nothing in the
    components indexes into `asFound`/`asBuilt` directly; they read
    this. */
+/* A chair passes when it lands inside BOTH windows the section
+   claims to hold every chair to: the ±1 dB reference band and the
+   trade's own 30-40° picture window. It is computed, never
+   asserted — a chair that fell out of either one would print the
+   other word, and the sheet would be right to say so. */
+const holds = (s) => Math.abs(s.db) <= D.lab.band && s.view >= D.viewWindow[0] && s.view <= D.viewWindow[1]
+
 export const SEATS = BUILT.seats.map((b, i) => {
   const a = FOUND.seats[i]
   const dx = b.x - a.x
@@ -123,8 +127,9 @@ export const SEATS = BUILT.seats.map((b, i) => {
     label: `${D.lab.seatWord} ${id}`,
     row: ROW[i],
     rowName: D.lab.rows[ROW[i]],
-    conventional: { x: a.x, y: a.y, db: a.db, ms: a.ms, view: a.view },
-    calibrated: { x: b.x, y: b.y, db: b.db, ms: b.ms, view: b.view },
+    ok: holds(b),
+    conventional: { x: a.x, y: a.y, db: a.db, ms: a.ms, view: a.view, dist: a.dist },
+    calibrated: { x: b.x, y: b.y, db: b.db, ms: b.ms, view: b.view, dist: b.dist },
     correction: { dx, dy, move: Math.hypot(dx, dy) },
     explain: fill(D.lab.explain, {
       n: id,
@@ -142,20 +147,6 @@ export const SPEAKERS = D.asBuilt.speakers.map((b, i) => ({
   calibrated: b,
 }))
 
-/* ---------- The verdict ----------
-   Three figures, and all three improve, which is the only reason
-   all three are printed. A metric that got worse would be printed
-   too — see `contourNote`. */
-const VIEW_FOUND = viewRangeOf(FOUND.seats)
-const VIEW_BUILT = viewRangeOf(BUILT.seats)
-
-export const VERDICT = {
-  variance: { from: spreadOf(FOUND.seats), to: spreadOf(BUILT.seats) },
-  worst: { from: worstOf(FOUND.seats), to: worstOf(BUILT.seats) },
-  arrival: { from: arrivalSpreadOf(FOUND.seats), to: arrivalSpreadOf(BUILT.seats) },
-  view: { from: VIEW_FOUND, to: VIEW_BUILT },
-}
-
 /* How many chairs land inside the trade's own picture window, and
    inside the ±1 dB reference band the drawing shades. Computed,
    not claimed. */
@@ -170,22 +161,6 @@ export const INSIDE = {
     to: BUILT.seats.filter((s) => Math.abs(s.db) <= D.lab.band).length,
   },
 }
-
-/* ---------- Ink ----------
-   A chair is drawn as a crisp ink outline with a variable fill:
-   the outline keeps every chair legible at any density, and the
-   fill carries the argument. Full ink is ON the room average,
-   empty is `INK_RANGE` dB or worse off it — a hair beyond the
-   worst chair in either layout, so the faintest chair on the
-   sheet is faint and never absent.
-
-   This is the one channel that has to end UNIFORM. The contour
-   field says where the room is loud and quiet; the fill says how
-   well each chair is served, and after calibration all seven are
-   served the same. */
-const INK_RANGE = 2.3
-const density = (db) => Math.min(1, Math.max(0, 1 - Math.abs(db) / INK_RANGE))
-export const seatFill = (db) => `rgba(17, 17, 17, ${(0.12 + 0.72 * density(db)).toFixed(3)})`
 
 /* ---------- The field, drawn ----------
    Marching squares. Segments are stitched into polylines before
@@ -346,10 +321,12 @@ const isoPaths = (layout) => {
   }
 }
 
-export const FIELD = {
-  conventional: isoPaths(FOUND),
-  calibrated: isoPaths(BUILT),
-}
+/* ONE field, not two. The sheet used to draw the conventional set
+   as well and crossfade to this one; the 2026-09-02 redesign
+   prints a single calibrated room, so the second set was four
+   thousand path commands and a full marching-squares pass at
+   module load for a layer nothing would ever reveal. */
+export const FIELD = isoPaths(BUILT)
 
 /* ---------- The drawing's frame ----------
    The room in metres plus the margin the dimension marks and the
@@ -357,7 +334,16 @@ export const FIELD = {
    over it share one coordinate system: a percentage in that layer
    IS a position in this box. */
 export const ROOM = { w: D.room.w, d: D.room.d }
-export const VB = { x: -4.45, y: -1.35, w: 8.9, h: 11.15 }
+/* Widened for the 2026-09-02 sheet: the plan now carries four
+   dimension runs rather than two, and the left-hand run (screen to
+   the reference row) needs the same clear margin the right-hand
+   one always had. */
+export const VB = { x: -4.75, y: -1.5, w: 9.5, h: 11.6 }
+/* The drawn sheet inside the viewBox — where the blueprint grid is
+   ruled and where the corner registration marks sit. Inset from
+   the viewBox so the dimension figures in the HTML layer above
+   have air outside the frame rather than colliding with it. */
+export const FRAME = { x0: -4.32, x1: 4.32, y0: -1.1, y1: 9.4 }
 export const pctX = (x) => ((x - VB.x) / VB.w) * 100
 export const pctY = (y) => ((y - VB.y) / VB.h) * 100
 
@@ -366,25 +352,3 @@ export const pctY = (y) => ((y - VB.y) / VB.h) * 100
    apart, which is tight and real — never touch on the page. */
 export const CHAIR = { w: 1.02, d: 0.7, r: 0.13, rest: 0.19, arm: 0.13 }
 export const SPK = { w: 0.4, d: 0.28, r: 0.06 }
-
-/* Which chair a point in the plan belongs to. A plan is a map, so
-   plain nearest-mark is the right test. */
-export const nearestSeat = (seats, x, y) => {
-  let best = 0
-  let bestD = Infinity
-  for (let i = 0; i < seats.length; i += 1) {
-    const d = (seats[i].x - x) ** 2 + (seats[i].y - y) ** 2
-    if (d < bestD) {
-      bestD = d
-      best = i
-    }
-  }
-  return best
-}
-
-/* Where a chair's reading sits on the response matrix track.
-   0 is the left end of the track, 1 the right, 0.5 the room
-   average — so a marker's distance from the middle IS its
-   deviation, and the seven markers closing on the centre line is
-   the correction, drawn without a chart. */
-export const trackPos = (db) => Math.min(1, Math.max(0, 0.5 + db / (INK_RANGE * 2)))

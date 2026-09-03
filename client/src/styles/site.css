@@ -506,6 +506,20 @@ html.lenis body {
     --lab-line: #77736b;
     --lab-grid: #c8c1b4;
     --lab-signal: #c8924a;
+    /* The accent, twice.
+
+       `--lab-signal` is LINEWORK — contours, view rays, the active
+       chair, the wavefronts. Against this paper it is 2.2:1, which
+       is right for a drawn line (a line is judged against the marks
+       either side of it, and 3:1 is the bar it clears there) and
+       nowhere near enough for type.
+
+       `--lab-signal-ink` is the same hue darkened to 5.0:1, and it
+       is the ONLY one of the two that is ever set as text. Every
+       accent word on this sheet — the active seat numeral, the
+       status verdict, the protocol numbers — is 11-12px, and 11px
+       at 2.2:1 is a colour, not a word. */
+    --lab-signal-ink: #7d5820;
     --rule: rgba(17, 17, 17, 0.16);
   }
 
@@ -593,7 +607,7 @@ html.lenis body {
   }
   .cal-tag b {
     font-weight: 500;
-    color: #9a6f2f;
+    color: var(--lab-signal-ink);
     margin-inline-end: 0.35em;
   }
   @media (min-width: 640px) {
@@ -656,80 +670,248 @@ html.lenis body {
     color: var(--lab-ink-2);
     text-transform: uppercase;
   }
-  /* The figure the calibrated one replaced. Struck, because a
-     superseded measurement is struck on a drawing and never
-     quietly deleted. */
-  .cal-was {
+  /* --- The sheet's own voice (2026-09-02 redesign) ---
+     Three faces and nothing else, which is what an engineering
+     publication is: the house display serif for the title and for
+     every measured FIGURE, Inter for prose, JetBrains Mono for
+     annotation, coordinates and system state. The discipline is
+     that a number is always the serif and a label is always the
+     mono — so on a sheet carrying thirty pieces of type, weight
+     and face alone tell you which of them is a reading. */
+  .cal-title {
+    font-family: var(--font-display);
+    font-weight: 400;
+    /* Below `t-mega` deliberately. This is a drawing's title, and
+       a title that fills the sheet is a poster. */
+    font-size: clamp(3rem, 8vw, 7rem);
+    line-height: 0.88;
+    letter-spacing: -0.03em;
+    color: var(--lab-ink);
+  }
+  .cal-standfirst {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.25rem, 1.9vw, 1.7rem);
+    line-height: 1.32;
+    letter-spacing: -0.012em;
+    color: var(--lab-ink);
+  }
+  /* The general note in the margin. Set larger than the rest of
+     the margin because it is the one thing there a visitor is
+     meant to READ rather than consult. */
+  .cal-margin-note {
+    font-family: var(--font-sans);
+    font-weight: 300;
+    font-size: clamp(0.9375rem, 1.05vw, 1.0625rem);
+    line-height: 1.55;
+    letter-spacing: -0.004em;
+    color: var(--lab-ink);
+    text-wrap: pretty;
+  }
+  .cal-key {
     font-family: var(--font-mono);
-    font-size: 0.3em;
+    font-size: 0.6875rem;
     letter-spacing: 0.12em;
-    margin-inline-start: 0.9em;
+    line-height: 1.4;
     color: var(--lab-ink-2);
-    text-decoration: line-through;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.2em;
-    opacity: 0.75;
   }
-
-  /* --- The seat response matrix. ---
-     A row is a number line, not a button. The hollow mark is the
-     conventional reading, the solid one is the calibrated
-     reading, and the tie between them is the correction. */
-  .cal-row {
-    transition: background-color 200ms var(--ease-out-expo);
+  /* Legend swatches: the drawing's own hatches at legend size, so
+     the key is the same ink as the thing it explains rather than
+     a coloured dot standing in for it. */
+  .cal-swatch {
+    width: 1.15rem;
+    height: 0.75rem;
+    flex: none;
+    margin-top: 0.1em;
+    border: 1px dashed var(--lab-line);
   }
-  .cal-row:hover,
-  .cal-row.is-on {
-    background-color: rgba(17, 17, 17, 0.045);
-  }
-  .cal-row:focus-visible {
-    outline: 1px solid var(--lab-ink);
-    outline-offset: -1px;
-  }
-  .cal-mark,
-  .cal-mark-ghost {
-    width: 0.5rem;
-    height: 0.5rem;
-    margin-left: -0.25rem;
-    margin-top: -0.25rem;
-    border-radius: 999px;
-    transition: transform 260ms var(--ease-out-expo);
-  }
-  .cal-mark {
-    background: var(--lab-ink);
-  }
-  .cal-row.is-on .cal-mark {
-    background: var(--lab-signal);
-    transform: scale(1.35);
-  }
-  .cal-mark-ghost {
-    background: transparent;
-    box-shadow: inset 0 0 0 1px var(--lab-line);
-    opacity: 0.7;
-  }
-  .cal-tie {
-    background: repeating-linear-gradient(
-      to right,
-      var(--lab-line) 0 2px,
-      transparent 2px 5px
+  .cal-swatch-abs {
+    background-image: repeating-linear-gradient(
+      45deg,
+      var(--lab-line) 0 1px,
+      transparent 1px 4px
     );
-    opacity: 0.65;
+  }
+  .cal-swatch-dif {
+    background-image: repeating-linear-gradient(
+      to right,
+      transparent 0 1px,
+      var(--lab-line) 1px 2px,
+      transparent 2px 6px
+    );
+  }
+  .cal-swatch-trap {
+    border-radius: 0 0 0 100%;
+    background-image: repeating-linear-gradient(
+      45deg,
+      var(--lab-line) 0 1px,
+      transparent 1px 4px
+    );
+  }
+  /* The survey crosshair, at legend size. */
+  .cal-swatch-point {
+    border: 0;
+    position: relative;
+    background:
+      linear-gradient(var(--lab-line), var(--lab-line)) center / 100% 1px no-repeat,
+      linear-gradient(var(--lab-line), var(--lab-line)) center / 1px 100% no-repeat;
   }
 
-  /* --- Overlays that follow a selection rather than a scrub. --- */
+  /* --- Annotation on the drawing. ---
+     Everything here carries the paper halo rather than a box. A
+     tinted panel with a hairline round an on-drawing label is a
+     chip, and ten chips on a plan is the app-chrome failure this
+     section has already been rebuilt away from once. A real
+     drawing breaks its own line to let a note through; the halo
+     is that, done in CSS. */
+  .cal-coord,
+  .cal-dim {
+    font-family: var(--font-mono);
+    line-height: 1;
+    text-shadow:
+      0 0 3px #e9e4d8,
+      0 0 3px #e9e4d8,
+      0 0 6px #e9e4d8;
+  }
+  /* `--lab-line` reads 3.7:1 here and these are 9px. The
+     hierarchy that keeps them the quietest thing on the sheet is
+     SIZE, not a paler ink. */
+  .cal-coord {
+    font-size: 0.5625rem;
+    letter-spacing: 0.1em;
+    color: var(--lab-ink-2);
+  }
+  .cal-dim {
+    font-size: 0.625rem;
+    letter-spacing: 0.12em;
+    color: var(--lab-ink-2);
+  }
+
+  /* --- The chair is the control, the numeral is the label. ---
+     The button is a transparent box the size of the chair it sits
+     on, because pointing at a chair on a plan is what a visitor
+     will try. It draws NOTHING itself — the chair under it is
+     already drawn, and a hover fill over a technical drawing is
+     the chip failure this section has been rebuilt away from. The
+     numeral hangs outside the box, in the paper's own halo, and
+     turns signal when its chair is the one being read. */
+  .cal-seat-btn {
+    cursor: pointer;
+    background: none;
+    border: 0;
+    padding: 0;
+  }
+  .cal-seat-n {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    /* The lane between the chair and the numeral. Set on the
+       numeral rather than by moving the button, so the hit area
+       stays exactly the chair. */
+    margin-block: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
+    line-height: 1;
+    white-space: nowrap;
+    color: var(--lab-ink-2);
+    transition: color 240ms var(--ease-out-expo);
+    text-shadow:
+      0 0 3px #e9e4d8,
+      0 0 3px #e9e4d8,
+      0 0 6px #e9e4d8;
+  }
+  .cal-seat-btn:hover .cal-seat-n {
+    color: var(--lab-ink);
+  }
+  .cal-seat-btn.is-on .cal-seat-n {
+    color: var(--lab-signal-ink);
+  }
+  .cal-seat-btn:focus-visible {
+    outline: 1px solid var(--lab-ink);
+    outline-offset: 0.2rem;
+  }
+
+  /* --- The schedule. --- */
+  .cal-seat-title {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 1.5rem;
+    line-height: 1;
+    letter-spacing: -0.018em;
+    color: var(--lab-ink);
+  }
+  /* The verdict word. Mono, because it is system state and not
+     prose, and in signal only when it passes — a status that is
+     always coloured is a badge, not a reading. */
+  .cal-status {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--lab-ink-2);
+  }
+  .cal-status.is-ok {
+    color: var(--lab-signal-ink);
+  }
+
+  /* --- The protocol, along the foot of the sheet. --- */
+  .cal-stage {
+    display: grid;
+    grid-template-columns: auto minmax(1.25rem, 1fr) auto;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .cal-stage-n {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    color: var(--lab-signal-ink);
+  }
+  .cal-stage-rule {
+    height: 1px;
+    background: var(--lab-grid);
+  }
+  .cal-stage-name {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 0.8125rem;
+    letter-spacing: 0.01em;
+    color: var(--lab-ink);
+  }
+
+  /* --- Overlays that follow a selection rather than a scrub. ---
+     `d` is animatable in Chrome and Safari for paths whose
+     commands match, which the view rays and the arc always do —
+     both are rebuilt from the same template with different
+     numbers. Where it is not supported the seat change simply
+     cuts, which is the correct degradation. */
   .cal-fade {
     transition: opacity 320ms var(--ease-out-expo);
   }
+  .cal-morph {
+    transition: d 340ms var(--ease-out-expo);
+  }
+  .cal-morph-move {
+    transition: transform 340ms var(--ease-out-expo);
+  }
+  .cal-seat-pad {
+    transition:
+      fill 260ms var(--ease-out-expo),
+      stroke 260ms var(--ease-out-expo);
+  }
   .cal-path-line {
     transition:
-      x2 320ms var(--ease-out-expo),
-      y2 320ms var(--ease-out-expo);
+      x2 340ms var(--ease-out-expo),
+      y2 340ms var(--ease-out-expo);
   }
   @media (prefers-reduced-motion: reduce) {
-    .cal-row,
-    .cal-mark,
-    .cal-mark-ghost,
     .cal-fade,
+    .cal-morph,
+    .cal-morph-move,
+    .cal-seat-pad,
+    .cal-seat-btn,
     .cal-path-line {
       transition: none;
     }
