@@ -137,7 +137,7 @@ export default function SolutionsIndex() {
                       job is to let someone recognise their own room.
                       The mark is the same one that heads the solution
                       when they open it. */}
-                  <Mark name={s.icon} size={20} className="mt-1 w-7 shrink-0 text-cove" />
+                  <Mark name={s.icon} size={22} className="mt-1 w-7 shrink-0 text-cove" />
                   <span className="min-w-0 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-3">
                     <span className="t-heading block text-bone">{s.title}</span>
                     {/* What it TOUCHES, not what it contains. Nine product

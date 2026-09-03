@@ -135,11 +135,13 @@ const MARKS = {
       <path d="M17 10.5l4-2v8l-4-2M5 17v2M15 17v2" />
     </>
   ),
-  /* Masking: the scope frame closing in on the flat one. */
+  /* Masking: the scope band open inside the flat frame, with the
+     top and bottom panels standing off it. */
   masking: (
     <>
-      <rect x="2.5" y="5.5" width="19" height="13" />
-      <path d="M6 9.5h12v5H6zM6 5.5v4M18 5.5v4M6 14.5v4M18 14.5v4" />
+      <rect x="2" y="4" width="20" height="16" />
+      <rect x="2" y="9" width="20" height="6" />
+      <path d="M12 4v5M12 15v5" />
     </>
   ),
   eye: (
@@ -151,8 +153,8 @@ const MARKS = {
   /* Invisible engineering: the same eye, closed over its work. */
   eyeClosed: (
     <>
-      <path d="M2.5 10.5S6 15.5 12 15.5s9.5-5 9.5-5" />
-      <path d="M5 14l-1.5 3M12 15.5V19M19 14l1.5 3" />
+      <path d="M2 8s4 6 10 6 10-6 10-6" />
+      <path d="M4.5 12.5L3 16.5M9 14.5L8 18.5M15 14.5l1 4M19.5 12.5l1.5 4" />
     </>
   ),
 
@@ -166,9 +168,9 @@ const MARKS = {
   ),
   sub: (
     <>
-      <rect x="4" y="6" width="16" height="14" />
-      <circle cx="12" cy="13" r="4.5" />
-      <path d="M12 11v4" />
+      <rect x="4" y="4" width="16" height="16" />
+      <circle cx="12" cy="12" r="5" />
+      <circle cx="12" cy="12" r="1.5" />
     </>
   ),
   ceilingSpeaker: (
@@ -183,8 +185,8 @@ const MARKS = {
   atmos: (
     <>
       <path d="M3 4h18" />
-      <path d="M8 6.5L12 13l4-6.5" />
-      <path d="M5 20h14M9 20v-3h6v3" />
+      <path d="M6 5.5l5 7.5M18 5.5l-5 7.5" />
+      <path d="M6 20h12M9 20v-4h6v4" />
     </>
   ),
   /* The centre channel: dialogue, aligned to the screen. */
@@ -225,9 +227,9 @@ const MARKS = {
   /* Absorption: energy entering a panel and not coming back. */
   absorption: (
     <>
-      <rect x="3" y="4" width="6" height="16" />
-      <path d="M5 8h2M5 12h2M5 16h2" />
-      <path d="M20 8l-8 4M20 16l-8-4" />
+      <rect x="2.5" y="2.5" width="5" height="19" />
+      <path d="M21.5 7.5H10.5M13.5 4.5l-3 3 3 3" />
+      <path d="M21.5 16.5H10.5M13.5 13.5l-3 3 3 3" />
     </>
   ),
   /* Diffusion: one arrival, scattered — a well-depth profile. */
@@ -255,17 +257,18 @@ const MARKS = {
   /* --- Comfort ---------------------------------------------- */
   seat: (
     <>
-      <path d="M6 4h9a2 2 0 0 1 2 2v7H6z" />
-      <path d="M4 13h15a2 2 0 0 1 2 2v4H4z" />
-      <path d="M4 19v2M21 19v2" />
+      <path d="M7 12V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v7" />
+      <path d="M3 12h18v5H3z" />
+      <path d="M5 17v4M19 17v4" />
     </>
   ),
   /* The chair at full extension — the leg rest, not the seat. */
   recline: (
     <>
-      <path d="M3 8.5l7-3 3 7-7 3z" />
-      <path d="M3 15.5h14a2 2 0 0 1 2 2v3H3z" />
-      <path d="M21 12v8" />
+      <path d="M3 5l2 9" />
+      <path d="M5 14h8l8-3.5" />
+      <path d="M5 14v5M13 14v3" />
+      <path d="M3 19h12" />
     </>
   ),
   /* The console beside the seat: a drawer, and what goes in it. */
@@ -285,8 +288,8 @@ const MARKS = {
   /* Riser: the tiers the sightline is set out on. */
   riser: (
     <>
-      <path d="M2 20h5v-4h5v-4h5V8h5" />
-      <path d="M2 20v-4" />
+      <path d="M2 20h6v-5h6v-5h6V5" />
+      <path d="M2 20v-5h6" />
     </>
   ),
   body: (
@@ -304,9 +307,10 @@ const MARKS = {
   /* Climate: moved air, held temperature. */
   climate: (
     <>
-      <rect x="3" y="4" width="18" height="6" />
-      <path d="M6 7h2M11 7h2M16 7h2" />
-      <path d="M7 13c0 3 3 3 3 6M14 13c0 3 3 3 3 6" />
+      <rect x="3" y="3" width="18" height="7" />
+      <path d="M6.5 7h11" />
+      <path d="M5 14c2-2 4 2 6 0s4 2 6 0" />
+      <path d="M5 19c2-2 4 2 6 0s4 2 6 0" />
     </>
   ),
   /* Airflow alone, where climate would be too much machine. */
@@ -335,9 +339,9 @@ const MARKS = {
   ),
   curtain: (
     <>
-      <path d="M3 4h18" />
-      <path d="M7 4c0 6-1 10-3 16M11 4c0 6 .5 10 1.5 16" />
-      <path d="M17 4v16M17 12h4" />
+      <path d="M2 3h20" />
+      <path d="M4 3v18c3.5 0 5.5-2.5 6.5-7V3" />
+      <path d="M20 3v18c-3.5 0-5.5-2.5-6.5-7V3" />
     </>
   ),
 
@@ -373,8 +377,9 @@ const MARKS = {
   ),
   cable: (
     <>
-      <path d="M5 3v6a4 4 0 0 0 4 4h6a4 4 0 0 1 4 4v4" />
-      <path d="M3 3h4M17 21h4" />
+      <path d="M9 2v5M15 2v5" />
+      <path d="M6.5 7h11v3.5a5.5 5.5 0 0 1-11 0z" />
+      <path d="M12 16v6" />
     </>
   ),
   power: <path d="M13 2L5 13h6l-2 9 8-11h-6z" />,
@@ -467,8 +472,9 @@ const MARKS = {
   ),
   key: (
     <>
-      <circle cx="7.5" cy="12" r="4" />
-      <path d="M11.5 12H21M18 12v3M15 12v2.5" />
+      <circle cx="8.5" cy="8.5" r="4.5" />
+      <path d="M11.7 11.7L20.5 20.5" />
+      <path d="M17.5 17.5L15 20M20.5 20.5L18 23" />
     </>
   ),
   /* Care after handover: the room supported as it ages. */
@@ -486,11 +492,15 @@ const MARKS = {
       <path d="M16 6.5a3 3 0 0 1 0 6M17.5 15.5c2 .8 3 2.2 3.5 4.5" />
     </>
   ),
-  handshake: (
+  /* Relationship. A handshake at 24 pixels is four overlapping
+     fingers and a smudge — it has to be drawn at icon size to be
+     believed, and it never survives. Two rings that cannot be
+     pulled apart say the same thing at any size, and say it in
+     line work rather than in illustration. */
+  bond: (
     <>
-      <path d="M2.5 9.5L6 6l4 1 2 2-2 2-3-2" />
-      <path d="M21.5 9.5L18 6l-4 1" />
-      <path d="M12 9l4.5 4.5M9.5 11.5L13 15M7.5 13.5l3 3" />
+      <circle cx="9" cy="12" r="6" />
+      <circle cx="15" cy="12" r="6" />
     </>
   ),
   /* Warranty, and a promise that survives handover. */

@@ -143,7 +143,7 @@ export default function Craft() {
                     <Drift as="span" y={22} className="block">
                       <Mark
                         name={item.icon}
-                        size={20}
+                        size={22}
                         className="mt-1 transition-colors duration-500"
                         style={{ color: isActive ? '#fff' : '#55555b' }}
                       />

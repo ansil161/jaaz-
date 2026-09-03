@@ -119,14 +119,15 @@ export default function Difference() {
                       is the one thing the row already says by sitting
                       third. The mark says what is being swapped IN —
                       a body in a chair, a room as a volume, a pair of
-                      dividers, a handshake — so the argument is made
+                      dividers, two rings that do not come apart — so
+                      the argument is made
                       once in the glyph before it is made again in the
                       word underneath.
 
                       `block` matters: an inline-block wrapper after an
                       inline element puts the mark ON the same line as
                       the word it labels, and the two collide. */}
-                  <Mark name={pair.icon} size={20} className="block text-ash" />
+                  <Mark name={pair.icon} size={26} className="block text-ash" />
 
                   {/* The word being replaced. Outlined, then struck. */}
                   <div className="relative mt-4 inline-block">

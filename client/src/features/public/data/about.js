@@ -72,7 +72,7 @@ export const difference = {
     },
     {
       from: 'Project',
-      icon: 'handshake',
+      icon: 'bond',
       to: 'Relationship',
       body: 'Handover is not the finish line. Rooms are used, firmware moves, families change how they watch. We stay accountable for the room after the invoice is closed.',
     },

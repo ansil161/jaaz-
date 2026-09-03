@@ -1,5 +1,4 @@
 /* ============================================================
-import { Mark } from '@/features/public/components/Mark'
    HUD — the smallest interface a house can carry
 
    Four things, each anchored to an edge so the middle of the
@@ -16,6 +15,8 @@ import { Mark } from '@/features/public/components/Mark'
    build lighting; a shadow keeps the words legible over plaster
    and over black acoustic fabric alike, covering nothing.
    ============================================================ */
+
+import { Mark } from '@/features/public/components/Mark'
 
 const SHADOW = { textShadow: '0 1px 20px rgba(0,0,0,0.95), 0 0 4px rgba(0,0,0,0.7)' }
 

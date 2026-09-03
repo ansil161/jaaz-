@@ -77,7 +77,7 @@ export default function System({ solution: s }) {
                       bottom whether or not it is counted, and the
                       count was standing where the subject should be:
                       a sub, a rack, a run of cable, a drain detail. */}
-                  <Mark name={layer.icon} size={20} className="text-cove sm:col-span-1" />
+                  <Mark name={layer.icon} size={22} className="text-cove sm:col-span-1" />
 
                   <div className="sm:col-span-11">
                     <h3 className="t-heading text-[clamp(1.35rem,2vw,1.9rem)] text-bone">

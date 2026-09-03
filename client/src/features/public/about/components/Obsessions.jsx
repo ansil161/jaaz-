@@ -55,7 +55,7 @@ export default function Obsessions() {
                   baseline to sit on, and aligning its box to the cap
                   line of the heading is what actually looks level. */}
               <div className="flex items-center gap-4">
-                <Mark name={item.icon} size={20} className="shrink-0 text-ink/45" />
+                <Mark name={item.icon} size={23} className="shrink-0 text-ink/45" />
                 <h3 className="t-heading text-ink">{item.title}</h3>
               </div>
               <p className="t-body mt-4 max-w-md text-ink/65 sm:pl-10">{item.body}</p>

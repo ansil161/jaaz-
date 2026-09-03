@@ -74,7 +74,7 @@ export default function Related({ solution: s }) {
                 className="focus-ring group flex flex-col gap-3 border-t border-white/[0.09] py-7 sm:flex-row sm:items-baseline sm:justify-between sm:gap-10"
               >
                 <span className="flex min-w-0 items-start gap-6 sm:gap-9">
-                  <Mark name={other.icon} size={20} className="mt-1.5 w-7 shrink-0 text-cove" />
+                  <Mark name={other.icon} size={24} className="mt-1.5 w-7 shrink-0 text-cove" />
                   <span className="min-w-0">
                     <span className="t-heading block text-[clamp(1.5rem,2.4vw,2.4rem)] text-bone transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-3">
                       {other.title}
