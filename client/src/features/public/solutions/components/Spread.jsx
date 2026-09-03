@@ -1,6 +1,7 @@
 import { solutions, solutionsIndex } from '@/features/public/data/solutions'
 import { Link } from '@/features/public/router/PageTransition'
 import { Rise } from '@/features/public/components/Motion'
+import { Mark } from '@/features/public/components/Mark'
 
 /* ============================================================
    SOLUTIONS — THE SPREAD
@@ -170,12 +171,24 @@ export default function Spread() {
                       mirrored ? 'lg:ms-auto' : ''
                     }`}
                   >
-                    <p
-                      aria-hidden="true"
-                      className="font-display text-[clamp(3.25rem,7vw,7.5rem)] leading-[0.8] tracking-[-0.03em] text-bone/[0.13] transition-colors duration-700 group-hover:text-bone/[0.2]"
-                    >
-                      {s.n}
-                    </p>
+                    {/* THE WATERMARK. It was the solution's number set
+                        at display size in thirteen percent bone — a
+                        beautiful piece of nothing, since "05" is the
+                        one thing about this spread a reader cannot
+                        use. Same size, same ghost, same warm lift on
+                        hover; it is the solution's own mark now, so
+                        the largest element in the column finally says
+                        what the column is about.
+
+                        Stroke drops to 0.6: 1.25 on a 24 box blown up
+                        to 120 pixels is a six-pixel rope, and a rope
+                        at 13% opacity reads as a smudge rather than
+                        as drawn line. */}
+                    <Mark
+                      name={s.icon}
+                      strokeWidth={0.6}
+                      className="h-[clamp(3.25rem,7vw,7.5rem)] w-[clamp(3.25rem,7vw,7.5rem)] text-bone/[0.16] transition-colors duration-700 group-hover:text-bone/[0.24]"
+                    />
 
                     <p className="t-label mt-5 text-mist sm:mt-7">{s.tier}</p>
 

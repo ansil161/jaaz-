@@ -2,6 +2,7 @@ import { solutions, solutionsIndex } from '@/features/public/data/solutions'
 import { Link } from '@/features/public/router/PageTransition'
 import { Lines, Rise } from '@/features/public/components/Motion'
 import { useGsapScope, gsap, prefersReducedMotion } from '@/lib/animation/useGsap'
+import { Mark } from '@/features/public/components/Mark'
 
 /* ============================================================
    SOLUTIONS — THE CLOSE
@@ -128,8 +129,15 @@ export default function SolutionsIndex() {
                 style={{ opacity: 0, visibility: 'hidden' }}
                 className="focus-ring group flex flex-col gap-3 py-6 sm:flex-row sm:items-baseline sm:justify-between sm:gap-10 sm:py-7"
               >
-                <span className="flex min-w-0 items-baseline gap-6 sm:gap-9">
-                  <span className="t-num w-7 shrink-0 text-xs text-cove">{s.n}</span>
+                <span className="flex min-w-0 items-start gap-6 sm:gap-9">
+                  {/* The catalogue numeral is gone. Nine solutions in a
+                      column do not need to be told they are nine, and
+                      "04" was the least useful thing that could have
+                      occupied the first column of a row whose whole
+                      job is to let someone recognise their own room.
+                      The mark is the same one that heads the solution
+                      when they open it. */}
+                  <Mark name={s.icon} size={20} className="mt-1 w-7 shrink-0 text-cove" />
                   <span className="min-w-0 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-3">
                     <span className="t-heading block text-bone">{s.title}</span>
                     {/* What it TOUCHES, not what it contains. Nine product

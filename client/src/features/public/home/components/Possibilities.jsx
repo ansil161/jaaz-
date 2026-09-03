@@ -1,6 +1,7 @@
 import { possibilities } from '@/features/public/data/site'
 import { Lines, Rise } from '@/features/public/components/Motion'
 import { Link } from '@/features/public/router/PageTransition'
+import { Mark } from '@/features/public/components/Mark'
 
 /* ============================================================
    POSSIBILITIES
@@ -192,7 +193,10 @@ export default function Possibilities() {
                   the app-chrome failure, and because a caption is
                   where a reader already looks for provenance. */}
               <div className="mt-5 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-t border-[var(--rule)] pt-3">
-                <span className="t-label text-fog">{item.label}</span>
+                <span className="t-label inline-flex items-center gap-2.5 text-fog">
+                  <Mark name={item.icon} size={16} />
+                  {item.label}
+                </span>
                 {item.reference && (
                   <span className="t-num inline-flex items-center gap-2 text-[0.6875rem] whitespace-nowrap text-mist">
                     <span aria-hidden="true" className="inline-block h-1 w-1 rounded-full bg-cove" />

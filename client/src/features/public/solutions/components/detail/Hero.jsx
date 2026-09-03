@@ -2,6 +2,7 @@ import { solutionsIndex } from '@/features/public/data/solutions'
 import { Link } from '@/features/public/router/PageTransition'
 import Words from '@/features/public/components/Words'
 import { useGsapScope, gsap, prefersReducedMotion } from '@/lib/animation/useGsap'
+import { Mark } from '@/features/public/components/Mark'
 
 /* ============================================================
    ONE SOLUTION — THE HERO
@@ -157,9 +158,9 @@ export default function Hero({ solution: s }) {
           All nine solutions
         </Link>
 
-        <div className="flex items-baseline gap-6">
-          <span data-lift className="t-num text-[0.72rem] text-cove" style={HIDDEN}>
-            {s.n}
+        <div className="flex items-center gap-6">
+          <span data-lift style={HIDDEN}>
+            <Mark name={s.icon} size={24} className="text-cove" />
           </span>
           <Words as="h1" text={s.title} className="t-display max-w-[16ch] text-bone" />
         </div>

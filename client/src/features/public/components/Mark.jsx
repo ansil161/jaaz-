@@ -606,11 +606,17 @@ const MARKS = {
     `size` sets both axes; 18 is the size every glyph in this table
     was drawn against. Pass `title` only where the mark is the ONLY
     carrier of the meaning — next to a word, it must stay silent. */
-export function Mark({ name, className = '', size = 18, title, style }) {
+/* `strokeWidth` is an override, not a knob. 1.25 is the site's
+   weight and is correct everywhere the mark is set as type, at 15
+   to 22px. It is lowered in exactly one situation: a mark blown up
+   to display size as a watermark, where 1.25 scales to a six-pixel
+   rope and stops reading as line work. */
+export function Mark({ name, className = '', size = 18, title, style, strokeWidth }) {
   const glyph = MARKS[name] ?? MARKS.dot
   return (
     <svg
       {...base}
+      strokeWidth={strokeWidth ?? base.strokeWidth}
       width={size}
       height={size}
       className={className}

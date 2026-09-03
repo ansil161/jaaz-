@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { engineering } from '@/features/public/data/site'
 import { Lines } from '@/features/public/components/Motion'
 import { useGsapScope, gsap, ScrollTrigger, prefersReducedMotion } from '@/lib/animation/useGsap'
+import { Mark } from '@/features/public/components/Mark'
 
 /* ============================================================
    CH. 04 — ENGINEERED. NOT ASSEMBLED.
@@ -189,7 +190,16 @@ export default function Engineering() {
               </div>
 
               <div className="lg:col-span-7 lg:col-start-6">
-                <h3 className="t-heading text-pure">{item.name}</h3>
+                {/* The figure column keeps its number, because 37°
+                    and 0.3 s are facts and a glyph cannot say them.
+                    The mark goes on the NAME instead, so the six read
+                    as picture, sound, acoustics, comfort, control,
+                    calibration at a glance — the same six marks these
+                    subjects carry on every other page. */}
+                <div className="flex items-center gap-3.5">
+                  <Mark name={item.icon} size={20} className="shrink-0 text-cove" />
+                  <h3 className="t-heading text-pure">{item.name}</h3>
+                </div>
 
                 <p className="t-body mt-4 max-w-[52ch] text-fog">{item.body}</p>
 

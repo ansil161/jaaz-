@@ -1,4 +1,5 @@
 import { Lines, Rise, ScrubText } from '@/features/public/components/Motion'
+import { Mark } from '@/features/public/components/Mark'
 
 /* ============================================================
    ONE SOLUTION — WHAT IT IS MADE OF
@@ -72,7 +73,11 @@ export default function System({ solution: s }) {
                   data-layer
                   className="grid gap-x-8 gap-y-4 border-t border-white/[0.09] py-9 sm:grid-cols-12"
                 >
-                  <span className="t-num text-[0.72rem] text-cove sm:col-span-1">{layer.n}</span>
+                  {/* Was the layer number. A build-up is read top to
+                      bottom whether or not it is counted, and the
+                      count was standing where the subject should be:
+                      a sub, a rack, a run of cable, a drain detail. */}
+                  <Mark name={layer.icon} size={20} className="text-cove sm:col-span-1" />
 
                   <div className="sm:col-span-11">
                     <h3 className="t-heading text-[clamp(1.35rem,2vw,1.9rem)] text-bone">

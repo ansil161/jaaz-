@@ -2,6 +2,7 @@ import { solutions, solutionsIndex } from '@/features/public/data/solutions'
 import { Link } from '@/features/public/router/PageTransition'
 import Words from '@/features/public/components/Words'
 import { useGsapScope, gsap, prefersReducedMotion } from '@/lib/animation/useGsap'
+import { Mark } from '@/features/public/components/Mark'
 
 /* ============================================================
    SOLUTIONS — THE LENS
@@ -550,7 +551,14 @@ export default function Lens() {
               aria-current={i === 0 ? 'true' : 'false'}
               className="lens-mark focus-ring group flex cursor-pointer items-center justify-end gap-3"
             >
-              <span className="lens-n t-num text-[0.62rem]">{s.n}</span>
+              {/* The stop's own mark, where its number was. The tick
+                  beside it already says how far open the lens is at
+                  this stop and the roll above says which of nine you
+                  are on — so a second numeral on every mark was the
+                  count printed three times. A theatre, a sofa, a
+                  fader, a terrace: now the barrel is readable without
+                  opening anything. */}
+              <Mark name={s.icon} size={15} className="lens-n" />
               <span className="lens-tick" style={{ '--lens-tick': openness(s).toFixed(3) }} />
               <span className="sr-only">{s.title}</span>
             </button>
